@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="str-data.js"></script>
+  <script src="amenities-data.js"></script>
+  <script src="guest-data.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+    .leaflet-container{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#E8EEF2}
+    input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}
+  </style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 29 — Explore Stays" style="font-variant-numeric:tabular-nums;display:flex;flex-direction:column;height:100vh;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033">
+
+  <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ hPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0;position:relative;z-index:30">
+    <button onClick="{{ goExplore }}" style="display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:0;flex-shrink:0">
+      <span style="width:36px;height:36px;border-radius:8px;background:#fff;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain"></span>
+      <span style="display:flex;flex-direction:column;gap:4px;text-align:left"><span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;color:#132A52;letter-spacing:0.01em">MGHPM</span><span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">STAYS</span></span>
+    </button>
+    <nav style="display:flex;gap:4px;margin-left:8px">
+      <sc-for list="{{ navTabs }}" as="t" hint-placeholder-count="2">
+        <button onClick="{{ t.select }}" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:0;border-radius:6px;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};font:600 14px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap" style-hover="background:#F1F5F9">{{ t.label }}<sc-if value="{{ t.hasCount }}"><span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#006B68;color:#fff;font:700 11px/20px 'Plus Jakarta Sans',sans-serif;text-align:center">{{ t.count }}</span></sc-if></button>
+      </sc-for>
+    </nav>
+    <div style="flex:1"></div>
+    <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ goStaff }}" title="MGHPM Enterprise — staff portal" style="display:flex;align-items:center;gap:6px;height:36px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:#64748B;cursor:pointer;font:500 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#006B68;background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="briefcase-business" size="{{ 15 }}" hint-size="15px,15px"></x-import>Staff Portal</button>
+    </sc-if>
+    <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ userInitials }}" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ notMobile }}"><span style="display:flex;flex-direction:column;gap:3px"><span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">{{ userName }}</span><button onClick="{{ signOut }}" style="border:0;background:transparent;padding:0;text-align:left;cursor:pointer;font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B" style-hover="color:#006B68">Sign Out</button></span></sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ true }}">
+      <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="log-in" on-click="{{ openSignIn }}" hint-size="96px,36px">Sign In</x-import>
+    </sc-if>
+  </header>
+
+  <sc-if value="{{ isExplore }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+      <div style="flex-shrink:0;background:#FFFFFF;border-bottom:1px solid #E2E8F0;padding:14px {{ hPad }};display:flex;flex-direction:column;gap:14px;position:relative;z-index:20">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px">
+          <label style="flex:1 1 220px;display:flex;flex-direction:column;gap:6px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Destination / Area<select value="{{ sArea }}" onChange="{{ onArea }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;outline:none;text-transform:none;letter-spacing:0"><sc-for list="{{ areaOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+          <label style="flex:0 1 168px;display:flex;flex-direction:column;gap:6px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Check-in<input type="date" value="{{ sCi }}" min="{{ today }}" onChange="{{ onCi }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+          <label style="flex:0 1 168px;display:flex;flex-direction:column;gap:6px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Check-out<input type="date" value="{{ sCo }}" min="{{ sCoMin }}" onChange="{{ onCo }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+          <label style="flex:0 1 120px;display:flex;flex-direction:column;gap:6px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Guests<select value="{{ sGuests }}" onChange="{{ onGuests }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;outline:none"><option value="1">1 guest</option><option value="2">2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option><option value="5">5 guests</option><option value="6">6 guests</option><option value="7">7 guests</option><option value="8">8 guests</option><option value="9">9 guests</option><option value="10">10 guests</option></select></label>
+          <label style="flex:0 1 110px;display:flex;flex-direction:column;gap:6px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Pets<select value="{{ sPets }}" onChange="{{ onPets }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;outline:none"><option value="0">None</option><option value="1">1 pet</option><option value="2">2 pets</option></select></label>
+          <button onClick="{{ toggleFilters }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border:1px solid {{ filterBtnBorder }};border-radius:8px;background:{{ filterBtnBg }};color:#172033;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="sliders-horizontal" size="{{ 16 }}" hint-size="16px,16px"></x-import>Filters<sc-if value="{{ hasFilterCount }}"><span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#132A52;color:#fff;font:700 11px/20px 'Plus Jakarta Sans',sans-serif;text-align:center">{{ filterCount }}</span></sc-if></button>
+          <button onClick="{{ doSearch }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border:0;border-radius:8px;background:#006B68;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>Search</button>
+        </div>
+        <sc-if value="{{ showFilters }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px;padding:16px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0">
+            <div style="display:flex;flex-direction:column;gap:10px"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Price per Night &amp; Type</span>
+              <div style="display:flex;gap:8px"><select value="{{ fMax }}" onChange="{{ onMax }}" style="flex:1;height:38px;padding:0 10px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;min-width:0"><option value="0">Any price</option><option value="300">Under US$300</option><option value="400">Under US$400</option><option value="500">Under US$500</option><option value="700">Under US$700</option></select><select value="{{ fType }}" onChange="{{ onType }}" style="flex:1;height:38px;padding:0 10px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;min-width:0"><option value="">Any type</option><option value="Condo">Condo</option><option value="House">House</option><option value="Loft">Loft</option></select></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Bedrooms</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ brChips }}" as="ch"><button onClick="{{ ch.toggle }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap">{{ ch.label }}</button></sc-for></div></div>
+            <div style="display:flex;flex-direction:column;gap:10px"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Bathrooms</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ baChips }}" as="ch"><button onClick="{{ ch.toggle }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap">{{ ch.label }}</button></sc-for></div></div>
+            <div style="display:flex;flex-direction:column;gap:10px;grid-column:span 2"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Amenities</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ amenChips }}" as="ch"><button onClick="{{ ch.toggle }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap">{{ ch.label }}</button></sc-for></div></div>
+            <div style="display:flex;flex-direction:column;gap:10px"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Utilities &amp; Booking</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ utilChips }}" as="ch"><button onClick="{{ ch.toggle }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap">{{ ch.label }}</button></sc-for></div></div>
+            <div style="display:flex;align-items:flex-end;justify-content:flex-end"><button onClick="{{ clearFilters }}" style="height:34px;padding:0 12px;border:0;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="text-decoration:underline">Clear All Filters</button></div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="flex:1;min-height:0;display:flex">
+        <div data-list="1" style="position:relative;flex:{{ listFlex }};display:{{ listDisplay }};flex-direction:column;gap:16px;min-width:0;overflow-y:auto;padding:20px {{ hPad }} 112px">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+              <h1 style="margin:0;font:700 24px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ resultsTitle }}</h1>
+              <span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ resultsSub }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <sc-if value="{{ showModeToggle }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px"><sc-for list="{{ modeTabs }}" as="m"><button onClick="{{ m.select }}" style="height:30px;padding:0 14px;border:0;border-radius:6px;cursor:pointer;background:{{ m.bg }};color:{{ m.color }};box-shadow:{{ m.shadow }};font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ m.label }}</button></sc-for></div></sc-if>
+              <label style="display:flex;align-items:center;gap:8px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B;white-space:nowrap">Sort by<select value="{{ sort }}" onChange="{{ onSort }}" style="height:36px;padding:0 10px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:600 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="recommended">Recommended</option><option value="price_asc">Price: Low to High</option><option value="price_desc">Price: High to Low</option><option value="bedrooms">Bedrooms</option><option value="capacity">Guest Capacity</option></select></label>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;background:#F0FAF9;border:1px solid #CDEBE8;font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#134E4A"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="receipt-text" size="{{ 15 }}" hint-size="15px,15px"></x-import><span>Totals include nightly rates, cleaning, applicable fees and Florida &amp; county taxes for your dates. Metered electricity, where configured, is billed after check-out.</span></div>
+
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+            <div data-stay="{{ c.pid }}" onClick="{{ c.open }}" onMouseEnter="{{ c.hover }}" onMouseLeave="{{ c.unhover }}" style="position:relative;display:grid;grid-template-columns:{{ cardCols }};gap:18px;padding:16px;background:#FFFFFF;border:1px solid {{ c.border }};border-radius:12px;box-shadow:{{ c.shadow }};cursor:pointer;transition:box-shadow 160ms ease,border-color 160ms ease">
+              <span style="position:absolute;left:-1px;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:{{ c.bar }}"></span>
+              <div style="height:{{ cardImgH }};border-radius:8px;overflow:hidden;background:#E2E8F0;min-width:0"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ c.slot }}" placeholder="{{ c.slotPh }}" shape="rounded" radius="8" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div>
+              <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                  <span style="display:flex;align-items:center;gap:5px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="map-pin" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ c.area }}</span>
+                  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ c.modeTone }}" hint-size="90px,22px">{{ c.modeLabel }}</x-import><button onClick="{{ c.showOnMap }}" title="Show on map" style="width:30px;height:30px;display:{{ c.mapBtn }};align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:6px;background:#fff;color:#475569;cursor:pointer" style-hover="color:#006B68;border-color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="locate-fixed" size="{{ 15 }}" hint-size="15px,15px"></x-import></button></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <h3 style="margin:0;font:700 17px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ c.name }}</h3>
+                  <span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><span style="color:#D4A637">★</span> {{ c.rating }} ({{ c.reviews }} reviews) • {{ c.type }}</span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px 14px;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033"><sc-for list="{{ c.basics }}" as="b"><span style="display:flex;align-items:center;gap:5px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ b.icon }}" size="{{ 14 }}" color="#64748B" hint-size="14px,14px"></x-import>{{ b.label }}</span></sc-for></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ c.chips }}" as="a"><span style="height:24px;padding:0 10px;border-radius:999px;background:#F1F5F9;color:#334155;font:500 12px/24px 'Plus Jakarta Sans',sans-serif;white-space:nowrap">{{ a }}</span></sc-for><span style="height:24px;padding:0 4px;color:#006B68;font:600 12px/24px 'Plus Jakarta Sans',sans-serif;white-space:nowrap">{{ c.more }}</span></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px 14px;padding-top:10px;border-top:1px solid #F1F5F9"><sc-for list="{{ c.utils }}" as="u"><span style="display:flex;align-items:center;gap:5px;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ u.icon }}" size="{{ 13 }}" color="{{ u.color }}" hint-size="13px,13px"></x-import>{{ u.label }} <span style="font-weight:700;color:{{ u.color }}">{{ u.status }}</span></span></sc-for></div>
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:auto">
+                  <div style="display:flex;flex-direction:column;gap:4px"><span style="font:700 18px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">{{ c.nightly }} <span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ c.nightlyUnit }}</span></span><span style="font:700 14px/1.2 'Plus Jakarta Sans',sans-serif;color:#132A52">{{ c.total }} total</span><span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ c.totalNote }}</span></div>
+                  <span style="display:flex;align-items:center;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#15803D"><span style="width:8px;height:8px;border-radius:4px;background:#16A34A"></span>Available</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 24px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;text-align:center">
+              <span style="width:44px;height:44px;border-radius:10px;background:#F1F5F9;color:#64748B;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="calendar-x" size="{{ 22 }}" hint-size="22px,22px"></x-import></span>
+              <span style="font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">No stays available for this search</span>
+              <span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:420px">{{ emptyHint }}</span>
+              <sc-if value="{{ hasFilterCount }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" on-click="{{ clearFilters }}" hint-size="120px,32px">Clear Filters</x-import></sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasUnavail }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+              <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Not available for {{ datesShort }}</span>
+              <sc-for list="{{ unavail }}" as="u" hint-placeholder-count="1">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:14px 16px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px">
+                  <div style="width:64px;height:48px;border-radius:8px;overflow:hidden;background:#E2E8F0;flex-shrink:0;opacity:.7"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ u.slot }}" placeholder="Photo" shape="rounded" radius="8" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div>
+                  <div style="flex:1 1 200px;display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ u.name }}</span><span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ u.area }} • {{ u.reason }}</span></div>
+                  <sc-if value="{{ u.hasNext }}"><button onClick="{{ u.useNext }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid #006B68;border-radius:6px;background:#fff;color:#006B68;cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap" style-hover="background:#F0FAF9">{{ u.next }}</button></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="flex:{{ mapFlex }};display:{{ mapDisplay }};position:relative;min-width:0;border-left:1px solid #E2E8F0">
+          <div data-map="explore" style="position:absolute;inset:0;background:#E8EEF2"></div>
+          <div style="position:absolute;top:12px;left:12px;z-index:500;display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:#fff;border:1px solid #E2E8F0;box-shadow:0 1px 2px rgba(15,23,42,0.08);font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="info" size="{{ 13 }}" hint-size="13px,13px"></x-import>Nightly prices • Approximate locations</div>
+          <sc-if value="{{ hasPreview }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:16px;bottom:16px;z-index:600;width:min(400px,calc(100% - 32px));display:flex;gap:14px;padding:12px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,0.18)">
+              <div style="width:104px;height:104px;border-radius:8px;overflow:hidden;background:#E2E8F0;flex-shrink:0"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ pv.slot }}" placeholder="Photo" shape="rounded" radius="8" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px"><span style="font:700 15px/1.25 'Plus Jakarta Sans',sans-serif;color:#172033">{{ pv.name }}</span><button onClick="{{ closePreview }}" title="Close" style="width:26px;height:26px;margin:-4px -4px 0 0;display:flex;align-items:center;justify-content:center;border:0;border-radius:6px;background:transparent;color:#64748B;cursor:pointer;flex-shrink:0" style-hover="background:#F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 15 }}" hint-size="15px,15px"></x-import></button></div>
+                <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569"><span style="color:#D4A637">★</span> {{ pv.rating }} • {{ pv.basicsLine }}</span>
+                <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#15803D">{{ pv.utilLine }}</span>
+                <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:2px"><span style="display:flex;flex-direction:column;gap:3px"><span style="font:700 15px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">{{ pv.nightly }} <span style="font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">/ night</span></span><span style="font:700 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#132A52">{{ pv.total }} total</span></span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" on-click="{{ pv.open }}" hint-size="110px,32px">View Property</x-import></div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-scroll="1" style="flex:1;min-height:0;overflow-y:auto">
+      <div style="max-width:1280px;margin:0 auto;padding:20px {{ hPad }} 112px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px">
+          <button onClick="{{ goExplore }}" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 10px 0 6px;border:0;border-radius:6px;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F0FAF9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 16 }}" hint-size="16px,16px"></x-import>Back to Results</button>
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B;min-width:0"><button onClick="{{ goExplore }}" style="border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">Explore Stays</button><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import><span>{{ dCity }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import><span style="color:#172033;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ dName }}</span></nav>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em;text-wrap:pretty">{{ dTitle }}</h1>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><span><span style="color:#D4A637">★</span> {{ dRating }} • {{ dReviews }} reviews</span><span style="color:#CBD5E1">•</span><span style="display:flex;align-items:center;gap:5px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="map-pin" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ dArea }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ dModeTone }}" hint-size="100px,22px">{{ dModeLabel }}</x-import></div>
+        </div>
+        <div style="display:grid;grid-template-columns:{{ galCols }};grid-template-rows:{{ galRows }};gap:8px;border-radius:12px;overflow:hidden">
+          <div style="grid-row:{{ galMainRow }};background:#E2E8F0;min-height:0"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ dSlot1 }}" placeholder="Primary photo — living area or exterior" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div>
+          <sc-if value="{{ galFull }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ dSlots }}" as="g" hint-placeholder-count="4"><div style="background:#E2E8F0;min-height:0"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ g.id }}" placeholder="{{ g.ph }}" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div></sc-for>
+          </sc-if>
+        </div>
+
+        <div style="display:grid;grid-template-columns:{{ dCols }};gap:24px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;gap:10px 22px;padding:18px 20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)"><sc-for list="{{ dBasics }}" as="b"><span style="display:flex;align-items:center;gap:8px;font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033"><span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ b.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>{{ b.label }}</span></sc-for></div>
+
+            <section style="display:flex;flex-direction:column;gap:12px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+              <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">About This Property</h2>
+              <p style="margin:0;font:400 14px/1.65 'Plus Jakarta Sans',sans-serif;color:#334155;text-wrap:pretty">{{ dDesc }}</p>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+              <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Sleeping Arrangements</h2>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px"><sc-for list="{{ dSleep }}" as="r"><div style="display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:8px;background:#F8FAFC;border:1px solid #F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ r.icon }}" size="{{ 20 }}" color="#006B68" hint-size="20px,20px"></x-import><span style="font:700 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ r.room }}</span><span style="font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569">{{ r.bed }}</span></div></sc-for></div>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:6px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-top:3px solid #D4A637;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+              <h2 style="margin:0 0 4px;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">What's Included — Utilities &amp; Services</h2>
+              <span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;margin-bottom:6px">From this property's short-term rental configuration. Anything not listed is not provided.</span>
+              <sc-for list="{{ dUtil }}" as="u" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #F1F5F9">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ u.icon }}" size="{{ 18 }}" color="#475569" hint-size="18px,18px"></x-import>
+                  <span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ u.label }}</span><sc-if value="{{ u.hasNote }}"><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ u.note }}</span></sc-if></span>
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ u.tone }}" dot="{{ true }}" hint-size="110px,22px">{{ u.status }}</x-import>
+                </div>
+              </sc-for>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:16px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+              <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Amenities</h2><span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ dAmenTotal }}</span></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px 24px"><sc-for list="{{ dAmen }}" as="g" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px;min-width:0"><span style="display:flex;align-items:center;gap:8px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ g.icon }}" size="{{ 14 }}" color="#006B68" hint-size="14px,14px"></x-import>{{ g.cat }}</span><sc-for list="{{ g.items }}" as="it"><span style="display:flex;align-items:flex-start;gap:8px;min-width:0"><span style="display:flex;padding-top:2px;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 14 }}" color="#006B68" hint-size="14px,14px"></x-import></span><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:500 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033">{{ it.label }}</span><sc-if value="{{ it.hasNote }}"><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:{{ it.noteColor }};text-wrap:pretty">{{ it.note }}</span></sc-if></span></span></sc-for></div></sc-for></div>
+              <sc-if value="{{ dAmenMore }}" hint-placeholder-val="{{ false }}"><div style="display:flex"><button onClick="{{ toggleAmenAll }}" style="height:38px;padding:0 16px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;color:#172033;font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer" style-hover="background:#F8FAFC">{{ dAmenMoreLabel }}</button></div></sc-if>
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;background:#F8FAFC;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="cctv" size="{{ 16 }}" color="#475569" hint-size="16px,16px"></x-import><span style="text-wrap:pretty">{{ dCameras }}</span></div>
+            </section>
+
+            <sc-if value="{{ dHasComm }}" hint-placeholder-val="{{ false }}"><section style="display:flex;flex-direction:column;gap:16px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);gap:12px">
+              <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Location &amp; Community</h2>
+              <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ dComm }}" as="c"><span style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:999px;background:#F0FAF9;border:1px solid #CCE7E4;color:#004F4D;font:600 13px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="map-pin" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ c }}</span></sc-for></div>
+            </section></sc-if>
+
+            <sc-if value="{{ dHasSvc }}" hint-placeholder-val="{{ false }}"><section style="display:flex;flex-direction:column;gap:16px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);gap:6px">
+              <h2 style="margin:0 0 4px;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Hospitality &amp; Concierge</h2>
+              <span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;margin-bottom:6px">Optional services you can request from My Stay after booking. Paid services are added to your stay folio.</span>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 24px"><sc-for list="{{ dSvc }}" as="sv"><div style="display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sv.icon }}" size="{{ 17 }}" color="#475569" hint-size="17px,17px"></x-import><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sv.label }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ sv.notice }}</span></span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ sv.tone }}" hint-size="90px,22px">{{ sv.pricing }}</x-import></div></sc-for></div>
+            </section></sc-if>
+
+            <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Availability</h2><span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ calHint }}</span></div>
+                <div style="display:flex;gap:6px"><button onClick="{{ calPrev }}" title="Previous month" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:6px;background:#fff;color:#475569;cursor:pointer" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-left" size="{{ 16 }}" hint-size="16px,16px"></x-import></button><button onClick="{{ calNext }}" title="Next month" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:6px;background:#fff;color:#475569;cursor:pointer" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 16 }}" hint-size="16px,16px"></x-import></button></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+                <sc-for list="{{ calMonths }}" as="m" hint-placeholder-count="2">
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <span style="font:700 14px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;text-align:center">{{ m.title }}</span>
+                    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"><sc-for list="{{ dow }}" as="w"><span style="text-align:center;font:600 11px/24px 'Plus Jakarta Sans',sans-serif;color:#94A3B8">{{ w }}</span></sc-for><sc-for list="{{ m.cells }}" as="d"><button onClick="{{ d.click }}" disabled="{{ d.disabled }}" style="height:36px;border:0;border-radius:6px;background:{{ d.bg }};color:{{ d.color }};text-decoration:{{ d.deco }};cursor:{{ d.cursor }};visibility:{{ d.vis }};font:{{ d.weight }} 13px/1 'Plus Jakarta Sans',sans-serif;font-variant-numeric:tabular-nums">{{ d.label }}</button></sc-for></div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px 18px;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B"><span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:#006B68"></span>Your dates</span><span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:#DDF3F1"></span>Selected nights</span><span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:#F1F5F9;border:1px solid #E2E8F0"></span>Unavailable</span></div>
+            </section>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+              <section style="display:flex;flex-direction:column;gap:10px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+                <h2 style="margin:0 0 4px;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">House Rules</h2>
+                <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ dRuleSummary }}" as="r"><span style="display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:#F1F5F9;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ r.icon }}" size="{{ 13 }}" color="#475569" hint-size="13px,13px"></x-import>{{ r.label }}</span></sc-for></div>
+                <span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Includes {{ dHoaName }} rules, owner rules and property-specific rules. Acknowledgment is required before payment.</span>
+                <button onClick="{{ openRules }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid #006B68;border-radius:6px;background:#fff;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F0FAF9">View All Rules<x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-right" size="{{ 14 }}" hint-size="14px,14px"></x-import></button>
+                <sc-for list="{{ dRulesNone }}" as="r"><span style="display:flex;gap:8px;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#334155"><span style="width:6px;height:6px;border-radius:3px;background:#006B68;margin-top:7px;flex-shrink:0"></span>{{ r }}</span></sc-for>
+              </section>
+              <section style="display:flex;flex-direction:column;gap:10px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Cancellation Policy</h2><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="neutral" hint-size="80px,22px">{{ dPolicyName }}</x-import></div>
+                <sc-for list="{{ dPolicy }}" as="p"><div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #F1F5F9;font:500 13px/1.45 'Plus Jakarta Sans',sans-serif"><span style="font-weight:700;color:{{ p.color }};white-space:nowrap">{{ p.k }}</span><span style="color:#334155;text-align:right">{{ p.v }}</span></div></sc-for>
+                <span style="font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Dates calculated for a check-in on {{ dCiLong }}. Cleaning fees are refunded whenever the stay is cancelled before check-in.</span>
+              </section>
+            </div>
+
+            <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+              <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Where You'll Stay</h2>
+              <span style="font:600 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ dArea }}</span>
+              <div style="position:relative;height:320px;border-radius:8px;overflow:hidden;border:1px solid #E2E8F0"><div data-map="detail" style="position:absolute;inset:0;background:#E8EEF2"></div></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;background:#F8FAFC;font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="shield-check" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import>{{ dLocNote }}</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 24px"><sc-for list="{{ dNear }}" as="n"><div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #F1F5F9;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#334155">{{ n.label }}</span><span style="color:#172033;font-weight:700;white-space:nowrap">{{ n.dist }}</span></div></sc-for></div>
+            </section>
+          </div>
+
+          <aside style="position:{{ railPos }};top:20px;display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,0.08)">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><span style="font:700 24px/1.1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ qNightly }} <span style="font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">/ night</span></span><span style="font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ qNightNote }}</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #CBD5E1;border-radius:8px;overflow:hidden">
+              <label style="display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-right:1px solid #CBD5E1;font:700 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Check-in<input type="date" value="{{ sCi }}" min="{{ today }}" onChange="{{ onCi }}" style="border:0;padding:0;height:22px;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:transparent;width:100%"></label>
+              <label style="display:flex;flex-direction:column;gap:4px;padding:8px 10px;font:700 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Check-out<input type="date" value="{{ sCo }}" min="{{ sCoMin }}" onChange="{{ onCo }}" style="border:0;padding:0;height:22px;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:transparent;width:100%"></label>
+              <label style="grid-column:span 2;display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-top:1px solid #CBD5E1;font:700 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Guests<select value="{{ sGuests }}" onChange="{{ onGuests }}" style="border:0;padding:0;height:22px;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:transparent;width:100%"><option value="1">1 guest</option><option value="2">2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option><option value="5">5 guests</option><option value="6">6 guests</option><option value="7">7 guests</option><option value="8">8 guests</option><option value="9">9 guests</option><option value="10">10 guests</option></select></label>
+              <sc-if value="{{ dPetsAllowed }}"><label style="grid-column:span 2;display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-top:1px solid #CBD5E1;font:700 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Pets<select value="{{ sPets }}" onChange="{{ onPets }}" style="border:0;padding:0;height:22px;font:600 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:transparent;width:100%"><option value="0">No pets</option><option value="1">1 pet</option><option value="2">2 pets</option></select></label></sc-if>
+            </div>
+            <span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Check-in after {{ dCheckIn }} • Check-out by {{ dCheckOut }} • {{ dStayRange }}</span>
+            <sc-if value="{{ qHasErr }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:8px;background:#FEF2F2;border:1px solid #FECACA">
+                <span style="display:flex;gap:8px;font:600 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#B91C1C"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="calendar-x" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ qErr }}</span>
+                <sc-if value="{{ qHasNext }}"><button onClick="{{ qUseNext }}" style="align-self:flex-start;height:32px;padding:0 12px;border:1px solid #B91C1C;border-radius:6px;background:#fff;color:#B91C1C;cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ qNextLabel }}</button></sc-if>
+              </div>
+            </sc-if>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ qLines }}" as="l" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#475569">{{ l.label }}</span><span style="color:{{ l.color }};font-weight:600;white-space:nowrap">{{ l.amt }}</span></div></sc-for>
+              <div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0 4px;margin-top:4px;border-top:1px solid #E2E8F0"><span style="font:700 15px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:0.04em">TOTAL</span><span style="font:700 18px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">{{ qTotal }}</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:8px;background:#F8FAFC">
+              <div style="display:flex;justify-content:space-between;gap:12px;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#172033">Due now</span><span style="color:#172033">{{ qDueNow }}</span></div>
+              <sc-if value="{{ qHasBalance }}"><div style="display:flex;justify-content:space-between;gap:12px;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#475569">Remaining balance • due {{ qBalDate }}</span><span style="color:#475569">{{ qBalance }}</span></div></sc-if>
+              <sc-if value="{{ qMetered }}"><span style="font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#B45309">{{ qMeterNote }}</span></sc-if>
+            </div>
+            <button onClick="{{ requestToBook }}" disabled="{{ qBlocked }}" style="height:48px;border:0;border-radius:8px;background:{{ qCtaBg }};color:#fff;cursor:{{ qCtaCursor }};font:700 15px/1 'Plus Jakarta Sans',sans-serif" style-hover="filter:brightness(0.95)">{{ qCta }}</button>
+            <span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569;text-align:center">{{ qChargeNote }}</span>
+            <span style="font:500 11px/1.4 'Plus Jakarta Sans',sans-serif;color:#94A3B8;text-align:center">{{ qMeta }}</span>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isBook }}" hint-placeholder-val="{{ false }}">
+    <div data-scroll="1" style="flex:1;min-height:0;overflow-y:auto">
+      <div style="max-width:1180px;margin:0 auto;padding:20px {{ hPad }} 112px;display:flex;flex-direction:column;gap:20px">
+        <button onClick="{{ backToProperty }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;height:32px;padding:0 10px 0 6px;border:0;border-radius:6px;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F0FAF9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 16 }}" hint-size="16px,16px"></x-import>Back to {{ bkName }}</button>
+        <div style="display:flex;flex-direction:column;gap:6px"><h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ bkTitle }}</h1><span style="font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Your property, dates, guests and quote are held while you complete these steps.</span></div>
+        <div style="display:flex;align-items:center;gap:0;overflow-x:auto;padding:4px 0">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:10px;flex:{{ st.flex }};min-width:max-content">
+              <span style="width:30px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:{{ st.bg }};color:{{ st.color }};border:1.5px solid {{ st.border }};font:700 13px/1 'Plus Jakarta Sans',sans-serif;flex-shrink:0">{{ st.n }}</span>
+              <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:{{ st.labelColor }};white-space:nowrap">{{ st.label }}</span>
+              <span style="flex:1;height:2px;min-width:24px;margin:0 12px;background:{{ st.lineBg }};display:{{ st.lineDisplay }}"></span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:{{ dCols }};gap:24px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:18px;padding:24px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);min-width:0">
+            <sc-if value="{{ st0 }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Sign In or Create Your Guest Account</h2><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">An account is required to request a booking, manage your stay and receive check-in details.</span></div>
+                <div style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px;align-self:flex-start"><sc-for list="{{ authTabs }}" as="m"><button onClick="{{ m.select }}" style="height:32px;padding:0 16px;border:0;border-radius:6px;cursor:pointer;background:{{ m.bg }};color:{{ m.color }};box-shadow:{{ m.shadow }};font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ m.label }}</button></sc-for></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+                  <sc-if value="{{ isRegister }}"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Full Name *<input value="{{ bk.name }}" onChange="{{ bkSet.name }}" placeholder="First and last name" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label></sc-if>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Email *<input type="email" value="{{ bk.email }}" onChange="{{ bkSet.email }}" placeholder="name@example.com" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Password *<input type="password" value="{{ bk.pw }}" onChange="{{ bkSet.pw }}" placeholder="At least 8 characters" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <sc-if value="{{ isRegister }}"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Mobile Phone *<input type="tel" value="{{ bk.phone }}" onChange="{{ bkSet.phone }}" placeholder="+1 305 555 0100" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label></sc-if>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ st1 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Guest Details</h2><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Signed in as {{ userEmail }}. The primary guest must be present at check-in.</span></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">First Name *<input value="{{ bk.first }}" onChange="{{ bkSet.first }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Last Name *<input value="{{ bk.last }}" onChange="{{ bkSet.last }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Email *<input type="email" value="{{ bk.gEmail }}" onChange="{{ bkSet.gEmail }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Mobile Phone *<input type="tel" value="{{ bk.gPhone }}" onChange="{{ bkSet.gPhone }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Adults *<select value="{{ bk.adults }}" onChange="{{ bkSet.adults }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;width:100%"><sc-for list="{{ adultOpts }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Children<select value="{{ bk.children }}" onChange="{{ bkSet.children }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;width:100%"><sc-for list="{{ childOpts }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Estimated Arrival<select value="{{ bk.arrival }}" onChange="{{ bkSet.arrival }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;width:100%"><option>4:00 PM – 6:00 PM</option><option>6:00 PM – 8:00 PM</option><option>8:00 PM – 10:00 PM</option><option>After 10:00 PM</option></select></label>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Special Requests<textarea value="{{ bk.notes }}" onChange="{{ bkSet.notes }}" rows="3" placeholder="Crib, early check-in request, accessibility needs…" style="padding:10px 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%;resize:vertical" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                <div style="display:flex;gap:10px;padding:12px;border-radius:8px;background:#E6F6FC;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#00597A"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="scan-face" size="{{ 18 }}" hint-size="18px,18px"></x-import><span>Government-issued photo ID verification is required before check-in. A secure link is provided in My Stay after your booking is submitted.</span></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ st2 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Policies &amp; Agreement</h2><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Review and accept each item to continue.</span></div>
+                <sc-for list="{{ agreements }}" as="a" hint-placeholder-count="4">
+                  <button onClick="{{ a.toggle }}" style="display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid {{ a.border }};border-radius:8px;background:{{ a.bg }};cursor:pointer;text-align:left">
+                    <span style="width:20px;height:20px;border-radius:4px;border:1.5px solid {{ a.box }};background:{{ a.boxBg }};color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><sc-if value="{{ a.on }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 14 }}" hint-size="14px,14px"></x-import></sc-if></span>
+                    <span style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ a.title }}</span><sc-for list="{{ a.lines }}" as="ln"><span style="font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569">{{ ln }}</span></sc-for></span>
+                  </button>
+                </sc-for>
+                <button onClick="{{ openRulesFromBook }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;height:34px;padding:0 4px;border:0;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="book-open-check" size="{{ 15 }}" hint-size="15px,15px"></x-import>Read the full House Rules &amp; Community Guidelines ({{ rulesVersion }})</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ st3 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Payment</h2><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ payNote }}</span></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;grid-column:1 / -1">Cardholder Name *<input value="{{ bk.holder }}" onChange="{{ bkSet.holder }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;grid-column:1 / -1">Card Number *<input inputmode="numeric" value="{{ bk.card }}" onChange="{{ bkSet.card }}" placeholder="4242 4242 4242 4242" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%;letter-spacing:0.04em" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Expiry (MM/YY) *<input value="{{ bk.exp }}" onChange="{{ bkSet.exp }}" placeholder="08/29" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Security Code *<input inputmode="numeric" value="{{ bk.cvc }}" onChange="{{ bkSet.cvc }}" placeholder="CVC" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Billing ZIP *<input inputmode="numeric" value="{{ bk.zip }}" onChange="{{ bkSet.zip }}" placeholder="33139" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:#fff;outline:none;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:8px;background:#F8FAFC;border:1px solid #F1F5F9">
+                  <div style="display:flex;justify-content:space-between;gap:12px;font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033"><span>{{ payNowLabel }}</span><span>{{ qsDueNow }}</span></div>
+                  <sc-if value="{{ qsHasBalance }}"><div style="display:flex;justify-content:space-between;gap:12px;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569"><span>Balance charged automatically on {{ qsBalDate }}</span><span>{{ qsBalance }}</span></div></sc-if>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ st4 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+                <span style="width:52px;height:52px;border-radius:12px;background:#ECFDF3;color:#15803D;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 28 }}" hint-size="28px,28px"></x-import></span>
+                <h2 style="margin:0;font:700 22px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ cfTitle }}</h2>
+                <p style="margin:0;font:400 14px/1.6 'Plus Jakarta Sans',sans-serif;color:#475569;max-width:560px;text-wrap:pretty">{{ cfBody }}</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;width:100%">
+                  <sc-for list="{{ cfFacts }}" as="f"><div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#F8FAFC"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ f.k }}</span><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ f.v }}</span></div></sc-for>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:10px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="key-round" on-click="{{ goMyStay }}" hint-size="140px,40px">Go to My Stay</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ goExplore }}" hint-size="140px,40px">Explore More Stays</x-import></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ bkHasErr }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:8px;padding:10px 12px;border-radius:8px;background:#FEF2F2;border:1px solid #FECACA;font:600 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#B91C1C"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-alert" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ bkErr }}</div></sc-if>
+            <sc-if value="{{ bkShowNav }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;justify-content:space-between;gap:10px;padding-top:16px;border-top:1px solid #E2E8F0">
+                <sc-if value="{{ bkCanBack }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="arrow-left" on-click="{{ bkBack }}" hint-size="90px,40px">Back</x-import></sc-if>
+                <span style="flex:1"></span>
+                <button onClick="{{ bkNext }}" style="height:44px;padding:0 22px;border:0;border-radius:8px;background:#006B68;color:#fff;cursor:pointer;font:700 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57">{{ bkNextLabel }}</button>
+              </div>
+            </sc-if>
+          </div>
+
+          <aside style="position:{{ railPos }};top:20px;display:flex;flex-direction:column;gap:12px;padding:18px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+            <div style="display:flex;gap:12px"><div style="width:84px;height:68px;border-radius:8px;overflow:hidden;background:#E2E8F0;flex-shrink:0"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ bkSlot }}" placeholder="Photo" shape="rounded" radius="8" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ bkName }}</span><span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ bkArea }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ bkModeTone }}" hint-size="90px,22px">{{ bkModeLabel }}</x-import></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><sc-for list="{{ qsFacts }}" as="f"><div style="display:flex;flex-direction:column;gap:5px;padding:10px;border-radius:8px;background:#F8FAFC"><span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ f.k }}</span><span style="font:700 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ f.v }}</span></div></sc-for></div>
+            <div style="display:flex;flex-direction:column"><sc-for list="{{ qsLines }}" as="l"><div style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#475569">{{ l.label }}</span><span style="color:{{ l.color }};font-weight:600;white-space:nowrap">{{ l.amt }}</span></div></sc-for>
+              <div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0 0;margin-top:4px;border-top:1px solid #E2E8F0"><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">TOTAL</span><span style="font:700 16px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">{{ qsTotal }}</span></div>
+            </div>
+            <div style="display:flex;gap:8px;padding:10px 12px;border-radius:8px;background:#F0FAF9;border:1px solid #CDEBE8;font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#134E4A"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="lock" size="{{ 14 }}" hint-size="14px,14px"></x-import><span>Quote {{ qsId }} • {{ qsValid }}</span></div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isStay }}" hint-placeholder-val="{{ false }}">
+    <div data-scroll="1" style="flex:1;min-height:0;overflow-y:auto">
+      <div style="max-width:1180px;margin:0 auto;padding:24px {{ hPad }} 112px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:6px"><h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">My Stays</h1><span style="font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Reservation status, arrival details, check-in and check-out.</span></div>
+        <sc-if value="{{ noStays }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:48px 24px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;text-align:center"><span style="font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">No stays yet</span><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Reservations you request from Explore Stays appear here.</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="search" on-click="{{ goExplore }}" hint-size="140px,40px">Explore Stays</x-import></div>
+        </sc-if>
+        <sc-if value="{{ hasStays }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ stayTabs }}" as="t"><button onClick="{{ t.select }}" style="display:flex;flex-direction:column;gap:4px;padding:10px 14px;border:1px solid {{ t.border }};border-radius:8px;background:{{ t.bg }};cursor:pointer;text-align:left"><span style="font:700 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">{{ t.name }}</span><span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ t.id }} • {{ t.dates }}</span></button></sc-for></div>
+          <div style="display:grid;grid-template-columns:{{ dCols }};gap:24px;align-items:start">
+            <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+              <section style="display:flex;flex-direction:column;gap:16px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px">
+                  <div style="display:flex;gap:14px;min-width:0"><div style="width:96px;height:76px;border-radius:8px;overflow:hidden;background:#E2E8F0;flex-shrink:0"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ sy.slot }}" placeholder="Photo" shape="rounded" radius="8" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div><div style="display:flex;flex-direction:column;gap:5px;min-width:0"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Reservation {{ sy.id }}</span><span style="font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sy.name }}</span><span style="font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569">{{ sy.dates }} • {{ sy.guests }}</span></div></div>
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ sy.tone }}" dot="{{ true }}" hint-size="120px,24px">{{ sy.status }}</x-import>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px"><sc-for list="{{ sy.facts }}" as="f"><div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#F8FAFC"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ f.k }}</span><span style="font:700 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033">{{ f.v }}</span></div></sc-for></div>
+                <div style="display:flex;gap:10px;padding:12px;border-radius:8px;background:{{ sy.addrBg }};font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sy.addrIcon }}" size="{{ 18 }}" color="#006B68" hint-size="18px,18px"></x-import><span style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:700">{{ sy.addrTitle }}</span><span style="color:#475569">{{ sy.addrBody }}</span></span></div>
+                <button onClick="{{ sy.openRules }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;cursor:pointer;text-align:left" style-hover="border-color:#006B68"><span style="display:flex;align-items:center;gap:10px"><span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="book-open-check" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><span style="display:flex;flex-direction:column;gap:3px"><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">House Rules &amp; HOA Guidelines</span><span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ sy.ackLine }}</span></span></span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 16 }}" color="#94A3B8" hint-size="16px,16px"></x-import></button>
+                <sc-if value="{{ sy.hasGuestAction }}"><div style="display:flex;flex-wrap:wrap;gap:10px"><button onClick="{{ sy.guestAction }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:0;border-radius:8px;background:#006B68;color:#fff;cursor:pointer;font:700 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sy.guestIcon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ sy.guestLabel }}</button><sc-if value="{{ sy.showId }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="scan-face" on-click="{{ goIdentity }}" hint-size="150px,44px">Verify Identity</x-import></sc-if></div></sc-if>
+                <sc-if value="{{ sy.hasCharge }}"><div style="display:flex;justify-content:space-between;gap:12px;padding:12px;border-radius:8px;background:#FFFAEB;border:1px solid #FDE68A;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#92400E"><span>{{ sy.chargeLabel }}</span><span>{{ sy.chargeAmt }}</span></div></sc-if>
+              </section>
+              <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+                <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Stay Lifecycle</h2>
+                <div style="display:flex;flex-direction:column">
+                  <sc-for list="{{ sy.timeline }}" as="tl" hint-placeholder-count="8">
+                    <div style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px">
+                      <div style="display:flex;flex-direction:column;align-items:center"><span style="width:24px;height:24px;border-radius:12px;background:{{ tl.dotBg }};border:2px solid {{ tl.dotBorder }};color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0"><sc-if value="{{ tl.done }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 13 }}" hint-size="13px,13px"></x-import></sc-if></span><span style="flex:1;width:2px;min-height:18px;background:{{ tl.lineBg }};display:{{ tl.lineDisplay }}"></span></div>
+                      <div style="display:flex;flex-direction:column;gap:3px;padding-bottom:16px"><span style="font:700 14px/24px 'Plus Jakarta Sans',sans-serif;color:{{ tl.color }}">{{ tl.label }}</span><span style="font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tl.sub }}</span></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+            </div>
+            <aside style="display:flex;flex-direction:column;gap:12px;padding:18px;background:#fff;border:1px dashed #CBD5E1;border-radius:12px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:8px;background:#F1F5F9;color:#132A52;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="briefcase-business" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Operations Handoff</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="neutral" hint-size="70px,22px">Staff View</x-import></div>
+              <span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Prototype only — not shown to guests. Staff actions that move this reservation through approval, turnover and release.</span>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#F8FAFC"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Next Operational Step</span><span style="font:700 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sy.opsStep }}</span></div>
+              <sc-if value="{{ sy.hasOpsAction }}"><button onClick="{{ sy.opsAction }}" style="height:40px;border:0;border-radius:8px;background:#132A52;color:#fff;cursor:pointer;font:700 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#0E1F3D">{{ sy.opsLabel }}</button></sc-if>
+              <sc-for list="{{ sy.opsLinks }}" as="l"><button onClick="{{ l.go }}" style="display:flex;align-items:center;justify-content:space-between;gap:8px;height:38px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#172033;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68;color:#006B68">{{ l.label }}<x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-up-right" size="{{ 14 }}" hint-size="14px,14px"></x-import></button></sc-for>
+            </aside>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ false }}">
+    <div data-scroll="1" style="flex:1;min-height:0;overflow-y:auto">
+      <div style="max-width:720px;margin:0 auto;padding:20px {{ hPad }} 112px;display:flex;flex-direction:column;gap:16px">
+        <button onClick="{{ coBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;height:32px;padding:0 10px 0 6px;border:0;border-radius:6px;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F0FAF9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 16 }}" hint-size="16px,16px"></x-import>Back to My Stays</button>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Reservation {{ coId }} • {{ coName }}</span><h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Guest Check-Out</h1><span style="font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ coDates }}</span></div>
+        <sc-if value="{{ coMetered }}" hint-placeholder-val="{{ true }}">
+          <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+            <h2 style="margin:0;font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">1 • Record Meter Out</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+              <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#F8FAFC"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Meter In</span><span style="font:700 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033;font-variant-numeric:tabular-nums">{{ coMeterIn }}</span></div>
+              <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569">Meter Out reading (kWh)<input type="number" inputMode="decimal" value="{{ coReading }}" onChange="{{ onCoReading }}" placeholder="e.g. 30412" style="height:44px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;font:500 15px/1 'Plus Jakarta Sans',sans-serif;color:#172033;font-variant-numeric:tabular-nums" style-focus="outline:none;border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></input></label>
+            </div>
+            <span style="font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ coKwh }}</span>
+          </section>
+        </sc-if>
+        <section style="display:flex;flex-direction:column;gap:12px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+          <h2 style="margin:0;font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ coPhotoTitle }}</h2>
+          <span style="font:500 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B">Take a clear photo of the meter display, or of the unit condition if the property has no meter.</span>
+          <div style="height:180px;border-radius:8px;overflow:hidden;background:#F8FAFC"><x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ coSlot }}" placeholder="Drop or upload meter photo" shape="rounded" radius="8" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import></div>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:12px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+          <h2 style="margin:0;font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ coStepN }} • Departure Checklist</h2>
+          <sc-for list="{{ coItems }}" as="i" hint-placeholder-count="4"><label style="display:flex;align-items:center;gap:10px;min-height:44px;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ i.on }}" onChange="{{ i.toggle }}" style="width:18px;height:18px;accent-color:#006B68"></input>{{ i.label }}</label></sc-for>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+          <h2 style="margin:0;font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ coStepN2 }} • Confirm Check-Out</h2>
+          <label style="display:flex;align-items:flex-start;gap:10px;font:500 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ coOk }}" onChange="{{ onCoOk }}" style="width:18px;height:18px;margin-top:2px;accent-color:#006B68"></input>I confirm that all guests have left the unit and the information above is accurate. Final charges, including electricity, appear on the Final Stay Statement.</label>
+          <sc-if value="{{ coHasErr }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px;border-radius:8px;background:#FEF2F2;border:1px solid #FECACA;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#B91C1C">{{ coErr }}</div></sc-if>
+          <button onClick="{{ coSubmit }}" style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border:0;border-radius:8px;background:#006B68;color:#fff;cursor:pointer;font:700 15px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="log-out" size="{{ 16 }}" hint-size="16px,16px"></x-import>Complete Check-Out</button>
+        </section>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isRules }}" hint-placeholder-val="{{ false }}">
+    <div data-scroll="1" style="flex:1;min-height:0;overflow-y:auto">
+      <div style="max-width:1180px;margin:0 auto;padding:20px {{ hPad }} 112px;display:flex;flex-direction:column;gap:20px">
+        <button onClick="{{ rlBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;height:32px;padding:0 10px 0 6px;border:0;border-radius:6px;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F0FAF9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ rlBackLabel }}</button>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ rlProp }}</span>
+          <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">House Rules &amp; Community Guidelines</h1>
+          <span style="font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ rlVersion }}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:#fff;border:1px solid #E2E8F0;border-top:3px solid #D4A637;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)"><sc-for list="{{ rlSummary }}" as="r" hint-placeholder-count="6"><span style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:999px;background:#F1F5F9;font:600 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ r.icon }}" size="{{ 14 }}" color="#475569" hint-size="14px,14px"></x-import>{{ r.label }}</span></sc-for></div>
+        <div style="display:grid;grid-template-columns:{{ rlCols }};gap:24px;align-items:start">
+          <sc-if value="{{ rlShowToc }}" hint-placeholder-val="{{ true }}">
+            <nav style="position:sticky;top:0;display:flex;flex-direction:column;gap:2px;padding:12px;background:#fff;border:1px solid #E2E8F0;border-radius:12px">
+              <sc-for list="{{ rlToc }}" as="t" hint-placeholder-count="8"><button onClick="{{ t.go }}" style="display:flex;align-items:center;height:{{ t.h }};padding:0 10px;border:0;border-radius:6px;background:transparent;cursor:pointer;text-align:left;color:{{ t.color }};font:{{ t.weight }} {{ t.size }}/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:{{ t.ls }};text-transform:{{ t.tt }}" style-hover="background:#F8FAFC;color:#006B68">{{ t.label }}</button></sc-for>
+            </nav>
+          </sc-if>
+          <div style="position:relative;display:flex;flex-direction:column;gap:24px;min-width:0">
+            <sc-for list="{{ rlGroups }}" as="g" hint-placeholder-count="3">
+              <div data-rl="{{ g.key }}" style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px"><h2 style="margin:0;font:700 20px/1.3 'Plus Jakarta Sans',sans-serif;color:#132A52">{{ g.title }}</h2><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ g.tone }}" hint-size="120px,22px">{{ g.source }}</x-import></div>
+                <span style="font:400 13px/1.55 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ g.sub }}</span>
+                <sc-for list="{{ g.sections }}" as="sc">
+                  <section data-rl="{{ sc.key }}" style="display:flex;flex-direction:column;gap:10px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05)">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sc.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><h3 style="margin:0;font:700 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sc.title }}</h3></span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ sc.tone }}" hint-size="80px,22px">{{ sc.status }}</x-import></div>
+                    <sc-if value="{{ sc.hasLead }}"><span style="font:600 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sc.lead }}</span></sc-if>
+                    <sc-for list="{{ sc.items }}" as="it"><span style="display:flex;gap:10px;font:500 14px/1.55 'Plus Jakarta Sans',sans-serif;color:#334155"><span style="width:6px;height:6px;border-radius:3px;background:{{ sc.dot }};margin-top:9px;flex-shrink:0"></span>{{ it }}</span></sc-for>
+                  </section>
+                </sc-for>
+              </div>
+            </sc-for>
+            <sc-if value="{{ hasRlNa }}"><span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Not applicable to this property: {{ rlNa }}.</span></sc-if>
+            <section data-rl="violations" style="display:flex;flex-direction:column;gap:10px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:12px">
+              <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Violations</h2>
+              <p style="margin:0;font:400 14px/1.65 'Plus Jakarta Sans',sans-serif;color:#334155;text-wrap:pretty">Violations of the property rules, HOA/community rules, reservation terms or applicable law may result in warnings, intervention by property management or community security, additional documented charges where contractually permitted, cancellation or termination of the stay where legally and contractually appropriate, or other action allowed under the applicable agreement.</p>
+            </section>
+            <section data-rl="ack" style="display:flex;flex-direction:column;gap:12px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-top:3px solid #006B68;border-radius:12px">
+              <h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Guest Acknowledgment</h2>
+              <p style="margin:0;font:500 14px/1.65 'Plus Jakarta Sans',sans-serif;color:#172033;text-wrap:pretty">I acknowledge that I have read and agree to comply with the Property Rules and applicable HOA/Community Rules for this stay. I understand that I am responsible for the conduct of the guests and visitors associated with my reservation.</p>
+              <sc-if value="{{ rlHasAck }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px"><sc-for list="{{ rlAck }}" as="f"><div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#ECFDF3"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#15803D">{{ f.k }}</span><span style="font:700 13px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033">{{ f.v }}</span></div></sc-for></div>
+              </sc-if>
+              <sc-if value="{{ rlNoAck }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:8px;padding:10px 12px;border-radius:8px;background:#F8FAFC;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="info" size="{{ 15 }}" hint-size="15px,15px"></x-import>Acceptance is recorded at the Policies step of booking with your guest ID, reservation ID, rules version and timestamp.</span></sc-if>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showModeFab }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ flipMode }}" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:110;display:flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:0;border-radius:22px;background:#132A52;color:#fff;cursor:pointer;box-shadow:0 10px 24px rgba(15,23,42,0.25);font:700 14px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ fabIcon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ fabLabel }}</button>
+  </sc-if>
+
+  <sc-if value="{{ signinOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSignIn }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:200"></div>
+    <div role="dialog" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:201;width:min(420px,calc(100vw - 32px));display:flex;flex-direction:column;gap:14px;padding:24px;background:#fff;border-radius:12px;box-shadow:0 24px 64px rgba(15,23,42,0.24)">
+      <div style="display:flex;align-items:center;justify-content:space-between"><h2 style="margin:0;font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Guest Sign In</h2><button onClick="{{ closeSignIn }}" title="Close" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 18 }}" hint-size="18px,18px"></x-import></button></div>
+      <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Email<input type="email" value="{{ siEmail }}" onChange="{{ onSiEmail }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Password<input type="password" value="{{ siPw }}" onChange="{{ onSiPw }}" style="height:44px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+      <sc-if value="{{ siHasErr }}"><span style="font:600 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#B91C1C">{{ siErr }}</span></sc-if>
+      <button onClick="{{ doSignIn }}" style="height:44px;border:0;border-radius:8px;background:#006B68;color:#fff;cursor:pointer;font:700 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57">Sign In</button>
+      <span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-align:center">New guests create an account when requesting a booking.</span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;top:80px;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;box-shadow:0 12px 32px rgba(15,23,42,0.25)"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>{{ toastMsg }}</div>
+  </sc-if>
+
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="guest" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const MARKET_BY_UNIT = {}; const marketOf = unit => (window.MGH_STR_DATA && window.MGH_STR_DATA.marketOf ? window.MGH_STR_DATA.marketOf(unit) : (MARKET_BY_UNIT[unit] || 'DR'));
+const newResId = (res, unit) => { const d = new Date(), p = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + '-' + marketOf(unit) + '-'; const mx = res.reduce((a, r) => String(r.id).indexOf(p) === 0 ? Math.max(a, +String(r.id).slice(p.length) || 0) : a, 0); return p + String(mx + 1).padStart(4, '0'); };
+const SELF = 'Master 29 - Explore Stays.dc.html';
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', guests: 'Master 32 - Guests.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', reservations: 'Master 17 - Reservations.dc.html', identity: 'Master 18 - Identity Verification.dc.html?view=mine', cleaning: 'Master 56 - Cleaning.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', property: 'Master 04 - Property Detail.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const QP = new URLSearchParams(window.location.search);
+const TODAY = '2026-10-04', TAX = 0.13, KWH = 0.14;
+const RULES_VERSION = 'HR-2026.10 v3', RULES_EFFECTIVE = '2026-10-01';
+const D = s => new Date(s + 'T12:00:00');
+const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const addDays = (s, n) => { const d = D(s); d.setDate(d.getDate() + n); return iso(d); };
+const nightsOf = (a, b) => (a && b) ? Math.round((D(b) - D(a)) / 864e5) : 0;
+const fmtS = s => D(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+const fmtY = s => D(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const fmtL = s => D(s).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+const fmtTs = t => new Date(t).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+const money = n => (n < 0 ? '−' : '') + 'US$' + Math.abs(Number(n)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const money0 = n => 'US$' + Math.round(n).toLocaleString('en-US');
+const r2 = n => Math.round(n * 100) / 100;
+const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+
+const AREAS = [['all', 'All South Florida'], ['miami-beach', 'Miami Beach'], ['brickell', 'Brickell & Downtown Miami'], ['aventura', 'Aventura'], ['fort-lauderdale', 'Fort Lauderdale']];
+const AREA_VIEW = { all: [25.9, -80.15, 10], 'miami-beach': [25.83, -80.125, 12], brickell: [25.765, -80.192, 14], aventura: [25.955, -80.14, 14], 'fort-lauderdale': [26.12, -80.14, 14] };
+const AM = { wifi: ['Essentials', 'Wi-Fi'], ac: ['Essentials', 'Air Conditioning'], hot: ['Essentials', 'Hot Water'], linens: ['Essentials', 'Bed Linens & Towels'], washer: ['Essentials', 'Washer & Dryer'], workspace: ['Essentials', 'Dedicated Workspace'], fridge: ['Kitchen', 'Refrigerator'], stove: ['Kitchen', 'Stove & Oven'], micro: ['Kitchen', 'Microwave'], coffee: ['Kitchen', 'Coffee Maker'], cook: ['Kitchen', 'Cookware & Utensils'], dish: ['Kitchen', 'Dishwasher'], pool: ['Outdoor', 'Pool'], balcony: ['Outdoor', 'Balcony'], garden: ['Outdoor', 'Garden'], bbq: ['Outdoor', 'BBQ Grill'], beach: ['Outdoor', 'Beach Access'], ocean: ['Outdoor', 'Ocean View'], bay: ['Outdoor', 'Bay View'], parking: ['Parking & Access', 'Parking'], elevator: ['Parking & Access', 'Elevator'], security: ['Parking & Access', '24-Hour Security'], gated: ['Parking & Access', 'Gated Community'], lock: ['Parking & Access', 'Smart Lock Self Check-In'], tv: ['Entertainment', 'Smart TV'], cable: ['Entertainment', 'Cable'], stream: ['Entertainment', 'Streaming Capability'], cleanS: ['Services', 'Cleaning'], house: ['Services', 'Housekeeping on Request'], concierge: ['Services', 'Concierge'], gym: ['Services', 'Fitness Center'], pet: ['Services', 'Pets Allowed'] };
+const AM_CATS = ['Essentials', 'Kitchen', 'Outdoor', 'Parking & Access', 'Entertainment', 'Services'];
+const BASE = 'wifi ac hot linens fridge stove micro coffee cook tv stream cleanS lock elevator ';
+const TOP = ['ocean', 'bay', 'pool', 'beach', 'parking', 'wifi', 'ac', 'washer', 'workspace', 'gym', 'pet'];
+const UT = [['electricity', 'Electricity', 'zap'], ['water', 'Water', 'droplet'], ['internet', 'Wi-Fi / Internet', 'wifi'], ['tv', 'Cable / Smart TV', 'tv'], ['gas', 'Gas', 'flame'], ['cleaning', 'Cleaning', 'sparkles'], ['housekeeping', 'Daily Housekeeping', 'spray-can']];
+const US = { included: ['Included', 'success'], cap: ['Included • Allowance', 'success'], metered: ['Separately Charged', 'warning'], fee: ['Fee', 'neutral'], optional: ['Optional', 'info'] };
+const USHORT = { included: ['Included', 'check', '#15803D'], cap: ['Allowance', 'check', '#15803D'], metered: ['Metered', 'zap', '#B45309'], fee: ['Fee', 'receipt', '#475569'], optional: ['Optional', 'plus', '#00739F'] };
+const POLICY = {
+  flexible: ['Flexible', ci => [['Full refund', 'Cancel by ' + fmtY(addDays(ci, -7))], ['50% refund', 'Until 48 hours before check-in'], ['No refund', 'Within 48 hours of check-in']]],
+  moderate: ['Moderate', ci => [['Full refund', 'Cancel by ' + fmtY(addDays(ci, -14))], ['50% refund', 'Cancel by ' + fmtY(addDays(ci, -7))], ['No refund', 'After ' + fmtY(addDays(ci, -7))]]],
+  strict: ['Strict', ci => [['Full refund', 'Within 48 hours of booking, if check-in is 30+ days away'], ['50% refund', 'Cancel by ' + fmtY(addDays(ci, -30))], ['No refund', 'After ' + fmtY(addDays(ci, -30))]]]
+};
+
+const STAYS = [
+  { pid: 2, key: '2|Apt 101', name: 'Ocean View Villa', title: 'Ocean View Villa — Oceanfront Residence 101', area: 'Collins Park', city: 'Miami Beach', areaKey: 'miami-beach', addr: '2501 Collins Ave, Apt 101, Miami Beach, FL 33140', lat: 25.8015, lng: -80.1275, loc: 'approx', type: 'Condo', br: 2, beds: 3, ba: 2, sleeps: 5, base: 4, extra: 35, rate: 420, rating: 4.86, reviews: 64, mode: 'request', min: 3, max: 28, clean: 185, pet: null, cancel: 'moderate', ci: '4:00 PM', co: '11:00 AM',
+    am: BASE + 'pool beach ocean parking gym balcony dish washer security concierge cable house',
+    util: { electricity: ['included'], water: ['included'], internet: ['included', '500 Mbps fiber'], tv: ['included', '55" Smart TV with cable'], cleaning: ['fee', 'US$185 one-time, at check-out'], housekeeping: ['optional', 'US$95 per visit, 24-hour notice'] },
+    sleep: [['Primary Bedroom', 'King bed', 'bed-double'], ['Bedroom 2', 'Queen bed + Twin bed', 'bed-double']],
+    near: [['Beach access', '2 min walk'], ['Collins Park & Bass Museum', '0.3 mi'], ['Publix supermarket', '0.4 mi'], ['Lincoln Road dining', '1.1 mi'], ['Miami International Airport (MIA)', '13 mi']],
+    desc: 'Oceanfront two-bedroom residence on the Collins Park stretch of Miami Beach with direct beach access, a heated pool deck and a private balcony facing the Atlantic. Renovated kitchen, fiber internet and an assigned garage space.',
+    hoa: 'Ocean View Villa Condominium Association', rc: { pool: 'community', poolHours: '8:00 AM – 9:00 PM', parking: 'One assigned garage space (P1-12). Visitor parking is not available.', visitors: 'Day visitors must be registered with the front desk and leave by 10:00 PM.', trash: 'Trash chute on each floor; recycling bins on garage level P1.', smokeOutdoor: false, access: 'Building fob and smart lock code.', extra: ['Balcony furniture must not be moved or used for climbing.'] } },
+  { pid: 6, key: '6|Main', name: 'Sunset Beach House', title: 'Sunset Beach House — Private Pool Home', area: 'North Beach', city: 'Miami Beach', areaKey: 'miami-beach', addr: '7800 Atlantic Way, Miami Beach, FL 33141', lat: 25.8655, lng: -80.1209, loc: 'approx', type: 'House', br: 4, beds: 5, ba: 3.5, sleeps: 8, base: 6, extra: 50, rate: 890, rating: 4.93, reviews: 41, mode: 'request', min: 4, max: 28, clean: 325, pet: 150, cancel: 'strict', ci: '4:00 PM', co: '10:00 AM',
+    am: BASE + 'pool beach ocean parking garden bbq washer dish workspace cable house pet',
+    util: { electricity: ['cap', 'Included up to 40 kWh per night; usage above the allowance is billed at US$0.14/kWh'], water: ['included'], internet: ['included', '1 Gbps fiber, mesh Wi-Fi'], tv: ['included', 'Smart TVs in living room and primary suite'], gas: ['included', 'Pool heater and gas range'], cleaning: ['fee', 'US$325 one-time, at check-out'], housekeeping: ['optional', 'US$140 per visit, 24-hour notice'] },
+    sleep: [['Primary Suite', 'King bed', 'bed-double'], ['Bedroom 2', 'Queen bed', 'bed-double'], ['Bedroom 3', 'Queen bed', 'bed-double'], ['Bedroom 4', '2 Twin beds', 'bed-single']],
+    near: [['Beach access', '4 min walk'], ['North Beach Bandshell', '0.6 mi'], ['Publix supermarket', '0.5 mi'], ['Bal Harbour Shops', '2.4 mi'], ['Miami International Airport (MIA)', '16 mi']],
+    desc: 'Four-bedroom single-family home steps from the beach in North Beach, with a heated private pool, covered terrace with gas grill, fenced garden and a dedicated workspace. Standby generator for uninterrupted power.',
+    hoa: 'North Beach Neighborhood Standards (City of Miami Beach)', backup: 'Whole-home standby generator with automatic transfer during outages.', rc: { pool: 'private', poolHours: '8:00 AM – 9:00 PM (neighborhood noise ordinance)', parking: 'Driveway parking for up to 2 vehicles. Street parking is restricted to residents with permits.', visitors: 'Up to 4 daytime visitors with prior approval; visitors leave by 9:00 PM.', trash: 'Bins collected Tuesday and Friday; place at curb after 6:00 PM the evening before.', smokeOutdoor: true, access: 'Smart lock code and garage remote.', extra: ['Pool gate must remain closed and latched at all times.', 'Exterior lights off after 11:00 PM (sea turtle nesting season May–Oct).'] } },
+  { pid: 7, key: '7|Apt 101', name: 'Mar de Plata I', title: 'Mar de Plata I — Beachfront Studio Suite 101', area: 'Mid-Beach', city: 'Miami Beach', areaKey: 'miami-beach', addr: '6365 Collins Ave, Apt 101, Miami Beach, FL 33141', lat: 25.8456, lng: -80.1203, loc: 'approx', type: 'Condo', br: 1, beds: 2, ba: 1, sleeps: 3, base: 2, extra: 25, rate: 310, rating: 4.78, reviews: 112, mode: 'instant', min: 2, max: 28, clean: 145, pet: null, cancel: 'flexible', ci: '3:00 PM', co: '11:00 AM',
+    am: BASE + 'pool beach ocean security cable',
+    util: { electricity: ['metered', 'US$0.14/kWh, meter read at check-in and check-out'], water: ['included'], internet: ['included', '300 Mbps'], tv: ['included', 'Smart TV with cable'], cleaning: ['fee', 'US$145 one-time, at check-out'], housekeeping: ['optional', 'US$75 per visit'] },
+    sleep: [['Bedroom', 'Queen bed', 'bed-double'], ['Living Room', 'Sleeper sofa', 'sofa']],
+    near: [['Beach access', '1 min walk'], ['Indian Creek waterway', '0.2 mi'], ['Pharmacy & market', '0.3 mi'], ['Miami International Airport (MIA)', '15 mi']],
+    desc: 'Ground-floor one-bedroom suite in a beachfront building on Mid-Beach Collins Avenue, with direct sand access, a shared oceanfront pool and self check-in.',
+    hoa: 'Mar de Plata Condominium Association', rc: { pool: 'community', poolHours: '9:00 AM – 8:00 PM', parking: 'No on-site parking. Public garage at 64th St & Collins.', visitors: 'No overnight visitors. Day visitors must be accompanied by the registered guest.', trash: 'Trash room at the end of each hallway.', smokeOutdoor: false, access: 'Lobby fob and smart lock code.', extra: [] } },
+  { pid: 8, key: '8|Apt 305', name: 'Mar de Plata II', title: 'Mar de Plata II — Two-Bedroom Residence 305', area: 'Mid-Beach', city: 'Miami Beach', areaKey: 'miami-beach', addr: '6345 Collins Ave, Apt 305, Miami Beach, FL 33141', lat: 25.845, lng: -80.1204, loc: 'approx', type: 'Condo', br: 2, beds: 2, ba: 2, sleeps: 4, base: 2, extra: 25, rate: 295, rating: 4.71, reviews: 88, mode: 'instant', min: 2, max: 28, clean: 155, pet: 75, cancel: 'flexible', ci: '3:00 PM', co: '11:00 AM',
+    am: BASE + 'pool beach parking washer balcony dish pet',
+    util: { electricity: ['metered', 'US$0.14/kWh, meter read at check-in and check-out'], water: ['included'], internet: ['included', '300 Mbps'], tv: ['included', 'Smart TV'], cleaning: ['fee', 'US$155 one-time, at check-out'], housekeeping: ['optional', 'US$85 per visit'] },
+    sleep: [['Primary Bedroom', 'King bed', 'bed-double'], ['Bedroom 2', 'Queen bed', 'bed-double']],
+    near: [['Beach access', '2 min walk'], ['Indian Creek waterway', '0.2 mi'], ['Pharmacy & market', '0.3 mi'], ['Miami International Airport (MIA)', '15 mi']],
+    desc: 'Pet-friendly two-bedroom on the third floor with a partial-ocean balcony, in-unit washer and dryer and one covered parking space.',
+    hoa: 'Mar de Plata Condominium Association', rc: { pool: 'community', poolHours: '9:00 AM – 8:00 PM', parking: 'One covered space (C-305). Guest vehicles must display the issued hang tag.', visitors: 'No overnight visitors. Day visitors must be accompanied by the registered guest.', trash: 'Trash room at the end of each hallway.', smokeOutdoor: false, access: 'Lobby fob and smart lock code.', extra: ['Pets must be leashed in all common areas and are not permitted on the pool deck.'] } },
+  { pid: 4, key: '4|Unit 9', name: 'Las Olas Lofts', title: 'Las Olas Lofts — Downtown Loft 9', area: 'Las Olas', city: 'Fort Lauderdale', areaKey: 'fort-lauderdale', addr: '401 E Las Olas Blvd, Unit 9, Fort Lauderdale, FL 33301', lat: 26.1191, lng: -80.1393, loc: 'approx', type: 'Loft', br: 1, beds: 2, ba: 1, sleeps: 3, base: 2, extra: 25, rate: 265, rating: 4.82, reviews: 57, mode: 'instant', min: 2, max: 28, clean: 125, pet: 75, cancel: 'moderate', ci: '3:00 PM', co: '11:00 AM',
+    am: BASE + 'parking gym workspace washer dish pet security',
+    util: { electricity: ['metered', 'US$0.14/kWh, meter read at check-in and check-out'], water: ['included'], internet: ['included', '1 Gbps fiber'], tv: ['included', 'Smart TV, streaming only'], cleaning: ['fee', 'US$125 one-time, at check-out'] },
+    sleep: [['Loft Bedroom', 'Queen bed', 'bed-double'], ['Living Area', 'Sleeper sofa', 'sofa']],
+    near: [['Las Olas Boulevard dining', 'On site'], ['Riverwalk', '0.3 mi'], ['Fort Lauderdale Beach', '2.1 mi'], ['Fort Lauderdale–Hollywood Airport (FLL)', '5 mi']],
+    desc: 'Industrial loft on Las Olas Boulevard with double-height ceilings, a dedicated workspace, building fitness center and garage parking. Walk to Riverwalk and downtown dining.',
+    hoa: 'Las Olas Lofts Owners Association', rc: { pool: 'na', parking: 'One garage space (G-9). Oversized vehicles not permitted.', visitors: 'Day visitors must be registered with building security.', trash: 'Trash and recycling room on each floor.', smokeOutdoor: false, access: 'Garage remote, building fob and smart lock code.', extra: ['Freight elevator must be reserved for luggage carts over 2 pieces.'] } },
+  { pid: 1, key: '1|Unit 2101', name: 'Brickell Bay Residences', title: 'Brickell Bay Residences — Bay-View Residence 2101', area: 'Brickell', city: 'Miami', areaKey: 'brickell', addr: '1200 Brickell Bay Dr, Unit 2101, Miami, FL 33131', lat: 25.7631, lng: -80.1903, loc: 'exact', type: 'Condo', br: 2, beds: 2, ba: 2, sleeps: 4, base: 4, extra: 0, rate: 380, rating: 4.89, reviews: 96, mode: 'instant', min: 2, max: 28, clean: 165, pet: null, cancel: 'moderate', ci: '4:00 PM', co: '11:00 AM',
+    am: BASE + 'pool bay parking gym workspace washer dish balcony security concierge cable',
+    util: { electricity: ['included'], water: ['included'], internet: ['included', '1 Gbps fiber'], tv: ['included', 'Smart TV with cable'], gas: ['included', 'Gas cooktop'], cleaning: ['fee', 'US$165 one-time, at check-out'], housekeeping: ['optional', 'US$90 per visit'] },
+    sleep: [['Primary Bedroom', 'King bed', 'bed-double'], ['Bedroom 2', 'Queen bed', 'bed-double']],
+    near: [['Brickell City Centre', '0.5 mi'], ['Metromover station', '0.2 mi'], ['Bayfront Park', '1.0 mi'], ['Miami International Airport (MIA)', '8 mi']],
+    desc: 'Twenty-first-floor residence on Brickell Bay Drive with floor-to-ceiling bay views, resort pool, concierge and valet. All utilities included.',
+    hoa: 'Brickell Bay Residences Condominium Association', rc: { pool: 'community', poolHours: '7:00 AM – 10:00 PM', parking: 'Valet parking for one vehicle; additional vehicles are not permitted.', visitors: 'Visitors must be announced by the concierge and leave by 11:00 PM.', trash: 'Trash chute on each floor.', smokeOutdoor: false, access: 'Concierge check-in, building fob and smart lock code.', extra: [] } },
+  { pid: 13, key: '13|Unit 1802', name: 'Aventura Park Tower', title: 'Aventura Park Tower — Three-Bedroom Residence 1802', area: 'Aventura', city: 'Aventura', areaKey: 'aventura', addr: '19355 Turnberry Way, Unit 1802, Aventura, FL 33180', lat: 25.9537, lng: -80.1405, loc: 'approx', type: 'Condo', br: 3, beds: 4, ba: 2, sleeps: 6, base: 4, extra: 35, rate: 340, rating: 4.75, reviews: 39, mode: 'request', min: 3, max: 28, clean: 195, pet: null, cancel: 'strict', ci: '4:00 PM', co: '11:00 AM',
+    am: BASE + 'pool parking gym washer workspace dish balcony gated security',
+    util: { electricity: ['included'], water: ['included'], internet: ['included', '500 Mbps'], tv: ['included', 'Smart TVs in living room and primary bedroom'], cleaning: ['fee', 'US$195 one-time, at check-out'], housekeeping: ['optional', 'US$110 per visit'] },
+    sleep: [['Primary Bedroom', 'King bed', 'bed-double'], ['Bedroom 2', 'Queen bed', 'bed-double'], ['Bedroom 3', '2 Twin beds', 'bed-single']],
+    near: [['Aventura Mall', '0.6 mi'], ['Turnberry Isle golf', '0.4 mi'], ['Sunny Isles Beach', '2.0 mi'], ['Fort Lauderdale–Hollywood Airport (FLL)', '14 mi']],
+    desc: 'Three-bedroom family residence in a gated Aventura tower with a resort pool, fitness center and two parking spaces, minutes from Aventura Mall.',
+    hoa: 'Aventura Park Tower Condominium Association', rc: { pool: 'community', poolHours: '8:00 AM – 9:00 PM', parking: 'Two assigned spaces (A-1802, A-1803). Guest vehicles must be registered at the gate.', visitors: 'Gate registration required for every visitor; no overnight visitors.', trash: 'Trash chute on each floor; bulk items to loading dock only.', smokeOutdoor: false, access: 'Gate code, building fob and smart lock code.', extra: [] } }
+];
+const BLOCKS = [
+  { key: '4|Unit 9', from: '2026-11-06', to: '2026-11-09', kind: 'Maintenance', ref: 'WO-2026-0512' },
+  { key: '8|Apt 305', from: '2026-11-01', to: '2026-11-03', kind: 'Cleaning', ref: 'Deep clean' },
+  { key: '6|Main', from: '2026-11-11', to: '2026-11-12', kind: 'Inspection', ref: 'Quarterly inspection' },
+  { key: '13|Unit 1802', from: '2026-11-18', to: '2026-12-01', kind: 'Owner Block', ref: 'Owner stay' },
+  { key: '1|Unit 2101', from: '2026-12-01', to: '2026-12-04', kind: 'Property Unavailable', ref: 'Building elevator works' }
+];
+const RES_KEY = 'mghpm.reservations.v2', SKEY = 'mghpm.str.session.v2';
+const SEED = [
+  ['20261002-DR-0001', 'Ana Torres', '13|Unit 1802', '2026-10-10', '2026-10-14', 'confirmed', 3, 'Direct', false], ['20260417-DR-0032', 'Ana Torres', '6|Main', '2026-04-20', '2026-04-24', 'checked_out', 3, 'Direct', false], ['20260212-DR-0007', 'Laura Méndez', '2|Apt 101', '2026-02-14', '2026-02-18', 'checked_out', 2, 'Direct', true], ['20260608-DR-0011', 'Tom Becker', '7|Apt 101', '2026-06-10', '2026-06-15', 'checked_out', 2, 'Airbnb', false], ['20260722-DR-0019', 'Kenji Watanabe', '1|Unit 2101', '2026-07-24', '2026-07-28', 'checked_out', 2, 'Airbnb', false],
+  ['20260907-DR-0001', 'Tom Becker', '2|Apt 101', '2026-09-28', '2026-10-04', 'checked_out', 2, 'Airbnb', false], ['20260909-DR-0001', 'Mia Johnson', '7|Apt 101', '2026-09-30', '2026-10-04', 'checked_out', 3, 'Direct', false], ['20260910-DR-0001', 'Oliver Grant', '4|Unit 9', '2026-10-01', '2026-10-04', 'checked_out', 2, 'Vrbo', false], ['20260906-DR-0001', 'The Novak Family', '6|Main', '2026-09-27', '2026-10-04', 'checked_out', 6, 'Direct', false], ['20260913-DR-0001', 'Ana Torres', '1|Unit 2101', '2026-10-04', '2026-10-05', 'checked_in', 2, 'Booking.com', false], ['20260913-DR-0002', 'James Whitaker', '7|Apt 101', '2026-10-04', '2026-10-11', 'confirmed', 2, 'Airbnb', false], ['20260913-DR-0003', 'Laura Méndez', '2|Apt 101', '2026-10-04', '2026-10-09', 'confirmed', 2, 'Direct', true], ['20260913-DR-0004', 'Hannah Schultz', '4|Unit 9', '2026-10-04', '2026-10-06', 'confirmed', 1, 'Vrbo', false], ['20260909-DR-0002', 'Kenji Watanabe', '13|Unit 1802', '2026-09-30', '2026-10-05', 'checked_in', 2, 'Airbnb', false], ['20260914-DR-0001', 'Camila Rossi', '6|Main', '2026-10-05', '2026-10-10', 'pending', 4, 'Direct', false], ['20260915-DR-0001', 'Ethan Park', '8|Apt 305', '2026-10-06', '2026-10-13', 'confirmed', 2, 'Booking.com', false], ['20260921-DR-0001', 'Isla Fernández', '2|Apt 101', '2026-10-12', '2026-10-16', 'pending', 3, 'Airbnb', false], ['20260923-DR-0001', 'Daniel Okoro', '7|Apt 101', '2026-10-14', '2026-10-18', 'confirmed', 2, 'Direct', false], ['20260926-DR-0001', 'Sophie Laurent', '6|Main', '2026-10-17', '2026-10-24', 'confirmed', 5, 'Vrbo', false], ['20260929-DR-0001', 'Laura Méndez', '2|Apt 101', '2026-10-20', '2026-10-27', 'confirmed', 2, 'Direct', true], ['20261001-DR-0001', 'Lucas Meyer', '4|Unit 9', '2026-10-22', '2026-10-25', 'cancelled', 2, 'Airbnb', false], ['20261003-DR-0001', 'Priya Shah', '8|Apt 305', '2026-10-24', '2026-10-31', 'pending', 2, 'Direct', false]
+].map(([id, guest, unit, ci, co, status, guests, channel, isTenant], i) => ({ id, guest, unit, ci, co, status, guests, channel, isTenant, ...(status === 'checked_out' ? { meterIn: String(18200 + i * 137), meterOut: String(18200 + i * 137 + 84 + i * 9) } : status === 'checked_in' ? { meterIn: String(20410 + i * 53) } : {}) }));
+const loadRes = () => { try { return (JSON.parse(sessionStorage.getItem(RES_KEY)) || {}).res || SEED; } catch (e) { return SEED; } };
+const loadS = () => { try { return JSON.parse(sessionStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } };
+const BOOK0 = { step: 0, authMode: 'register', email: '', pw: '', name: '', phone: '', first: '', last: '', gEmail: '', gPhone: '', adults: '2', children: '0', arrival: '4:00 PM – 6:00 PM', notes: '', ag: {}, holder: '', card: '', exp: '', cvc: '', zip: '', err: '', resId: null };
+const FILTERS0 = { maxPrice: 0, type: '', br: 0, ba: 0, amen: {}, elec: false, allUtil: false, instant: false };
+
+const amSet = st => st.am.trim().split(/\s+/);
+const has = (st, k) => amSet(st).includes(k) || (k === 'pet' && st.pet != null);
+const posOf = st => st.loc === 'exact' ? [st.lat, st.lng] : [st.lat + ((st.pid * 37) % 7 - 3) * 0.0009, st.lng + ((st.pid * 53) % 5 - 2) * 0.0011];
+const ACTIVE = ['pending', 'confirmed', 'checked_in'];
+const ranges = (st, res) => res.filter(r => r.unit === st.key && ACTIVE.includes(r.status)).map(r => [r.ci, r.co]).concat(BLOCKS.filter(b => b.key === st.key).map(b => [b.from, b.to]));
+const isFree = (st, ci, co, res) => ranges(st, res).every(([a, b]) => !(ci < b && a < co));
+const nightBlocked = (st, d, res) => ranges(st, res).some(([a, b]) => a <= d && d < b);
+const nextAvail = (st, ci, n, res) => { for (let i = 1; i <= 90; i++) { const a = addDays(ci, i); if (isFree(st, a, addDays(a, n), res)) return a; } return null; };
+const rateFor = (st, d) => { let m = 1; const dow = D(d).getDay(); if (dow === 5 || dow === 6) m *= 1.12; const md = d.slice(5); if (md >= '12-18' || md <= '01-03') m *= 1.35; else if (md >= '11-25' && md <= '11-29') m *= 1.2; return Math.round(st.rate * m); };
+const quoteOf = (st, ci, co, guests, pets) => {
+  const n = nightsOf(ci, co); if (n <= 0) return null;
+  const nights = Array.from({ length: n }, (_, i) => rateFor(st, addDays(ci, i)));
+  const nightly = nights.reduce((a, b) => a + b, 0), avg = nightly / n, varies = nights.some(x => x !== nights[0]);
+  const lines = [{ label: money(avg) + ' × ' + pl(n, 'night') + (varies ? ' (avg.)' : ''), amt: nightly }];
+  const disc = n >= 28 ? 0.2 : n >= 7 ? 0.1 : 0, discAmt = r2(nightly * disc);
+  if (disc) lines.push({ label: disc === 0.2 ? 'Monthly stay discount (20%)' : 'Weekly stay discount (10%)', amt: -discAmt });
+  const xg = Math.max(0, guests - st.base), extra = xg * st.extra * n;
+  if (extra) lines.push({ label: 'Additional guest fee (' + xg + ' × ' + money0(st.extra) + ' × ' + n + ')', amt: extra });
+  const pet = pets > 0 && st.pet ? st.pet : 0;
+  if (pet) lines.push({ label: 'Pet fee (one-time)', amt: pet });
+  lines.push({ label: 'Cleaning fee', amt: st.clean });
+  const taxable = nightly - discAmt + extra + pet + st.clean, tax = r2(taxable * TAX);
+  lines.push({ label: 'Florida & county taxes (13%)', amt: tax });
+  const total = r2(taxable + tax), daysOut = nightsOf(TODAY, ci), dueNow = daysOut > 30 ? r2(total * 0.5) : total;
+  return { pid: st.pid, ci, co, n, guests, pets, nights, avg, varies, lines, nightly, discAmt, discPct: disc, extra, pet, clean: st.clean, tax, total, dueNow, balance: r2(total - dueNow), balDate: addDays(ci, -30), id: 'Q-' + String(st.pid).padStart(3, '0') + '-' + ci.replace(/-/g, '') + '-' + n + 'N-' + guests + 'G', version: 1, metered: st.util.electricity && st.util.electricity[0] === 'metered' };
+};
+const matches = (st, q, S, f) => {
+  if (S.area !== 'all' && st.areaKey !== S.area) return false;
+  if (S.guests > st.sleeps) return false;
+  if (S.pets > 0 && st.pet == null) return false;
+  if (f.maxPrice && q && q.avg > f.maxPrice) return false;
+  if (f.type && st.type !== f.type) return false;
+  if (f.br && st.br < f.br) return false;
+  if (f.ba && st.ba < f.ba) return false;
+  if (Object.keys(f.amen).some(k => f.amen[k] && !has(st, k))) return false;
+  const e = (st.util.electricity || [])[0];
+  if (f.elec && !(e === 'included' || e === 'cap')) return false;
+  if (f.allUtil && !['electricity', 'water', 'internet', 'tv'].every(k => (st.util[k] || [])[0] === 'included')) return false;
+  if (f.instant && st.mode !== 'instant') return false;
+  return true;
+};
+const compute = (S, f, sort, res) => {
+  const n = nightsOf(S.ci, S.co);
+  const all = STAYS.map(st => { const q = quoteOf(st, S.ci, S.co, S.guests, S.pets); const free = n > 0 && isFree(st, S.ci, S.co, res); const minOk = n >= st.min && n <= st.max; return { st, q, free, minOk, ok: free && minOk, match: matches(st, q, S, f) }; }).filter(x => x.match);
+  const avail = all.filter(x => x.ok && x.q);
+  const so = { price_asc: (a, b) => a.q.total - b.q.total, price_desc: (a, b) => b.q.total - a.q.total, bedrooms: (a, b) => b.st.br - a.st.br, capacity: (a, b) => b.st.sleeps - a.st.sleeps, recommended: (a, b) => (b.st.rating * Math.log(b.st.reviews + 1)) - (a.st.rating * Math.log(a.st.reviews + 1)) };
+  avail.sort(so[sort] || so.recommended);
+  return { n, avail, unavail: all.filter(x => !x.ok) };
+};
+const utilText = (k, u) => {
+  const [s, note] = u; const n = note ? ' ' + note + '.' : '';
+  if (k === 'electricity') return s === 'included' ? 'Electricity is included in the reservation price.' : s === 'cap' ? 'Electricity is included subject to the property\'s reasonable-use policy:' + n : 'Electricity is billed separately according to consumption:' + n;
+  const L = { water: 'Water', internet: 'Internet / Wi-Fi', tv: 'Cable / TV', gas: 'Gas' }[k];
+  return L ? L + (s === 'included' ? ' is included.' : s === 'metered' ? ' is billed separately.' : ' is ' + (US[s] || ['available'])[0].toLowerCase() + '.') + n : null;
+};
+const rulesOf = st => {
+  const rc = st.rc, pets = st.pet == null ? 'no' : 'approval';
+  const R = (key, title, icon, items, o) => ({ key, title, icon, items: items.filter(Boolean), status: (o && o.custom) ? 'Custom' : 'Required', tone: (o && o.custom) ? 'info' : 'neutral', lead: (o && o.lead) || '', hasLead: !!(o && o.lead), dot: (o && o.dot) || '#006B68' });
+  const hoa = [
+    R('noise', 'Noise & Disturbances', 'volume-x', ['No loud music inside or outside the property.', 'No speakers, sound systems, karaoke, DJs or amplified music that can be heard from neighboring properties.', 'Quiet hours: 10:00 PM – 8:00 AM.', 'Avoid shouting, excessive noise or disruptive behavior on balconies, terraces, pool areas, parking areas, hallways and other shared spaces.', 'Repeated neighbor complaints may result in intervention by property management, security or the HOA.']),
+    R('parties', 'Parties & Events', 'party-popper', ['No parties.', 'No events, celebrations, gatherings, receptions or organized activities without prior written authorization.', 'Occupancy is limited to the number of guests authorized in the reservation.', 'Unregistered visitors may be restricted under the property or HOA rules.']),
+    R('parking', 'Vehicles & Parking', 'car', [rc.parking, 'No large gatherings of vehicles at the property; do not invite groups that cause excessive cars, parking congestion or disturbance to neighbors.', 'Use authorized parking spaces only.', 'Do not block driveways, entrances, sidewalks, neighboring properties, emergency access or common areas.', 'No excessive engine revving, horns, loud vehicle music or other vehicle-related disturbance.'], { custom: true }),
+    R('neighbors', 'Respect for Neighbors', 'handshake', ['Do not enter neighboring properties or disturb residents.', 'Do not leave trash or personal belongings in common areas.', 'Respect the privacy and peaceful enjoyment of surrounding homes.', 'Aggressive, threatening, abusive or disorderly behavior is prohibited.']),
+    rc.pool !== 'na' ? R('pool', rc.pool === 'private' ? 'Pool Rules — Private Pool' : 'Pool Rules — Community Pool', 'waves', ['Pool hours: ' + rc.poolHours + '.', 'No glass containers around the pool.', 'No running, and no diving where prohibited.', 'Children must be supervised at all times.', 'No loud parties at the pool.', 'Do not move pool furniture outside designated areas.', rc.pool === 'community' ? 'No unauthorized visitors at the community pool.' : null], { custom: true }) : null,
+    R('trash', 'Trash & Cleanliness', 'trash-2', [rc.trash, 'Place garbage in designated containers and follow HOA waste-disposal instructions.', 'Do not leave garbage outside the unit unless authorized.', 'Excessive trash or abnormal cleaning requirements may be documented according to the booking terms.'], { custom: true })
+  ].filter(Boolean);
+  const owner = [
+    R('occupancy', 'Registered Guests Only', 'users', ['Only guests included in the approved reservation may stay overnight unless management provides written authorization.'], { lead: 'Maximum occupancy: ' + st.sleeps + ' guests' }),
+    R('gatherings', 'No Parties or Unauthorized Gatherings', 'ban', ['The property is intended for residential accommodation only.', 'Prohibited: parties; bachelor/bachelorette events unless specifically approved; large birthday celebrations; commercial or ticketed events; nightclub-style gatherings; unauthorized photo or video productions.']),
+    R('music', 'Music', 'music', ['Music must remain at a reasonable residential level.', 'Not permitted: large external speakers, event subwoofers, DJs, amplified outdoor music, or music audible throughout the neighborhood.']),
+    R('visitors', 'Visitors', 'user-plus', [rc.visitors, 'Visitors must comply with all property and HOA rules.', 'The primary guest is responsible for registered guests, visitors, children and invited service providers.'], { custom: true }),
+    R('smoking', 'Smoking', 'cigarette-off', ['No cigarettes, cigars, hookah, vaping or smoking substances inside the property.', rc.smokeOutdoor ? 'Smoking is permitted only in the designated exterior area; dispose of materials in the provided container.' : 'No smoking on balconies, terraces or any exterior area of the property.'], { lead: 'Smoking: Not permitted' + (rc.smokeOutdoor ? ' indoors' : ''), custom: rc.smokeOutdoor }),
+    R('pets', 'Pets', 'paw-print', pets === 'no' ? ['Pets are not permitted, including visiting pets. Service animals are accommodated as required by law.'] : ['Pets must not disturb neighbors.', 'Waste must be collected immediately.', 'Pets must comply with HOA rules.', 'Guests are responsible for pet-related damage.', 'One-time pet fee: ' + money0(st.pet) + '; maximum 2 pets.'], { lead: 'Pets: ' + (pets === 'no' ? 'Not Allowed' : 'Prior Approval Required'), custom: pets !== 'no' })
+  ];
+  const utilItems = UT.filter(([k]) => ['electricity', 'water', 'internet', 'gas', 'tv'].includes(k) && st.util[k]).map(([k]) => utilText(k, st.util[k])).filter(Boolean);
+  if (st.backup) utilItems.push(st.backup);
+  const prop = [
+    R('care', 'Property Care', 'house', ['Keep the property reasonably clean and use furniture and appliances properly.', 'Report damage, leaks or maintenance problems promptly.', 'Do not move furniture between rooms without permission, make alterations, drill holes or install equipment.', 'Do not tamper with security systems, routers, electrical panels, cameras, locks or pool equipment.'].concat(rc.extra), { custom: rc.extra.length > 0 }),
+    R('utilities', 'Electricity & Utilities', 'zap', utilItems, { custom: true }),
+    R('ac', 'Air Conditioning', 'air-vent', ['Close doors and windows while air conditioning is operating.', 'Do not operate A/C with exterior doors left open.', 'Do not alter technical equipment or thermostats beyond normal guest controls.', 'Report malfunctioning equipment instead of attempting repairs.']),
+    R('security', 'Security & Access', 'key-round', ['Access: ' + rc.access, 'Do not share access codes with unauthorized individuals or duplicate keys.', 'Do not allow unknown persons into gated areas; keep gates and exterior doors secured.', 'Report lost keys, cards or remotes immediately.', 'Building and security staff instructions must be respected.'], { custom: true }),
+    R('checkin', 'Check-In / Check-Out', 'clock', ['Check-in: ' + st.ci + ' • Check-out: ' + st.co + '.', 'Early check-in is subject to availability.', 'Late check-out requires approval.', 'Keys, remotes and access cards must be returned as instructed.'], { custom: true }),
+    R('prohibited', 'Prohibited Activities', 'octagon-alert', ['Illegal activities.', 'Unauthorized commercial activity.', 'Weapons where prohibited by applicable rules or law.', 'Intentional property damage or tampering with safety equipment.', 'Disturbing neighbors, overcrowding or unauthorized events.', 'Unauthorized subletting, or use of the property for purposes other than the approved stay.'], { dot: '#DC2626' })
+  ];
+  return {
+    hoaName: st.hoa,
+    summary: [['ban', 'No parties'], ['volume-x', 'No loud music'], ['moon', 'Quiet hours 10 PM – 8 AM'], ['cigarette-off', 'No smoking'], ['users', 'Maximum ' + st.sleeps + ' guests'], ['paw-print', pets === 'no' ? 'No pets' : 'Pets with approval'], ['car', 'Authorized parking only'], ['clock', 'Check-in ' + st.ci + ' • Out ' + st.co]],
+    groups: [
+      { key: 'g-hoa', title: 'HOA / Community Rules', source: st.hoa.includes('City') ? 'Neighborhood' : 'HOA', tone: 'info', sub: 'Set by ' + st.hoa + ' to protect neighbors, common areas, security and the peaceful use of the community.', sections: hoa },
+      { key: 'g-owner', title: 'Owner Rules', source: 'Owner', tone: 'warning', sub: 'Set by the property owner for this residence and enforced by MGHPM as managing agent.', sections: owner },
+      { key: 'g-prop', title: 'Property-Specific Rules', source: 'Property', tone: 'success', sub: 'Operating rules for ' + st.name + ', including utilities, access and check-in details from the property configuration.', sections: prop }
+    ],
+    na: rc.pool === 'na' ? ['Pool Rules'] : []
+  };
+};
+
+class Component extends DCLogic {
+  state = (() => {
+    const ss = loadS(), v = QP.get('view'), id = +QP.get('id') || ss.id || STAYS[0].pid;
+    let view = ['detail', 'book', 'stay', 'rules'].includes(v) ? v : 'explore';
+    if (view === 'book' && !ss.quote) view = 'detail';
+    return { view, id, back: ss.back || 'detail', search: ss.search || { area: 'all', ci: '2026-11-06', co: '2026-11-10', guests: 2, pets: 0 }, filters: ss.filters || FILTERS0, sort: ss.sort || 'recommended', user: ss.user || null, stays: ss.stays || [], quote: ss.quote || null, book: ss.book || BOOK0, res: loadRes(), stayId: QP.get('res') || ss.stayId || null, sel: null, hover: null, showFilters: false, mobileMode: 'list', calCursor: null, picking: false, signin: null, toast: null };
+  })();
+  get _mapEl() { return document.querySelector('[data-map="explore"]'); }
+  get _dmapEl() { return document.querySelector('[data-map="detail"]'); }
+  get _listEl() { return document.querySelector('[data-list="1"]'); }
+  get _scrollEl() { return document.querySelector('[data-scroll="1"]'); }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    window.addEventListener('resize', this._onResize);
+    this._onFocus = () => this.setState({ res: loadRes() });
+    window.addEventListener('focus', this._onFocus);
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 400)];
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+    this.installApi(); this.syncMaps(); this.setCtx(); this._prev = { view: this.state.view, id: this.state.id, stayId: this.state.stayId };    this._t.push(setTimeout(() => this.syncMaps(), 300), setTimeout(() => this.syncMaps(), 1200));
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); window.removeEventListener('focus', this._onFocus); (this._t || []).forEach(clearTimeout); clearTimeout(this._toastT); clearInterval(this._lp); if (this.map) this.map.remove(); if (this.dmap) this.dmap.remove(); }
+  componentDidUpdate() {
+    const s = this.state, ps = this._prev || {}; this._prev = { view: s.view, id: s.id, stayId: s.stayId };
+    try { sessionStorage.setItem(SKEY, JSON.stringify({ search: s.search, filters: s.filters, sort: s.sort, user: s.user, stays: s.stays, quote: s.quote, book: s.book, id: s.id, stayId: s.stayId, back: s.back })); } catch (e) {}
+    if (ps.view !== s.view || ps.id !== s.id || ps.stayId !== s.stayId) {
+      if (this._scrollEl) this._scrollEl.scrollTop = 0;
+      const q = s.view === 'explore' ? '' : '?view=' + s.view + (s.view === 'stay' ? (s.stayId ? '&res=' + s.stayId : '') : '&id=' + s.id);
+      try { history.replaceState(null, '', location.pathname + q); } catch (e) {}
+    }
+    this.syncMaps(); setTimeout(() => this.syncMaps(), 0); this.setCtx();
+  }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3200); }
+  writeRes(res) { try { sessionStorage.setItem(RES_KEY, JSON.stringify({ res })); } catch (e) {} this.setState({ res }); }
+  patchRes(id, p, msg) { this.writeRes(this.state.res.map(r => r.id === id ? { ...r, ...p } : r)); if (msg) this.notify(msg); }
+  setView(view, extra) { this.setState({ view, sel: null, ...(extra || {}) }); }
+  setSearch(p) { this.setState(s => ({ search: { ...s.search, ...p } })); }
+  setCtx() {
+    const s = this.state, st = STAYS.find(x => x.pid === s.id);
+    window.MGH_CTX = s.view === 'explore' ? { type: 'stay-search', label: 'Explore Stays — ' + fmtS(s.search.ci) + ' to ' + fmtS(s.search.co) + ', ' + pl(s.search.guests, 'guest') } : { type: 'stay', label: (st ? st.name : 'Stay') + ' — ' + ({ detail: 'Property Detail', book: 'Booking', stay: 'My Stay', rules: 'House Rules' })[s.view] };
+  }
+  installApi() {
+    const self = this;
+    window.MGH_STR = {
+      snapshot() { const s = self.state, c = compute(s.search, s.filters, s.sort, s.res); return { context: window.MGH_CTX, search: s.search, filters: s.filters, results: c.avail.map(x => ({ id: x.st.pid, name: x.st.name, area: x.st.area + ', ' + x.st.city, type: x.st.type, bedrooms: x.st.br, bathrooms: x.st.ba, sleeps: x.st.sleeps, amenities: amSet(x.st).map(k => AM[k] && AM[k][1]).filter(Boolean), utilities: Object.keys(x.st.util).reduce((o, k) => (o[k] = x.st.util[k][0], o), {}), bookingMode: x.st.mode, nightlyAvg: r2(x.q.avg), total: x.q.total, nights: x.q.n })), unavailable: c.unavail.map(x => x.st.name), myStays: s.stays }; },
+      actions() { const a = {}; STAYS.forEach(st => { a['view_' + st.pid] = ['View ' + st.name, SELF + '?view=detail&id=' + st.pid]; }); a.my_stays = ['My Stays', 'Master 34 - My Stay.dc.html']; return a; },
+      apply(f) { self.applyFilters(f || {}); },
+      localAnswer(text) {
+        const t = String(text).toLowerCase(), f = {};
+        if (/pool/.test(t)) f.pool = true; if (/beach/.test(t)) f.beach = true; if (/ocean view/.test(t)) f.ocean = true; if (/parking/.test(t)) f.parking = true; if (/gym|fitness/.test(t)) f.gym = true;
+        if (/\bpets?\b|dog|cat/.test(t)) { f.pet = true; f.pets = 1; }
+        if (/electric/.test(t)) f.electricityIncluded = true;
+        const g = t.match(/(\d+)\s*(people|guests|persons|adults)/); if (g) f.guests = +g[1];
+        const b = t.match(/(\d+)\s*(bed|br|bedroom)/); if (b) f.bedrooms = +b[1];
+        if (/cheap|lowest|least expensive|budget/.test(t)) f.sort = 'price_asc';
+        self.applyFilters(f);
+        const s = self.state, S = { ...s.search, ...(f.guests ? { guests: f.guests } : {}), ...(f.pets ? { pets: f.pets } : {}) }, F = self.mergeFilters(s.filters, f), c = compute(S, F, f.sort || s.sort, s.res);
+        const dates = fmtS(S.ci) + ' – ' + fmtY(S.co);
+        if (!c.avail.length) return { text: 'No stays match those requirements for ' + dates + '. Try other dates or remove a filter.' };
+        if (f.sort === 'price_asc') { const x = c.avail[0]; return { text: 'Of the stays available for ' + dates + ', ' + x.st.name + ' has the lowest total at ' + money(x.q.total) + ' (' + pl(x.q.n, 'night') + ', taxes and fees included).', actions: [{ label: 'View ' + x.st.name, href: SELF + '?view=detail&id=' + x.st.pid }] }; }
+        return { text: pl(c.avail.length, 'stay') + ' match for ' + dates + ': ' + c.avail.map(x => x.st.name + ' (' + money(x.q.total) + ' total)').join('; ') + '. Results and map are updated.', actions: c.avail.slice(0, 2).map(x => ({ label: 'View ' + x.st.name, href: SELF + '?view=detail&id=' + x.st.pid })) };
+      }
+    };
+  }
+  mergeFilters(cur, f) {
+    const F = { ...cur, amen: { ...cur.amen } };
+    ['pool', 'beach', 'ocean', 'parking', 'pet', 'gym', 'workspace', 'washer'].forEach(k => { if (f[k] != null) F.amen[k] = !!f[k]; });
+    if (f.electricityIncluded != null) F.elec = !!f.electricityIncluded;
+    if (f.allUtilitiesIncluded != null) F.allUtil = !!f.allUtilitiesIncluded;
+    if (f.maxPrice) F.maxPrice = +f.maxPrice; if (f.bedrooms) F.br = +f.bedrooms; if (f.instant != null) F.instant = !!f.instant;
+    return F;
+  }
+  applyFilters(f) {
+    this.setState(s => {
+      const search = { ...s.search };
+      if (f.area) { const a = AREAS.find(([k, l]) => k === f.area || l.toLowerCase().includes(String(f.area).toLowerCase())); if (a) search.area = a[0]; }
+      if (f.guests) search.guests = Math.min(10, +f.guests); if (f.pets != null) search.pets = +f.pets;
+      if (f.checkIn) search.ci = f.checkIn; if (f.checkOut) search.co = f.checkOut;
+      return { search, filters: this.mergeFilters(s.filters, f), sort: f.sort || s.sort, view: 'explore', sel: null };
+    });
+  }
+  syncMaps() { try { this._syncMaps(); } catch (e) { console.warn('syncMaps: ' + (e && e.message)); } }
+  _syncMaps() {
+    const L = window.L;
+    if (!L) { if (!this._lp) this._lp = setInterval(() => { if (window.L) { clearInterval(this._lp); this._lp = null; this.syncMaps(); } }, 150); return; }
+    const tiles = m => L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap contributors © CARTO', subdomains: 'abcd', maxZoom: 19 }).addTo(m);
+    const el = this._mapEl;
+    if (el && el.isConnected) {
+      if (!this.map || this.map.getContainer() !== el) {
+        if (this.map) this.map.remove();
+        this.map = L.map(el, { zoomControl: false }).setView([25.9, -80.15], 10); L.control.zoom({ position: 'topright' }).addTo(this.map); tiles(this.map);
+        this.mlayer = L.layerGroup().addTo(this.map); this.map.on('zoomend', () => { this._mSig = null; this.drawMarkers(); });
+        this._fitSig = null; this._mSig = null; this._size = null;
+      }
+      if (el.offsetWidth) {
+        const sz = el.offsetWidth + 'x' + el.offsetHeight; if (sz !== this._size) { this._size = sz; this.map.invalidateSize(); }
+        if (this._fitKey !== this._fitSig) {
+          this._fitSig = this._fitKey; const items = this._mapItems || [];
+          if (items.length > 1) this.map.fitBounds(L.latLngBounds(items.map(i => i.pos)), { padding: [70, 70], maxZoom: 15 });
+          else if (items.length === 1) this.map.setView(items[0].pos, 15);
+          else { const v = AREA_VIEW[this.state.search.area] || AREA_VIEW.all; this.map.setView([v[0], v[1]], v[2]); }
+          this._mSig = null;
+        }
+        this.drawMarkers();
+      }
+    } else if (this.map) { this.map.remove(); this.map = null; }
+    const de = this._dmapEl;
+    if (de && de.isConnected && this._dItem) {
+      if (!this.dmap || this.dmap.getContainer() !== de || this._dPid !== this._dItem.pid) {
+        if (this.dmap) this.dmap.remove();
+        const it = this._dItem; this._dPid = it.pid;
+        this.dmap = L.map(de, { scrollWheelZoom: false, zoomControl: true }).setView(it.pos, 15); tiles(this.dmap);
+        if (it.exact) L.marker(it.pos, { icon: L.divIcon({ className: '', iconSize: [0, 0], html: '<div style="transform:translate(-50%,-50%);display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;background:#132A52;color:#fff;box-shadow:0 2px 6px rgba(15,23,42,.25);font:700 12px/1 \'Plus Jakarta Sans\',sans-serif;white-space:nowrap">' + it.name + '</div>' }) }).addTo(this.dmap);
+        else L.circle(it.pos, { radius: 450, color: '#006B68', weight: 1.5, fillColor: '#006B68', fillOpacity: 0.14 }).addTo(this.dmap);
+      }
+      this.dmap.invalidateSize();
+    } else if (this.dmap && !(de && de.isConnected)) { this.dmap.remove(); this.dmap = null; }
+  }
+  drawMarkers() {
+    const L = window.L, map = this.map; if (!L || !map || !this.mlayer) return;
+    const s = this.state, items = this._mapItems || [], on = s.sel || s.hover;
+    const sig = JSON.stringify([items.map(i => i.pid + ':' + i.price), on, map.getZoom()]); if (sig === this._mSig) return; this._mSig = sig;
+    this.mlayer.clearLayers();
+    const pts = items.map(i => ({ i, p: map.latLngToContainerPoint(i.pos) })), used = new Set(), groups = [];
+    pts.forEach((a, ix) => { if (used.has(ix)) return; const g = [a]; used.add(ix); pts.forEach((b, jx) => { if (!used.has(jx) && Math.abs(a.p.x - b.p.x) < 76 && Math.abs(a.p.y - b.p.y) < 34) { g.push(b); used.add(jx); } }); groups.push(g); });
+    const F = "font:700 13px/1 'Plus Jakarta Sans',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer;box-shadow:0 2px 6px rgba(15,23,42,.2)";
+    groups.forEach(g => {
+      if (g.length > 1) {
+        const ll = L.latLngBounds(g.map(x => x.i.pos)), hot = g.some(x => x.i.pid === on);
+        const m = L.marker(ll.getCenter(), { icon: L.divIcon({ className: '', iconSize: [0, 0], html: '<div style="transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:999px;background:' + (hot ? '#132A52' : '#006B68') + ';color:#fff;border:2px solid #fff;' + F + '">' + g.length + ' stays</div>' }), zIndexOffset: 500 });
+        m.on('click', () => map.fitBounds(ll, { padding: [90, 90], maxZoom: 18 })); m.addTo(this.mlayer);
+      } else {
+        const it = g[0].i, hot = it.pid === on;
+        const m = L.marker(it.pos, { icon: L.divIcon({ className: '', iconSize: [0, 0], html: '<div style="transform:translate(-50%,-50%) scale(' + (hot ? 1.08 : 1) + ');display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;background:' + (hot ? '#132A52' : '#fff') + ';color:' + (hot ? '#fff' : '#172033') + ';border:1px solid ' + (hot ? '#132A52' : '#CBD5E1') + ';' + F + '">' + money0(it.price) + '</div>' }), zIndexOffset: hot ? 1000 : 0 });
+        m.on('click', () => { this.setState({ sel: it.pid, hover: null }); const c = this._listEl && this._listEl.querySelector('[data-stay="' + it.pid + '"]'); if (c && this._listEl) this._listEl.scrollTo({ top: c.offsetTop - 16, behavior: 'smooth' }); });
+        m.addTo(this.mlayer);
+      }
+    });
+  }
+  requestToBook(q) {
+    const s = this.state, u = s.user, nm = u ? u.name.split(' ') : [];
+    const quote = { ...q, lines: q.lines, createdAt: Date.now(), validUntil: Date.now() + 864e5, version: s.quote && s.quote.id === q.id ? s.quote.version + 1 : 1 };
+    this.setView('book', { quote, book: { ...BOOK0, step: u ? 1 : 0, adults: String(q.guests), first: nm[0] || '', last: nm.slice(1).join(' '), gEmail: u ? u.email : '', gPhone: u ? u.phone || '' : '', holder: u ? u.name : '' } });
+  }
+  bookNext() {
+    const s = this.state, b = s.book, q = s.quote, st = STAYS.find(x => x.pid === q.pid), err = m => this.setState({ book: { ...b, err: m } });
+    if (b.step === 0) {
+      if (!/^\S+@\S+\.\S+$/.test(b.email)) return err('Enter a valid email address.');
+      if (b.pw.length < 8) return err('Password must be at least 8 characters.');
+      if (b.authMode === 'register' && (!b.name.trim().includes(' ') || b.phone.replace(/\D/g, '').length < 10)) return err('Enter your full name and a mobile phone number.');
+      const name = b.authMode === 'register' ? b.name.trim() : b.email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const user = { id: 'G-' + (10400 + (b.email.length * 37) % 600), name, email: b.email, phone: b.phone };
+      const nm = name.split(' ');
+      return this.setState({ user, book: { ...b, step: 1, err: '', first: b.first || nm[0], last: b.last || nm.slice(1).join(' '), gEmail: b.gEmail || b.email, gPhone: b.gPhone || b.phone, holder: b.holder || name } });
+    }
+    if (b.step === 1) {
+      if (!b.first.trim() || !b.last.trim() || !/^\S+@\S+\.\S+$/.test(b.gEmail) || b.gPhone.replace(/\D/g, '').length < 10) return err('Complete the primary guest name, email and mobile phone.');
+      if (+b.adults + +b.children !== q.guests) return err('Guest count must match your quote (' + pl(q.guests, 'guest') + '). Change guests on the property page to requote.');
+      return this.setState({ book: { ...b, step: 2, err: '' } });
+    }
+    if (b.step === 2) {
+      if (this.agreementKeys(st, q).some(k => !b.ag[k])) return err('Accept each policy to continue.');
+      return this.setState({ book: { ...b, step: 3, err: '', agAt: Date.now() } });
+    }
+    if (b.step === 3) {
+      if (!b.holder.trim() || b.card.replace(/\D/g, '').length < 15 || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(b.exp.trim()) || !/^\d{3,4}$/.test(b.cvc.trim()) || !/^\d{5}$/.test(b.zip.trim())) return err('Check the card details: number, expiry (MM/YY), security code and 5-digit ZIP.');
+      if (!isFree(st, q.ci, q.co, s.res)) return err('These dates were just booked or blocked. Return to the property to choose new dates.');
+      const id = newResId(s.res, st.key);
+      const ack = { guestId: s.user.id, reservationId: id, rulesVersion: RULES_VERSION, acceptedAt: b.agAt || Date.now() };
+      const paidAt = st.mode === 'instant' ? q.dueNow : 0, last4 = b.card.replace(/\D/g, '').slice(-4);
+      const sched = q.balance > 0 ? [{ label: 'Deposit (50%)', date: 'At booking', amt: q.dueNow }, { label: 'Balance', date: fmtY(q.balDate), amt: q.balance }] : [{ label: 'Full payment', date: 'At booking', amt: q.total }];
+      const rec = { id, guest: b.first.trim() + ' ' + b.last.trim(), unit: st.key, ci: q.ci, co: q.co, status: st.mode === 'instant' ? 'confirmed' : 'pending', guests: q.guests, adults: +b.adults || q.guests, children: +b.children || 0, pets: q.pets || 0, channel: 'Direct', isTenant: false, source: 'Guest Booking Site', guestId: s.user.id, quoteId: q.id, quoteVersion: q.version, notes: b.notes, createdAt: Date.now(),
+        reservationTotal: q.total, amountPaidAtBooking: paidAt, authorized: st.mode === 'instant' ? 0 : q.dueNow, guestRulesAccepted: true, guestRulesAcceptance: ack,
+        pricing: { avg: q.avg, n: q.n, nightly: q.nightly, los: q.discAmt ? -q.discAmt : 0, losL: q.discPct === 0.2 ? 'Monthly stay discount (20%)' : 'Weekly stay discount (10%)', extra: q.extra, pet: q.pet, clean: q.clean, svc: 0, disc: 0, tax: q.tax, total: q.total },
+        payment: { plan: q.balance > 0 ? 'deposit' : 'full', method: 'Credit Card •••• ' + last4, status: paidAt >= q.total - 0.005 ? 'PAID' : paidAt > 0 ? 'PARTIALLY_PAID' : 'UNPAID', paid: paidAt, dueNow: q.dueNow, balance: r2(q.total - paidAt), balDate: q.balance > 0 ? q.balDate : null, schedule: sched },
+        ack: { accepted: true, method: 'Accepted online at booking', at: ack.acceptedAt, version: RULES_VERSION } };
+      this.writeRes([...s.res, rec]);
+      return this.setState(ss => ({ stays: [...ss.stays, id], stayId: id, book: { ...b, step: 4, err: '', resId: id, card: '•••• ' + b.card.replace(/\D/g, '').slice(-4), cvc: '' } }));
+    }
+  }
+  agreementKeys(st, q) { return ['rules', 'cancel', 'damage'].concat(q.metered || (st.util.electricity || [])[0] === 'cap' ? ['electric'] : []); }
+
+  renderVals() {
+    const s = this.state, w = window.innerWidth || document.documentElement.clientWidth;
+    const mobile = w < 768, split = w >= 1024, S = s.search, F = s.filters, res = s.res;
+    const hPad = mobile ? '16px' : w < 1200 ? '24px' : '32px';
+    const chip = (on, label, toggle) => ({ label, toggle, bg: on ? '#132A52' : '#fff', color: on ? '#fff' : '#172033', border: on ? '#132A52' : '#E2E8F0' });
+    const seg = (list, cur, fn) => list.map(([v, l]) => ({ label: l, select: () => fn(v), bg: v === cur ? '#fff' : 'transparent', color: v === cur ? '#172033' : '#64748B', shadow: v === cur ? '0 1px 2px rgba(15,23,42,0.08)' : 'none' }));
+    const setF = p => this.setState(st => ({ filters: { ...st.filters, ...p }, sel: null }));
+    const filterCount = (F.maxPrice ? 1 : 0) + (F.type ? 1 : 0) + (F.br ? 1 : 0) + (F.ba ? 1 : 0) + Object.values(F.amen).filter(Boolean).length + (F.elec ? 1 : 0) + (F.allUtil ? 1 : 0) + (F.instant ? 1 : 0);
+    const c = compute(S, F, s.sort, res), n = c.n;
+    const modeOf = st => st.mode === 'instant' ? ['Instant Book', 'success'] : ['Request to Book', 'info'];
+    const utilsShort = st => [['electricity', 'Electricity', 'zap'], ['water', 'Water', 'droplet'], ['internet', 'Wi-Fi', 'wifi'], ['tv', 'Cable/TV', 'tv']].filter(([k]) => st.util[k]).map(([k, l]) => { const u = USHORT[st.util[k][0]]; return { label: l, status: u[0], icon: u[1], color: u[2] }; });
+    const basicsOf = st => [{ icon: 'bed-double', label: pl(st.br, 'bedroom') }, { icon: 'bed', label: pl(st.beds, 'bed') }, { icon: 'bath', label: st.ba + ' bath' + (st.ba === 1 ? '' : 's') }, { icon: 'users', label: 'Sleeps ' + st.sleeps }];
+    const cardOf = x => {
+      const st = x.st, q = x.q, hot = s.sel === st.pid || s.hover === st.pid, keys = amSet(st).concat(st.pet != null ? ['pet'] : []), top = TOP.filter(k => keys.includes(k)).slice(0, 5), md = modeOf(st);
+      return { pid: st.pid, name: st.name, area: st.area + ', ' + st.city, type: st.type, rating: st.rating.toFixed(2), reviews: st.reviews, basics: basicsOf(st), chips: top.map(k => AM[k][1]), more: keys.length > 5 ? '+ ' + (keys.length - 5) + ' amenities' : '', utils: utilsShort(st), nightly: money0(q.avg), nightlyUnit: q.varies ? 'avg. / night' : '/ night', total: money(q.total), totalNote: pl(q.n, 'night') + ' • taxes & fees included', modeLabel: md[0], modeTone: md[1], slot: 'str-' + st.pid + '-1', slotPh: 'Primary photo — ' + st.name,
+        border: hot ? '#006B68' : '#E2E8F0', shadow: hot ? '0 8px 24px rgba(15,23,42,0.10)' : '0 1px 2px rgba(15,23,42,0.05)', bar: s.sel === st.pid ? '#006B68' : 'transparent', mapBtn: split || s.mobileMode === 'map' ? 'flex' : 'none',
+        open: () => this.setView('detail', { id: st.pid, calCursor: null, picking: false }), hover: () => { if (s.hover !== st.pid) this.setState({ hover: st.pid }); }, unhover: () => this.setState({ hover: null }),
+        showOnMap: e => { e.stopPropagation(); this.setState({ sel: st.pid }); if (this.map) this.map.setView(posOf(st), Math.max(this.map.getZoom(), 15)); },
+        basicsLine: st.br + ' BR • ' + st.ba + ' BA • Sleeps ' + st.sleeps, utilLine: utilsShort(st).filter(u => u.status === 'Included').map(u => u.label).join(' • ') + (utilsShort(st).some(u => u.status === 'Included') ? ' included' : '') };
+    };
+    const cards = c.avail.map(cardOf);
+    this._mapItems = c.avail.map(x => ({ pid: x.st.pid, pos: posOf(x.st), price: x.q.avg }));
+    this._fitKey = S.area + '|' + c.avail.map(x => x.st.pid).join(',');
+    const pvx = c.avail.find(x => x.st.pid === s.sel), pv = pvx ? cardOf(pvx) : {};
+    const unavail = c.unavail.map(x => { const st = x.st, nx = n > 0 ? nextAvail(st, S.ci, Math.max(n, st.min), res) : null; return { name: st.name, area: st.area + ', ' + st.city, slot: 'str-' + st.pid + '-1', reason: !x.minOk && x.free ? 'Minimum stay ' + pl(st.min, 'night') : 'Not available for these dates', hasNext: !!nx, next: nx ? 'Next available: ' + fmtS(nx) + ' – ' + fmtS(addDays(nx, Math.max(n, st.min))) : '', useNext: () => this.setSearch({ ci: nx, co: addDays(nx, Math.max(n, st.min)) }) }; });
+    const areaLabel = (AREAS.find(a => a[0] === S.area) || AREAS[0])[1];
+    const v = s.view;
+
+    const st = STAYS.find(x => x.pid === s.id) || STAYS[0];
+    this._dItem = v === 'detail' ? { pid: st.pid, pos: posOf(st), exact: st.loc === 'exact', name: st.name } : null;
+    const dq = quoteOf(st, S.ci, S.co, S.guests, S.pets), dn = nightsOf(S.ci, S.co), dFree = dn > 0 && isFree(st, S.ci, S.co, res);
+    let qErr = '';
+    if (dn <= 0) qErr = 'Select a check-out date after check-in.';
+    else if (S.guests > st.sleeps) qErr = 'This property sleeps up to ' + st.sleeps + ' guests.';
+    else if (!dFree) qErr = 'Not available for ' + fmtS(S.ci) + ' – ' + fmtS(S.co) + '.';
+    else if (dn < st.min) qErr = 'Minimum stay is ' + pl(st.min, 'night') + '.';
+    else if (dn > st.max) qErr = 'Maximum stay is ' + pl(st.max, 'night') + '.';
+    else if (S.pets > 0 && st.pet == null) qErr = 'Pets are not permitted at this property.';
+    const dNext = qErr && dn > 0 && !dFree ? nextAvail(st, S.ci, Math.max(dn, st.min), res) : null;
+    const lineOf = l => ({ label: l.label, amt: money(l.amt), color: l.amt < 0 ? '#15803D' : '#172033' });
+    const calStart = s.calCursor || S.ci.slice(0, 7) + '-01';
+    const calMonths = [0, 1].map(k => { const d0 = D(calStart); d0.setMonth(d0.getMonth() + k); d0.setDate(1); const first = iso(d0), lead = d0.getDay(), dim = new Date(d0.getFullYear(), d0.getMonth() + 1, 0).getDate();
+      const cells = Array.from({ length: lead }, () => ({ label: '', vis: 'hidden', disabled: true, bg: 'transparent', color: '#fff', deco: 'none', cursor: 'default', weight: '500', click: null })).concat(Array.from({ length: dim }, (_, i) => { const d = addDays(first, i), past = d < TODAY, blk = nightBlocked(st, d, res), end = d === S.ci || d === S.co, inR = d > S.ci && d < S.co, canOut = s.picking && d > S.ci && isFree(st, S.ci, d, res), dis = past || (s.picking ? !canOut : blk);
+        return { label: String(i + 1), vis: 'visible', disabled: dis, bg: end ? '#006B68' : inR ? '#DDF3F1' : (blk || past) ? '#F8FAFC' : 'transparent', color: end ? '#fff' : (blk || past) ? '#94A3B8' : '#172033', deco: blk && !end ? 'line-through' : 'none', cursor: dis ? 'not-allowed' : 'pointer', weight: end ? '700' : '500',
+          click: () => { if (dis) return; if (!s.picking) this.setState(ss => ({ search: { ...ss.search, ci: d, co: addDays(d, st.min) }, picking: true })); else this.setState(ss => ({ search: { ...ss.search, co: d }, picking: false })); } }; }));
+      return { title: d0.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }), cells }; });
+    const shiftCal = k => { const d0 = D(calStart); d0.setMonth(d0.getMonth() + k); this.setState({ calCursor: iso(d0).slice(0, 8) + '01' }); };
+    const amenGroups = AM_CATS.map(cat => ({ cat, items: amSet(st).concat(st.pet != null ? ['pet'] : []).filter((k, i, a) => AM[k] && AM[k][0] === cat && a.indexOf(k) === i).map(k => AM[k][1]) })).filter(g => g.items.length);
+    const AG = window.MGH_AMEN ? window.MGH_AMEN.guest(st.pid) : null;
+    const agGroups = AG ? AG.groups.map(g => ({ ...g, items: g.items.map(it => ({ ...it, noteColor: it.paid ? '#B45309' : '#64748B' })) })) : amenGroups.map(g => ({ cat: g.cat, icon: 'check', items: g.items.map(l => ({ label: l, hasNote: false, note: '', noteColor: '#64748B' })) }));
+    const agShown = s.amenAll ? agGroups : agGroups.slice(0, 4);
+    const pol = POLICY[st.cancel], rl = rulesOf(st);
+    const md = modeOf(st);
+    const guestOptsFor = max => Array.from({ length: max }, (_, i) => ({ v: String(i + 1), l: pl(i + 1, 'guest') }));
+
+    const q = s.quote, qst = q ? STAYS.find(x => x.pid === q.pid) : null, b = s.book;
+    const bkSet = {}; Object.keys(BOOK0).forEach(k => { bkSet[k] = e => { const val = e.target.value; this.setState(ss => ({ book: { ...ss.book, [k]: val, err: '' } })); }; });
+    const STEPS = ['Account', 'Guest Details', 'Policies', 'Payment', 'Confirmation'];
+    const agDefs = qst ? [['rules', 'House Rules & Community Guidelines', ['I have read and agree to the House Rules & Community Guidelines (' + RULES_VERSION + '), including ' + qst.hoa + ' rules.', 'I understand that I am responsible for the conduct of the guests and visitors associated with my reservation.']], ['cancel', 'Cancellation Policy — ' + POLICY[qst.cancel][0], POLICY[qst.cancel][1](q.ci).map(([k, vv]) => k + ': ' + vv)], ['damage', 'Damage, Incidentals & Rental Agreement', ['Damage beyond normal wear, missing items and documented excess cleaning may be charged to the card on file under the short-term rental agreement.', 'Primary guest identity verification is required before access codes are released.']], ['electric', 'Electricity Billing', [qst.util.electricity ? qst.util.electricity[1] || '' : '', 'The meter reading is recorded at check-in and check-out; the final charge is posted to your reservation after departure.']]].filter(([k]) => this.agreementKeys(qst, q).includes(k)) : [];
+    const myRes = s.stays.map(id => res.find(r => r.id === id)).filter(Boolean);
+    const cur = myRes.find(r => r.id === s.stayId) || myRes[myRes.length - 1];
+
+    const out = {
+      hPad, today: TODAY, notMobile: !mobile, signedIn: !!s.user, signedOut: !s.user, userName: s.user ? s.user.name : '', userEmail: s.user ? s.user.email : '', userInitials: s.user ? s.user.name.split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase() : '',
+      navTabs: [['explore', 'Explore Stays', 0], ['stay', 'My Stays', s.stays.length]].map(([k, l, cnt]) => { const on = k === 'stay' ? v === 'stay' : v !== 'stay'; return { label: l, count: cnt, hasCount: cnt > 0, bg: on ? '#F0FAF9' : 'transparent', color: on ? '#006B68' : '#475569', select: () => k === 'stay' ? go('Master 34 - My Stay.dc.html' + (s.user && s.user.id ? '?guest=' + encodeURIComponent(s.user.id) : '')) : this.setView(k) }; }),
+      goExplore: () => this.setView('explore'), goStaff: () => go(PAGES.reservations), goMyStay: () => go('Master 34 - My Stay.dc.html'), goIdentity: () => go(PAGES.identity),
+      openSignIn: () => this.setState({ signin: { email: '', pw: '', err: '' } }), closeSignIn: () => this.setState({ signin: null }), signinOpen: !!s.signin,
+      siEmail: s.signin ? s.signin.email : '', siPw: s.signin ? s.signin.pw : '', siErr: s.signin ? s.signin.err : '', siHasErr: !!(s.signin && s.signin.err),
+      onSiEmail: e => { const x = e.target.value; this.setState(ss => ({ signin: { ...ss.signin, email: x, err: '' } })); }, onSiPw: e => { const x = e.target.value; this.setState(ss => ({ signin: { ...ss.signin, pw: x, err: '' } })); },
+      doSignIn: () => { const si = s.signin; if (!/^\S+@\S+\.\S+$/.test(si.email) || si.pw.length < 8) return this.setState({ signin: { ...si, err: 'Enter a valid email and a password of at least 8 characters.' } }); const name = si.email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, x => x.toUpperCase()); this.setState({ user: { id: 'G-' + (10400 + (si.email.length * 37) % 600), name, email: si.email, phone: '' }, signin: null }); this.notify('Signed in as ' + si.email); },
+      signOut: () => { this.setState({ user: null }); this.notify('Signed out'); },
+      toast: !!s.toast, toastMsg: s.toast || '',
+      isExplore: v === 'explore', isDetail: v === 'detail', isBook: v === 'book' && !!q, isStay: v === 'stay', isRules: v === 'rules', isCheckout: v === 'checkout', ...this.coVals(res),
+      areaOpts: AREAS.map(([vv, l]) => ({ v: vv, l })), sArea: S.area, sCi: S.ci, sCo: S.co, sCoMin: addDays(S.ci, 1), sGuests: String(S.guests), sPets: String(S.pets), guestOpts: guestOptsFor(10),
+      onArea: e => { this.setSearch({ area: e.target.value }); }, onGuests: e => this.setSearch({ guests: +e.target.value }), onPets: e => this.setSearch({ pets: +e.target.value }),
+      onCi: e => { const ci = e.target.value; if (!ci) return; this.setState(ss => ({ search: { ...ss.search, ci, co: ss.search.co > ci ? ss.search.co : addDays(ci, 3) }, picking: false })); },
+      onCo: e => { const co = e.target.value; if (co && co > S.ci) this.setSearch({ co }); },
+      toggleFilters: () => this.setState({ showFilters: !s.showFilters }), showFilters: s.showFilters, filterCount, hasFilterCount: filterCount > 0, filterBtnBg: s.showFilters ? '#F8FAFC' : '#fff', filterBtnBorder: filterCount ? '#132A52' : '#E2E8F0',
+      doSearch: () => { this._fitSig = null; this.setState({ showFilters: false, sel: null, mobileMode: split ? s.mobileMode : 'list' }); },
+      fMax: String(F.maxPrice), fType: F.type, onMax: e => setF({ maxPrice: +e.target.value }), onType: e => setF({ type: e.target.value }),
+      brChips: [0, 1, 2, 3, 4].map(x => chip(F.br === x, x ? x + '+' : 'Any', () => setF({ br: x }))), baChips: [0, 1, 2, 3].map(x => chip(F.ba === x, x ? x + '+' : 'Any', () => setF({ ba: x }))),
+      amenChips: [['pool', 'Pool'], ['pool_private', 'Private Pool'], ['beach', 'Beach Access'], ['ocean', 'Ocean View'], ['parking', 'Parking'], ['pet', 'Pets Allowed'], ['familyfriendly', 'Family Friendly'], ['gym', 'Fitness Center'], ['workspace', 'Dedicated Workspace'], ['washer', 'Washer & Dryer'], ['generator', 'Backup Power'], ['ev', 'EV Charger']].map(([k, l]) => chip(!!F.amen[k], l, () => setF({ amen: { ...F.amen, [k]: !F.amen[k] } }))),
+      utilChips: [chip(F.elec, 'Electricity Included', () => setF({ elec: !F.elec })), chip(F.allUtil, 'All Utilities Included', () => setF({ allUtil: !F.allUtil })), chip(F.instant, 'Instant Book', () => setF({ instant: !F.instant }))],
+      clearFilters: () => this.setState({ filters: FILTERS0, sel: null }),
+      listFlex: split ? '0 0 55%' : '1 1 100%', mapFlex: split ? '1 1 45%' : '1 1 100%', listDisplay: split || s.mobileMode === 'list' ? 'flex' : 'none', mapDisplay: split || s.mobileMode === 'map' ? 'block' : 'none',
+      showModeToggle: !split && !mobile, modeTabs: seg([['list', 'List'], ['map', 'Map']], s.mobileMode, m => this.setState({ mobileMode: m })),
+      showModeFab: v === 'explore' && mobile, flipMode: () => this.setState({ mobileMode: s.mobileMode === 'list' ? 'map' : 'list' }), fabIcon: s.mobileMode === 'list' ? 'map' : 'list', fabLabel: s.mobileMode === 'list' ? 'Map' : 'List',
+      resultsTitle: n > 0 ? pl(cards.length, 'stay') + ' available' : 'Select your dates', resultsSub: n > 0 ? fmtS(S.ci) + ' – ' + fmtY(S.co) + ' • ' + pl(n, 'night') + ' • ' + pl(S.guests, 'guest') + (S.pets ? ' • ' + pl(S.pets, 'pet') : '') + ' • ' + areaLabel : 'Choose check-in and check-out to see prices and availability.',
+      sort: s.sort, onSort: e => this.setState({ sort: e.target.value }),
+      cards, cardCols: (split ? w * 0.55 : w) > 680 ? 'minmax(200px,240px) minmax(0,1fr)' : 'minmax(0,1fr)', cardImgH: (split ? w * 0.55 : w) > 680 ? '100%' : '200px',
+      noResults: !cards.length, emptyHint: filterCount ? 'Some stays are hidden by your filters. Clear filters or adjust dates and guests.' : 'Try different dates or fewer guests — properties below show their next available dates.',
+      unavail, hasUnavail: unavail.length > 0, datesShort: fmtS(S.ci) + ' – ' + fmtS(S.co),
+      hasPreview: !!pvx, pv, closePreview: () => this.setState({ sel: null }),
+      // detail
+      dName: st.name, dTitle: st.title, dCity: st.city, dArea: st.area + ', ' + st.city, dRating: st.rating.toFixed(2), dReviews: st.reviews, dModeLabel: md[0], dModeTone: md[1],
+      galCols: mobile ? 'minmax(0,1fr)' : '2fr 1fr 1fr', galRows: mobile ? '260px' : '210px 210px', galMainRow: mobile ? 'auto' : 'span 2', galFull: !mobile, dSlot1: 'str-' + st.pid + '-1',
+      dSlots: [['2', 'Bedroom'], ['3', 'Kitchen'], ['4', 'Bathroom'], ['5', 'View or amenity']].map(([k, ph]) => ({ id: 'str-' + st.pid + '-' + k, ph })),
+      dCols: split ? 'minmax(0,1fr) 380px' : 'minmax(0,1fr)', railPos: split ? 'sticky' : 'static',
+      dBasics: [{ icon: st.type === 'House' ? 'house' : 'building-2', label: st.type }].concat(basicsOf(st)), dDesc: st.desc,
+      dSleep: st.sleep.map(([room, bed, icon]) => ({ room, bed, icon })),
+      dUtil: AG ? AG.util : UT.filter(([k]) => st.util[k]).map(([k, label, icon]) => { const [stt, note] = st.util[k]; return { label, icon, status: US[stt][0], tone: US[stt][1], note: note || '', hasNote: !!note }; }),
+      dAmen: agShown, dAmenTotal: AG ? AG.total + ' amenities • ' + agGroups.length + ' categories' : '', dAmenMore: agGroups.length > 4, dAmenMoreLabel: s.amenAll ? 'Show fewer amenities' : 'Show all ' + (AG ? AG.total : '') + ' amenities', toggleAmenAll: () => this.setState({ amenAll: !s.amenAll }), dCameras: AG ? AG.cameras : 'Security cameras: see house rules.', dComm: AG ? AG.community : [], dHasComm: !!(AG && AG.community.length), dSvc: AG ? AG.services : [], dHasSvc: !!(AG && AG.services.length), dow: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'], calMonths, calPrev: () => shiftCal(-1), calNext: () => shiftCal(1),
+      calHint: s.picking ? 'Select your check-out date.' : 'Select a check-in date. Minimum stay ' + pl(st.min, 'night') + '.',
+      dRuleSummary: rl.summary.slice(0, 6).map(([icon, label]) => ({ icon, label })), dRulesNone: [], dHoaName: st.hoa,
+      openRules: () => this.setView('rules', { back: 'detail' }),
+      dPolicyName: pol[0], dPolicy: pol[1](S.ci).map(([k, vv]) => ({ k, v: vv, color: k === 'No refund' ? '#B91C1C' : k === 'Full refund' ? '#15803D' : '#B45309' })), dCiLong: fmtL(S.ci),
+      dLocNote: st.loc === 'exact' ? 'Building location shown. Unit number and access instructions are provided in My Stay after confirmation.' : 'Approximate location shown for privacy. The exact address is available in My Stay once your reservation is confirmed.',
+      dNear: st.near.map(([label, dist]) => ({ label, dist })), dCheckIn: st.ci, dCheckOut: st.co, dStayRange: 'Stays of ' + st.min + '–' + st.max + ' nights',
+      dGuestOpts: guestOptsFor(st.sleeps), dPetsAllowed: st.pet != null,
+      qNightly: dq ? money0(dq.avg) : money0(st.rate), qNightNote: dq && dq.varies ? 'avg. for your dates' : 'for your dates',
+      qHasErr: !!qErr, qErr, qHasNext: !!dNext, qNextLabel: dNext ? 'Use ' + fmtS(dNext) + ' – ' + fmtS(addDays(dNext, Math.max(dn, st.min))) : '', qUseNext: () => dNext && this.setSearch({ ci: dNext, co: addDays(dNext, Math.max(dn, st.min)) }),
+      qLines: dq ? dq.lines.map(lineOf) : [], qTotal: dq ? money(dq.total) : '—', qDueNow: dq ? money(dq.dueNow) : '—', qHasBalance: !!(dq && dq.balance > 0), qBalance: dq ? money(dq.balance) : '', qBalDate: dq ? fmtY(dq.balDate) : '',
+      qMetered: !!(dq && (dq.metered || (st.util.electricity || [])[0] === 'cap')), qMeterNote: (st.util.electricity || [])[0] === 'cap' ? 'Electricity included up to the property allowance; any excess is billed after check-out.' : 'Electricity is metered and billed after check-out at US$0.14/kWh — not included in this total.',
+      qBlocked: !!qErr, qCtaBg: qErr ? '#94A3B8' : '#006B68', qCtaCursor: qErr ? 'not-allowed' : 'pointer', qCta: st.mode === 'instant' ? 'Reserve' : 'Request to Book',
+      requestToBook: () => { if (!qErr && dq) this.requestToBook(dq); },
+      qChargeNote: st.mode === 'instant' ? 'Booking is confirmed immediately. The amount due now is charged at confirmation.' : "You won't be charged yet. Your card is authorized only when the manager approves the request.",
+      qMeta: dq ? 'Quote ' + dq.id + ' • prices held for 24 hours once you request' : '',
+      // book
+      backToProperty: () => this.setView('detail', { id: q ? q.pid : s.id }),
+      bkName: qst ? qst.name : '', bkArea: qst ? qst.area + ', ' + qst.city : '', bkSlot: qst ? 'str-' + qst.pid + '-1' : '', bkModeLabel: qst ? modeOf(qst)[0] : '', bkModeTone: qst ? modeOf(qst)[1] : 'info',
+      bkTitle: qst && qst.mode === 'instant' ? 'Reserve Your Stay' : 'Request to Book',
+      steps: STEPS.map((l, i) => { const done = i < b.step, curS = i === b.step; return { n: done ? '✓' : String(i + 1), label: l, bg: done ? '#006B68' : curS ? '#fff' : '#fff', color: done ? '#fff' : curS ? '#006B68' : '#94A3B8', border: done || curS ? '#006B68' : '#CBD5E1', labelColor: curS ? '#172033' : done ? '#006B68' : '#94A3B8', lineBg: done ? '#006B68' : '#E2E8F0', lineDisplay: i < STEPS.length - 1 ? 'block' : 'none', flex: i < STEPS.length - 1 ? '1 1 auto' : '0 0 auto' }; }),
+      st0: b.step === 0, st1: b.step === 1, st2: b.step === 2, st3: b.step === 3, st4: b.step === 4,
+      authTabs: seg([['register', 'Create Account'], ['signin', 'Sign In']], b.authMode, m => this.setState(ss => ({ book: { ...ss.book, authMode: m, err: '' } }))), isRegister: b.authMode === 'register',
+      bk: b, bkSet, adultOpts: Array.from({ length: qst ? qst.sleeps : 1 }, (_, i) => String(i + 1)), childOpts: Array.from({ length: qst ? qst.sleeps : 1 }, (_, i) => String(i)),
+      agreements: agDefs.map(([k, title, lines]) => { const on = !!b.ag[k]; return { title, lines: lines.filter(Boolean), on, border: on ? '#006B68' : '#E2E8F0', bg: on ? '#F0FAF9' : '#fff', box: on ? '#006B68' : '#94A3B8', boxBg: on ? '#006B68' : '#fff', toggle: () => this.setState(ss => ({ book: { ...ss.book, ag: { ...ss.book.ag, [k]: !ss.book.ag[k] }, err: '' } })) }; }),
+      rulesVersion: RULES_VERSION, openRulesFromBook: () => this.setView('rules', { id: q ? q.pid : s.id, back: 'book' }),
+      payNote: qst && qst.mode === 'instant' ? 'Card payments are processed securely. Your booking is confirmed when payment succeeds.' : 'Your card is authorized now and charged only if the manager approves the request.',
+      payNowLabel: qst && qst.mode === 'instant' ? 'Charged today' : 'Authorized today (charged on approval)',
+      qsDueNow: q ? money(q.dueNow) : '', qsHasBalance: !!(q && q.balance > 0), qsBalance: q ? money(q.balance) : '', qsBalDate: q ? fmtY(q.balDate) : '',
+      qsFacts: q ? [{ k: 'Check-in', v: fmtS(q.ci) + ' • ' + qst.ci }, { k: 'Check-out', v: fmtS(q.co) + ' • ' + qst.co }, { k: 'Nights', v: String(q.n) }, { k: 'Guests', v: pl(q.guests, 'guest') + (q.pets ? ', ' + pl(q.pets, 'pet') : '') }] : [],
+      qsLines: q ? q.lines.map(lineOf) : [], qsTotal: q ? money(q.total) : '', qsId: q ? q.id + ' v' + q.version : '', qsValid: q ? (b.step === 4 ? 'Accepted with reservation ' + b.resId : 'Held until ' + fmtTs(q.validUntil)) : '',
+      bkErr: b.err, bkHasErr: !!b.err, bkShowNav: b.step < 4, bkCanBack: b.step > (s.user ? 1 : 0) && b.step < 4, bkBack: () => this.setState(ss => ({ book: { ...ss.book, step: ss.book.step - 1, err: '' } })),
+      bkNext: () => this.bookNext(), bkNextLabel: ['Continue', 'Continue to Policies', 'Accept & Continue to Payment', qst && qst.mode === 'instant' ? 'Pay ' + (q ? money(q.dueNow) : '') + ' & Reserve' : 'Submit Booking Request', ''][b.step],
+      cfTitle: qst && qst.mode === 'instant' ? 'Your stay is confirmed' : 'Booking request submitted',
+      cfBody: qst && qst.mode === 'instant' ? 'Reservation ' + b.resId + ' is confirmed. Complete identity verification in My Stay to receive the exact address and access instructions.' : 'Reservation ' + b.resId + ' is pending manager approval. Your card has been authorized and will be charged only on approval. You will be notified by email.',
+      cfFacts: q ? [{ k: 'Reservation', v: b.resId || '' }, { k: 'Quote', v: q.id + ' v' + q.version }, { k: 'Total', v: money(q.total) }, { k: qst && qst.mode === 'instant' ? 'Paid Today' : 'Authorized', v: money(q.dueNow) }, { k: 'Rules Accepted', v: RULES_VERSION }] : [],
+      // stays
+      noStays: !myRes.length, hasStays: myRes.length > 0,
+      stayTabs: myRes.map(r => { const x = STAYS.find(y => y.key === r.unit) || st, on = cur && r.id === cur.id; return { id: r.id, name: x.name, dates: fmtS(r.ci) + ' – ' + fmtS(r.co), bg: on ? '#F0FAF9' : '#fff', border: on ? '#006B68' : '#E2E8F0', select: () => this.setState({ stayId: r.id }) }; }),
+      sy: cur ? this.stayVals(cur) : { facts: [], timeline: [], opsLinks: [] }
+    };
+    // rules view
+    const rst = STAYS.find(x => x.pid === s.id) || STAYS[0], rr = rulesOf(rst), ackRes = myRes.find(r => r.unit === rst.key && r.rulesAck);
+    const toc = []; rr.groups.forEach(g => { toc.push({ label: g.title, key: g.key, h: '34px', size: '11px', weight: '700', color: '#64748B', ls: '0.06em', tt: 'uppercase' }); g.sections.forEach(sc => toc.push({ label: sc.title, key: sc.key, h: '30px', size: '13px', weight: '500', color: '#334155', ls: '0', tt: 'none' })); });
+    toc.push({ label: 'Violations', key: 'violations', h: '30px', size: '13px', weight: '500', color: '#334155', ls: '0', tt: 'none' }, { label: 'Guest Acknowledgment', key: 'ack', h: '30px', size: '13px', weight: '500', color: '#334155', ls: '0', tt: 'none' });
+    Object.assign(out, {
+      rlProp: rst.name + ' • ' + rst.area + ', ' + rst.city, rlVersion: 'Version ' + RULES_VERSION + ' • Effective ' + fmtY(RULES_EFFECTIVE) + ' • Configured in Property 360 → Short-Term Rental Settings → Rules',
+      rlSummary: rr.summary.map(([icon, label]) => ({ icon, label })), rlGroups: rr.groups, rlNa: rr.na.join(', '), hasRlNa: rr.na.length > 0,
+      rlCols: split ? '240px minmax(0,1fr)' : 'minmax(0,1fr)', rlShowToc: split,
+      rlToc: toc.map(t => ({ ...t, go: () => { const el = this._scrollEl && this._scrollEl.querySelector('[data-rl="' + t.key + '"]'); if (el) this._scrollEl.scrollTo({ top: el.getBoundingClientRect().top - this._scrollEl.getBoundingClientRect().top + this._scrollEl.scrollTop - 16, behavior: 'smooth' }); } })),
+      rlBack: () => this.setView(s.back === 'book' && q ? 'book' : s.back === 'stay' ? 'stay' : 'detail'), rlBackLabel: s.back === 'book' && q ? 'Back to Booking' : s.back === 'stay' ? 'Back to My Stay' : 'Back to ' + rst.name,
+      rlHasAck: !!ackRes, rlNoAck: !ackRes,
+      rlAck: ackRes ? [{ k: 'Guest ID', v: ackRes.rulesAck.guestId }, { k: 'Reservation ID', v: ackRes.rulesAck.reservationId }, { k: 'Rules Version', v: ackRes.rulesAck.rulesVersion }, { k: 'Accepted At', v: fmtTs(ackRes.rulesAck.acceptedAt) }] : []
+    });
+    return out;
+  }
+  coVals(res) {
+    const s = this.state, r = s.view === 'checkout' && res.find(x => x.id === s.coId);
+    if (!r) return { coItems: [], coHasErr: false, coMetered: false };
+    const st = STAYS.find(x => x.key === r.unit) || STAYS[0], elec = (st.util.electricity || [])[0], metered = elec === 'metered' || elec === 'cap', f = s.coF || { reading: '', items: {} };
+    const ITEMS = [['keys', 'Keys, remotes and access cards left in the unit'], ['trash', 'Trash removed and dishes cleared'], ['secure', 'Windows and doors closed • A/C set to 78°F'], ['damage', 'No damage to report, or damage reported to the property manager']];
+    const setF = p => this.setState(z => ({ coF: { ...z.coF, ...p } }));
+    const kwh = metered && f.reading !== '' && !isNaN(+f.reading) && r.meterIn ? +f.reading - +r.meterIn : null;
+    const err = metered && (f.reading === '' || isNaN(+f.reading)) ? 'Enter the Meter Out reading shown on the meter.' : metered && r.meterIn && +f.reading < +r.meterIn ? 'Meter Out must be greater than or equal to Meter In (' + r.meterIn + ' kWh).' : ITEMS.some(([k]) => !f.items[k]) ? 'Complete every departure item.' : !f.ok ? 'Confirm the check-out to continue.' : '';
+    const back = () => this.setView('stay', { stayId: r.id });
+    return { coId: r.id, coName: st.name, coDates: fmtS(r.ci) + ' – ' + fmtY(r.co) + ' • check-out by ' + st.co, coMetered: metered, coMeterIn: r.meterIn ? r.meterIn + ' kWh' : 'Not recorded', coReading: f.reading, onCoReading: e => setF({ reading: e.target.value }),
+      coKwh: kwh != null && kwh >= 0 ? 'Consumption ' + kwh + ' kWh • billed per the property electricity policy on your Final Stay Statement' : 'Consumption is calculated from Meter In and Meter Out.', coSlot: 'co-meter-' + r.id,
+      coItems: ITEMS.map(([k, label]) => ({ label, on: !!f.items[k], toggle: e => { const c = e.target.checked; this.setState(z => ({ coF: { ...z.coF, items: { ...z.coF.items, [k]: c } } })); } })),
+      coOk: !!f.ok, onCoOk: e => setF({ ok: e.target.checked }), coHasErr: !!(f.tried && err), coErr: err, coBack: back, coPhotoTitle: (metered ? '2' : '1') + ' • Meter Photo', coStepN: metered ? '3' : '2', coStepN2: metered ? '4' : '3',
+      coSubmit: () => { if (err) return setF({ tried: true }); const at = Date.now(), no = 'FS-' + r.id;
+        try { const k = 'mghpm.str.docs.v2', l = (JSON.parse(sessionStorage.getItem(k)) || []).filter(z => z.name !== 'Final Stay Statement — ' + r.id + '.pdf'); l.push({ pid: st.pid, resId: r.id, name: 'Final Stay Statement — ' + r.id + '.pdf', meta: no + ' • ' + fmtTs(at) + ' • Issued at guest online check-out' }); sessionStorage.setItem(k, JSON.stringify(l)); } catch (e) {}
+        this.patchRes(r.id, { status: 'checked_out', statement: { no, at, by: 'Guest online check-out', auto: true }, stage: 'CHECKED OUT', turnover: 'cleaning', ...(metered ? { meterOut: f.reading, meterOutAt: at, meterOutBy: 'Guest • online check-out' } : {}), guestCheckout: { at, items: ITEMS.map(([k]) => k), photoSlot: 'co-meter-' + r.id } }, 'Checked out — Final Stay Statement ' + no + ' issued'); back(); } };
+  }
+  stayVals(r) {
+    const st = STAYS.find(x => x.key === r.unit) || STAYS[0], n = nightsOf(r.ci, r.co), turn = r.turnover || (r.status === 'checked_out' ? 'cleaning' : null);
+    const SL = { pending: ['Pending Approval', 'warning'], confirmed: ['Confirmed', 'success'], checked_in: ['Checked In', 'info'], checked_out: ['Checked Out', 'neutral'], cancelled: ['Cancelled', 'danger'] }[r.status] || ['—', 'neutral'];
+    const reveal = ['confirmed', 'checked_in', 'checked_out'].includes(r.status);
+    const elec = (st.util.electricity || [])[0], kwh = r.meterIn && r.meterOut ? Number(r.meterOut) - Number(r.meterIn) : null;
+    const allow = elec === 'cap' ? 40 * n : 0, billable = kwh != null ? Math.max(0, kwh - allow) : null;
+    const stage = r.status === 'pending' ? 1 : r.status === 'confirmed' ? 2 : r.status === 'checked_in' ? 4 : r.status === 'checked_out' ? (turn === 'ready' ? 8 : turn === 'inspection' ? 6 : 5) : 0;
+    const TL = [['Booking Requested', 'Quote ' + (r.quoteId || '—') + ' accepted • rules ' + ((r.guestRulesAcceptance || r.rulesAck || {}).rulesVersion || '—')], ['Confirmed', st.mode === 'instant' ? 'Instant Book' : 'Approved by property manager'], ['Online Check-In', 'Identity verification and arrival details'], ['Checked In', fmtL(r.ci) + ' after ' + st.ci], ['Checked Out', fmtL(r.co) + ' by ' + st.co], ['Cleaning', 'Turnover cleaning job assigned by Operations'], ['Turnover Inspection', 'Digital inspection of condition, inventory and meter'], ['Ready for Next Guest', 'Unit released back to availability']];
+    const timeline = TL.map(([label, sub], i) => { const done = i < stage || (i === 7 && stage === 8), now = i === stage && stage < 8; return { label, sub, done, dotBg: done ? '#006B68' : '#fff', dotBorder: done || now ? '#006B68' : '#CBD5E1', color: done || now ? '#172033' : '#94A3B8', lineBg: done ? '#006B68' : '#E2E8F0', lineDisplay: i < TL.length - 1 ? 'block' : 'none' }; });
+    let guestAction = null, guestLabel = '', guestIcon = 'log-in';
+    if (r.status === 'confirmed') { guestLabel = 'Complete Online Check-In'; guestIcon = 'log-in'; guestAction = () => this.patchRes(r.id, { status: 'checked_in', ...(elec === 'metered' || elec === 'cap' ? { meterIn: String(30120 + n * 7) } : {}) }, 'Checked in — welcome to ' + st.name); }
+    else if (r.status === 'checked_in') { guestLabel = 'Start Check-Out'; guestIcon = 'log-out'; guestAction = () => this.setView('checkout', { coId: r.id, coF: { reading: '', items: {}, ok: false, tried: false } }); }
+    let opsStep = 'No action required', opsAction = null, opsLabel = '', opsLinks = [{ label: 'Open in Reservation 360', go: () => go(PAGES['reservation-360'] + '?id=' + encodeURIComponent(r.id)) }];
+    if (r.status === 'pending') { opsStep = 'Approve or decline the booking request'; opsLabel = 'Approve Request'; opsAction = () => { const pd = r.authorized || 0, tot = r.reservationTotal || 0; this.patchRes(r.id, { status: 'confirmed', amountPaidAtBooking: pd, authorized: 0, ...(r.payment ? { payment: { ...r.payment, paid: pd, balance: r2(tot - pd), status: pd >= tot - 0.005 ? 'PAID' : pd > 0 ? 'PARTIALLY_PAID' : 'UNPAID' } } : {}) }, 'Request approved — guest notified'); }; }
+    else if (r.status === 'confirmed') opsStep = 'Awaiting guest online check-in';
+    else if (r.status === 'checked_in') opsStep = 'Guest in residence — check-out ' + fmtS(r.co);
+    else if (turn === 'cleaning') { opsStep = 'Turnover cleaning'; opsLabel = 'Mark Cleaning Complete'; opsAction = () => this.patchRes(r.id, { turnover: 'inspection' }, 'Cleaning complete — inspection queued'); opsLinks.push({ label: 'Open Cleaning Jobs', go: () => go(PAGES.cleaning) }); }
+    else if (turn === 'inspection') { opsStep = 'Turnover inspection'; opsLabel = 'Pass Turnover Inspection'; opsAction = () => this.patchRes(r.id, { turnover: 'ready' }, 'Unit ready for next guest'); opsLinks.push({ label: 'Open Inspections', go: () => go(PAGES.inspections) }); }
+    else if (turn === 'ready') opsStep = 'Ready for next guest — availability released';
+    opsLinks.push({ label: 'Open Property 360', go: () => go(PAGES.property + '?id=' + st.pid) });
+    const paid = r.amountPaidAtBooking != null ? r.amountPaidAtBooking : (r.paidNow || 0), ack = r.guestRulesAcceptance || r.rulesAck, tot = r.reservationTotal != null ? r.reservationTotal : r.quoteTotal;
+    return {
+      id: r.id, name: st.name, slot: 'str-' + st.pid + '-1', dates: fmtS(r.ci) + ' – ' + fmtY(r.co) + ' • ' + pl(n, 'night'), guests: pl(r.guests, 'guest'), status: SL[0], tone: SL[1],
+      facts: [{ k: 'Check-in', v: fmtL(r.ci) + ' • after ' + st.ci }, { k: 'Check-out', v: fmtL(r.co) + ' • by ' + st.co }, { k: 'Total', v: tot ? money(tot) : '—' }, ...(r.statement ? [{ k: 'Final Stay Statement', v: r.statement.no + ' • ' + fmtTs(r.statement.at) }] : []), { k: r.authorized ? 'Authorized' : 'Paid', v: money(r.authorized || paid) }],
+      addrBg: reveal ? '#F0FAF9' : '#F8FAFC', addrIcon: reveal ? 'map-pin' : 'lock', addrTitle: reveal ? st.addr : 'Exact address available after confirmation', addrBody: reveal ? 'Access: ' + st.rc.access + ' Codes are sent 24 hours before check-in once identity is verified.' : st.area + ', ' + st.city + ' • Your request is with the property manager.',
+      hasGuestAction: !!guestAction, guestAction, guestLabel, guestIcon, showId: r.status === 'confirmed',
+      hasCharge: billable != null && (elec === 'metered' || billable > 0), chargeLabel: billable != null ? 'Electricity • ' + billable + ' kWh' + (allow ? ' above ' + allow + ' kWh allowance' : '') + ' × US$0.14' : '', chargeAmt: billable != null ? money(billable * KWH) : '',
+      timeline, opsStep, hasOpsAction: !!opsAction, opsAction, opsLabel, opsLinks,
+      openRules: () => this.setView('rules', { id: st.pid, back: 'stay' }),
+      ackLine: ack ? 'Accepted ' + ack.rulesVersion + ' on ' + fmtTs(ack.acceptedAt) : 'Rules for ' + st.name
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="str-data.js"></script>
+  <script src="guest-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+  <style>input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}</style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="insurance-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+  <script src="ops-data.js"></script>
+  <script src="finance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 63 — Accounts Receivable" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1480px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px"><div style="display:flex;flex-direction:column;gap:8px;flex:1 1 420px;min-width:0"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Financials • Accounting</span><sc-if value="{{ ctxBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ goCtxBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ ctxBackLabel }}</button></sc-if><h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Accounts Receivable</h1><p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:780px;text-wrap:pretty">What tenants, guests and owners owe — original amount, paid, balance and aging (Current, 1–30, 31–60, 61–90, 90+).</p></div><div style="display:flex;flex-wrap:wrap;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="file-down" on-click="{{ exportCsv }}" hint-size="120px,36px">Export CSV</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" on-click="{{ newCharge }}" hint-size="130px,36px">New Charge</x-import></div></div>
+        <sc-if value="{{ hasScope }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;border:1px solid #99D5D0;border-radius:8px;background:#F0FAF9;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#004F4D"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="filter" size="{{ 14 }}" hint-size="14px,14px"></x-import><span>{{ scopeText }}</span><a href="{{ scopeHref }}" style="font-weight:600">{{ scopeLink }}</a><button onClick="{{ clearScope }}" style="margin-left:auto;border:0;background:transparent;cursor:pointer;color:#004F4D;font:600 12px/1 'Plus Jakarta Sans',sans-serif" style-hover="text-decoration:underline">Show All</button></div></sc-if>
+        <sc-if value="{{ hasTabs }}" hint-placeholder-val="{{ false }}"><div role="tablist" style="display:flex;gap:4px;border-bottom:1px solid #E2E8F0;overflow-x:auto"><sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button role="tab" onClick="{{ t.select }}" style="height:42px;padding:0 14px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;cursor:pointer;color:{{ t.color }};font:600 14px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:8px" style-hover="color:#006B68">{{ t.label }}<span style="padding:2px 7px;border-radius:999px;background:{{ t.cbg }};color:{{ t.cfg }};font:600 11px/1.3 'Plus Jakarta Sans',sans-serif">{{ t.count }}</span></button></sc-for></div></sc-if>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px"><sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5"><button onClick="{{ k.select }}" style="background:#FFFFFF;border:1px solid {{ k.border }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:16px 18px;display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;font-family:inherit" style-hover="border-color:#99D5D0"><span style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:8px;background:{{ k.bg }};color:{{ k.fg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ k.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ k.label }}</span></span><span style="font:700 22px/1.15 'Plus Jakarta Sans',sans-serif;color:#172033;overflow-wrap:anywhere">{{ k.value }}</span></button></sc-for></div>
+        <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px 20px;border-bottom:1px solid #E2E8F0">
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><label style="flex:1 1 300px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import><input value="{{ q }}" onInput="{{ onQ }}" placeholder="{{ searchPh }}" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033"></label><sc-for list="{{ filters }}" as="fl" hint-placeholder-count="2"><select aria-label="{{ fl.label }}" value="{{ fl.value }}" onChange="{{ fl.on }}" style="height:40px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;flex:0 1 210px;min-width:150px;width:auto;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ fl.opts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></sc-for><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" icon="x" on-click="{{ clearAll }}" hint-size="130px,36px">Clear Filters</x-import></div>
+            <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ chips }}" as="ch"><button onClick="{{ ch.select }}" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;border:1px solid {{ ch.bd }};background:{{ ch.bg }};color:{{ ch.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif" style-hover="border-color:#132A52">{{ ch.label }}<span style="opacity:0.7">{{ ch.count }}</span></button></sc-for></div></sc-if>
+          </div>
+          <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 20px;border-bottom:1px solid #E2E8F0;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B"><span>{{ countLabel }}</span><span>{{ listHint }}</span></div>
+          <sc-if value="{{ isTable }}" hint-placeholder-val="{{ true }}"><div style="overflow-x:auto"><table style="width:100%;min-width:{{ tableMinW }};border-collapse:collapse"><thead><tr><sc-for list="{{ cols }}" as="col" hint-placeholder-count="6"><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">{{ col.l }}</th></sc-for></tr></thead><tbody>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8"><tr onClick="{{ r.open }}" style="cursor:pointer;background:{{ r.bg }}" style-hover="background:#F8FAFC"><sc-for list="{{ r.cells }}" as="c"><td style="padding:11px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><sc-if value="{{ c.isText }}"><div style="display:flex;flex-direction:column;gap:2px;max-width:320px"><span style="color:{{ c.color }};font-weight:{{ c.w }}">{{ c.v }}</span><sc-if value="{{ c.hasSub }}"><span style="font-size:11px;color:#64748B">{{ c.sub }}</span></sc-if></div></sc-if><sc-if value="{{ c.isBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ c.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ c.v }}</x-import></sc-if></td></sc-for></tr></sc-for>
+          </tbody></table></div></sc-if>
+          <sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:10px;padding:12px"><sc-for list="{{ rows }}" as="r" hint-placeholder-count="4"><button onClick="{{ r.open }}" style="display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;text-align:left;cursor:pointer;font-family:inherit;min-height:44px"><span style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ r.card.title }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.card.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ r.card.badge }}</x-import></span><span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ r.card.sub }}</span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ r.card.meta }}</span></button></sc-for></div></sc-if>
+          <sc-if value="{{ isFeed }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column"><sc-for list="{{ feed }}" as="n" hint-placeholder-count="6"><div style="display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid #E2E8F0;background:{{ n.bg }}">
+            <span style="width:8px;height:8px;border-radius:4px;margin-top:12px;background:{{ n.dot }};flex-shrink:0" title="{{ n.readState }}"></span>
+            <span style="width:32px;height:32px;border-radius:8px;background:{{ n.ibg }};color:{{ n.ifg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ n.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+            <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><button onClick="{{ n.open }}" style="border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:{{ n.w }} 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033" style-hover="color:#006B68;text-decoration:underline">{{ n.title }}</button><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ n.pTone }}" dot="{{ true }}" hint-size="80px,22px">{{ n.priority }}</x-import><span style="padding:2px 8px;border-radius:999px;background:#F1F5F9;color:#475569;font:600 11px/16px 'Plus Jakarta Sans',sans-serif">{{ n.cat }}</span><sc-if value="{{ n.isSnoozed }}"><span style="padding:2px 8px;border-radius:999px;background:#FBF3DE;color:#7A5A12;font:600 11px/16px 'Plus Jakarta Sans',sans-serif">Snoozed until {{ n.snooze }}</span></sc-if></div>
+              <span style="font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#334155;text-wrap:pretty">{{ n.desc }}</span>
+              <span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ n.module }} • {{ n.record }} • {{ n.when }} • {{ n.assignee }}</span>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:2px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="external-link" on-click="{{ n.open }}" hint-size="130px,30px">{{ n.action }}</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="{{ n.readIcon }}" on-click="{{ n.toggleRead }}" hint-size="110px,30px">{{ n.readLabel }}</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="alarm-clock" on-click="{{ n.snoozeFn }}" hint-size="90px,30px">{{ n.snoozeLabel }}</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="list-filter" on-click="{{ n.related }}" hint-size="130px,30px">View All Related</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="{{ n.dismissIcon }}" on-click="{{ n.dismiss }}" hint-size="90px,30px">{{ n.dismissLabel }}</x-import></div>
+            </div></div></sc-for></div></sc-if>
+          <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}"><div style="padding:36px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ emptyText }}</div></sc-if>
+        </section>
+      </div>
+      <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closePanel }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.35);z-index:60"></div>
+        <aside role="dialog" aria-label="{{ d.eyebrow }}" style="position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(600px,100vw);background:#fff;box-shadow:-8px 0 24px rgba(15,23,42,0.14);display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 22px;border-bottom:1px solid #E2E8F0"><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ d.eyebrow }}</span><span style="font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ d.title }}</span><span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ d.sub }}</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ dBadges }}" as="b"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ b.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ b.v }}</x-import></sc-for></div></div><button onClick="{{ closePanel }}" title="Close" style="width:40px;height:40px;border:0;border-radius:6px;background:transparent;cursor:pointer;color:#64748B;display:flex;align-items:center;justify-content:center;flex-shrink:0" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 18 }}" hint-size="18px,18px"></x-import></button></div>
+          <div style="flex:1;overflow:auto;padding:18px 22px;display:flex;flex-direction:column;gap:18px">
+            <sc-if value="{{ hasChain }}"><div style="display:flex;flex-direction:column;gap:8px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Connected Records</span><div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px"><sc-for list="{{ dChain }}" as="c"><span style="display:flex;align-items:center;gap:6px"><sc-if value="{{ c.sep }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-right" size="{{ 13 }}" color="#94A3B8" hint-size="13px,13px"></x-import></sc-if><sc-if value="{{ c.hasHref }}"><a href="{{ c.href }}" style="display:flex;flex-direction:column;gap:2px;padding:6px 10px;border:1px solid #99D5D0;border-radius:8px;background:#F0FAF9;text-decoration:none"><span style="font:600 10px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#004F4D">{{ c.kind }}</span><span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ c.label }}</span></a></sc-if><sc-if value="{{ c.noHref }}"><span style="display:flex;flex-direction:column;gap:2px;padding:6px 10px;border:1px solid #E2E8F0;border-radius:8px;background:#F8FAFC"><span style="font:600 10px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ c.kind }}</span><span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569">{{ c.label }}</span></span></sc-if></span></sc-for></div></div></sc-if>
+            <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ dActions }}" as="a" hint-placeholder-count="4"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="{{ a.variant }}" size="sm" icon="{{ a.icon }}" on-click="{{ a.on }}" disabled="{{ a.disabled }}" hint-size="120px,30px">{{ a.label }}</x-import></sc-for></div>
+            <sc-if value="{{ hasText }}"><div style="padding:12px 14px;border-radius:8px;background:#F8FAFC;font:400 13px/1.55 'Plus Jakarta Sans',sans-serif;color:#172033;text-wrap:pretty">{{ d.text }}</div></sc-if>
+            <sc-for list="{{ dSections }}" as="sec"><div style="display:flex;flex-direction:column"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;padding-bottom:6px">{{ sec.title }}</span><sc-for list="{{ sec.rows }}" as="kv"><div style="display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-top:1px solid #F1F5F9;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B;flex-shrink:0">{{ kv.k }}</span><sc-if value="{{ kv.noHref }}"><span style="color:#172033;font-weight:600;text-align:right;text-wrap:pretty;overflow-wrap:anywhere">{{ kv.v }}</span></sc-if><sc-if value="{{ kv.hasHref }}"><a href="{{ kv.href }}" style="font-weight:600;text-align:right">{{ kv.v }} →</a></sc-if></div></sc-for></div></sc-for>
+            <sc-for list="{{ dLists }}" as="li"><div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ li.title }}</span><sc-for list="{{ li.items }}" as="it"><div style="display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff"><sc-if value="{{ it.isCheck }}"><button onClick="{{ it.toggle }}" title="{{ it.checkTitle }}" style="width:28px;height:28px;margin:-4px 0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:{{ it.ic }};flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.ico }}" size="{{ 18 }}" hint-size="18px,18px"></x-import></button></sc-if><sc-if value="{{ it.isDot }}"><span style="width:8px;height:8px;border-radius:4px;margin-top:5px;background:{{ it.ic }};flex-shrink:0"></span></sc-if><span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1"><sc-if value="{{ it.hasHref }}"><a href="{{ it.href }}" style="font:600 13px/1.35 'Plus Jakarta Sans',sans-serif">{{ it.t }}</a></sc-if><sc-if value="{{ it.noHref }}"><span style="font:600 13px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033;text-decoration:{{ it.strike }}">{{ it.t }}</span></sc-if><sc-if value="{{ it.hasS }}"><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ it.s }}</span></sc-if></span></div></sc-for><sc-if value="{{ li.isEmpty }}"><span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#94A3B8">{{ li.empty }}</span></sc-if></div></sc-for>
+          </div>
+        </aside>
+      </sc-if>
+      <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:80"></div>
+        <div role="dialog" aria-label="{{ m.title }}" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:81;width:min(680px,calc(100vw - 24px));max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:#fff;border-radius:12px;box-shadow:0 24px 48px rgba(15,23,42,0.24)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 22px;border-bottom:1px solid #E2E8F0"><div style="display:flex;flex-direction:column;gap:4px"><span style="font:700 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ m.title }}</span><span style="font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ m.sub }}</span></div><button onClick="{{ closeModal }}" title="Close" style="width:40px;height:40px;border:0;border-radius:6px;background:transparent;cursor:pointer;color:#64748B;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 18 }}" hint-size="18px,18px"></x-import></button></div>
+          <div style="flex:1;overflow:auto;padding:18px 22px;display:grid;grid-template-columns:{{ mCols }};gap:14px">
+            <sc-for list="{{ mFields }}" as="fd"><label style="grid-column:{{ fd.span }};display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}
+              <sc-if value="{{ fd.isInput }}"><input type="{{ fd.type }}" value="{{ fd.value }}" onInput="{{ fd.on }}" placeholder="{{ fd.ph }}" style="height:40px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></sc-if>
+              <sc-if value="{{ fd.isSelect }}"><select value="{{ fd.value }}" onChange="{{ fd.on }}" style="height:40px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ fd.opts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></sc-if>
+              <sc-if value="{{ fd.isArea }}"><textarea value="{{ fd.value }}" onInput="{{ fd.on }}" rows="3" placeholder="{{ fd.ph }}" style="height:40px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;line-height:1.5;resize:vertical" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></sc-if>
+              <sc-if value="{{ fd.isFile }}"><input type="file" multiple="{{ true }}" onChange="{{ fd.onFile }}" style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"></sc-if>
+              <sc-if value="{{ fd.isPhoto }}"><input type="file" accept="image/*,video/*" capture="environment" multiple="{{ true }}" onChange="{{ fd.onFile }}" style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"></sc-if>
+              <sc-if value="{{ fd.hasNote }}"><span style="font:400 11px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.note }}</span></sc-if>
+            </label></sc-for>
+            <sc-if value="{{ mErr }}"><div style="grid-column:1 / -1;padding:10px 12px;border-radius:8px;background:#FEF2F2;color:#B91C1C;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif">{{ mErrMsg }}</div></sc-if>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid #E2E8F0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="x" on-click="{{ closeModal }}" hint-size="90px,36px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ submitModal }}" hint-size="150px,36px">{{ m.submitLabel }}</x-import></div>
+        </div>
+      </sc-if>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs0 = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+const mkCrumbs = l => mkCrumbs0(withCtx(l));
+const CTX = (() => { const q = new URLSearchParams(window.location.search); return { back: q.get('back'), label: q.get('backLabel') || '' }; })();
+const CTXV = { ctxBack: !!CTX.back, goCtxBack: () => CTX.back && go(CTX.back), ctxBackLabel: CTX.label };
+const withCtx = l => CTX.back && CTX.label ? [l[0], [CTX.label.replace(/^Back to /, ''), CTX.back], l[l.length - 1]] : l;
+
+
+
+const ACTIVE = 'receivables';
+const CRUMBS = [['Home', PAGES.dashboard], ['Financials', null], ['Accounting', PAGES.accounting], ['Accounts Receivable', null]];
+const INIT_SEL = () => QP.get('id') ? { kind: 'ar', id: QP.get('id') } : null;
+const F = () => window.MGH_FIN;
+const AGT = { Paid: 'success', Current: 'info', '1–30': 'warning', '31–60': 'warning', '61–90': 'danger', '90+': 'danger' };
+const QP = new URLSearchParams(window.location.search);
+const CMP = () => window.MGH_COMP;
+const opt = (label, vals) => [{ v: 'all', l: label }].concat(vals.map(x => Array.isArray(x) ? { v: String(x[0]), l: x[1] } : { v: String(x), l: String(x) }));
+const TX = (v, sub, strong) => ({ isText: true, isBadge: false, v: v == null || v === '' ? '—' : String(v), hasSub: !!sub, sub: sub || '', color: strong ? '#172033' : '#475569', w: strong ? '600' : '400' });
+const BG = (v, tone) => ({ isText: false, isBadge: true, v: String(v), tone: tone || TONE(v) });
+const KV = rows => rows.filter(Boolean).map(([k, v, href]) => ({ k, v: v == null || v === '' ? '—' : String(v), hasHref: !!href, noHref: !href, href: href || '' }));
+const TONE_MAP = { success: ['Resolved', 'Closed', 'Active', 'Excellent', 'Good', 'Paid', 'None', 'Acknowledged', 'Sent'], warning: ['Open', 'Corrective Action', 'Fair', 'Under Review', 'Awaiting Documentation', 'Pending', 'Issued', 'High', 'Due Soon'], danger: ['Fine Issued', 'Poor', 'Failed', 'Out of Service', 'Critical', 'Disputed', 'Action Required', 'Overdue', 'Expired'], info: ['New', 'Insurance Pending', 'Normal', 'Medium'], neutral: ['Retired', 'Low', 'Informational'] };
+const TONE = v => { for (const k in TONE_MAP) if (TONE_MAP[k].includes(String(v))) return k; return 'neutral'; };
+const nowStr = () => { const d = new Date(); const p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); };
+const has = (q, parts) => !q || parts.filter(Boolean).join(' ').toLowerCase().includes(q);
+const ALL_WOS = db => [].concat(...db.assets.map(a => a.wos), db.incs.map(i => i.wo).filter(Boolean), db.vios.map(v => v.wo).filter(Boolean)).map(id => ({ id }));
+const FLD = (key, label, type, o) => Object.assign({ key, label, type }, o || {});
+
+class Component extends DCLogic {
+  state = { toast: null, collapsed: null, closedSections: {}, drawerOpen: false, q: '', f: {}, kpi: null, chip: 'all', tab: null, sel: INIT_SEL(), modal: null, mv: {}, mErr: '', scopeOff: false, rel: null };
+  componentDidMount() {
+    this._onResize = () => { const w = window.innerWidth || document.documentElement.clientWidth; const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop'; if (bp !== this._bp || w !== this._lastW) { this._lastW = w; this.forceUpdate(); } };
+    this._lastW = 0; window.addEventListener('resize', this._onResize);
+    if (window.ResizeObserver) { this._ro = new ResizeObserver(this._onResize); this._ro.observe(document.documentElement); }
+    this._t = [0, 400, 1000, 2000].map(ms => setTimeout(this._onResize, ms));
+    const t2 = setInterval(() => { if (window.MGH_COMP && window.lucide) { clearInterval(t2); if (!this._u) this._u = window.MGH_COMP.subscribe(() => this.forceUpdate()); this.forceUpdate(); } }, 120);
+    this._t2 = t2;
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); this._ro && this._ro.disconnect(); (this._t || []).forEach(clearTimeout); clearInterval(this._t2); clearTimeout(this._toastT); this._u && this._u(); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3400); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop'; this._bp = bp;
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+  mut(fn, msg) { fn(CMP().db); CMP().save(); if (msg) this.notify(msg); }
+  openModal(cfg, values) { this.setState({ modal: cfg, mv: Object.assign({}, values || {}), mErr: '' }); }
+  pick(kind, id) { this.setState({ sel: { kind, id } }); }
+  scopeOf() {
+    const C = CMP(); if (this.state.scopeOff) return { pids: null };
+    if (QP.get('pid')) { const p = C.prop(QP.get('pid')); return { pids: [p.id], text: 'Showing records for ' + p.title, href: C.href.property(p.id), link: 'Open Property 360' }; }
+    if (QP.get('owner')) { const o = QP.get('owner'); return { pids: C.ownerPids(o), owner: o, text: 'Showing records for owner ' + o, href: C.href.owner(o), link: 'Open Owner 360' }; }
+    if (QP.get('tenant')) { const n = QP.get('tenant'), t = C.TENANTS.find(x => x.name === n); return { pids: t ? [t.pid] : null, tenant: n, text: 'Showing records for tenant ' + n, href: C.href.tenant(n), link: 'Open Tenant 360' }; }
+    return { pids: null };
+  }
+  modalVals(bp) {
+    const s = this.state, m = s.modal;
+    const base = { closeModal: () => this.setState({ modal: null }), submitModal: () => this.submitModal() };
+    if (!m) return { ...base, modalOpen: false, m: {}, mFields: [], mErr: false, mErrMsg: '', mCols: '1fr' };
+    const two = bp !== 'mobile';
+    return { ...base, modalOpen: true, m: { title: m.title, sub: m.sub || '', submitLabel: m.submitLabel || 'Save' }, mCols: two ? 'repeat(2,minmax(0,1fr))' : 'minmax(0,1fr)', mErr: !!s.mErr, mErrMsg: s.mErr,
+      mFields: m.fields.map(fd => { const t = fd.type; const val = s.mv[fd.key] == null ? '' : String(s.mv[fd.key]);
+        return { label: fd.label + (fd.req ? ' *' : ''), type: t === 'datetime' ? 'datetime-local' : t, value: val, ph: fd.ph || '', span: fd.full || !two ? '1 / -1' : 'auto',
+          isInput: ['text', 'number', 'date', 'datetime', 'email', 'tel'].includes(t), isSelect: t === 'select', isArea: t === 'area', isFile: t === 'file', isPhoto: t === 'photo',
+          hasNote: !!fd.note || ((t === 'file' || t === 'photo') && !!val), note: (t === 'file' || t === 'photo') && val ? 'Attached: ' + val : fd.note || '',
+          opts: (fd.opts || []).map(o => Array.isArray(o) ? { v: String(o[0]), l: o[1] } : { v: String(o), l: String(o) }),
+          on: e => { const v = e.target.value; this.setState(st => ({ mv: { ...st.mv, [fd.key]: v } })); },
+          onFile: e => { const names = Array.from(e.target.files || []).map(f => f.name).join(', '); this.setState(st => ({ mv: { ...st.mv, [fd.key]: names } })); } }; }) };
+  }
+  submitModal() {
+    const s = this.state, m = s.modal; if (!m) return;
+    const miss = m.fields.filter(f => f.req && !String(s.mv[f.key] == null ? '' : s.mv[f.key]).trim());
+    if (miss.length) { this.setState({ mErr: 'Required: ' + miss.map(f => f.label).join(', ') }); return; }
+    const out = m.submit(s.mv); this.setState({ modal: null });
+    if (out && out.sel) this.setState({ sel: out.sel });
+  }
+  listVals(P, bp) {
+    const s = this.state, isMobile = bp === 'mobile';
+    const curTab = P.tab;
+    return {
+      hasScope: !!P.scope, scopeText: P.scope ? P.scope.text : '', scopeHref: P.scope ? P.scope.href : '', scopeLink: P.scope ? P.scope.link : '', clearScope: () => this.setState({ scopeOff: true, rel: null }),
+      hasTabs: !!(P.tabs && P.tabs.length), tabs: (P.tabs || []).map(t => { const on = t[0] === curTab; return { label: t[1], count: String(t[2]), bd: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', cbg: on ? '#DDF3F1' : '#F1F5F9', cfg: on ? '#004F4D' : '#475569', select: () => this.setState({ tab: t[0], kpi: null, chip: 'all', f: {} }) }; }),
+      kpis: (P.kpis || []).map(k => ({ label: k[1], icon: k[2], value: String(k[3]), bg: k[4], fg: k[5], border: s.kpi === k[0] ? '#006B68' : '#E2E8F0', select: () => this.setState(st => ({ kpi: st.kpi === k[0] ? null : k[0], tab: k[6] || st.tab })) })),
+      q: s.q, onQ: e => this.setState({ q: e.target.value }), clearAll: () => this.setState({ q: '', f: {}, kpi: null, chip: 'all', rel: null }), searchPh: P.searchPh || 'Search…',
+      filters: (P.filters || []).map(([key, label, vals]) => ({ label, value: s.f[key] || 'all', opts: opt(label, vals), on: e => { const val = e.target.value; this.setState(st => ({ f: { ...st.f, [key]: val } })); } })),
+      hasChips: !!(P.chips && P.chips.length), chips: (P.chips || []).map(([key, label, count]) => { const on = (s.chip || 'all') === key; return { label, count: count == null ? '' : String(count), bd: on ? '#132A52' : '#E2E8F0', bg: on ? '#132A52' : '#fff', color: on ? '#fff' : '#475569', select: () => this.setState({ chip: key }) }; }),
+      countLabel: P.count || '', listHint: isMobile ? 'Tap a card to open' : (P.hint || 'Click a row to open the record'),
+      isTable: !P.feed && !isMobile, isCards: !P.feed && isMobile, isFeed: !!P.feed, tableMinW: P.minW || '960px',
+      cols: (P.cols || []).map(l => ({ l })), rows: P.rows || [], feed: P.feed || [], noRows: !(P.feed || P.rows || []).length, emptyText: P.empty || 'No records match these filters.'
+    };
+  }
+  drawerVals(D) {
+    const none = { panelOpen: false, d: {}, dBadges: [], dChain: [], dSections: [], dLists: [], dActions: [], hasChain: false, hasText: false, closePanel: () => this.setState({ sel: null }) };
+    if (!D) return none;
+    return { ...none, panelOpen: true, d: { eyebrow: D.eyebrow, title: D.title, sub: D.sub || '', text: D.text || '' }, hasText: !!D.text,
+      dBadges: (D.badges || []).filter(Boolean).map(b => Array.isArray(b) ? { v: b[0], tone: b[1] } : { v: b, tone: TONE(b) }),
+      hasChain: !!(D.chain && D.chain.length), dChain: (D.chain || []).map(([kind, label, href], i) => ({ kind, label: label || '—', href: href || '', hasHref: !!href, noHref: !href, sep: i > 0 })),
+      dActions: (D.actions || []).filter(Boolean).map(([label, icon, on, variant, disabled]) => ({ label, icon, on, variant: variant || 'outline', disabled: !!disabled })),
+      dSections: (D.sections || []).filter(Boolean).map(([title, rows]) => ({ title, rows: KV(rows) })),
+      dLists: (D.lists || []).filter(Boolean).map(l => ({ title: l.title, empty: l.empty || 'None', isEmpty: !l.items.length, items: l.items.map(it => ({ t: it.t, s: it.s || '', hasS: !!it.s, href: it.href || '', hasHref: !!it.href, noHref: !it.href, isCheck: !!it.toggle, isDot: !it.toggle, toggle: it.toggle || null, ico: it.done ? 'circle-check' : 'circle', ic: it.toggle ? (it.done ? '#15803D' : '#94A3B8') : (it.tone || '#94A3B8'), checkTitle: it.done ? 'Mark as not done' : 'Mark as done', strike: it.done && it.toggle ? 'line-through' : 'none' })) })) };
+  }
+  renderVals() {
+    const { v, bp } = this.chrome(ACTIVE);
+    const H = this.handlers();
+    const base = { ...v, ...CTXV, ...H, ...this.modalVals(bp) };
+    if (!window.MGH_COMP) return { ...base, crumbItems: mkCrumbs(CRUMBS), ...this.listVals({ kpis: [] }, bp), ...this.drawerVals(null) };
+    const P = this.page(bp);
+    return { ...base, crumbItems: mkCrumbs(P.crumbs || CRUMBS), ...this.listVals(P, bp), ...this.drawerVals(P.drawer) };
+  }
+
+
+  act(fn, msg) { fn(F().db); F().save(); if (msg) this.notify(msg); this.forceUpdate(); }
+  handlers() { return { newCharge: () => this.chargeModal(), exportCsv: () => this.notify('AR aging CSV exported — prototype only') }; }
+  chargeModal() {
+    const X = F(), C = CMP();
+    this.openModal({ title: 'New Charge', sub: 'Creates a receivable and posts Dr 1200 Accounts Receivable / Cr income.', submitLabel: 'Create Charge', fields: [FLD('type', 'Party Type', 'select', { req: true, opts: ['Tenant', 'Guest', 'Owner'] }), FLD('party', 'Party Name', 'text', { req: true }), FLD('pid', 'Property', 'select', { req: true, opts: C.PROPS.map(p => [p.id, p.title]) }), FLD('ref', 'Charge Description', 'text', { req: true, full: true }), FLD('acct', 'Income Account', 'select', { req: true, opts: [[4010, 'Rent Income'], [4020, 'Reservation Income'], [4030, 'Cleaning Fees']] }), FLD('due', 'Due Date', 'date', { req: true }), FLD('amt', 'Amount (US$)', 'number', { req: true })],
+      submit: v => { const id = 'AR-2026-' + String(Math.max(...X.db.ar.map(a => +a.id.slice(-4))) + 1).padStart(4, '0'); this.act(db => { db.ar.unshift({ id, type: v.type, party: v.party, pid: +v.pid, unit: '—', ref: v.ref, due: v.due, amount: +v.amt, paid: 0, link: '', notes: [] }); X.postJe('Charge ' + id + ' — ' + v.ref, ['Receivable', id, X.href.ar(id)], +v.pid, [[1200, +v.amt, 0], [+v.acct, 0, +v.amt]]); X.log(id, 'Charge created'); }, id + ' created'); return { sel: { kind: 'ar', id } }; } }, { type: 'Tenant', due: X.TODAY, acct: '4010' });
+  }
+  page(bp) {
+    const X = F(), C = CMP(), s = this.state, q = s.q.trim().toLowerCase(), f = s.f, tab = s.tab || 'open', chip = s.chip || 'all';
+    const sc = this.scopeOf(), bal = a => X.r2(a.amount - a.paid);
+    const L = X.db.ar.filter(a => !sc.pids || sc.pids.includes(a.pid));
+    const base = L.filter(a => tab === 'open' ? bal(a) > 0 : tab === 'paid' ? bal(a) <= 0 : true);
+    const list = base.filter(a => (chip === 'all' || X.bucket(a) === chip) && (!f.type || f.type === 'all' || a.type === f.type) && (!f.pid || f.pid === 'all' || String(a.pid) === f.pid) && (!s.kpi || s.kpi === 'all' || (s.kpi === 'over' ? !['Current', 'Paid'].includes(X.bucket(a)) : a.type === s.kpi)) && has(q, [a.id, a.party, a.ref, a.link, C.prop(a.pid).title]));
+    const sumB = arr => X.money(arr.reduce((x, a) => x + Math.max(0, bal(a)), 0));
+    const open = L.filter(a => bal(a) > 0);
+    const P = { tab, minW: '1240px', searchPh: 'Search party, charge, lease, reservation, property…',
+      tabs: [['open', 'Open', open.length], ['paid', 'Paid', L.length - open.length], ['all', 'All', L.length]],
+      kpis: [['all', 'Total Receivable', 'hand-coins', sumB(open), '#DDF3F1', '#006B68', 'open'], ['over', 'Overdue', 'alarm-clock', sumB(open.filter(a => X.bucket(a) !== 'Current')), '#FEF2F2', '#B91C1C', 'open'], ['Tenant', 'Tenants', 'users', sumB(open.filter(a => a.type === 'Tenant')), '#EEF2FF', '#132A52', 'open'], ['Guest', 'Guests', 'luggage', sumB(open.filter(a => a.type === 'Guest')), '#E6F6FC', '#00739F', 'open'], ['Owner', 'Owners', 'briefcase', sumB(open.filter(a => a.type === 'Owner')), '#FBF3DE', '#7A5A12', 'open']],
+      chips: [['all', 'All Aging', base.length]].concat(['Current', '1–30', '31–60', '61–90', '90+'].map(b => [b, b, base.filter(a => X.bucket(a) === b).length])),
+      filters: [['type', 'All Parties', ['Tenant', 'Guest', 'Owner']], ['pid', 'All Properties', [...new Set(L.map(a => a.pid))].map(p => [p, C.prop(p).title])]],
+      cols: ['Party', 'Invoice / Charge', 'Property', 'Due Date', 'Original', 'Paid', 'Balance', 'Aging', 'Status'],
+      rows: list.map(a => { const b = X.bucket(a); return { open: () => this.pick('ar', a.id), bg: s.sel && s.sel.id === a.id ? '#F0FAF9' : 'transparent', cells: [TX(a.party, a.type, true), TX(a.ref, a.id), TX(C.prop(a.pid).title, a.unit), TX(C.fmtD(a.due)), TX(X.money(a.amount)), TX(X.money(a.paid)), TX(X.money(Math.max(0, bal(a))), null, true), BG(b, AGT[b]), BG(bal(a) <= 0 ? 'Paid' : a.paid > 0 ? 'Partially Paid' : 'Open', bal(a) <= 0 ? 'success' : a.paid > 0 ? 'warning' : 'neutral')], card: { title: a.party + ' • ' + X.money(Math.max(0, bal(a))), sub: a.ref, meta: C.prop(a.pid).title + ' • due ' + C.fmtD(a.due), badge: b, tone: AGT[b] } }; }) };
+    P.count = list.length + ' of ' + base.length + ' receivables • aging as of ' + C.fmtD(X.TODAY) + ' • Current / 1–30 / 31–60 / 61–90 / 90+';
+    P.scope = sc.pids ? sc : null;
+    P.drawer = this.drawer();
+    P.crumbs = CRUMBS.slice(0, 3).concat([['Accounts Receivable', P.drawer ? PAGES.receivables : null]]).concat(P.drawer ? [[s.sel.id, null]] : []);
+    return P;
+  }
+  drawer() {
+    const X = F(), C = CMP(), s = this.state; if (!s.sel) return null; const a = X.db.ar.find(x => x.id === s.sel.id); if (!a) return null;
+    const B = u => C.withBack(u, 'Receivable ' + a.id), bal = X.r2(a.amount - a.paid), b = X.bucket(a);
+    const partyHref = a.type === 'Tenant' ? C.href.tenant(a.party) : a.type === 'Owner' ? C.href.owner(a.party) : a.link ? C.href.reservation(a.link) : '';
+    const linkHref = /^LSE-/.test(a.link) ? 'Master 41 - Lease 360.dc.html?id=' + a.link : a.link ? C.href.reservation(a.link) : '';
+    return { eyebrow: 'Receivable • ' + a.type, title: a.ref, sub: a.id + ' • ' + a.party + ' • ' + C.prop(a.pid).title, badges: [[b, AGT[b]], ['Balance ' + X.money(Math.max(0, bal)), bal > 0 ? 'warning' : 'success']],
+      chain: [[a.type, a.party, partyHref ? B(partyHref) : null], ['Property', C.prop(a.pid).title, B(X.href.pl(a.pid))], a.link ? [/^LSE-/.test(a.link) ? 'Lease' : 'Reservation', a.link, B(linkHref)] : null, ['Payments', 'Receipts', B('Master 16 - Payments.dc.html?q=' + encodeURIComponent(a.party))]].filter(Boolean),
+      actions: [['Record Payment', 'banknote', () => bal <= 0 ? this.notify('Nothing outstanding') : this.openModal({ title: 'Record Payment', sub: a.id + ' • balance ' + X.money(bal), submitLabel: 'Record Payment', fields: [FLD('amt', 'Amount (US$)', 'number', { req: true }), FLD('m', 'Method', 'select', { req: true, opts: ['ACH', 'Card', 'Check', 'Cash', 'Zelle'] })], submit: v => { const amt = Math.min(+v.amt, bal); this.act(db => { db.ar.find(x => x.id === a.id).paid = X.r2(a.paid + amt); X.postJe('Payment received — ' + a.party + ' (' + a.id + ')', ['Receivable', a.id, X.href.ar(a.id)], a.pid, [[1010, amt, 0], [1200, 0, amt]]); X.log(a.id, 'Payment ' + X.money(amt) + ' via ' + v.m + ' — receipt issued'); }, 'Payment recorded — receipt issued (prototype)'); } }, { amt: bal }), 'primary', bal <= 0],
+        ['Send Reminder', 'mail', () => { X.log(a.id, 'Reminder sent in recipient preferred language'); this.notify('Reminder sent — prototype only'); this.forceUpdate(); }, 'outline', bal <= 0],
+        ['Write Off', 'ban', () => this.openModal({ title: 'Write Off Balance', sub: a.id + ' • ' + X.money(bal), submitLabel: 'Write Off', fields: [FLD('why', 'Reason', 'text', { req: true, full: true })], submit: v => this.act(db => { db.ar.find(x => x.id === a.id).paid = a.amount; X.postJe('Bad-debt write-off ' + a.id + ' — ' + v.why, ['Receivable', a.id, X.href.ar(a.id)], a.pid, [[5010, bal, 0], [1200, 0, bal]]); X.log(a.id, 'Written off: ' + v.why); }, 'Balance written off') }), 'ghost', bal <= 0],
+        ['Message', 'message-square', () => go(B('Master 24 - Messages.dc.html?to=' + encodeURIComponent(a.party))), 'ghost']],
+      sections: [['Charge', [['Party', a.party + ' (' + a.type + ')', partyHref ? B(partyHref) : null], ['Property • Unit', C.prop(a.pid).title + ' • ' + a.unit], ['Related Record', a.link || '—', a.link ? B(linkHref) : null], ['Due Date', C.fmtD(a.due)], ['Days Past Due', String(Math.max(0, X.days(a.due)))]]], ['Amounts', [['Original Amount', X.money(a.amount)], ['Paid', X.money(a.paid)], ['Balance', X.money(Math.max(0, bal))], ['Aging Bucket', b]]]],
+      lists: [{ title: 'History', empty: 'No changes recorded in this session.', items: X.logFor(a.id).map(l => ({ t: l.text, s: l.by + ' • ' + new Date(l.at).toLocaleString('en-US'), tone: '#006B68' })) }] };
+  }
+}
+</script>
+</body>
+</html>

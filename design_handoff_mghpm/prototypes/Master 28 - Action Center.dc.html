@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="str-data.js"></script>
+  <script src="pay-data.js"></script>
+  <script src="readiness-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+    input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}
+  </style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 28 — Action Center" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+        <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+      </button>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <sc-if value="{{ hasBack }}">
+          <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ backLabel }}</button>
+        </sc-if>
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Action Center</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:780px;text-wrap:pretty">Everything that needs a person today — workflow blockers, compliance, data quality and approvals — found by the MGHPM Operations Agent. Findings are recommendations; every resolution is made by staff.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="display:flex;align-items:center;height:40px;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ lastRun }}</span>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="refresh-cw" on-click="{{ rerun }}" hint-size="120px,40px">Run Review</x-import>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="sparkles" on-click="{{ askAssistant }}" hint-size="150px,40px">Ask Assistant</x-import>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" on-click="{{ openAdd }}" hint-size="110px,40px">New Task</x-import>
+          </div>
+        </div>
+        <sc-if value="{{ showKpis }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import></sc-for>
+          </div>
+        </sc-if>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:3px solid #D4A637;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+            <span style="width:32px;height:32px;border-radius:8px;background:#FBF5E6;color:#9A7420;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="sunrise" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+            <div style="flex:1 1 240px;display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Morning Operations Brief</h3><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ briefSub }}</span></div>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="sparkles" on-click="{{ genBrief }}" hint-size="150px,32px">{{ briefBtn }}</x-import>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px 32px">
+            <sc-for list="{{ briefGroups }}" as="bg" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font:700 13px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ bg.color }}">{{ bg.title }}</span>
+                <sc-for list="{{ bg.items }}" as="bi"><button onClick="{{ bi.go }}" style="display:flex;gap:8px;align-items:flex-start;border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#172033" style-hover="color:#006B68"><span style="color:#94A3B8">•</span><span>{{ bi.text }}</span></button></sc-for>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ hasAiBrief }}"><p style="margin:0;padding:12px 14px;border-radius:8px;background:#F8FAFC;font:400 13px/1.55 'Plus Jakarta Sans',sans-serif;color:#334155;white-space:pre-wrap;text-wrap:pretty">{{ aiBrief }}</p></sc-if>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+            <div role="tablist" style="display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;box-shadow:inset 0 -1px 0 #E2E8F0;padding:0 16px;scrollbar-width:none">
+              <sc-for list="{{ entTabs }}" as="tb" hint-placeholder-count="5">
+                <button role="tab" onClick="{{ tb.select }}" style="flex-shrink:0;height:48px;padding:0 12px;border:0;box-shadow:inset 0 -2px 0 {{ tb.border }};background:transparent;cursor:pointer;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ tb.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>{{ tb.label }}<span style="padding:3px 7px;border-radius:999px;background:{{ tb.countBg }};color:{{ tb.countFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></button>
+              </sc-for>
+            </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px 24px">
+            <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1 1 520px">
+              <sc-for list="{{ statChips }}" as="ch" hint-placeholder-count="6">
+                <button onClick="{{ ch.select }}" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid {{ ch.border }};border-radius:999px;cursor:pointer;background:{{ ch.bg }};color:{{ ch.color }};font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ ch.label }}<span style="opacity:0.75">{{ ch.count }}</span></button>
+              </sc-for>
+            </div>
+            <label style="flex:0 1 320px;min-width:200px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;color:#64748B;cursor:text"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import><input type="search" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search policy, carrier, entity…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033"></label>
+          </div>
+        </div>
+        <sc-for list="{{ tables }}" as="tbl" hint-placeholder-count="0">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ tbl.title }}</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.sub }}</p></div>
+              <sc-if value="{{ tbl.hasAction }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" on-click="{{ tbl.action }}" hint-size="120px,32px">{{ tbl.actionLabel }}</x-import></sc-if>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:{{ tbl.minW }};border-collapse:collapse">
+                <thead><tr><sc-for list="{{ tbl.cols }}" as="c"><th style="padding:12px 16px;padding-left:{{ c.pl }};padding-right:{{ c.pr }};text-align:{{ c.align }};font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">{{ c.label }}</th></sc-for></tr></thead>
+                <tbody>
+                  <sc-for list="{{ tbl.rows }}" as="r">
+                    <tr onClick="{{ r.open }}" style="cursor:{{ r.cursor }}" style-hover="background:#F8FAFC">
+                      <sc-for list="{{ r.cells }}" as="cl">
+                        <td style="padding:14px 16px;padding-left:{{ cl.pl }};padding-right:{{ cl.pr }};border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;text-align:{{ cl.align }};white-space:nowrap">
+                          <sc-if value="{{ cl.isText }}"><div style="display:flex;flex-direction:column;gap:2px"><span style="color:#172033;font-weight:{{ cl.weight }}">{{ cl.text }}</span><sc-if value="{{ cl.hasSub }}"><span style="font-size:12px;color:#64748B">{{ cl.sub }}</span></sc-if></div></sc-if>
+                          <sc-if value="{{ cl.isBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ cl.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ cl.text }}</x-import></sc-if>
+                          <sc-if value="{{ cl.isLinks }}"><div style="display:inline-flex;gap:2px"><sc-for list="{{ cl.links }}" as="lk"><button onClick="{{ lk.go }}" title="{{ lk.title }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:{{ lk.color }};cursor:pointer" style-hover="background:#F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ lk.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></button></sc-for></div></sc-if>
+                        </td>
+                      </sc-for>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <sc-if value="{{ tbl.empty }}"><p style="margin:0;padding:40px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.emptyText }}</p></sc-if>
+            </div>
+          </div>
+        </sc-for>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:32px;height:32px;border-radius:8px;background:#EEF2FF;color:#132A52;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="shield-check" size="{{ 17 }}" hint-size="17px,17px"></x-import></span><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Operations Agent Guardrails</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">The agent reviews, detects, alerts and recommends. It never performs these actions:</p></div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ guardrails }}" as="gr"><span style="display:flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;background:#F8FAFC;border:1px solid #E2E8F0;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#334155"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="ban" size="{{ 12 }}" color="#DC2626" hint-size="12px,12px"></x-import>{{ gr }}</span></sc-for>
+          </div>
+        </div>
+      </div>
+      </div>
+    </main>
+    <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeForm }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.35);z-index:80"></div>
+      <aside role="dialog" style="position:fixed;top:0;right:0;bottom:0;z-index:81;width:min(600px,100vw);background:#F8FAFC;box-shadow:-24px 0 64px rgba(15,23,42,0.18);display:flex;flex-direction:column">
+        <div style="padding:20px 24px;background:#FFFFFF;border-bottom:1px solid #E2E8F0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ formEyebrow }}</span><h2 style="margin:0;font:700 20px/1.25 'Plus Jakarta Sans',sans-serif;color:#172033">{{ formTitle }}</h2></div>
+          <button onClick="{{ closeForm }}" title="Close" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 18 }}" hint-size="18px,18px"></x-import></button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:24px">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 16px">
+            <sc-for list="{{ formFields }}" as="fd" hint-placeholder-count="6">
+                    <div style="grid-column:{{ fd.span }};min-width:0;padding:{{ fd.pad }};border-top:{{ fd.rule }}">
+                      <sc-if value="{{ fd.isView }}">
+                        <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                          <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.label }}</span>
+                          <span style="font:600 14px/1.45 'Plus Jakarta Sans',sans-serif;color:{{ fd.vColor }};overflow-wrap:anywhere;text-wrap:pretty">{{ fd.display }}</span>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isInput }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<input type="{{ fd.type }}" value="{{ fd.value }}" onChange="{{ fd.onChange }}" placeholder="{{ fd.ph }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isSelect }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<select value="{{ fd.value }}" onChange="{{ fd.onChange }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;min-width:0"><sc-for list="{{ fd.options }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isArea }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<textarea value="{{ fd.value }}" onChange="{{ fd.onChange }}" rows="3" placeholder="{{ fd.ph }}" style="padding:10px 12px;border:1px solid #CBD5E1;border-radius:6px;outline:none;resize:vertical;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isToggle }}">
+                        <label style="display:flex;align-items:center;gap:10px;min-height:40px;cursor:pointer;font:500 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033"><input type="checkbox" checked="{{ fd.checked }}" onChange="{{ fd.onChange }}" style="width:18px;height:18px;accent-color:#006B68;margin:0;flex-shrink:0">{{ fd.label }}</label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isFile }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}
+                          <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px dashed #CBD5E1;border-radius:6px;cursor:pointer;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;min-width:0" style-hover="border-color:#006B68;background:#F8FAFC">
+                            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="paperclip" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fd.fileLabel }}</span>
+                            <input type="file" onChange="{{ fd.onFile }}" style="display:none">
+                          </label>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+          </div>
+        </div>
+        <div style="padding:16px 24px;background:#FFFFFF;border-top:1px solid #E2E8F0;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px">
+          <sc-if value="{{ formCanDelete }}"><div style="margin-right:auto;display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="danger" icon="trash-2" on-click="{{ formDelete }}" hint-size="100px,40px">Delete</x-import></div></sc-if>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ closeForm }}" hint-size="90px,40px">Cancel</x-import>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ saveForm }}" hint-size="120px,40px">{{ formSave }}</x-import>
+        </div>
+      </aside>
+    </sc-if>
+
+    <sc-if value="{{ delOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:90;background:rgba(15,23,42,0.45);display:flex;align-items:center;justify-content:center;padding:16px">
+        <div role="alertdialog" style="width:100%;max-width:480px;background:#FFFFFF;border-radius:12px;box-shadow:0 24px 48px rgba(15,23,42,0.24);display:flex;flex-direction:column">
+          <div style="padding:24px;display:flex;gap:16px;align-items:flex-start">
+            <span style="width:40px;height:40px;border-radius:8px;background:#FEF2F2;color:#DC2626;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <h3 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ delTitle }}</h3>
+              <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ delBody }}</p>
+              <sc-if value="{{ delBlocked }}">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A">
+                  <span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#92400E">Linked records prevent deletion</span>
+                  <sc-for list="{{ delBlockers }}" as="b"><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#78350F">• {{ b }}</span></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;padding:16px 24px;border-top:1px solid #E2E8F0;background:#F8FAFC;border-radius:0 0 12px 12px">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ cancelDelete }}" hint-size="90px,40px">Cancel</x-import>
+            <sc-if value="{{ delBlocked }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="user-x" on-click="{{ deactivate }}" hint-size="150px,40px">{{ altLabel }}</x-import></sc-if>
+            <sc-if value="{{ delAllowed }}"><button onClick="{{ confirmDelete }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:0;border-radius:6px;background:#DC2626;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#B91C1C"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ confirmLabel }}</button></sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:95;display:flex;align-items:center;gap:10px;max-width:440px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toastIcon }}" size="{{ 16 }}" color="{{ toastColor }}" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+
+
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+const fmtUSD = n => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtD = iso => { if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso || '—'; const [y, m, d] = iso.slice(0, 10).split('-').map(Number); return MON[m - 1] + ' ' + d + ', ' + y; };
+const fmtTS = iso => { const d = new Date(iso); return isNaN(d) ? iso : MON[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' • ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); };
+const QP = new URLSearchParams(window.location.search);
+const SELF = PAGES['owner-profile'];
+const ME = 'Marcus Vance';
+const KEY = 'mghpm.owner360.v1', PKEY = 'mghpm.people.v1';
+const load = k => { try { return JSON.parse(sessionStorage.getItem(k)) || null; } catch (e) { return null; } };
+
+const SEVS = { critical: ['Critical', 'danger', 0], high: ['High', 'warning', 1], medium: ['Medium', 'info', 2], info: ['Informational', 'neutral', 3] };
+const CATS = ['All', 'Critical', 'Due Today', 'Workflow Blockers', 'Missing Information', 'Duplicate Records', 'Compliance', 'Awaiting Owner', 'Awaiting Tenant', 'Financial Issues'];
+const DQ = ['Duplicates', 'Missing Information', 'Conflicts', 'Broken Relationships', 'Unlinked Records'];
+const STAFF = ['Unassigned', 'Marcus Vance', 'Sofia Ramos', 'Elena Cruz', 'Luis Herrera', 'Daniel Brooks'];
+const GUARD = ['Approve or deny applications', 'Verify ownership', 'Mark IDs verified', 'Merge people or records', 'Change bank accounts', 'Issue owner distributions', 'Close financial transactions', 'Sign contracts', 'Approve deposit deductions'];
+
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, tab: ['queue', 'quality', 'tasks'].includes(QP.get('tab')) ? QP.get('tab') : 'queue', cat: 'All', dq: 'Duplicates', q: '', rev: 0, ranAt: new Date(), form: null, del: null, brief: null, briefBusy: false }; }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300)];
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    const wait = setInterval(() => { if (window.MGH_OPS && window.MGH_INS && window.lucide) { clearInterval(wait); this.forceUpdate(); } }, 60);
+    window.MGH_CTX = { type: 'action-center', label: 'Action Center — all open findings' };
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg, warn) { clearTimeout(this._toastT); this.setState({ toast: { msg, warn } }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3400); }
+  chrome() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const collapsed = isMobile ? false : (s.collapsed ?? ((this.props.sidebarCollapsed ?? false) || bp === 'tablet'));
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => { const on = id === 'action-center'; return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center', bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500', select: () => go(PAGES[id] || pendingUrl({ page: id })) }; };
+    const sections = NAV.map(sec => { const open = !expanded || !sec.label || !s.closedSections[sec.id]; return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open, chevron: open ? 'chevron-down' : 'chevron-right', toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })), items: sec.items.map(mkItem) }; });
+    return { bp, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && s.drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !s.drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', showSearchField: bp === 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      toast: !!s.toast, toastMsg: s.toast ? s.toast.msg : '', toastIcon: s.toast && s.toast.warn ? 'triangle-alert' : 'circle-check', toastColor: s.toast && s.toast.warn ? '#FBBF24' : '#5EEAD4' } };
+  }
+
+  table(t) {
+    const n = t.cols.length;
+    return { ...t, hasAction: !!t.action, empty: t.rows.length === 0, emptyText: t.emptyText || 'No records.', minW: t.minW || '760px',
+      cols: t.cols.map((c, i) => { const [label, align] = Array.isArray(c) ? c : [c, 'left']; return { label, align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }),
+      rows: t.rows.map(row => ({ open: row.open || (() => {}), cursor: row.open ? 'pointer' : 'default', cells: row.cells.map((c, i) => {
+        const o = typeof c === 'string' ? { text: c } : c; const align = Array.isArray(t.cols[i]) ? t.cols[i][1] : 'left';
+        return { text: o.text || '', sub: o.sub || '', hasSub: !!o.sub, weight: o.bold ? '600' : '400', tone: o.tone || 'neutral', isText: !o.badge && !o.links, isBadge: !!o.badge, isLinks: !!o.links,
+          links: (o.links || []).map(l => ({ ...l, color: l.danger ? '#DC2626' : '#64748B', go: e => { if (e && e.stopPropagation) e.stopPropagation(); l.go(); } })), align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }) })) };
+  }
+
+  async genBrief(open) {
+    if (this.state.briefBusy) return; this.setState({ briefBusy: true });
+    const lines = open.slice(0, 30).map(f => '[' + f.sev + '] ' + f.title + ' — ' + f.record + ': ' + f.detail).join('\n');
+    try { const t = await window.claude.complete({ system: 'You write the MGHPM Morning Operations Brief for property-management staff. Institutional, concise, no emoji. Max 110 words. Start with the single most important action. Recommend, never claim actions were taken.', max_tokens: 400, messages: [{ role: 'user', content: 'Open findings:\n' + lines + '\n\nWrite the brief as 3 short paragraphs: Priorities, Today, Watch list.' }] }); this.setState({ brief: String(t).trim(), briefBusy: false }); }
+    catch (e) { this.setState({ briefBusy: false }); this.notify('Assistant unavailable — showing the rule-based brief only', true); }
+  }
+  renderVals() {
+    const s = this.state; const { v } = this.chrome();
+    const ops = window.MGH_OPS;
+    if (!ops || !window.MGH_INS) return { ...v, crumbItems: [], kpis: [], showKpis: false, entTabs: [], statChips: [], tables: [], formFields: [], briefGroups: [], guardrails: GUARD, lastRun: 'Loading…' };
+    const all = ops.run(); void s.rev;
+    const today = new Date().toISOString().slice(0, 10);
+    const open = all.filter(f => f.status === 'open' || (f.status === 'snoozed' && f.snoozedUntil && f.snoozedUntil <= today));
+    const inCat = (f, c) => c === 'All' || (c === 'Critical' ? f.sev === 'critical' : c === 'Due Today' ? (f.due || f.cats.includes('Due Today')) : f.cats.includes(c));
+    const q = s.q.trim().toLowerCase();
+    const hit = f => !q || [f.title, f.detail, f.record, f.action].join(' ').toLowerCase().includes(q);
+    const setSt = (f, st, msg, extra) => { ops.setStatus(f.key, { status: st, ...(extra || {}) }); this.setState({ rev: s.rev + 1 }); this.notify(msg); };
+    const mkTask = f => ({ kind: 'task', title: f.action + ' — ' + f.record, priority: f.sev === 'critical' ? 'High' : f.sev === 'high' ? 'High' : 'Medium', assignee: 'Unassigned', due: today, notes: f.detail, record: f.record, href: f.actionHref, fkey: f.key });
+    const tasks = ops.tasks();
+    const tables = [];
+    const sevCell = f => ({ badge: true, text: SEVS[f.sev][0], tone: SEVS[f.sev][1] });
+    if (s.tab === 'queue') {
+      const list = open.filter(f => inCat(f, s.cat) && hit(f)).sort((a, b) => SEVS[a.sev][2] - SEVS[b.sev][2]);
+      tables.push(this.table({ title: s.cat === 'All' ? 'Unified Queue' : s.cat, sub: list.length + ' open findings • sorted by priority', minW: '1180px', cols: ['Priority', 'Issue', 'Record', 'Recommended Action', ['Resolve', 'right']],
+        rows: list.map(f => ({ open: () => go(f.recordHref), cells: [sevCell(f), { text: f.title, sub: f.detail, bold: true }, { text: f.record, sub: f.cats.join(' • ') }, { text: f.action, bold: true }, { links: [{ icon: 'arrow-right', title: f.action, go: () => go(f.actionHref) }, { icon: 'list-plus', title: 'Create Task', go: () => this.setState({ form: mkTask(f) }) }, { icon: 'alarm-clock', title: 'Snooze 1 day', go: () => { const d = new Date(); d.setDate(d.getDate() + 1); setSt(f, 'snoozed', 'Snoozed until tomorrow', { until: d.toISOString().slice(0, 10) }); } }, { icon: 'check', title: 'Mark Resolved', go: () => setSt(f, 'resolved', 'Marked resolved — the agent will re-check on the next review') }, { icon: 'x', title: 'Dismiss', danger: true, go: () => this.setState({ del: { kind: 'dismiss', f } }) }] }] })), emptyText: 'Nothing in this category. Good work.' }));
+    }
+    if (s.tab === 'quality') {
+      const list = open.filter(f => f.dq === s.dq && hit(f));
+      tables.push(this.table({ title: 'Data Quality — ' + s.dq, sub: 'Review → Keep Both / Merge / Relink / Dismiss. Financial and legal records are never merged automatically.', minW: '1120px', cols: ['Priority', 'Finding', 'Records', ['Review', 'right']],
+        rows: list.map(f => ({ cells: [sevCell(f), { text: f.title, sub: f.detail, bold: true }, { text: f.pair ? f.pair[0] : f.record, sub: f.pair ? f.pair[1] : f.action }, { links: [{ icon: 'eye', title: 'Compare / Review', go: () => go(f.actionHref) }, ...(s.dq === 'Duplicates' ? [{ icon: 'copy-check', title: 'Keep Both', go: () => setSt(f, 'resolved', 'Kept both records — finding closed') }, { icon: 'merge', title: f.financial ? 'Merge not allowed for financial records' : 'Request Merge', go: () => f.financial ? this.notify('Financial records cannot be merged — void or refund the duplicate in Payments instead', true) : this.setState({ del: { kind: 'merge', f } }) }] : s.dq === 'Broken Relationships' || s.dq === 'Unlinked Records' ? [{ icon: 'link-2', title: 'Relink', go: () => go(f.actionHref) }] : []), { icon: 'x', title: 'Dismiss', danger: true, go: () => this.setState({ del: { kind: 'dismiss', f } }) }] }] })), emptyText: 'No ' + s.dq.toLowerCase() + ' found.' }));
+    }
+    if (s.tab === 'tasks') {
+      const list = tasks.filter(t => !q || [t.title, t.record, t.assignee].join(' ').toLowerCase().includes(q));
+      const save = t => { ops.saveTasks(t); this.setState({ rev: s.rev + 1 }); };
+      tables.push(this.table({ title: 'Tasks', sub: list.filter(t => t.status === 'Open').length + ' open • created from findings and AI Reviews', minW: '1080px', cols: ['Task', 'Record', 'Priority', 'Assignee', 'Due', 'Status', ['Actions', 'right']],
+        rows: list.map(t => ({ open: () => t.href && go(t.href), cells: [{ text: t.title, sub: t.source + ' • ' + fmtD(t.created.slice(0, 10)), bold: true }, t.record || '—', { badge: true, text: t.priority, tone: t.priority === 'High' ? 'warning' : t.priority === 'Low' ? 'neutral' : 'info' }, t.assignee, t.due ? fmtD(t.due) : '—', { badge: true, text: t.status, tone: t.status === 'Done' ? 'success' : 'brand' },
+          { links: [{ icon: 'pencil', title: 'Edit', go: () => this.setState({ form: { kind: 'task', edit: t.id, ...t } }) }, ...(t.status === 'Open' ? [{ icon: 'check', title: 'Mark Done', go: () => { save(tasks.map(x => x.id === t.id ? { ...x, status: 'Done' } : x)); this.notify('Task completed'); } }] : []), { icon: 'trash-2', title: 'Delete', danger: true, go: () => this.setState({ del: { kind: 'task', t } }) }] }] })), emptyText: 'No tasks yet — create them from findings or an AI Review.' }));
+    }
+    const F = s.form;
+    const setF = k => e => { const val = e.target.value; this.setState(st => ({ form: { ...st.form, [k]: val } })); };
+    const fld = (k, label, o = {}) => { const t = o.type || 'text'; const val = F ? F[k] : ''; return { label, display: '', vColor: '#172033', span: o.span ? '1 / -1' : 'auto', isView: false, isInput: ['text', 'date'].includes(t), isSelect: t === 'select', isArea: t === 'area', isToggle: false, isFile: false, type: t, value: val == null ? '' : String(val), checked: false, options: o.options || [], ph: o.ph || '', onChange: setF(k), fileLabel: '', onFile: () => {}, pad: '8px 0', rule: '0' }; };
+    const formFields = F ? [fld('title', 'Task', { span: true }), fld('record', 'Related Record'), fld('priority', 'Priority', { type: 'select', options: ['High', 'Medium', 'Low'] }), fld('assignee', 'Assignee', { type: 'select', options: STAFF }), fld('due', 'Due Date', { type: 'date' }), fld('notes', 'Notes', { type: 'area', span: true })] : [];
+    const crit = open.filter(f => f.sev === 'critical'), attn = open.filter(f => f.sev === 'high');
+    const cnt = c => open.filter(f => inCat(f, c)).length;
+    const D = s.del;
+    const counts = CATS.map(c => [c, c === 'All' ? open.length : cnt(c)]);
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Action Center', null]]), hasBack: false, backLabel: '', goBack: () => {},
+      lastRun: 'Last review ' + s.ranAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+      rerun: () => { this.setState({ rev: s.rev + 1, ranAt: new Date() }); this.notify('Operations Agent review complete — ' + open.length + ' open findings'); },
+      askAssistant: () => window.dispatchEvent(new CustomEvent('mgh-assistant', { detail: { prompt: 'What needs my attention today?' } })),
+      openAdd: () => this.setState({ form: { kind: 'task', title: '', record: '', priority: 'Medium', assignee: 'Unassigned', due: today, notes: '' } }),
+      showKpis: true, kpis: [
+        { label: 'Needs Attention', value: String(open.filter(f => f.sev !== 'info').length), icon: 'inbox', tone: 'brand', footer: open.length + ' open incl. informational' },
+        { label: 'Critical', value: String(crit.length), icon: 'octagon-alert', tone: 'navy', footer: 'Blocks a business process' },
+        { label: 'Due Today', value: String(cnt('Due Today')), icon: 'calendar-clock', tone: 'premium', footer: fmtD(today) },
+        { label: 'Data Issues', value: String(open.filter(f => f.dq).length), icon: 'database', tone: 'navy', footer: 'Duplicates, conflicts, links' },
+        { label: 'Awaiting Owner', value: String(cnt('Awaiting Owner')), icon: 'user-check', tone: 'premium', footer: 'Approvals & documents' },
+        { label: 'Awaiting Tenant', value: String(cnt('Awaiting Tenant')), icon: 'users', tone: 'brand', footer: 'Signatures, proofs, acknowledgments' }],
+      briefSub: crit.length + ' critical • ' + attn.length + ' need attention • generated ' + s.ranAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+      briefBtn: s.briefBusy ? 'Writing…' : s.brief ? 'Regenerate Summary' : 'AI Summary', genBrief: () => this.genBrief(open),
+      briefGroups: [{ title: crit.length + ' Critical', color: '#DC2626', items: crit.map(f => ({ text: f.title + ' — ' + f.record, go: () => go(f.actionHref) })) }, { title: attn.length + ' Need Attention', color: '#B45309', items: attn.slice(0, 8).map(f => ({ text: f.title + ' — ' + f.record, go: () => go(f.actionHref) })) }],
+      hasAiBrief: !!s.brief, aiBrief: s.brief || '',
+      guardrails: GUARD,
+      entTabs: [['queue', 'Queue', 'list-checks', open.length], ['quality', 'Data Quality', 'database', open.filter(f => f.dq).length], ['tasks', 'Tasks', 'clipboard-list', tasks.filter(t => t.status === 'Open').length]].map(([id, label, icon, c]) => { const on = s.tab === id; return { label, icon, count: String(c), border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', countBg: on ? '#DDF3F1' : '#F1F5F9', countFg: on ? '#006B68' : '#64748B', select: () => { this.setState({ tab: id }); try { history.replaceState(null, '', '?tab=' + id); } catch (e) {} } }; }),
+      statChips: s.tab === 'queue' ? counts.map(([c, n]) => { const on = s.cat === c; return { label: c, count: String(n), bg: on ? '#132A52' : '#FFFFFF', color: on ? '#FFFFFF' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ cat: c }) }; })
+        : s.tab === 'quality' ? DQ.map(c => { const on = s.dq === c; return { label: c, count: String(open.filter(f => f.dq === c).length), bg: on ? '#132A52' : '#FFFFFF', color: on ? '#FFFFFF' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ dq: c }) }; }) : [],
+      query: s.q, onQuery: e => this.setState({ q: e.target.value }), tables,
+      formOpen: !!F, closeForm: () => this.setState({ form: null }), formFields, formEyebrow: F && F.edit ? F.edit : 'Task', formTitle: F && F.edit ? 'Edit Task' : 'Create Task', formSave: F && F.edit ? 'Save Task' : 'Create Task', formCanDelete: false, formDelete: () => {},
+      saveForm: () => { if (!F.title.trim()) return this.notify('Task title is required', true); if (F.edit) ops.saveTasks(tasks.map(x => x.id === F.edit ? { ...x, title: F.title, record: F.record, priority: F.priority, assignee: F.assignee, due: F.due, notes: F.notes } : x)); else ops.addTasks([{ title: F.title.trim(), priority: F.priority, record: F.record, href: F.href || '', assignee: F.assignee, due: F.due }], { label: F.fkey ? 'Operations Agent' : 'Manual' }); this.setState({ form: null, rev: s.rev + 1 }); this.notify(F.edit ? 'Task updated' : 'Task created' + (F.assignee !== 'Unassigned' ? ' • assigned to ' + F.assignee : '')); },
+      delOpen: !!D, delBlocked: D && D.kind === 'merge', delAllowed: !!D && D.kind !== 'merge', delBlockers: D && D.kind === 'merge' ? ['A reviewer compares both records field by field before merging', 'Leases, payments and signed documents stay attached to their original record', 'The merge is recorded in the Audit Log'] : [],
+      delTitle: !D ? '' : D.kind === 'dismiss' ? 'Dismiss finding?' : D.kind === 'merge' ? 'Request merge review?' : 'Delete task?',
+      delBody: !D ? '' : D.kind === 'dismiss' ? '“' + D.f.title + ' — ' + D.f.record + '” will be hidden until the agent detects it again. The dismissal is logged with your name.' : D.kind === 'merge' ? 'The agent cannot merge records. This creates a merge-review task for a person to complete.' : 'This removes the task “' + D.t.title + '”.',
+      confirmLabel: D && D.kind === 'dismiss' ? 'Dismiss Finding' : 'Delete Task', altLabel: 'Create Merge Review Task',
+      cancelDelete: () => this.setState({ del: null }),
+      deactivate: () => { ops.addTasks([{ title: 'Merge review — ' + D.f.pair.join(' ↔ '), priority: 'Medium', record: D.f.record, href: D.f.actionHref }], { label: 'Data Quality' }); this.setState({ del: null, rev: s.rev + 1 }); this.notify('Merge review task created'); },
+      confirmDelete: () => { if (D.kind === 'dismiss') { ops.setStatus(D.f.key, { status: 'dismissed', by: ME }); this.notify('Finding dismissed'); } else { ops.saveTasks(tasks.filter(x => x.id !== D.t.id)); this.notify('Task deleted'); } this.setState({ del: null, rev: s.rev + 1 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

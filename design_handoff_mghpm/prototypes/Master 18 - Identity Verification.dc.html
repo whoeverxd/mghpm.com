@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 18 — Identity Verification" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ pageTitle }}</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">{{ pageDesc }}</p>
+          </div>
+          <div style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px">
+            <sc-for list="{{ modes }}" as="md" hint-placeholder-count="2"><button onClick="{{ md.select }}" style="height:32px;padding:0 14px;border:0;border-radius:6px;cursor:pointer;background:{{ md.bg }};color:{{ md.color }};box-shadow:{{ md.shadow }};font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ md.label }}</button></sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ isMine }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:{{ mineBannerBg }};color:{{ mineBannerFg }};font:600 14px/1.4 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ mineBannerIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>{{ mineBanner }}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
+              <sc-for list="{{ mineSlots }}" as="sl" hint-placeholder-count="3"><div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;display:flex;flex-direction:column">
+                <div style="height:150px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;color:#94A3B8;position:relative">
+                  <sc-if value="{{ sl.hasImg }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ sl.label }}" style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ sl.bgImg }}"></div></sc-if>
+                  <sc-if value="{{ sl.noImg }}" hint-placeholder-val="{{ true }}"><span style="display:flex;flex-direction:column;align-items:center;gap:8px;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sl.icon }}" size="{{ 28 }}" hint-size="28px,28px"></x-import>{{ sl.placeholder }}</span></sc-if>
+                </div>
+                <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sl.label }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ sl.statusT }}" dot="{{ true }}" hint-size="80px,22px">{{ sl.statusL }}</x-import></div>
+                  <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sl.meta }}</span>
+                  <label style="display:flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#FFFFFF;color:#172033;cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="upload" size="{{ 14 }}"  hint-size="14px,14px"></x-import>{{ sl.uploadLabel }}<input type="file" accept="image/*,application/pdf" onChange="{{ sl.onFile }}" style="display:none"></label><span style="font:400 11px/1.3 'Plus Jakarta Sans',sans-serif;color:#94A3B8">Image or PDF format.</span>
+                </div>
+              </div></sc-for>
+            </div>
+            <div style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="send" disabled="{{ cantSubmitMine }}" on-click="{{ submitMine }}" hint-size="170px,40px">Submit for Review</x-import></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isReview }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import></sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start">
+              <div style="grid-column:{{ listSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;padding:16px 20px;border-bottom:1px solid #E2E8F0">
+                  <sc-for list="{{ filters }}" as="ft" hint-placeholder-count="5"><button onClick="{{ ft.select }}" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid {{ ft.border }};border-radius:999px;background:{{ ft.bg }};color:{{ ft.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ ft.label }}<span style="font-weight:700;opacity:0.8">{{ ft.count }}</span></button></sc-for>
+                </div>
+                <div style="overflow-x:auto">
+                  <table style="width:100%;min-width:520px;border-collapse:collapse">
+                    <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:20px">Member</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Documents</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-right:20px">Status</th></tr></thead>
+                    <tbody>
+                      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+                        <tr onClick="{{ r.select }}" style="cursor:pointer;background:{{ r.bg }};box-shadow:{{ r.bar }}" style-hover="background:#F8FAFC">
+                          <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:20px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ r.initials }}" tone="brand" size="{{ 32 }}" hint-size="32px,32px"></x-import><div style="display:flex;flex-direction:column;gap:3px"><span style="color:#172033;font-weight:600">{{ r.name }}</span><span style="font-size:12px;color:#64748B">{{ r.role }}</span></div></div></td>
+                          <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><div style="display:flex;gap:4px"><sc-for list="{{ r.dots }}" as="dt" hint-placeholder-count="3"><span title="{{ dt.tip }}" style="width:26px;height:26px;border-radius:6px;background:{{ dt.bg }};color:{{ dt.fg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ dt.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span></sc-for></div></td>
+                          <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-right:20px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.statusT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.statusL }}</x-import></td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                  <sc-if value="{{ noRows }}"><p style="margin:0;padding:40px 20px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No pending review requests.</p></sc-if>
+                </div>
+              </div>
+              <div style="grid-column:{{ detailSpan }};display:flex;flex-direction:column;gap:20px;min-width:0">
+                <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ true }}">
+                  <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+                    <div style="display:flex;align-items:center;gap:14px;min-width:0">
+                      <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ sel.initials }}" tone="brand" size="{{ 44 }}" hint-size="44px,44px"></x-import>
+                      <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sel.name }}</h3><span style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ sel.meta }}</span></div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ sel.statusT }}" dot="{{ true }}" hint-size="80px,22px">{{ sel.statusL }}</x-import><sc-if value="{{ sel.hasApp }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="clipboard-list" on-click="{{ openApp }}" hint-size="170px,32px">{{ sel.appLabel }}</x-import></sc-if></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;background:{{ sel.bannerBg }};color:{{ sel.bannerFg }};font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="info" size="{{ 16 }}"  hint-size="16px,16px"></x-import>{{ sel.banner }}</div>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
+                    <sc-for list="{{ selSlots }}" as="sl" hint-placeholder-count="3"><div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;display:flex;flex-direction:column">
+                <div style="height:150px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;color:#94A3B8;position:relative">
+                  <sc-if value="{{ sl.hasImg }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ sl.label }}" style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ sl.bgImg }}"></div></sc-if>
+                  <sc-if value="{{ sl.noImg }}" hint-placeholder-val="{{ true }}"><span style="display:flex;flex-direction:column;align-items:center;gap:8px;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sl.icon }}" size="{{ 28 }}" hint-size="28px,28px"></x-import>{{ sl.placeholder }}</span></sc-if>
+                </div>
+                <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sl.label }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ sl.statusT }}" dot="{{ true }}" hint-size="80px,22px">{{ sl.statusL }}</x-import></div>
+                  <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sl.meta }}</span>
+                  <sc-if value="{{ sl.canReview }}"><div style="display:flex;flex-direction:column;gap:8px">
+                    <input value="{{ sl.reason }}" onChange="{{ sl.onReason }}" placeholder="Rejection reason (optional)" style="height:36px;padding:0 10px;border:1px solid #E2E8F0;border-radius:8px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff">
+                    <div style="display:flex;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="danger" size="sm" icon="x" on-click="{{ sl.reject }}" hint-size="90px,32px">Reject</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="check" on-click="{{ sl.approve }}" hint-size="100px,32px">Approve</x-import></div>
+                  </div></sc-if>
+                </div>
+              </div></sc-for>
+                  </div>
+                  <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:8px">
+                    <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;padding-bottom:4px">Automated Checks</span>
+                    <sc-for list="{{ sel.checks }}" as="ck" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #F1F5F9"><span style="font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569">{{ ck.label }}</span><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ ck.color }}">{{ ck.value }}</span></div></sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const QP = new URLSearchParams(window.location.search);
+const SELF = 'Master 18 - Identity Verification.dc.html', APP = 'Master 08 - Application Detail.dc.html';
+const SLOTS = [['id', 'National ID', 'id-card'], ['passport', 'Passport', 'book-user'], ['selfie', 'Photo', 'scan-face']];
+const DS = { missing: ['Missing', 'neutral'], pending: ['Under review', 'warning'], approved: ['Approved', 'success'], rejected: ['Rejected', 'danger'] };
+const MS = { pending_documents: ['Missing documents', 'neutral'], pending_review: ['Under review', 'warning'], rejected: ['Rejected', 'danger'], verified: ['Verified', 'success'] };
+const BANNER = { pending_documents: 'Upload all three documents to continue.', pending_review: 'Documents submitted. Please wait for team review.', rejected: 'A document was rejected. Please upload again.', verified: 'Verification complete.' };
+const SEED = [
+  ['Isabella Moreno', 'Applicant', 'APP-2026-0180', 'Las Olas Lofts • Unit 12', { id: 'pending', passport: 'pending', selfie: 'pending' }, 'Oct 1, 2026'],
+  ['Olivia Grant', 'Applicant', 'APP-2026-0183', 'Ocean View Villa • Unit 305', { id: 'pending', passport: 'missing', selfie: 'pending' }, 'Oct 3, 2026'],
+  ['Diego Ramírez', 'Applicant', 'APP-2026-0184', 'Brickell Bay Residences • Unit 2003', { id: 'missing', passport: 'missing', selfie: 'missing' }, 'Oct 4, 2026'],
+  ['Rahul Mehta', 'Applicant', 'APP-2026-0182', 'Coral Gables Terrace • Unit 214', { id: 'approved', passport: 'rejected', selfie: 'approved' }, 'Oct 2, 2026', 'Passport photo page is blurred'],
+  ['Camila Rossi', 'Guest', '', 'Sunset Beach House • 20260914-DR-0001', { id: 'pending', passport: 'approved', selfie: 'pending' }, 'Oct 3, 2026'],
+  ['Elena Cruz', 'Leasing Agent', '', 'MGHPM staff onboarding', { id: 'pending', passport: 'pending', selfie: 'pending' }, 'Oct 2, 2026'],
+  ['Mateo Fernández', 'Applicant', 'APP-2026-0175', 'Mar de Plata I • Apt 402', { id: 'approved', passport: 'approved', selfie: 'approved' }, 'Sep 27, 2026'],
+  ['Daniela Ortiz', 'Tenant', 'APP-2026-0148', 'Brickell Bay Residences • Unit 1204', { id: 'approved', passport: 'approved', selfie: 'approved' }, 'Sep 2, 2026']
+].map(([name, role, app, ctx, docs, date, reason]) => ({ name, role, app, ctx, docs, date, reasons: reason ? { passport: reason } : {} }));
+const statusOf = m => { const v = Object.values(m.docs); return v.includes('rejected') ? 'rejected' : v.includes('missing') ? 'pending_documents' : v.every(x => x === 'approved') ? 'verified' : 'pending_review'; };
+const KEY = 'mghpm.identity.v2';
+const load = () => { try { return JSON.parse(sessionStorage.getItem(KEY)) || null; } catch (e) { return null; } };
+const syncLeasing = (app, st) => { if (!app) return; try { const o = JSON.parse(sessionStorage.getItem('mghpm.leasing.v1')) || {}; const cur = o[app] || {}; if (st === 'verified' && (!cur.status || cur.status === 'IDENTITY_PENDING')) o[app] = { ...cur, status: 'IDENTITY_VERIFIED', history: [...(cur.history || []), { title: 'Identity verified — ID, passport and photo approved', meta: 'Oct 4, 2026 • Identity Verification', color: '#16A34A' }] }; sessionStorage.setItem('mghpm.leasing.v1', JSON.stringify(o)); } catch (e) {} };
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const saved = load() || {};
+    const members = saved.members || SEED;
+    const want = QP.get('member');
+    this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, members, mode: QP.get('view') === 'mine' ? 'mine' : 'review', filter: 'all', sel: want && members.some(m => m.name === want) ? want : members[0].name, reasons: {}, mine: saved.mine || { id: null, passport: null, selfie: null, submitted: false } };
+  }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+
+  componentDidUpdate() { try { const mine = { ...this.state.mine }; SLOTS.forEach(([k]) => { if (mine[k]) mine[k] = { ...mine[k], src: undefined }; }); sessionStorage.setItem(KEY, JSON.stringify({ members: this.state.members, mine })); } catch (e) {} }
+  setDoc(name, slot, st, reason) {
+    this.setState(s => ({ members: s.members.map(m => { if (m.name !== name) return m; const nm = { ...m, docs: { ...m.docs, [slot]: st }, reasons: { ...m.reasons, [slot]: reason || '' } }; const ns = statusOf(nm); if (ns === 'verified') { syncLeasing(nm.app, ns); this.notify(name + ' verified' + (nm.app ? ' • ' + nm.app + ' advanced to Identity Verified' : '')); } return nm; }), reasons: { ...s.reasons, [slot]: '' } }));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const { v, bp } = this.chrome(s.mode === 'mine' ? 'identity' : 'identity-review');
+    const wide = bp === 'desktop';
+    const FIL = [['all', 'All', () => true], ['pending_review', 'Under review', m => statusOf(m) === 'pending_review'], ['pending_documents', 'Missing documents', m => statusOf(m) === 'pending_documents'], ['rejected', 'Rejected', m => statusOf(m) === 'rejected'], ['verified', 'Verified', m => statusOf(m) === 'verified']];
+    const ff = FIL.find(f => f[0] === s.filter)[2];
+    const rows = s.members.filter(ff);
+    const M = s.members.find(m => m.name === s.sel) || rows[0];
+    const MSt = M ? statusOf(M) : 'pending_review';
+    const tone = { neutral: ['#F1F5F9', '#475569'], warning: ['#FFFAEB', '#B45309'], danger: ['#FEF2F2', '#DC2626'], success: ['#ECFDF3', '#15803D'] };
+    const docIcon = { missing: 'minus', pending: 'clock', approved: 'check', rejected: 'x' };
+    const mineStatus = s.mine.submitted ? 'pending_review' : SLOTS.every(([k]) => s.mine[k]) ? 'pending_review' : 'pending_documents';
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Property Management', null], [s.mode === 'mine' ? 'Identity Verification' : 'Identity Review', null]]),
+      pageTitle: s.mode === 'mine' ? 'Identity Verification' : 'Identity Review',
+      pageDesc: s.mode === 'mine' ? 'Upload your national ID, passport, and a photo. An administrator will review your files before full panel access is enabled.' : 'Approve or reject KYC documents for tenants, applicants, guests and agents. Identity Verification is a shared service linked to rental applications.',
+      modes: [['review', 'Review Queue'], ['mine', 'My Verification']].map(([id, label]) => { const on = s.mode === id; return { label, bg: on ? '#FFFFFF' : 'transparent', color: on ? '#172033' : '#64748B', shadow: on ? '0 1px 2px rgba(15,23,42,0.08)' : 'none', select: () => this.setState({ mode: id }) }; }),
+      isMine: s.mode === 'mine', isReview: s.mode === 'review',
+      mineBanner: s.mine.submitted ? BANNER.pending_review : BANNER[mineStatus === 'pending_review' ? 'pending_documents' : mineStatus].replace('Upload all three documents to continue.', 'Upload all three documents to continue.'),
+      mineBannerIcon: s.mine.submitted ? 'clock' : 'info', mineBannerBg: s.mine.submitted ? '#FFFAEB' : '#F0FAF9', mineBannerFg: s.mine.submitted ? '#B45309' : '#004F4D',
+      mineSlots: SLOTS.map(([k, label, icon]) => { const f = s.mine[k]; return { label, icon, placeholder: 'No file uploaded', hasImg: !!(f && f.src), noImg: !(f && f.src), bgImg: f && f.src ? 'url("' + f.src + '")' : 'none', meta: f ? f.name : 'Not uploaded yet', statusL: f ? (s.mine.submitted ? 'Under review' : 'Ready') : 'Missing', statusT: f ? (s.mine.submitted ? 'warning' : 'info') : 'neutral', uploadLabel: f ? 'Replace' : 'Upload file',
+        onFile: e => { const fl = e.target.files && e.target.files[0]; if (!fl) return; const done = src => this.setState(st => ({ mine: { ...st.mine, [k]: { name: fl.name, src }, submitted: false } })); if (fl.type.startsWith('image/')) { const rd = new FileReader(); rd.onload = () => done(rd.result); rd.readAsDataURL(fl); } else done(null); e.target.value = ''; } }; }),
+      cantSubmitMine: !SLOTS.every(([k]) => s.mine[k]) || s.mine.submitted,
+      submitMine: () => { this.setState(st => ({ mine: { ...st.mine, submitted: true } })); this.notify('Documents submitted • review typically completes within 1 business day'); },
+      kpis: [
+        { label: 'Under Review', value: String(s.members.filter(m => statusOf(m) === 'pending_review').length), icon: 'clock', tone: 'premium', footer: 'Awaiting decision' },
+        { label: 'Missing Documents', value: String(s.members.filter(m => statusOf(m) === 'pending_documents').length), icon: 'file-question', tone: 'navy', footer: 'Reminder sent automatically' },
+        { label: 'Rejected', value: String(s.members.filter(m => statusOf(m) === 'rejected').length), icon: 'circle-x', tone: 'navy', footer: 'Re-upload requested' },
+        { label: 'Verified', value: String(s.members.filter(m => statusOf(m) === 'verified').length), icon: 'shield-check', tone: 'success', footer: 'Full access for role' }
+      ],
+      filters: FIL.map(([id, label, fn]) => { const on = s.filter === id; return { label, count: String(s.members.filter(fn).length), border: on ? '#006B68' : '#E2E8F0', bg: on ? '#006B68' : '#FFFFFF', color: on ? '#FFFFFF' : '#475569', select: () => this.setState({ filter: id }) }; }),
+      listSpan: wide ? 'span 5' : 'span 12', detailSpan: wide ? 'span 7' : 'span 12',
+      rows: rows.map(m => { const st = statusOf(m), on = M && m.name === M.name; return { name: m.name, initials: m.name.split(' ').map(x => x[0]).join('').slice(0, 2), role: m.role + (m.app ? ' • ' + m.app : ''), statusL: MS[st][0], statusT: MS[st][1], bg: on ? '#F0FAF9' : 'transparent', bar: on ? 'inset 3px 0 0 #006B68' : 'none',
+        dots: SLOTS.map(([k, label]) => ({ tip: label + ': ' + DS[m.docs[k]][0], icon: docIcon[m.docs[k]], bg: tone[DS[m.docs[k]][1]][0], fg: tone[DS[m.docs[k]][1]][1] })), select: () => this.setState({ sel: m.name }) }; }),
+      noRows: rows.length === 0, hasSel: !!M,
+      sel: M ? { name: M.name, initials: M.name.split(' ').map(x => x[0]).join('').slice(0, 2), meta: M.role + ' • ' + M.ctx + ' • submitted ' + M.date, statusL: MS[MSt][0], statusT: MS[MSt][1], hasApp: !!M.app, appLabel: 'Open ' + M.app,
+        banner: BANNER[MSt], bannerBg: tone[MS[MSt][1]][0], bannerFg: tone[MS[MSt][1]][1],
+        checks: [['Document authenticity (MRZ / barcode)', M.docs.id === 'missing' ? 'Pending upload' : 'Passed', M.docs.id === 'missing' ? '#94A3B8' : '#15803D'], ['Selfie match to ID photo', M.docs.selfie === 'missing' ? 'Pending upload' : '97.8% confidence', M.docs.selfie === 'missing' ? '#94A3B8' : '#15803D'], ['Liveness detection', M.docs.selfie === 'missing' ? 'Pending upload' : 'Passed', M.docs.selfie === 'missing' ? '#94A3B8' : '#15803D'], ['Watchlist / OFAC screening', 'No matches', '#15803D']].map(([label, value, color]) => ({ label, value, color })) } : { checks: [] },
+      openApp: () => M && M.app && go(APP + '?id=' + M.app + '&tab=identity'),
+      selSlots: M ? SLOTS.map(([k, label, icon]) => { const st = M.docs[k]; return { label, icon, placeholder: st === 'missing' ? 'Not uploaded' : label + ' • preview', hasImg: false, noImg: true, bgImg: 'none', statusL: DS[st][0], statusT: DS[st][1],
+        meta: st === 'missing' ? 'Waiting for upload' : st === 'rejected' ? 'Rejected — ' + (M.reasons[k] || 'no reason given') : (k === 'selfie' ? 'selfie' : k) + '-' + M.name.split(' ')[0].toLowerCase() + '.jpg • uploaded ' + M.date,
+        canReview: st === 'pending', reason: s.reasons[k] || '', onReason: e => { const val = e.target.value; this.setState(x => ({ reasons: { ...x.reasons, [k]: val } })); },
+        approve: () => this.setDoc(M.name, k, 'approved'), reject: () => { this.setDoc(M.name, k, 'rejected', s.reasons[k]); this.notify(label + ' rejected • ' + M.name + ' asked to upload again'); } }; }) : []
+    };
+  }
+}
+</script>
+</body>
+</html>

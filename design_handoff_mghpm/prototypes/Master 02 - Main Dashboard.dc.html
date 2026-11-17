@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 02 — Main Dashboard" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 360px">
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Welcome, Marcus</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:720px;text-wrap:pretty">Summary of your properties • MGH Property Management • Miami Metro</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+            <div role="tablist" aria-label="Period" style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px">
+              <sc-for list="{{ periods }}" as="pr" hint-placeholder-count="2">
+                <button onClick="{{ pr.select }}" style="height:32px;padding:0 14px;border:0;border-radius:6px;cursor:pointer;background:{{ pr.bg }};color:{{ pr.color }};box-shadow:{{ pr.shadow }};font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ pr.label }}</button>
+              </sc-for>
+            </div>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" icon-right="chevron-down" hint-size="150px,40px">Quick Create</x-import>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+              <div style="grid-column:{{ kpiSpan }};display:flex;flex-direction:column">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.iconTone }}" delta="{{ k.delta }}" delta-tone="{{ k.deltaTone }}" footer="{{ k.footer }}" hint-size="100%,130px"></x-import>
+              </div>
+            </sc-for>
+          </div>
+          <span style="display:flex;align-items:center;gap:6px;font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="info" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            Expenses are estimated from completed maintenance work orders until the finance module is connected.
+          </span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px">
+
+          <div style="grid-column:{{ mainSpan }};display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;gap:20px;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Income &amp; Expenses</h3>
+                <p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ chartSub }}</p>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px 16px;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">
+                <sc-for list="{{ series }}" as="s" hint-placeholder-count="4">
+                  <span style="display:flex;align-items:center;gap:6px"><i style="width:16px;height:0;border-top:2px {{ s.dash }} {{ s.color }}"></i>{{ s.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;min-height:240px">
+              <div style="display:flex;flex-direction:column;justify-content:space-between;padding-bottom:26px;font:500 11px/1 'Plus Jakarta Sans',sans-serif;color:#94A3B8;text-align:right;width:40px">
+                <span>$120K</span><span>$80K</span><span>$40K</span><span>$0</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+                <div style="flex:1;position:relative;min-height:220px">
+                  <div style="position:absolute;left:0;right:0;top:0;border-top:1px solid #F1F5F9"></div>
+                  <div style="position:absolute;left:0;right:0;top:33.3%;border-top:1px solid #F1F5F9"></div>
+                  <div style="position:absolute;left:0;right:0;top:66.6%;border-top:1px solid #F1F5F9"></div>
+                  <div style="position:absolute;left:0;right:0;bottom:0;border-top:1px solid #E2E8F0"></div>
+                  <svg viewBox="0 0 600 240" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+                    <sc-for list="{{ series }}" as="s" hint-placeholder-count="4">
+                      <path d="{{ s.d }}" fill="none" stroke="{{ s.color }}" stroke-width="2.25" stroke-dasharray="{{ s.dashArray }}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+                    </sc-for>
+                  </svg>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding-top:10px;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">
+                  <sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="5">
+                    <span>{{ x }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="grid-column:{{ railSpan }};display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;gap:20px;min-width:0">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Property Occupancy</h3>
+              <p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ occSub }}</p>
+            </div>
+            <div style="position:relative;width:180px;height:180px;align-self:center">
+              <svg viewBox="0 0 160 160" style="width:100%;height:100%;transform:rotate(-90deg)">
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#F1F5F9" stroke-width="16"></circle>
+                <sc-for list="{{ donut }}" as="d" hint-placeholder-count="3">
+                  <circle cx="80" cy="80" r="62" fill="none" stroke="{{ d.color }}" stroke-width="16" stroke-dasharray="{{ d.dash }}" stroke-dashoffset="{{ d.offset }}"></circle>
+                </sc-for>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+                <span style="font:700 28px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ occPct }}</span>
+                <span style="font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">Occupied</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ donut }}" as="d" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #E2E8F0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+                  <span style="display:flex;align-items:center;gap:8px;color:#475569"><i style="width:10px;height:10px;border-radius:5px;background:{{ d.color }}"></i>{{ d.label }}</span>
+                  <span style="color:#172033;font-weight:600">{{ d.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="grid-column:{{ halfSpan }};display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;gap:8px;min-width:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:8px">
+              <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Recent Reservations</h3>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" hint-size="90px,32px">View All</x-import>
+            </div>
+            <sc-for list="{{ reservations }}" as="r" hint-placeholder-count="5">
+              <a href="#" style="display:flex;align-items:center;gap:12px;padding:12px;margin:0 -12px;border-radius:8px;text-decoration:none;color:inherit" style-hover="background:#F8FAFC;text-decoration:none">
+                <span style="width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:{{ r.tileBg }};color:{{ r.tileFg }}">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ r.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                </span>
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                  <span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.property }}</span>
+                  <span style="font:400 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ r.dates }} • {{ r.guest }}</span>
+                </span>
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ r.status }}</x-import>
+              </a>
+            </sc-for>
+          </div>
+
+          <div style="grid-column:{{ halfSpan }};display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;gap:8px;min-width:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:8px">
+              <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Pending Tasks</h3>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" hint-size="90px,32px">View All</x-import>
+            </div>
+            <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="5">
+              <a href="#" style="display:flex;align-items:center;gap:12px;padding:12px;margin:0 -12px;border-radius:8px;text-decoration:none;color:inherit" style-hover="background:#F8FAFC;text-decoration:none">
+                <span style="width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:{{ t.tileBg }};color:{{ t.tileFg }}">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ t.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                </span>
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                  <span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</span>
+                  <span style="font:400 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.sub }}</span>
+                </span>
+                <span style="font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#94A3B8;white-space:nowrap">{{ t.time }}</span>
+              </a>
+            </sc-for>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const DATA = {
+  this_month: {
+    income: [82.4, 96.1, 88.7, 104.2, 61.5], expenses: [21.3, 34.8, 18.9, 27.4, 15.2],
+    kpi: { income: ['$432,900.00', '↑ 6.2%', 'up'], expenses: ['$117,600.00', '↑ 3.1%', 'up'], net: ['$315,300.00', '↑ 7.4%', 'up'], occ: ['94.2%', '↑ 1.3%', 'up'] },
+    occ: { occupied: 202, reserved: 6, available: 6 }, label: 'October 2026 vs. September 2026'
+  },
+  last_month: {
+    income: [79.8, 91.4, 86.2, 97.5, 52.7], expenses: [19.6, 33.2, 22.4, 25.1, 13.8],
+    kpi: { income: ['$407,600.00', '↑ 2.8%', 'up'], expenses: ['$114,100.00', '↓ 1.9%', 'down'], net: ['$293,500.00', '↑ 4.7%', 'up'], occ: ['93.0%', '↓ 0.4%', 'down'] },
+    occ: { occupied: 199, reserved: 4, available: 11 }, label: 'September 2026 vs. August 2026'
+  }
+};
+const PRIOR = {
+  this_month: { income: DATA.last_month.income, expenses: DATA.last_month.expenses },
+  last_month: { income: [76.2, 88.9, 84.1, 93.0, 54.3], expenses: [22.8, 30.1, 24.6, 26.9, 11.9] }
+};
+
+class Component extends DCLogic {
+  state = { activeId: 'dashboard', collapsed: null, closedSections: {}, w: typeof window !== 'undefined' ? window.innerWidth : 1440, drawerOpen: false, period: 'this_month' };
+
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    this._ro = new ResizeObserver(this._onResize);
+    this._ro.observe(document.documentElement);
+    this._onResize();
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); this._ro && this._ro.disconnect(); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); }
+
+  renderVals() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const { activeId, closedSections, drawerOpen, period } = this.state;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (this.state.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return {
+        id, label, icon, showLabel: expanded,
+        justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent',
+        color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)',
+        weight: on ? '600' : '500',
+        select: () => on ? this.setState({ drawerOpen: false }) : go(PAGES[id] || ('Master 01 - App Layout.dc.html?page=' + id))
+      };
+    };
+    const sections = NAV.map(s => {
+      const open = !expanded || !s.label || !closedSections[s.id];
+      return {
+        label: s.label || '', showLabel: !!s.label && expanded, showDivider: !!s.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [s.id]: !st.closedSections[s.id] } })),
+        items: s.items.map(mkItem)
+      };
+    });
+
+    const D = DATA[period], P = PRIOR[period];
+    const path = arr => arr.map((v, i) => (i ? 'L' : 'M') + (i * 150).toFixed(1) + ' ' + (240 - v / 120 * 240).toFixed(1)).join(' ');
+    const cur = period === 'this_month' ? 'This Month' : 'Selected Month';
+    const pri = period === 'this_month' ? 'Last Month' : 'Previous Month';
+    const series = [
+      { label: cur + ' • Income', color: '#132A52', d: path(D.income), dash: 'solid', dashArray: 'none' },
+      { label: pri + ' • Income', color: '#006B68', d: path(P.income), dash: 'solid', dashArray: 'none' },
+      { label: cur + ' • Expenses', color: '#E5484D', d: path(D.expenses), dash: 'dashed', dashArray: '6 5' },
+      { label: pri + ' • Expenses', color: '#D4A637', d: path(P.expenses), dash: 'dashed', dashArray: '6 5' }
+    ];
+
+    const o = D.occ, total = o.occupied + o.reserved + o.available, C = 2 * Math.PI * 62;
+    let acc = 0;
+    const donut = [['Occupied', o.occupied, '#006B68'], ['Reserved', o.reserved, '#94A3B8'], ['Available', o.available, '#16A34A']].map(([label, v, color]) => {
+      const len = v / total * C; const seg = { label, value: String(v), color, dash: len.toFixed(2) + ' ' + (C - len).toFixed(2), offset: (-acc).toFixed(2) }; acc += len; return seg;
+    });
+
+    const k = D.kpi;
+    const tone = (dir, invert) => (invert ? dir === 'up' : dir === 'down') ? 'danger' : 'success';
+    const kpis = [
+      { label: 'Total Income', value: k.income[0], icon: 'trending-up', iconTone: 'navy', delta: k.income[1], deltaTone: tone(k.income[2]), footer: 'vs last month' },
+      { label: 'Total Expenses', value: k.expenses[0], icon: 'receipt', iconTone: 'premium', delta: k.expenses[1], deltaTone: tone(k.expenses[2], true), footer: 'vs last month' },
+      { label: 'Net Income', value: k.net[0], icon: 'landmark', iconTone: 'success', delta: k.net[1], deltaTone: tone(k.net[2]), footer: 'vs last month' },
+      { label: 'Occupancy Rate', value: k.occ[0], icon: 'building-2', iconTone: 'brand', delta: k.occ[1], deltaTone: tone(k.occ[2]), footer: 'vs last month' }
+    ];
+
+    const resv = (property, dates, guest, confirmed) => ({ property, dates, guest, status: confirmed ? 'Confirmed' : 'Pending', tone: confirmed ? 'success' : 'warning', icon: confirmed ? 'calendar-check' : 'calendar-days', tileBg: confirmed ? '#DDF3F1' : '#FFFAEB', tileFg: confirmed ? '#006B68' : '#B45309' });
+    const task = (icon, title, sub, time, bg, fg) => ({ icon, title, sub, time, tileBg: bg, tileFg: fg });
+    const warn = ['#FFFAEB', '#B45309'], info = ['#E6F6FC', '#00739F'], gold = ['#FBF5E6', '#9A7420'];
+
+    return {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'),
+      expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen,
+      closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px',
+      sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex',
+      sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Dashboard', null]]),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile,
+      showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      kpiSpan: isMobile ? 'span 12' : bp === 'tablet' ? 'span 6' : 'span 3',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12',
+      railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      halfSpan: bp === 'mobile' ? 'span 12' : 'span 6',
+
+      periods: [['this_month', 'This Month'], ['last_month', 'Last Month']].map(([id, label]) => {
+        const on = id === period || NAV_ALIAS[period] === id;
+        return { label, bg: on ? '#FFFFFF' : 'transparent', color: on ? '#172033' : '#64748B', shadow: on ? '0 1px 2px rgba(15,23,42,0.08)' : 'none', select: () => this.setState({ period: id }) };
+      }),
+      kpis, series, donut,
+      chartSub: D.label + ' • by week',
+      xLabels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+      occPct: (o.occupied / total * 100).toFixed(1) + '%',
+      occSub: o.occupied + ' of ' + total + ' units occupied',
+
+      reservations: [
+        resv('Ocean View Villa • Apt 101', 'Oct 20 – Oct 27, 2026', 'Laura Méndez', true),
+        resv('Mar de Plata I • Apt 101', 'Oct 16 – Oct 23, 2026', 'James Whitaker', false),
+        resv('Sunset Beach House', 'Oct 25 – Oct 30, 2026', 'Camila Rossi', true),
+        resv('Brickell Bay Residences • Unit 1204', 'Nov 2 – Nov 9, 2026', 'Ethan Park', true),
+        resv('Las Olas Lofts • Unit 9', 'Nov 6 – Nov 8, 2026', 'Hannah Schultz', false)
+      ],
+      tasks: [
+        task('wrench', 'Maintenance: Water leak under kitchen sink', 'Brickell Bay Residences • Unit 1507', '2h ago', ...warn),
+        task('file-check', 'Quote approval: A/C compressor replacement', 'Ocean View Villa • Unit 204 • $4,860.00', '5h ago', ...info),
+        task('hand-coins', 'Vendor payment: Aqua Pro Plumbing', 'Invoice #INV-20481 • $1,240.00', 'Yesterday', ...gold),
+        task('wrench', 'Maintenance: Pool pump replacement', 'Coral Gables Terrace • Common Area', 'Yesterday', ...warn),
+        task('file-check', 'Quote approval: Exterior repaint — Building B', 'Wynwood Commons • $18,500.00', '2 days ago', ...info)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

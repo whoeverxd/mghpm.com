@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="str-data.js"></script>
+  <script src="guest-data.js"></script>
+  <script src="guest-data.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+  <style>input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}</style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 33 — Guest 360" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:22px">
+        <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>Back to Guests</button>
+        <sc-if value="{{ notFound }}" hint-placeholder-val="{{ false }}"><div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;align-items:flex-start"><h1 style="margin:0;font:700 24px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Guest not found</h1><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ nfText }}</p><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="arrow-left" on-click="{{ goBack }}" hint-size="160px,40px">Back to Guests</x-import></div></sc-if>
+
+        <sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Guest 360</span><h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">New Guest Profile</h1><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Profiles persist across every stay. Email and phone are matched against existing guests before a new record is created.</p></div>
+          <sc-if value="{{ hasDup }}"><div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:8px;background:#FFFAEB;border:1px solid #FDE68A"><span style="display:flex;align-items:center;gap:8px;font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#92400E"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="users" size="{{ 16 }}" color="#B45309" hint-size="16px,16px"></x-import>{{ dupTitle }}</span><sc-for list="{{ dups }}" as="d"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:8px;background:#fff;border:1px solid #FDE68A"><span style="display:flex;flex-direction:column;gap:3px"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ d.name }} • {{ d.id }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ d.why }}</span></span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="arrow-right" on-click="{{ d.open }}" hint-size="170px,32px">Open Existing Profile</x-import></div></sc-for></div></sc-if>
+          <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+            <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Personal Information</h3>
+            <div style="display:grid;grid-template-columns:{{ formCols }};gap:14px 16px">
+              <sc-for list="{{ pfFields }}" as="pf" hint-placeholder-count="10"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ pf.label }}<input type="{{ pf.type }}" value="{{ pf.value }}" onInput="{{ pf.on }}" placeholder="{{ pf.ph }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;border-color:{{ pf.bd }}" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px"><span style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Communication Preferences</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ commChips }}" as="c"><button onClick="{{ c.toggle }}" style="height:32px;padding:0 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ c.label }}</button></sc-for></div></div>
+            <sc-if value="{{ formErr }}"><span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#DC2626">{{ formErrText }}</span></sc-if>
+            <div style="display:flex;justify-content:flex-end;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ goBack }}" hint-size="90px,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="user-plus" on-click="{{ createGuest }}" disabled="{{ cantCreate }}" hint-size="200px,40px">Create Guest Profile</x-import></div>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px 24px">
+            <div style="display:flex;gap:16px;min-width:0;flex:1 1 460px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ h.initials }}" tone="brand" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Guest 360 • {{ h.id }}</span>
+                <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ h.name }}</h1>
+                <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ hBadges }}" as="hb" hint-placeholder-count="3"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ hb.tone }}" hint-size="90px,22px">{{ hb.label }}</x-import></sc-for></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px 18px;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#475569"><sc-for list="{{ contacts }}" as="ct"><span style="display:flex;align-items:center;gap:6px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ct.icon }}" size="{{ 14 }}" color="#64748B" hint-size="14px,14px"></x-import>{{ ct.text }}</span></sc-for></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="pencil" on-click="{{ editProfile }}" hint-size="130px,40px">Edit Profile</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="calendar-plus" on-click="{{ newRes }}" hint-size="170px,40px">New Reservation</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="message-square" on-click="{{ goMessage }}" hint-size="110px,40px">Message</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="upload" on-click="{{ goUpload }}" hint-size="170px,40px">Upload Document</x-import>
+              <div style="position:relative">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="ellipsis" on-click="{{ toggleMore }}" hint-size="90px,40px">More</x-import>
+                <sc-if value="{{ moreOpen }}"><div style="position:absolute;right:0;top:46px;z-index:30;width:250px;padding:6px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;box-shadow:0 8px 24px rgba(15,23,42,0.12)"><sc-for list="{{ moreItems }}" as="mi"><button onClick="{{ mi.go }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px;border:0;border-radius:6px;background:transparent;cursor:pointer;text-align:left;color:#172033;font:600 13px/1.2 'Plus Jakarta Sans',sans-serif" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ mi.icon }}" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import>{{ mi.label }}</button></sc-for></div></sc-if>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ inHouse }}"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-radius:12px;background:#DDF3F1;border:1px solid #99D5D0"><div style="display:flex;align-items:center;gap:12px"><span style="width:36px;height:36px;border-radius:8px;background:#006B68;color:#fff;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bed-double" size="{{ 18 }}" hint-size="18px,18px"></x-import></span><div style="display:flex;flex-direction:column;gap:3px"><span style="font:700 15px/1.3 'Plus Jakarta Sans',sans-serif;color:#004F4D">Currently staying at {{ ih.prop }}</span><span style="font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#004F4D">Reservation {{ ih.id }} • {{ ih.dates }}</span></div></div><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="arrow-right" on-click="{{ ih.open }}" hint-size="180px,32px">Open Reservation 360</x-import></div></sc-if>
+          <div style="display:flex;gap:2px;border-bottom:1px solid #E2E8F0;overflow-x:auto">
+            <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="11"><button onClick="{{ tb.select }}" style="display:flex;align-items:center;gap:6px;height:42px;padding:0 14px;border:0;border-bottom:2px solid {{ tb.line }};margin-bottom:-1px;background:transparent;cursor:pointer;white-space:nowrap;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#006B68">{{ tb.label }}<sc-if value="{{ tb.hasCount }}"><span style="min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:{{ tb.cBg }};color:{{ tb.cFg }};display:inline-flex;align-items:center;justify-content:center;font:700 11px/1 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></sc-if></button></sc-for>
+          </div>
+
+          <sc-if value="{{ tab_overview }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+              <sc-for list="{{ ovCards }}" as="oc" hint-placeholder-count="4"><button onClick="{{ oc.go }}" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:16px 20px;display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer;font-family:inherit;border-top:3px solid {{ oc.accent }}" style-hover="border-color:#99D5D0"><span style="display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ oc.icon }}" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ oc.label }}</span></span><span style="font:700 20px/1.25 'Plus Jakarta Sans',sans-serif;color:#172033">{{ oc.value }}</span><span style="font:400 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ oc.sub }}</span></button></sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:{{ cols2 }};gap:20px;align-items:start">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Guest Readiness</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ rdSub }}</p></div>
+                <sc-if value="{{ hasRd }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-direction:column;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
+                    <sc-for list="{{ rdItems }}" as="it" hint-placeholder-count="7"><div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:{{ it.border }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" color="{{ it.color }}" hint-size="18px,18px"></x-import><span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ it.label }}</span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ it.scope }}</span></span><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ it.color }};text-align:right">{{ it.status }}</span><sc-if value="{{ it.hasGo }}"><button onClick="{{ it.go }}" title="Open" style="width:30px;height:30px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;cursor:pointer;color:#475569;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" hint-size="14px,14px"></x-import></button></sc-if></div></sc-for>
+                  </div>
+                  <p style="margin:0;font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Identity persists on the guest profile. House Rules, HOA rules, payment and arrival details are tracked per reservation — accepting the rules for one property never counts for another.</p>
+                  <div style="display:flex;justify-content:flex-end"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="arrow-right" on-click="{{ continueSetup }}" disabled="{{ rdDone }}" hint-size="200px,40px">{{ rdCta }}</x-import></div>
+                </sc-if>
+              </section>
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Recent Activity</h3><button onClick="{{ goActivity }}" style="border:0;background:transparent;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif">View All</button></div>
+                <div style="display:flex;flex-direction:column"><sc-for list="{{ recent }}" as="a" hint-placeholder-count="5"><div style="display:flex;gap:12px;padding:10px 0;border-top:1px solid #F1F5F9"><span style="margin-top:5px;width:8px;height:8px;border-radius:4px;background:{{ a.dot }};flex-shrink:0"></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033;text-wrap:pretty">{{ a.text }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ a.when }}</span></span></div></sc-for></div>
+              </section>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tab_reservations }}" hint-placeholder-val="{{ false }}">
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+              <div style="padding:18px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Stay History</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ stayNote }}</p></div><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="calendar-plus" on-click="{{ newRes }}" hint-size="170px,40px">New Reservation</x-import></div>
+              <div style="overflow-x:auto"><table style="width:100%;min-width:860px;border-collapse:collapse"><thead><tr><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Reservation</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Property</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Dates</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Guests</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Channel</th><th style="padding:10px 14px;text-align:right;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Total</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Status</th></tr></thead><tbody>
+                <sc-for list="{{ stayRows }}" as="r" hint-placeholder-count="3"><tr onClick="{{ r.open }}" style="cursor:pointer" style-hover="background:#F8FAFC"><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;color:#006B68;font-weight:600">{{ r.id }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><div style="display:flex;flex-direction:column;gap:3px"><span style="color:#172033">{{ r.prop }}</span><span style="font-size:12px">{{ r.unit }}</span></div></td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><div style="display:flex;flex-direction:column;gap:3px"><span style="color:#172033">{{ r.dates }}</span><span style="font-size:12px">{{ r.nights }}</span></div></td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ r.guests }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ r.channel }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;text-align:right;color:#172033;font-weight:600">{{ r.total }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.tone }}" dot="{{ true }}" hint-size="100px,22px">{{ r.status }}</x-import></td></tr></sc-for>
+              </tbody></table></div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ tab_personal }}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{ editing }}">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Edit Personal Information</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Changes are recorded in Activity. Sensitive fields are permission-controlled.</p></div>
+                <div style="display:grid;grid-template-columns:{{ formCols }};gap:14px 16px">
+              <sc-for list="{{ pfFields }}" as="pf" hint-placeholder-count="10"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ pf.label }}<input type="{{ pf.type }}" value="{{ pf.value }}" onInput="{{ pf.on }}" placeholder="{{ pf.ph }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;border-color:{{ pf.bd }}" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px"><span style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Communication Preferences</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ commChips }}" as="c"><button onClick="{{ c.toggle }}" style="height:32px;padding:0 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ c.label }}</button></sc-for></div></div>
+            <sc-if value="{{ formErr }}"><span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#DC2626">{{ formErrText }}</span></sc-if>
+                <div style="display:flex;justify-content:flex-end;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ cancelEdit }}" hint-size="90px,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ saveProfile }}" disabled="{{ cantSave }}" hint-size="150px,40px">Save Changes</x-import></div>
+              </section>
+            </sc-if>
+            <sc-if value="{{ viewing }}">
+              <div style="display:grid;grid-template-columns:{{ cols3 }};gap:20px;align-items:start">
+                <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Identity</h3><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="pencil" on-click="{{ editProfile }}" hint-size="70px,32px">Edit</x-import></div><div style="display:flex;flex-direction:column"><sc-for list="{{ pIdentity }}" as="kv" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-top:1px solid #F1F5F9;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B;flex-shrink:0">{{ kv.k }}</span><span style="color:#172033;font-weight:600;text-align:right;text-wrap:pretty">{{ kv.v }}</span></div></sc-for></div><sc-if value="{{ dobMasked }}"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:8px;background:#F8FAFC"><span style="display:flex;align-items:center;gap:6px;font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="lock" size="{{ 13 }}" color="#64748B" hint-size="13px,13px"></x-import>Date of birth is permission-controlled</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="eye" on-click="{{ revealDob }}" hint-size="90px,32px">Reveal</x-import></div></sc-if></section>
+                <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Contact</h3><div style="display:flex;flex-direction:column"><sc-for list="{{ pContact }}" as="kv" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-top:1px solid #F1F5F9;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B;flex-shrink:0">{{ kv.k }}</span><span style="color:#172033;font-weight:600;text-align:right;text-wrap:pretty">{{ kv.v }}</span></div></sc-for></div></section>
+                <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Emergency &amp; Preferences</h3><div style="display:flex;flex-direction:column"><sc-for list="{{ pPrefs }}" as="kv" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-top:1px solid #F1F5F9;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B;flex-shrink:0">{{ kv.k }}</span><span style="color:#172033;font-weight:600;text-align:right;text-wrap:pretty">{{ kv.v }}</span></div></sc-for></div><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ commView }}" as="c"><span style="height:26px;padding:0 10px;border-radius:999px;background:#DDF3F1;color:#004F4D;display:inline-flex;align-items:center;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ c }}</span></sc-for></div></section>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ tab_household }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ hhRes }}" as="c"><button onClick="{{ c.select }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ c.label }}</button></sc-for></div>
+            <sc-if value="{{ hhNone }}"><section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">No reservations yet — occupants are recorded per reservation.</p></section></sc-if>
+            <sc-if value="{{ hhHas }}">
+              <div style="display:grid;grid-template-columns:{{ cols2 }};gap:20px;align-items:start">
+                <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                  <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Reservation {{ hh.id }} • {{ hh.prop }}</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Primary Guest</h3></div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:8px;background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ h.initials }}" tone="brand" size="{{ 36 }}" hint-size="36px,36px"></x-import><span style="display:flex;flex-direction:column;gap:3px"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ h.name }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">Booking guest • {{ h.verLabel }}</span></span></div>
+                  <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px"><sc-for list="{{ hhCounts }}" as="c" hint-placeholder-count="5"><div style="display:flex;flex-direction:column;gap:6px;align-items:center;padding:12px 6px;border:1px solid #E2E8F0;border-radius:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ c.icon }}" size="{{ 16 }}" color="#006B68" hint-size="16px,16px"></x-import><span style="font:700 18px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ c.n }}</span><span style="font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ c.label }}</span></div></sc-for></div>
+                  <div style="display:flex;flex-direction:column;gap:8px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Vehicles</span><sc-for list="{{ vehRows }}" as="vh"><div style="display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:8px;background:#F8FAFC;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#172033;font-weight:600">{{ vh.plate }}</span><span style="color:#64748B">{{ vh.desc }}</span></div></sc-for><sc-if value="{{ noVeh }}"><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No vehicles registered for this stay.</span></sc-if></div>
+                </section>
+                <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+                  <div style="padding:18px 20px;display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Additional Guests</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Reservation occupants — not separate Guest 360 records.</p></div>
+                  <div style="overflow-x:auto"><table style="width:100%;min-width:480px;border-collapse:collapse"><thead><tr><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Name</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Type</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Age Group</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Verification</th></tr></thead><tbody>
+                    <sc-for list="{{ occRows }}" as="o" hint-placeholder-count="2"><tr><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;color:#172033;font-weight:600">{{ o.name }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ o.type }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ o.age }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ o.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ o.ver }}</x-import></td></tr></sc-for>
+                  </tbody></table></div>
+                  <sc-if value="{{ noOcc }}"><p style="margin:0;padding:12px 20px;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No additional guests listed.</p></sc-if>
+                  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:end;padding:16px 20px;border-top:1px solid #E2E8F0">
+                    <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Name<input value="{{ oc.name }}" onInput="{{ ocOn.name }}" placeholder="Full name" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Type<select value="{{ oc.type }}" onChange="{{ ocOn.type }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ ocTypes }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Age Group<select value="{{ oc.age }}" onChange="{{ ocOn.age }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ ocAges }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                    <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="plus" on-click="{{ addOcc }}" disabled="{{ cantOcc }}" hint-size="80px,40px">Add</x-import>
+                  </div>
+                </section>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ tab_verification }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:{{ cols2 }};gap:20px;align-items:start">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Identity Status</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ vr.tone }}" dot="{{ true }}" hint-size="110px,22px">{{ vr.label }}</x-import></div><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="scan-face" on-click="{{ openReview }}" hint-size="110px,40px">Review</x-import></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ verSteps }}" as="vs"><span style="height:28px;padding:0 12px;border-radius:999px;border:1px solid {{ vs.bd }};background:{{ vs.bg }};color:{{ vs.fg }};display:inline-flex;align-items:center;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ vs.label }}</span></sc-for></div>
+                <div style="display:flex;flex-direction:column"><sc-for list="{{ verKv }}" as="kv" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-top:1px solid #F1F5F9;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B;flex-shrink:0">{{ kv.k }}</span><span style="color:#172033;font-weight:600;text-align:right;text-wrap:pretty">{{ kv.v }}</span></div></sc-for></div>
+                <a href="{{ idQueue }}" style="font:600 13px/1 'Plus Jakarta Sans',sans-serif">Open Identity Verification queue →</a>
+              </section>
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Staff Review</h3>
+                <p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Automated checks are advisory. Only a staff decision changes identity status, and every decision is recorded with reviewer, reason and timestamp.</p>
+                <sc-if value="{{ revOpen }}">
+                  <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ revOpts }}" as="ro"><label style="display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid {{ ro.bd }};background:{{ ro.bg }};border-radius:8px;cursor:pointer"><input type="radio" name="rev" checked="{{ ro.on }}" onChange="{{ ro.select }}" style="accent-color:#006B68;margin:2px 0 0"><span style="display:flex;flex-direction:column;gap:3px"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ro.label }}</span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ro.desc }}</span></span></label></sc-for></div>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ revReasonLabel }}<textarea value="{{ revReason }}" onInput="{{ onRevReason }}" rows="3" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;line-height:1.5;resize:vertical" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                  <div style="display:flex;justify-content:flex-end;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ closeReview }}" hint-size="90px,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ saveReview }}" disabled="{{ cantReview }}" hint-size="170px,40px">Record Decision</x-import></div>
+                </sc-if>
+                <sc-if value="{{ revClosed }}"><div style="padding:12px 14px;border-radius:8px;background:#F8FAFC;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569">{{ vr.review }}</div></sc-if>
+              </section>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tab_payments }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px"><sc-for list="{{ payCards }}" as="pc" hint-placeholder-count="3"><div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:16px 20px;display:flex;flex-direction:column;gap:8px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ pc.label }}</span><span style="font:700 24px/1.1 'Plus Jakarta Sans',sans-serif;color:{{ pc.color }}">{{ pc.value }}</span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ pc.sub }}</span></div></sc-for></div>
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Reservation Accounts</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Each transaction belongs to its reservation. Guest 360 summarises; Reservation 360 holds the account.</p></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px"><sc-for list="{{ payRows }}" as="p" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:8px;background:#F8FAFC"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px"><span style="display:flex;flex-direction:column;gap:3px"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Reservation {{ p.id }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ p.sub }}</span></span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ p.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ p.status }}</x-import></div><div style="display:flex;flex-direction:column"><sc-for list="{{ p.kv }}" as="kv"><div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid #E2E8F0;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B">{{ kv.k }}</span><span style="color:{{ kv.c }};font-weight:700">{{ kv.v }}</span></div></sc-for></div><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="wallet" on-click="{{ p.open }}" hint-size="200px,32px">View Reservation Account</x-import></div></sc-for></div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ tab_services }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ svcGroups }}" as="gr" hint-placeholder-count="1">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+                <div style="padding:16px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Reservation {{ gr.id }}</span><span style="font:600 15px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ gr.prop }} • {{ gr.dates }}</span></div><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="arrow-right" on-click="{{ gr.open }}" hint-size="210px,32px">Manage in Reservation 360</x-import></div>
+                <div style="overflow-x:auto"><table style="width:100%;min-width:620px;border-collapse:collapse"><thead><tr><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Charge</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Date</th><th style="padding:10px 14px;text-align:right;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Amount</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Status</th></tr></thead><tbody><sc-for list="{{ gr.rows }}" as="c"><tr><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><div style="display:flex;flex-direction:column;gap:3px"><span style="color:#172033;font-weight:600">{{ c.name }}</span><span style="font-size:12px">{{ c.desc }}</span></div></td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ c.date }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;text-align:right;color:#172033;font-weight:600">{{ c.amt }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ c.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ c.status }}</x-import></td></tr></sc-for></tbody></table></div>
+              </section>
+            </sc-for>
+            <sc-if value="{{ noSvc }}"><section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">No services or additional charges on this guest’s reservations.</p></section></sc-if>
+            <p style="margin:0;font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Charges are owned by each Reservation; this view references them and never stores a copy.</p>
+          </sc-if>
+
+          <sc-if value="{{ tab_documents }}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{ upOpen }}">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;border-top:3px solid #D4A637">
+                <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Upload Document</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Stored in the Electronic Document Center and linked to this guest.</p></div>
+                <div style="display:grid;grid-template-columns:{{ cols3 }};gap:12px 16px">
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Document Type<select value="{{ up.cat }}" onChange="{{ upOn.cat }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ docCats }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Related Reservation<select value="{{ up.resId }}" onChange="{{ upOn.resId }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ resOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Visibility<select value="{{ up.vis }}" onChange="{{ upOn.vis }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ visOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">File<input type="file" onChange="{{ upOn.file }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;padding:8px 12px;height:auto"></label>
+                <div style="display:flex;justify-content:flex-end;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ closeUpload }}" hint-size="90px,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="upload" on-click="{{ saveUpload }}" disabled="{{ cantUpload }}" hint-size="220px,40px">Save to Document Center</x-import></div>
+              </section>
+            </sc-if>
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+              <div style="padding:18px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Guest Documents</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Authorized documents from the Document Center. Signed agreements export as the executed version.</p></div><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="upload" on-click="{{ goUpload }}" hint-size="170px,40px">Upload Document</x-import></div>
+              <div style="overflow-x:auto"><table style="width:100%;min-width:900px;border-collapse:collapse"><thead><tr><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Document</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Category</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Reservation</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Visibility</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Actions</th></tr></thead><tbody>
+                <sc-for list="{{ docRows }}" as="d" hint-placeholder-count="4"><tr><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><div style="display:flex;align-items:center;gap:10px"><span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="file-text" size="{{ 15 }}" hint-size="15px,15px"></x-import></span><span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="color:#172033;font-weight:600">{{ d.name }}</span><span style="font-size:12px">{{ d.meta }}</span></span></div></td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ d.cat }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">{{ d.res }}</td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ d.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ d.vis }}</x-import></td><td style="padding:12px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569"><div style="display:flex;flex-wrap:wrap;gap:4px"><sc-for list="{{ d.acts }}" as="da"><button onClick="{{ da.go }}" title="{{ da.label }}" style="height:30px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;cursor:pointer;color:#172033;font:600 12px/1 'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:5px" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ da.icon }}" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ da.label }}</button></sc-for></div></td></tr></sc-for>
+              </tbody></table></div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ tab_messages }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ msgFilters }}" as="c"><button onClick="{{ c.select }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ c.label }}</button></sc-for></div>
+            <div style="display:grid;grid-template-columns:{{ msgCols }};gap:20px;align-items:start">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+                <div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #E2E8F0"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Conversations</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="plus" on-click="{{ newThread }}" hint-size="80px,32px">New</x-import></div>
+                <sc-for list="{{ threadRows }}" as="t" hint-placeholder-count="3"><button onClick="{{ t.select }}" style="width:100%;display:flex;flex-direction:column;gap:6px;padding:12px 16px;border:0;border-bottom:1px solid #F1F5F9;border-left:3px solid {{ t.bar }};background:{{ t.bg }};cursor:pointer;text-align:left;font-family:inherit"><span style="display:flex;justify-content:space-between;gap:8px"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ t.subject }}</span><span style="font:500 11px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B;white-space:nowrap">{{ t.when }}</span></span><span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="padding:3px 8px;border-radius:999px;background:#E6F6FC;color:#00739F;font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ t.topic }}</span><span style="font:500 11px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ t.res }}</span></span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.last }}</span></button></sc-for>
+                <sc-if value="{{ noThreads }}"><p style="margin:0;padding:16px;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No conversations in this view.</p></sc-if>
+              </section>
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <sc-if value="{{ composing }}">
+                  <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">New Conversation</h3>
+                  <div style="display:grid;grid-template-columns:{{ cols2 }};gap:12px 16px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Related To<select value="{{ nt.topic }}" onChange="{{ ntOn.topic }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ topicOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Reservation<select value="{{ nt.resId }}" onChange="{{ ntOn.resId }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ resOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label></div>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Subject<input value="{{ nt.subject }}" onInput="{{ ntOn.subject }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Message<textarea value="{{ nt.text }}" onInput="{{ ntOn.text }}" rows="5" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;line-height:1.5;resize:vertical" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                  <div style="display:flex;justify-content:flex-end;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ cancelThread }}" hint-size="90px,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="send" on-click="{{ sendThread }}" disabled="{{ cantThread }}" hint-size="150px,40px">Send Message</x-import></div>
+                </sc-if>
+                <sc-if value="{{ showThread }}">
+                  <div style="display:flex;flex-direction:column;gap:4px;padding-bottom:10px;border-bottom:1px solid #E2E8F0"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ th.topic }} • {{ th.res }}{{ th.channel }}</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ th.subject }}</h3></div>
+                  <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ msgRows }}" as="m" hint-placeholder-count="2"><div style="align-self:{{ m.align }};max-width:82%;display:flex;flex-direction:column;gap:4px;padding:10px 14px;border-radius:10px;background:{{ m.bg }}"><span style="font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569">{{ m.from }} • {{ m.when }}</span><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;white-space:pre-wrap;text-wrap:pretty">{{ m.text }}</span></div></sc-for></div>
+                  <div style="display:flex;gap:8px;align-items:flex-end"><textarea value="{{ reply }}" onInput="{{ onReply }}" rows="2" placeholder="Write a reply…" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;line-height:1.5;resize:vertical;flex:1" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="send" on-click="{{ sendReply }}" disabled="{{ cantReply }}" hint-size="90px,40px">Send</x-import></div>
+                </sc-if>
+                <sc-if value="{{ noThreadSel }}"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Select a conversation or start a new one. All guest communication uses the shared MGHPM Communications record.</p></sc-if>
+              </section>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tab_incidents }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#FEF2F2;border:1px solid #FECACA"><span style="display:flex;align-items:center;gap:8px;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#991B1B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="lock" size="{{ 15 }}" color="#DC2626" hint-size="15px,15px"></x-import>Internal • permission-controlled. Never shown in My Stay, Owner Portal or guest exports.</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="plus" on-click="{{ openInc }}" hint-size="150px,32px">Record Incident</x-import></div>
+            <sc-if value="{{ incOpen }}">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;border-top:3px solid #D4A637">
+                <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Record Incident</h3>
+                <div style="display:grid;grid-template-columns:{{ cols3 }};gap:12px 16px">
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Incident Type<select value="{{ inc.type }}" onChange="{{ incOn.type }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ incTypes }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Reservation<select value="{{ inc.resId }}" onChange="{{ incOn.resId }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ resOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Date &amp; Time<input type="datetime-local" value="{{ inc.at }}" onInput="{{ incOn.at }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Severity<select value="{{ inc.severity }}" onChange="{{ incOn.severity }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ sevOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Status<select value="{{ inc.status }}" onChange="{{ incOn.status }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ incStatusOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Evidence (Document Center)<input type="file" onChange="{{ incOn.file }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;padding:8px 12px;height:auto"></label>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Description<textarea value="{{ inc.desc }}" onInput="{{ incOn.desc }}" rows="3" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;line-height:1.5" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Action Taken<textarea value="{{ inc.action }}" onInput="{{ incOn.action }}" rows="2" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;line-height:1.5" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                <div style="display:flex;justify-content:flex-end;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ closeInc }}" hint-size="90px,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ saveInc }}" disabled="{{ cantInc }}" hint-size="150px,40px">Save Incident</x-import></div>
+              </section>
+            </sc-if>
+            <sc-for list="{{ incRows }}" as="i" hint-placeholder-count="1">
+              <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font:700 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ i.id }}</span><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ i.type }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ i.sevTone }}" dot="{{ true }}" hint-size="70px,22px">{{ i.severity }}</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ i.stTone }}" dot="{{ true }}" hint-size="80px,22px">{{ i.status }}</x-import></div><sc-if value="{{ i.canResolve }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="check" on-click="{{ i.resolve }}" hint-size="140px,32px">Mark Resolved</x-import></sc-if></div>
+                <span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ i.meta }}</span>
+                <div style="display:grid;grid-template-columns:{{ cols3 }};gap:12px"><sc-for list="{{ i.kv }}" as="kv"><div style="display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:8px;background:#F8FAFC"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ kv.k }}</span><span style="font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;text-wrap:pretty">{{ kv.v }}</span></div></sc-for></div>
+              </section>
+            </sc-for>
+            <sc-if value="{{ noInc }}"><section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">No incidents recorded for this guest.</p></section></sc-if>
+          </sc-if>
+
+          <sc-if value="{{ tab_activity }}" hint-placeholder-val="{{ false }}">
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Activity</h3><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Complete audit timeline across profile, reservations, documents, communications and exports.</p></div>
+              <div style="display:flex;flex-direction:column"><sc-for list="{{ actRows }}" as="a" hint-placeholder-count="8"><div style="display:grid;grid-template-columns:150px 14px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid #F1F5F9;align-items:start"><span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ a.when }}</span><span style="margin-top:4px;width:10px;height:10px;border-radius:5px;background:{{ a.dot }}"></span><span style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center"><span style="font:500 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#172033;text-wrap:pretty">{{ a.text }}</span><span style="padding:3px 8px;border-radius:999px;background:#F1F5F9;color:#475569;font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ a.kind }}</span></span></div></sc-for></div>
+            </section>
+          </sc-if>
+        </sc-if>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const QP = new URLSearchParams(window.location.search);
+const SL = { draft: ['Draft', 'neutral'], pending: ['Pending', 'warning'], confirmed: ['Confirmed', 'success'], checked_in: ['Checked In', 'info'], checked_out: ['Checked Out', 'neutral'], cancelled: ['Cancelled', 'danger'] };
+const D = s => new Date(s + 'T12:00:00');
+const fmtD = s => s ? D(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+const rng = (a, b) => { const A = D(a), B = D(b), m = d => d.toLocaleDateString('en-US', { month: 'short' }); return A.getMonth() === B.getMonth() && A.getFullYear() === B.getFullYear() ? m(A) + ' ' + A.getDate() + '–' + B.getDate() + ', ' + B.getFullYear() : m(A) + ' ' + A.getDate() + ' – ' + m(B) + ' ' + B.getDate() + ', ' + B.getFullYear(); };
+const fmtTs = t => new Date(t).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+const ini = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const usd = n => 'US$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const TABS = [['overview', 'Overview'], ['reservations', 'Reservations'], ['personal', 'Personal Information'], ['household', 'Household & Guests'], ['verification', 'Verification'], ['payments', 'Payments'], ['services', 'Services & Charges'], ['documents', 'Documents'], ['messages', 'Messages'], ['incidents', 'Incidents'], ['activity', 'Activity']];
+const PF = [['first', 'Legal First Name', 'text', 'Ana'], ['middle', 'Middle Name', 'text', ''], ['last', 'Last Name', 'text', 'Torres'], ['preferred', 'Preferred Name', 'text', ''], ['dob', 'Date of Birth', 'date', ''], ['nationality', 'Nationality', 'text', ''], ['residence', 'Country of Residence', 'text', ''], ['email', 'Email', 'email', 'name@example.com'], ['phone', 'Mobile', 'tel', '+1 (305) 555-0100'], ['whatsapp', 'WhatsApp', 'tel', ''], ['lang', 'Preferred Language', 'text', 'English'], ['address', 'Address', 'text', ''], ['emergency', 'Emergency Contact', 'text', 'Name • phone']];
+const COMM = ['Email', 'WhatsApp', 'SMS', 'Phone Call'];
+const DOC_CATS = ['Identification', 'Reservation Agreement', 'House Rules Acknowledgment', 'HOA Acknowledgment', 'Receipt', 'Guest Registration', 'Incident Evidence', 'Other'];
+const emailOk = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || '');
+const opt = a => a.map(x => Array.isArray(x) ? { v: x[0], l: x[1] } : { v: x, l: x });
+const blankForm = () => ({ first: '', middle: '', last: '', preferred: '', dob: '', nationality: '', residence: '', email: '', phone: '', whatsapp: '', lang: 'English', address: '', emergency: '', comm: ['Email'] });
+
+class Component extends DCLogic {
+  state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, tick: 0, tab: TABS.some(t => t[0] === QP.get('tab')) ? QP.get('tab') : 'overview', edit: false, form: blankForm(), tried: false, more: false, dobShown: false, hhSel: null, oc: { name: '', type: 'Adult', age: 'Adult' }, rev: null, up: null, msgF: 'all', thSel: null, nt: null, reply: '', inc: null };
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    const t2 = setInterval(() => { if (window.MGH_STR_DATA && window.MGH_GUEST && window.lucide) { clearInterval(t2); this.forceUpdate(); } }, 120);
+    window.MGH_EXPORT_PROVIDER = () => this.exportDoc();
+    this._onExp = e => { const g = this.guest(); if (g && e.detail && e.detail.text) { window.MGH_GUEST.save(Object.assign({}, g), e.detail.text); this.bump(); } };
+    window.addEventListener('mgh:export', this._onExp);
+    this._docClick = () => this.state.more && this.setState({ more: false });
+    document.addEventListener('click', this._docClick);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); window.removeEventListener('mgh:export', this._onExp); document.removeEventListener('click', this._docClick); (this._t || []).forEach(clearTimeout); clearInterval(this._poll); clearTimeout(this._toastT); window.MGH_EXPORT_PROVIDER = null; }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3200); }
+  bump() { this.setState(s => ({ tick: s.tick + 1 })); }
+  guest() { return window.MGH_GUEST ? window.MGH_GUEST.find(QP.get('id') || 'G-1005') : null; }
+  setTab(t) { this.setState({ tab: t, more: false }); try { const u = new URLSearchParams(window.location.search); u.set('tab', t); window.history.replaceState(null, '', window.location.pathname + '?' + u.toString()); } catch (e) {} }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+  ctx(g) {
+    const S = window.MGH_STR_DATA, G = window.MGH_GUEST, T = S.TODAY;
+    const st = G.stays(g), live = st.filter(r => r.status !== 'cancelled');
+    const cur = st.find(r => r.status === 'checked_in');
+    const next = st.filter(r => ['confirmed', 'pending'].includes(r.status) && r.co >= T).sort((a, b) => a.ci < b.ci ? -1 : 1)[0];
+    const focus = cur || next;
+    const prop = r => { const x = G.stayOf(r); return x ? x.name : r.unit; };
+    return { S, G, T, st, live, cur, next, focus, prop, name: G.nameOf(g) };
+  }
+  readiness(g, r, c) {
+    const G = c.G, done = ['confirmed', 'checked_in', 'checked_out'].includes(r.status), acc = G.account(r), occ = G.occupants(r), x = G.stayOf(r);
+    const ver = g.ver ? g.ver.status : 'not_started';
+    const OK = ['circle-check', '#15803D'], WARN = ['triangle-alert', '#B45309'], PEND = ['circle', '#94A3B8'], BAD = ['circle-x', '#DC2626'];
+    const exp = Math.max(0, (occ.adults || 0) + (occ.children || 0) - 1), listed = (occ.list || []).length;
+    const hr = r.ack ? !!r.ack.accepted : r.guestRulesAccepted != null ? !!r.guestRulesAccepted : done;
+    const hoa = r.docs ? r.docs.hoa === 'complete' : done;
+    const infoOk = g.email && g.phone && g.residence && g.emergency;
+    const tab = t => () => this.setTab(t), res360 = t => () => go(PAGES['reservation-360'] + '?id=' + encodeURIComponent(r.id) + (t ? '&tab=' + t : ''));
+    return [
+      ['Guest Information', 'Guest profile', infoOk ? OK : WARN, infoOk ? 'Complete' : 'Emergency contact missing', tab('personal')],
+      ['Identity Verification', 'Guest profile • persists across stays', ver === 'verified' ? OK : ver === 'failed' ? BAD : ver === 'not_started' ? PEND : WARN, G.VER[ver][0], tab('verification')],
+      ['Additional Guests', 'Reservation ' + r.id, listed >= exp ? OK : WARN, exp === 0 ? 'Solo stay' : listed >= exp ? listed + ' of ' + exp + ' listed' : listed + ' of ' + exp + ' listed', tab('household')],
+      ['Payment', 'Reservation ' + r.id, acc.balance < 0.005 ? OK : WARN, acc.balance < 0.005 ? 'Paid in full' : 'Balance Due ' + usd(acc.balance), res360('payments')],
+      ['House Rules', (x ? x.name : 'Property') + ' • this reservation only', hr ? OK : PEND, hr ? 'Accepted' + (r.ack && r.ack.version ? ' • ' + r.ack.version : '') : 'Pending', res360('documents')],
+      ['HOA Rules', (x && x.hoa ? x.hoa : 'Community') + ' • this reservation only', hoa ? OK : PEND, hoa ? 'Accepted' : 'Pending', res360('documents')],
+      ['Arrival Information', 'Submitted by the guest in My Stay', r.arrival ? OK : PEND, r.arrival ? 'Arriving ' + r.arrival.time + (r.arrival.flight ? ' • ' + r.arrival.flight : '') : 'Pending', () => this.remindArrival(g, r)]
+    ].map(([label, scope, ic, status, goFn]) => ({ label, scope, icon: ic[0], color: ic[1], status, ok: ic[0] === 'circle-check', go: goFn }));
+  }
+  remindArrival(g, r) { const G = window.MGH_GUEST; G.post({ id: 'TH-' + Date.now().toString().slice(-6), guestId: g.id, resId: r.id, topic: 'Arrival', subject: 'Please submit your arrival information' }, ['staff', 'Marcus Vance', 'Hello ' + (g.preferred || g.first) + ', please submit your arrival time and travel details in My Stay for reservation ' + r.id + '.', Date.now()]); G.save(Object.assign({}, g), 'Arrival information reminder sent for ' + r.id); this.bump(); this.notify('Arrival reminder sent to ' + g.email); }
+  activity(g, c) {
+    const G = c.G, out = [{ at: g.created || 0, text: 'Guest profile ' + g.id + ' created', kind: 'Profile', dot: '#006B68' }];
+    if (window.MGH_AUDIT) window.MGH_AUDIT.forRecord([g.id].concat(c.st.map(r => r.id))).forEach(e => out.push({ at: e.at, text: (e.recordId !== g.id ? e.recordId + ' — ' : '') + (e.detail || e.action + ' • ' + e.recordType) + (e.reason ? ' — Reason: ' + e.reason : '') + ' • ' + e.actor, kind: e.module === 'Documents' ? 'Export' : e.category === 'Financial' ? 'Payment' : e.recordId === g.id ? 'Profile' : 'Reservation', dot: e.category === 'Financial' ? '#D4A637' : '#006B68' }));
+    c.st.forEach(r => {
+      if (false) r.activity.forEach(a => out.push({ at: a.at, text: a.text.indexOf(r.id) >= 0 ? a.text : r.id + ' — ' + a.text, kind: 'Reservation', dot: '#0094CC' }));
+      else { const t0 = D(r.ci).getTime(); out.push({ at: t0 - 21 * 864e5, text: 'Reservation ' + r.id + ' requested • ' + r.channel, kind: 'Reservation', dot: '#0094CC' }); if (['confirmed', 'checked_in', 'checked_out'].includes(r.status)) out.push({ at: t0 - 20 * 864e5, text: 'Reservation ' + r.id + ' confirmed • House Rules accepted', kind: 'Reservation', dot: '#0094CC' }); if (['checked_in', 'checked_out'].includes(r.status)) out.push({ at: t0 + 16 * 36e5, text: 'Checked in • ' + c.prop(r), kind: 'Stay', dot: '#15803D' }); if (r.status === 'checked_out') out.push({ at: D(r.co).getTime() + 11 * 36e5, text: 'Checked out • ' + c.prop(r), kind: 'Stay', dot: '#15803D' }); if (r.status === 'cancelled') out.push({ at: t0 - 10 * 864e5, text: 'Reservation ' + r.id + ' cancelled', kind: 'Reservation', dot: '#DC2626' }); }
+      if (r.arrival) out.push({ at: r.arrival.at, text: 'Arrival information submitted for ' + r.id, kind: 'Stay', dot: '#15803D' });
+    });
+    G.threads(g).forEach(t => t.msgs.forEach(m => out.push({ at: m[3], text: (m[0] === 'guest' ? 'Message from ' + m[1] : 'Message sent by ' + m[1]) + ' — ' + t.subject, kind: 'Message', dot: '#64748B' })));
+    G.incidents(g).forEach(i => out.push({ at: new Date(i.at).getTime(), text: 'Incident ' + i.id + ' recorded — ' + i.type, kind: 'Incident', dot: '#DC2626' }));
+    let au = []; try { au = JSON.parse(sessionStorage.getItem('mghpm.audit.v1')) || []; } catch (e) {}
+    const ids = c.st.map(r => r.id).concat([g.id]);
+    au.filter(a => ids.includes(a.recordNo) && a.action !== 'document.emailed').forEach(a => out.push({ at: a.at, text: (a.recordType || 'Document') + ' ' + (a.action === 'document.printed' ? 'printed' : 'PDF downloaded') + ' by ' + a.actor + ' • ' + a.audience, kind: 'Export', dot: '#D4A637' }));
+    return out.filter(a => a.at).sort((a, b) => b.at - a.at).map(a => ({ ...a, when: fmtTs(a.at) }));
+  }
+  docProvider(d, g, name) {
+    const ex = /Agreement|Acknowledgment/.test(d.cat);
+    const done = (d.meta.match(/(?:Signed|Accepted) ([A-Z][a-z]{2} \d+, \d{4})/) || [])[1] || '—';
+    return { type: d.cat, title: d.name.replace(/\.pdf$/, ''), recordNo: d.resId || g.id, subject: ['Guest', name], resId: d.resId, party: { guestId: g.id }, fileName: d.name,
+      meta: [['Category', d.cat], ['Reservation', d.resId || '—'], ['Visibility', d.vis], ['Details', d.meta]],
+      sections: [{ title: 'Document Record', kv: [['Document', d.name], ['Linked Guest', name + ' • ' + g.id], ['Stored In', 'Electronic Document Center']] }],
+      executed: ex ? { name: d.name, version: (d.meta.match(/HR-[\w.]+ v\d+/) || ['v1'])[0], completed: done, signers: [['Signed By', name + ' • ' + g.email], ['Countersigned', 'My Global Hub Property Management • Marcus Vance'], ['Method', 'Electronic signature • IP address and timestamp recorded']], certificate: 'SIG-' + (d.resId || g.id) + '-' + d.cat.replace(/\W/g, '').slice(0, 6).toUpperCase() } : null,
+      recipients: [{ name, email: g.email, role: 'guest' }], audiences: d.vis === 'Internal' ? ['Internal Use'] : ['Internal Use', 'Guest'] };
+  }
+  openDoc(d, g, name, mode) { const prev = window.MGH_EXPORT_PROVIDER; window.MGH_EXPORT_PROVIDER = () => this.docProvider(d, g, name); if (window.MGH_EXPORT && window.MGH_EXPORT.open) window.MGH_EXPORT.open(mode); window.MGH_EXPORT_PROVIDER = prev; }
+  exportDoc() {
+    const g = this.guest(); if (!g || !window.MGH_STR_DATA) return null;
+    const c = this.ctx(g), G = c.G, S = c.S;
+    const charges = []; c.st.forEach(r => G.account(r).charges.forEach(ch => { const cat = S.CATALOG.find(k => k.key === ch.svc); charges.push([r.id, ch.name, fmtD(ch.date), S.fmtC(S.chargeCalc(ch, cat).total, ch.currency || 'USD'), ((S.SVC_STATUS.find(x => x[0] === ch.status) || [])[1]) || ch.status]); }));
+    return { type: 'Guest Profile', title: 'Guest Profile — ' + c.name, recordNo: g.id, subject: ['Guest', c.name], party: { guestId: g.id }, fileName: 'Guest Profile — ' + g.id + '.pdf',
+      meta: [['Guest ID', g.id], ['Lifetime Stays', String(c.live.length)], ['Identity', G.VER[g.ver.status][0]]],
+      sections: [
+        { title: 'Personal Information', kv: [['Legal Name', [g.first, g.middle, g.last].filter(Boolean).join(' ')], ['Preferred Name', g.preferred || '—'], ['Date of Birth', g.dob ? fmtD(g.dob) : '—'], ['Nationality', g.nationality || '—'], ['Country of Residence', g.residence || '—'], ['Preferred Language', g.lang || '—']] },
+        { title: 'Contact', kv: [['Email', g.email], ['Mobile', g.phone], ['WhatsApp', g.whatsapp || '—'], ['Address', g.address || '—'], ['Emergency Contact', g.emergency || '—'], ['Communication Preferences', (g.comm || []).join(', ') || '—']] },
+        { title: 'Identity Verification', kv: [['Status', G.VER[g.ver.status][0]], ['Document Type', g.ver.docType || '—'], ['Issuing Country', g.ver.country || '—'], ['Provider', g.ver.provider || '—'], ['Verified', g.ver.verifiedAt ? fmtD(g.ver.verifiedAt) : '—'], ['Expires', g.ver.expires ? fmtD(g.ver.expires) : '—']] },
+        { title: 'Stay History', table: { cols: ['Reservation', 'Property', 'Dates', 'Total', 'Status'], rows: c.st.map(r => [r.id, c.prop(r), rng(r.ci, r.co), usd(G.account(r).total), (SL[r.status] || [r.status])[0]]) } },
+        { title: 'Reservation Accounts', table: { cols: ['Reservation', 'Total', 'Paid', 'Balance'], rows: c.live.map(r => { const a = G.account(r); return [r.id, usd(a.total), usd(a.paid), usd(a.balance)]; }) } },
+        { title: 'Services & Charges', table: { cols: ['Reservation', 'Charge', 'Date', 'Amount', 'Status'], rows: charges } },
+        { title: 'Incidents', restricted: true, table: { cols: ['Incident', 'Type', 'Reservation', 'Date', 'Status'], rows: G.incidents(g).map(i => [i.id, i.type, i.resId, fmtTs(new Date(i.at).getTime()), i.status]) } },
+        { title: 'Internal Notes', restricted: true, text: [g.notes || 'No internal notes.'] }
+      ], recipients: [{ name: c.name, email: g.email, role: 'guest' }], audiences: ['Internal Use', 'Guest'] };
+  }
+  formVals(isNew) {
+    const s = this.state, f = s.form, desktop = (window.innerWidth || 1440) >= 1200;
+    const req = { first: 1, last: 1, email: 1, phone: 1 };
+    const bad = k => s.tried && req[k] && (k === 'email' ? !emailOk(f.email) : k === 'phone' ? (f.phone || '').replace(/\D/g, '').length < 7 : !(f[k] || '').trim());
+    const valid = (f.first || '').trim() && (f.last || '').trim() && emailOk(f.email) && (f.phone || '').replace(/\D/g, '').length >= 7;
+    return { valid, formCols: desktop ? 'repeat(3,minmax(0,1fr))' : 'minmax(0,1fr)',
+      pfFields: PF.map(([k, label, type, ph]) => ({ label: label + (req[k] ? ' *' : ''), type, ph, value: f[k] || '', bd: bad(k) ? '#DC2626' : '#E2E8F0', on: e => { const v = e.target.value; this.setState(st => ({ form: { ...st.form, [k]: v } })); } })),
+      commChips: COMM.map(cm => { const on = (f.comm || []).includes(cm); return { label: cm, bg: on ? '#132A52' : '#fff', color: on ? '#fff' : '#172033', border: on ? '#132A52' : '#E2E8F0', toggle: () => this.setState(st => ({ form: { ...st.form, comm: on ? st.form.comm.filter(x => x !== cm) : (st.form.comm || []).concat([cm]) } })) }; }),
+      formErr: s.tried && !valid, formErrText: 'Legal first name, last name, a valid email and a mobile number are required.' };
+  }
+  renderVals() {
+    const s = this.state, S = window.MGH_STR_DATA, G = window.MGH_GUEST;
+    const { v, bp } = this.chrome('guest-360');
+    const desktop = bp === 'desktop';
+    const g = G ? this.guest() : null, isNew = QP.get('new') === '1';
+    const base = { ...v, goBack: () => go(PAGES.guests), cols2: desktop ? 'minmax(0,1fr) minmax(0,1fr)' : 'minmax(0,1fr)', cols3: desktop ? 'repeat(3,minmax(0,1fr))' : 'minmax(0,1fr)',
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Short-Term Rentals', null], ['Guests', PAGES.guests], [isNew ? 'New Guest' : g ? G.nameOf(g) : 'Guest 360', null]]), found: false, notFound: false, isNew: false };
+    if (!S || !G) return base;
+    if (isNew) {
+      const fv = this.formVals(true), f = s.form;
+      const m = G.match({ email: f.email, phone: f.phone, name: (f.first + ' ' + f.last).trim() });
+      const hard = m.filter(x => (f.email && x.email.toLowerCase() === f.email.trim().toLowerCase()) || ((f.phone || '').replace(/\D/g, '').length >= 7 && x.phone.replace(/\D/g, '') === f.phone.replace(/\D/g, '')));
+      return { ...base, ...fv, isNew: true, hasDup: m.length > 0, dupTitle: hard.length ? 'This guest already exists — open the existing profile instead of creating a duplicate' : 'Possible duplicate — same name as an existing guest',
+        dups: m.map(x => ({ name: G.nameOf(x), id: x.id, why: [x.email.toLowerCase() === (f.email || '').trim().toLowerCase() ? 'Same email' : null, x.phone.replace(/\D/g, '') === (f.phone || '').replace(/\D/g, '') && (f.phone || '').replace(/\D/g, '').length >= 7 ? 'Same phone' : null, G.nameOf(x).toLowerCase() === (f.first + ' ' + f.last).trim().toLowerCase() ? 'Same name' : null].filter(Boolean).join(' • ') + ' • ' + x.email, open: () => go(PAGES['guest-360'] + '?id=' + x.id) })),
+        cantCreate: hard.length > 0,
+        createGuest: () => { if (!fv.valid) return this.setState({ tried: true }); const ids = G.guests().map(x => +x.id.slice(2)); const id = 'G-' + (Math.max.apply(null, ids) + 1); G.save({ id, first: f.first.trim(), middle: f.middle.trim(), last: f.last.trim(), preferred: f.preferred.trim(), dob: f.dob, nationality: f.nationality.trim(), residence: f.residence.trim(), email: f.email.trim(), phone: f.phone.trim(), whatsapp: (f.whatsapp || f.phone).trim(), lang: f.lang.trim() || 'English', address: f.address.trim(), emergency: f.emergency.trim(), comm: f.comm, aliases: [], notes: '', ver: { status: 'not_started', docType: '', country: '', provider: 'Persona', verifiedAt: '', expires: '', review: 'Not started' }, created: Date.now(), log: [] }, 'Guest profile created by Marcus Vance'); go(PAGES['guest-360'] + '?id=' + id + '&created=1'); } };
+    }
+    if (!g) return { ...base, notFound: true, nfText: QP.get('id') ? 'No guest with ID ' + QP.get('id') + ' exists in this portfolio.' : 'Open a guest from the Guests list.' };
+    const c = this.ctx(g), name = c.name, ver = g.ver || { status: 'not_started' }, VER = G.VER;
+    const tabOf = t => () => this.setTab(t);
+    const res360 = (r, t) => () => go(PAGES['reservation-360'] + '?id=' + encodeURIComponent(r.id) + (t ? '&tab=' + t : ''));
+    const acts = this.activity(g, c);
+    const incs = G.incidents(g), threads = G.threads(g), docs = G.docs(g);
+    const resOptsArr = [{ v: '', l: 'Not linked to a reservation' }].concat(c.st.map(r => ({ v: r.id, l: r.id + ' • ' + c.prop(r) })));
+    const counts = { reservations: c.st.length, documents: docs.length, messages: threads.length, incidents: incs.filter(i => ['Open', 'Under Review'].includes(i.status)).length };
+    const out = { ...base, found: true,
+      h: { initials: ini(name), id: g.id, name, verLabel: 'Identity ' + VER[ver.status][0].toLowerCase() },
+      hBadges: [{ label: 'GUEST', tone: 'brand' }].concat(c.live.length >= 2 ? [{ label: 'Returning Guest', tone: 'warning' }] : []).concat([{ label: VER[ver.status][0], tone: VER[ver.status][1] }]),
+      contacts: [['mail', g.email], ['phone', g.phone], ['message-circle', 'WhatsApp ' + (g.whatsapp || g.phone)], ['globe', g.residence || '—']].map(([icon, text]) => ({ icon, text })),
+      editProfile: () => { this.setState({ edit: true, tried: false, form: { ...blankForm(), ...g, comm: (g.comm || []).slice() } }); this.setTab('personal'); },
+      newRes: () => go(PAGES['reservation-new'] + '?guest=' + encodeURIComponent(g.id)),
+      goMessage: () => { this.setState({ nt: { topic: 'Booking', resId: c.focus ? c.focus.id : '', subject: '', text: '' }, thSel: null }); this.setTab('messages'); },
+      goUpload: () => { this.setState({ up: { cat: 'Identification', resId: c.focus ? c.focus.id : '', vis: 'Internal', file: '' } }); this.setTab('documents'); },
+      toggleMore: () => setTimeout(() => this.setState(st => ({ more: !st.more })), 0), moreOpen: s.more,
+      moreItems: [['triangle-alert', 'Record Incident', () => { this.setState({ more: false }); this.openInc(c); }], ['link', 'Copy My Stay Link', () => { const u = new URL(PAGES['my-stay'] + '?guest=' + g.id, location.href).href; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => this.notify('My Stay link copied — guest-facing portal'), () => this.notify(u)); this.setState({ more: false }); }], ['users', 'Check for Duplicates', () => { const m = G.match({ email: g.email, phone: g.phone, name }).filter(x => x.id !== g.id); this.setState({ more: false }); this.notify(m.length ? 'Possible duplicate: ' + m.map(x => x.id).join(', ') : 'No duplicate profiles found (email, phone, name)'); }], ['scroll-text', 'View Activity', () => { this.setState({ more: false }); this.setTab('activity'); }]].map(([icon, label, fn]) => ({ icon, label, go: fn })),
+      inHouse: !!c.cur, ih: c.cur ? { prop: c.prop(c.cur), id: c.cur.id, dates: rng(c.cur.ci, c.cur.co), open: res360(c.cur) } : { prop: '', id: '', dates: '', open: () => {} },
+      tabs: TABS.map(([k, l]) => { const n = counts[k] || 0, on = s.tab === k, warn = k === 'incidents'; return { label: l, line: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#475569', hasCount: n > 0, count: String(n), cBg: warn ? '#FEF2F2' : '#F1F5F9', cFg: warn ? '#DC2626' : '#475569', select: tabOf(k) }; }),
+      ...Object.fromEntries(TABS.map(([k]) => ['tab_' + k, s.tab === k])),
+      goActivity: tabOf('activity'), recent: acts.slice(0, 6), actRows: acts
+    };
+    // Overview
+    const f = c.focus, fa = f ? G.account(f) : null;
+    const lifetime = c.st.filter(r => r.status === 'checked_out'), nights = lifetime.reduce((a, r) => a + S.nightsOf(r.ci, r.co), 0);
+    const outBal = c.live.filter(r => r.status !== 'checked_out' || G.account(r).balance > 0).reduce((a, r) => a + G.account(r).balance, 0);
+    out.ovCards = [
+      { icon: 'calendar-check', label: c.cur ? 'Current Reservation' : 'Next Reservation', value: f ? f.id : 'None scheduled', sub: f ? c.prop(f) + ' • ' + rng(f.ci, f.co) + ' • ' + (SL[f.status] || [f.status])[0] : 'No upcoming stays', accent: '#006B68', go: f ? res360(f) : tabOf('reservations') },
+      { icon: 'repeat', label: 'Lifetime Stays', value: String(lifetime.length) + ' completed', sub: nights + ' nights • ' + usd(lifetime.reduce((a, r) => a + G.account(r).total, 0)) + ' lifetime value', accent: '#D4A637', go: tabOf('reservations') },
+      { icon: 'wallet', label: 'Outstanding Balance', value: usd(outBal), sub: outBal > 0.005 ? 'Across active reservations' : 'No balance due', accent: outBal > 0.005 ? '#B45309' : '#15803D', go: tabOf('payments') },
+      { icon: 'scan-face', label: 'Verification', value: VER[ver.status][0], sub: ver.docType ? ver.docType + (ver.expires ? ' • expires ' + fmtD(ver.expires) : '') : ver.review || '—', accent: ver.status === 'verified' ? '#15803D' : '#B45309', go: tabOf('verification') }];
+    const rd = f ? this.readiness(g, f, c) : [];
+    const firstOpen = rd.find(i => !i.ok);
+    Object.assign(out, { hasRd: !!f, rdSub: f ? 'For ' + f.id + ' • ' + c.prop(f) + ' • ' + rng(f.ci, f.co) : 'No upcoming or current reservation — readiness applies per stay.',
+      rdItems: rd.map((i, n) => ({ ...i, border: n ? '1px solid #F1F5F9' : '0', hasGo: !i.ok })), rdDone: !firstOpen, rdCta: firstOpen ? 'Continue Guest Setup' : 'Guest Ready for Arrival',
+      continueSetup: () => firstOpen && firstOpen.go() });
+    // Reservations
+    out.stayNote = c.st.length + ' reservation' + (c.st.length === 1 ? '' : 's') + ' on one persistent profile — returning guests are matched by email and phone, never duplicated.';
+    out.stayRows = c.st.map(r => { const x = G.stayOf(r), a = G.account(r), n = S.nightsOf(r.ci, r.co), o = G.occupants(r); return { id: r.id, prop: x ? x.name : r.unit, unit: r.unit.split('|')[1], dates: rng(r.ci, r.co), nights: n + ' night' + (n === 1 ? '' : 's'), guests: String((o.adults || 0) + (o.children || 0) || r.guests), channel: r.channel, total: usd(a.total), status: (SL[r.status] || [r.status])[0], tone: (SL[r.status] || [0, 'neutral'])[1], open: res360(r) }; });
+    // Personal
+    const fv = this.formVals(false);
+    Object.assign(out, fv, { editing: s.edit, viewing: !s.edit, cancelEdit: () => this.setState({ edit: false, tried: false }), cantSave: false,
+      saveProfile: () => { if (!fv.valid) return this.setState({ tried: true }); const fm = s.form; const m = G.match({ email: fm.email, phone: fm.phone }).filter(x => x.id !== g.id); if (m.length) return this.notify('Email or phone already belongs to ' + m[0].id + ' — resolve the duplicate first'); G.save({ ...g, ...['first', 'middle', 'last', 'preferred', 'dob', 'nationality', 'residence', 'email', 'phone', 'whatsapp', 'lang', 'address', 'emergency'].reduce((o, k) => (o[k] = (fm[k] || '').trim(), o), {}), comm: fm.comm }, 'Personal information updated by Marcus Vance'); this.setState({ edit: false, tried: false }); this.notify('Guest profile saved'); },
+      pIdentity: [['Legal First Name', g.first], ['Middle Name', g.middle], ['Last Name', g.last], ['Preferred Name', g.preferred], ['Date of Birth', g.dob ? (s.dobShown ? fmtD(g.dob) : '•• •• ••••') : 'Not required'], ['Nationality', g.nationality], ['Country of Residence', g.residence]].map(([k, val]) => ({ k, v: val || '—' })),
+      dobMasked: !!g.dob && !s.dobShown, revealDob: () => { this.setState({ dobShown: true }); G.save(Object.assign({}, g), 'Date of birth viewed by Marcus Vance (permission: guest.pii.read)'); },
+      pContact: [['Email', g.email], ['Mobile', g.phone], ['WhatsApp', g.whatsapp], ['Preferred Language', g.lang], ['Address', g.address]].map(([k, val]) => ({ k, v: val || '—' })),
+      pPrefs: [['Emergency Contact', g.emergency], ['Guest Since', fmtD(new Date(g.created || Date.now()).toISOString().slice(0, 10))]].map(([k, val]) => ({ k, v: val || '—' })), commView: g.comm || [] });
+    // Household
+    const hhR = c.st.find(r => r.id === s.hhSel) || f || c.st[0];
+    Object.assign(out, { hhNone: !hhR, hhHas: !!hhR, hhRes: c.st.filter(r => r.status !== 'cancelled').map(r => { const on = hhR && r.id === hhR.id; return { label: r.id + ' • ' + c.prop(r), bg: on ? '#132A52' : '#fff', color: on ? '#fff' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ hhSel: r.id }) }; }) });
+    if (hhR) {
+      const o = G.occupants(hhR);
+      Object.assign(out, { hh: { id: hhR.id, prop: c.prop(hhR) }, hhCounts: [['Adults', 'user', o.adults], ['Children', 'baby', o.children], ['Infants', 'milk', o.infants], ['Pets', 'paw-print', o.pets], ['Vehicles', 'car', (o.vehicles || []).length]].map(([label, icon, n]) => ({ label, icon, n: String(n || 0) })),
+        vehRows: (o.vehicles || []), noVeh: !(o.vehicles || []).length,
+        occRows: (o.list || []).map(([nm, type, age, vv]) => ({ name: nm, type, age, ver: vv, tone: vv === 'Complete' ? 'success' : vv === 'N/A' ? 'neutral' : 'warning' })), noOcc: !(o.list || []).length,
+        oc: s.oc, ocOn: { name: e => { const x = e.target.value; this.setState(st => ({ oc: { ...st.oc, name: x } })); }, type: e => { const x = e.target.value; this.setState(st => ({ oc: { ...st.oc, type: x, age: x === 'Adult' ? 'Adult' : 'Minor' } })); }, age: e => { const x = e.target.value; this.setState(st => ({ oc: { ...st.oc, age: x } })); } },
+        ocTypes: opt(['Adult', 'Child', 'Infant']), ocAges: opt(['Adult', 'Minor']), cantOcc: s.oc.name.trim().split(/\s+/).length < 2,
+        addOcc: () => { const nm = s.oc.name.trim(); const no = { ...o, list: (o.list || []).concat([[nm, s.oc.type, s.oc.age, s.oc.age === 'Adult' ? 'Pending' : 'N/A']]) }; const k = s.oc.type === 'Adult' ? 'adults' : s.oc.type === 'Child' ? 'children' : 'infants'; if ((no.list.filter(x => x[1] === s.oc.type).length + (k === 'adults' ? 1 : 0)) > (no[k] || 0)) no[k] = no.list.filter(x => x[1] === s.oc.type).length + (k === 'adults' ? 1 : 0); G.patchRes(hhR.id, () => ({ occupants: no })); G.save(Object.assign({}, g), 'Occupant ' + nm + ' added to ' + hhR.id); this.setState({ oc: { name: '', type: 'Adult', age: 'Adult' } }); this.notify(nm + ' added to reservation ' + hhR.id); } });
+    } else Object.assign(out, { hh: { id: '', prop: '' }, hhCounts: [], vehRows: [], noVeh: true, occRows: [], noOcc: true, oc: s.oc, ocOn: {}, ocTypes: [], ocAges: [], cantOcc: true, addOcc: () => {} });
+    // Verification
+    const ORDER = ['not_started', 'pending', 'verified', 'failed', 'needs_review'];
+    const RO = [['verified', 'Approve — Mark Verified', 'Document matches booking identity and is unexpired.'], ['needs_review', 'Needs Review', 'Escalate for a second reviewer or request a clearer image.'], ['failed', 'Reject — Verification Failed', 'Document invalid, expired or does not match. Reason is required and shared with the guest.']];
+    const rv = s.rev;
+    Object.assign(out, { vr: { tone: VER[ver.status][1], label: VER[ver.status][0], review: ver.review || '—' },
+      verSteps: ORDER.map(k => { const on = k === ver.status; return { label: VER[k][0], bg: on ? '#132A52' : '#fff', fg: on ? '#fff' : '#475569', bd: on ? '#132A52' : '#E2E8F0' }; }),
+      verKv: [['Document Type', ver.docType], ['Issuing Country', ver.country], ['Verification Provider', ver.provider], ['Verified Date', ver.verifiedAt ? fmtD(ver.verifiedAt) : ''], ['Expiration', ver.expires ? fmtD(ver.expires) : ''], ['Review Status', ver.review]].map(([k, val]) => ({ k, v: val || '—' })),
+      idQueue: PAGES['identity-review'], revOpen: !!rv, revClosed: !rv, openReview: () => this.setState({ rev: { decision: 'verified', reason: '' } }), closeReview: () => this.setState({ rev: null }),
+      revOpts: RO.map(([k, label, desc]) => { const on = rv && rv.decision === k; return { label, desc, on: !!on, bd: on ? '#006B68' : '#E2E8F0', bg: on ? '#F0FAF9' : '#fff', select: () => this.setState(st => ({ rev: { ...st.rev, decision: k } })) }; }),
+      revReasonLabel: rv && rv.decision !== 'verified' ? 'Reason (required)' : 'Reviewer Note (optional)', revReason: rv ? rv.reason : '', onRevReason: e => { const x = e.target.value; this.setState(st => ({ rev: { ...st.rev, reason: x } })); },
+      cantReview: !rv || (rv.decision !== 'verified' && rv.reason.trim().length < 5),
+      saveReview: () => { const d = rv.decision, today = S.TODAY, lbl = VER[d][0]; G.save({ ...g, ver: { ...ver, status: d, verifiedAt: d === 'verified' ? today : ver.verifiedAt, review: lbl + ' by Marcus Vance • ' + fmtD(today) + (rv.reason.trim() ? ' — ' + rv.reason.trim() : '') } }, 'Identity ' + lbl.toLowerCase() + ' by Marcus Vance' + (rv.reason.trim() ? ' — ' + rv.reason.trim() : '')); this.setState({ rev: null }); this.notify('Identity decision recorded: ' + lbl); } });
+    // Payments
+    const accs = c.st.map(r => ({ r, a: G.account(r) }));
+    const sum = k => accs.reduce((t, x) => t + (k === 'balance' && x.r.status === 'cancelled' ? 0 : x.a[k]), 0);
+    out.payCards = [['Outstanding', usd(sum('balance')), sum('balance') > 0.005 ? '#B45309' : '#15803D', 'Balance due across reservations'], ['Paid', usd(sum('paid')), '#172033', 'Payments received, all stays'], ['Refunded', usd(sum('refunded')), '#172033', 'Refunds and cancellations']].map(([label, value, color, sub]) => ({ label, value, color, sub }));
+    out.payRows = accs.map(({ r, a }) => ({ id: r.id, sub: c.prop(r) + ' • ' + rng(r.ci, r.co), status: r.status === 'cancelled' ? 'Cancelled' : a.balance < 0.005 ? 'Paid' : a.paid > 0 ? 'Partially Paid' : 'Unpaid', tone: r.status === 'cancelled' ? 'neutral' : a.balance < 0.005 ? 'success' : 'warning',
+      kv: [['Total', usd(a.total), '#172033'], ['Paid', usd(a.paid), '#172033'], ['Balance', usd(a.balance), a.balance > 0.005 ? '#B45309' : '#15803D']].map(([k, val, cc]) => ({ k, v: val, c: cc })), open: res360(r, 'payments') }));
+    // Services
+    out.svcGroups = c.st.map(r => { const a = G.account(r); return { r, a }; }).filter(x => x.a.charges.length).map(({ r, a }) => ({ id: r.id, prop: c.prop(r), dates: rng(r.ci, r.co), open: res360(r, 'charges'),
+      rows: a.charges.map(ch => { const cat = S.CATALOG.find(k => k.key === ch.svc), stt = S.SVC_STATUS.find(x => x[0] === ch.status) || [ch.status, ch.status, 'neutral']; return { name: ch.name, desc: ch.desc || '', date: fmtD(ch.date), amt: S.fmtC(S.chargeCalc(ch, cat).total, ch.currency || 'USD'), status: stt[1], tone: stt[2] }; }) }));
+    out.noSvc = !out.svcGroups.length;
+    // Documents
+    const up = s.up;
+    Object.assign(out, { upOpen: !!up, up: up || { cat: '', resId: '', vis: '' }, closeUpload: () => this.setState({ up: null }), cantUpload: !up || !up.file,
+      upOn: { cat: e => { const x = e.target.value; this.setState(st => ({ up: { ...st.up, cat: x } })); }, resId: e => { const x = e.target.value; this.setState(st => ({ up: { ...st.up, resId: x } })); }, vis: e => { const x = e.target.value; this.setState(st => ({ up: { ...st.up, vis: x } })); }, file: e => { const fl = e.target.files && e.target.files[0]; this.setState(st => ({ up: { ...st.up, file: fl ? fl.name : '', size: fl ? fl.size : 0 } })); } },
+      docCats: opt(DOC_CATS), resOpts: resOptsArr, visOpts: opt([['Internal', 'Internal'], ['Guest', 'Guest'], ['Shared', 'Shared']]),
+      saveUpload: () => { const rr = c.st.find(r => r.id === up.resId), x = rr ? G.stayOf(rr) : null; G.addDoc({ pid: x ? x.pid : 0, resId: up.resId, guestId: g.id, cat: up.cat, vis: up.vis, name: up.file, meta: 'Uploaded ' + fmtTs(Date.now()) + ' by Marcus Vance • ' + Math.max(1, Math.round((up.size || 0) / 1024)) + ' KB' }); G.save(Object.assign({}, g), up.cat + ' uploaded to Document Center — ' + up.file); this.setState({ up: null }); this.notify(up.file + ' saved to the Document Center'); },
+      docRows: docs.map(d => ({ name: d.name, meta: d.meta, cat: d.cat, res: d.resId || 'Guest profile', vis: d.vis || 'Shared', tone: d.vis === 'Internal' ? 'warning' : d.vis === 'Guest' ? 'info' : 'success',
+        acts: [['eye', 'View', 'preview'], ['printer', 'Print', 'print'], ['file-down', 'PDF', 'pdf'], ['mail', 'Email', 'email']].map(([icon, label, mode]) => ({ icon, label, go: () => this.openDoc(d, g, name, mode) })) })) });
+    // Messages
+    const curIds = [c.cur, c.next].filter(Boolean).map(r => r.id);
+    const tf = threads.filter(t => s.msgF === 'all' || (s.msgF === 'prev' ? !curIds.includes(t.resId) : t.resId === s.msgF));
+    const thSel = threads.find(t => t.id === s.thSel) || (!s.nt ? tf[0] : null);
+    const nt = s.nt;
+    Object.assign(out, { msgCols: desktop ? '360px minmax(0,1fr)' : 'minmax(0,1fr)',
+      msgFilters: [['all', 'All Conversations']].concat(curIds.map(id => [id, id])).concat([['prev', 'Previous Reservations']]).map(([k, l]) => { const on = s.msgF === k; return { label: l, bg: on ? '#132A52' : '#fff', color: on ? '#fff' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ msgF: k, thSel: null }) }; }),
+      threadRows: tf.map(t => { const last = t.msgs[t.msgs.length - 1] || []; const on = thSel && thSel.id === t.id; return { subject: t.subject, topic: t.topic, res: t.resId || 'General', when: last[3] ? fmtTs(last[3]) : '', last: (last[1] ? last[1] + ': ' : '') + (last[2] || ''), bar: on ? '#006B68' : 'transparent', bg: on ? '#F0FAF9' : '#fff', select: () => this.setState({ thSel: t.id, nt: null, reply: '' }) }; }),
+      noThreads: !tf.length, newThread: () => this.setState({ nt: { topic: 'Booking', resId: f ? f.id : '', subject: '', text: '' }, thSel: null }),
+      composing: !!nt, nt: nt || { topic: '', resId: '', subject: '', text: '' }, topicOpts: opt(G.TOPICS), cancelThread: () => this.setState({ nt: null }),
+      ntOn: ['topic', 'resId', 'subject', 'text'].reduce((o, k) => (o[k] = e => { const x = e.target.value; this.setState(st => ({ nt: { ...st.nt, [k]: x } })); }, o), {}),
+      cantThread: !nt || !nt.subject.trim() || !nt.text.trim(),
+      sendThread: () => { const id = 'TH-' + Date.now().toString().slice(-6); G.post({ id, guestId: g.id, resId: nt.resId, topic: nt.topic, subject: nt.subject.trim(), channel: 'Email & WhatsApp' }, ['staff', 'Marcus Vance', nt.text.trim(), Date.now()]); this.setState({ nt: null, thSel: id }); this.notify('Message sent to ' + name); },
+      showThread: !nt && !!thSel, noThreadSel: !nt && !thSel,
+      th: thSel ? { subject: thSel.subject, topic: thSel.topic, res: thSel.resId || 'General', channel: thSel.channel ? ' • ' + thSel.channel : '' } : { subject: '', topic: '', res: '', channel: '' },
+      msgRows: thSel ? thSel.msgs.map(m => ({ from: m[1], text: m[2], when: fmtTs(m[3]), align: m[0] === 'staff' ? 'flex-end' : 'flex-start', bg: m[0] === 'staff' ? '#DDF3F1' : '#F1F5F9' })) : [],
+      reply: s.reply, onReply: e => this.setState({ reply: e.target.value }), cantReply: !s.reply.trim(),
+      sendReply: () => { G.post(thSel, ['staff', 'Marcus Vance', s.reply.trim(), Date.now()]); this.setState({ reply: '' }); this.notify('Reply sent'); } });
+    // Incidents
+    const inc = s.inc;
+    Object.assign(out, { openInc: () => this.openInc(c), incOpen: !!inc, inc: inc || {}, closeInc: () => this.setState({ inc: null }),
+      incOn: ['type', 'resId', 'at', 'severity', 'status', 'desc', 'action'].reduce((o, k) => (o[k] = e => { const x = e.target.value; this.setState(st => ({ inc: { ...st.inc, [k]: x } })); }, o), { file: e => { const fl = e.target.files && e.target.files[0]; this.setState(st => ({ inc: { ...st.inc, evidence: fl ? fl.name : '' } })); } }),
+      incTypes: opt(G.INCIDENT_TYPES), sevOpts: opt(['Low', 'Medium', 'High']), incStatusOpts: opt(['Open', 'Under Review', 'Resolved', 'Closed']),
+      cantInc: !inc || !inc.resId || inc.desc.trim().length < 10,
+      saveInc: () => { const all = G.incidents(); const id = 'INC-2026-' + String(Math.max.apply(null, all.map(i => +i.id.split('-')[2]).concat([0])) + 1).padStart(4, '0'); const rr = c.st.find(r => r.id === inc.resId), x = rr ? G.stayOf(rr) : null; G.addIncident({ id, type: inc.type, guestId: g.id, resId: inc.resId, pid: x ? x.pid : 0, at: inc.at, desc: inc.desc.trim(), evidence: inc.evidence || '—', action: inc.action.trim() || '—', status: inc.status, severity: inc.severity, by: 'Marcus Vance' }); if (inc.evidence) G.addDoc({ pid: x ? x.pid : 0, resId: inc.resId, guestId: g.id, cat: 'Incident Evidence', vis: 'Internal', name: inc.evidence, meta: id + ' • ' + inc.type + ' • Internal' }); G.save(Object.assign({}, g), 'Incident ' + id + ' recorded — ' + inc.type); this.setState({ inc: null }); this.notify('Incident ' + id + ' recorded'); },
+      incRows: incs.map(i => ({ id: i.id, type: i.type, severity: i.severity, sevTone: i.severity === 'High' ? 'danger' : i.severity === 'Medium' ? 'warning' : 'neutral', status: i.status, stTone: ['Open', 'Under Review'].includes(i.status) ? 'warning' : 'success', canResolve: ['Open', 'Under Review'].includes(i.status),
+        meta: 'Reservation ' + i.resId + ' • ' + ((S.STAYS.find(x => x.pid === i.pid) || {}).name || '—') + ' • ' + fmtTs(new Date(i.at).getTime()) + ' • Recorded by ' + i.by,
+        kv: [['Description', i.desc], ['Evidence', i.evidence], ['Action Taken', i.action]].map(([k, val]) => ({ k, v: val })),
+        resolve: () => { const l = G.incidents().map(x => x.id === i.id ? { ...x, status: 'Resolved' } : x); sessionStorage.setItem(G.IKEY, JSON.stringify(l)); G.save(Object.assign({}, g), 'Incident ' + i.id + ' marked resolved'); this.notify(i.id + ' resolved'); } })), noInc: !incs.length });
+    return out;
+  }
+  openInc(c) { const r = c.cur || c.next || c.st[0]; const n = new Date(); this.setState({ inc: { type: 'Noise Complaint', resId: r ? r.id : '', at: n.toISOString().slice(0, 16), severity: 'Medium', status: 'Open', desc: '', action: '', evidence: '' } }); this.setTab('incidents'); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+  <style>input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}</style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 20 — Property Form" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:4px 0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 16 }}"  hint-size="16px,16px"></x-import>{{ backLabel }}</button>
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+              <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ heading }}</h1>
+              <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px">{{ sub }}</p>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px">
+              <sc-if value="{{ ro }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="pencil" on-click="{{ toEdit }}" hint-size="90px,40px">Edit</x-import></sc-if>
+              <sc-if value="{{ editable }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="save" disabled="{{ cantSave }}" on-click="{{ saveDraft }}" hint-size="140px,40px">Save as draft</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" disabled="{{ cantSave }}" on-click="{{ saveMain }}" hint-size="160px,40px">{{ saveLabel }}</x-import></sc-if>
+            </div>
+          </div>
+          <sc-if value="{{ ro }}"><div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;background:#FFFAEB;color:#B45309;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="lock" size="{{ 14 }}"  hint-size="14px,14px"></x-import>Read-only mode. Use Edit to change information.</div></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start">
+          <div style="grid-column:{{ formSpan }};display:flex;flex-direction:column;gap:24px;min-width:0">
+            <section id="pf-info" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">1</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Property Information</h3></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Title<input type="text" value="{{ f.title }}" onChange="{{ on.title }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Internal ID<input type="text" value="{{ f.code }}" onChange="{{ on.code }}" disabled="{{ ro }}" placeholder="e.g. MGH-OVV-002" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Status<select value="{{ f.status }}" onChange="{{ on.status }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="vacant">Vacant</option><option value="occupied">Occupied</option><option value="maintenance">Maintenance</option></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Property type<select value="{{ f.type }}" onChange="{{ on.type }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="residential">Residential</option><option value="commercial">Commercial</option><option value="industrial">Industrial</option><option value="mixed">Mixed</option><option value="land">Land</option><option value="apartment_condo">Apartment / condo</option></select></label><div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Management start date<input type="date" value="{{ f.start }}" onChange="{{ on.start }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Record status<select value="{{ f.record }}" onChange="{{ on.record }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="active">Active</option><option value="inactive">Inactive</option><option value="draft">Draft</option></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Rental category<select value="{{ f.category }}" onChange="{{ on.category }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="short_term">Short-term</option><option value="long_term">Long-term</option><option value="both">Both</option></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Total units<input type="number" value="{{ f.units }}" onChange="{{ on.units }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Property owner (org member)<select value="{{ f.owner }}" onChange="{{ on.owner }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="">— None —</option><sc-for list="{{ owners }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Active tenant (org member)<select value="{{ f.tenant }}" onChange="{{ on.tenant }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="">— None —</option><sc-for list="{{ tenants }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label></div><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Description<textarea value="{{ f.desc }}" onChange="{{ on.desc }}" disabled="{{ ro }}" rows="3" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;resize:vertical;line-height:1.5"></textarea></label>
+            </section>
+            <section id="pf-address" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">2</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Property Address</h3></div>
+              <div style="display:flex;justify-content:flex-end"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="locate-fixed" disabled="{{ ro }}" on-click="{{ gps }}" hint-size="200px,32px">Select address from GPS</x-import></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Address<input type="text" value="{{ f.address }}" onChange="{{ on.address }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">City<input type="text" value="{{ f.city }}" onChange="{{ on.city }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">State/Province<input type="text" value="{{ f.state }}" onChange="{{ on.state }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Postal code<input type="text" value="{{ f.zip }}" onChange="{{ on.zip }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Country<input type="text" value="{{ f.country }}" onChange="{{ on.country }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label></div>
+            </section>
+            <section id="pf-location" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">3</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Location</h3></div>
+              <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}"  hint-size="16px,16px"></x-import><input value="{{ f.mapq }}" onChange="{{ on.mapq }}" disabled="{{ ro }}" placeholder="Search address…" style="flex:1;min-width:0;border:0;outline:none;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;background:transparent"></label>
+              <div style="height:220px;border-radius:8px;background:#F1F5F9;border:1px dashed #CBD5E1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#64748B;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;text-align:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="map-pin" size="{{ 26 }}" color="#006B68" hint-size="26px,26px"></x-import><span>Mapbox picker renders here • pick on map or enter coordinates</span><span style="font-weight:700;color:#172033">{{ coords }}</span></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Latitude<input type="number" value="{{ f.lat }}" onChange="{{ on.lat }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Longitude<input type="number" value="{{ f.lng }}" onChange="{{ on.lng }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label></div>
+            </section>
+            <section id="pf-financial" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">4</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Rental &amp; Financial Reference</h3></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Currency (ISO)<select value="{{ f.currency }}" onChange="{{ on.currency }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="USD">USD</option><option value="EUR">EUR</option><option value="MXN">MXN</option></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Starting monthly rent<input type="number" value="{{ f.rent }}" onChange="{{ on.rent }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Security deposit<input type="number" value="{{ f.deposit }}" onChange="{{ on.deposit }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Cleaning fee<input type="number" value="{{ f.cleaning }}" onChange="{{ on.cleaning }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label></div>
+            </section>
+            <section id="pf-utilities" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">5</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Utilities &amp; Electricity</h3></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px"><label style="display:flex;align-items:center;gap:10px;min-height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ f.elec }}" onChange="{{ on.elec }}" disabled="{{ ro }}" style="width:16px;height:16px;accent-color:#006B68;margin:0">Electricity included</label><label style="display:flex;align-items:center;gap:10px;min-height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ f.meter }}" onChange="{{ on.meter }}" disabled="{{ ro }}" style="width:16px;height:16px;accent-color:#006B68;margin:0">Electricity meter required</label><label style="display:flex;align-items:center;gap:10px;min-height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ f.water }}" onChange="{{ on.water }}" disabled="{{ ro }}" style="width:16px;height:16px;accent-color:#006B68;margin:0">Water included</label><label style="display:flex;align-items:center;gap:10px;min-height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ f.internet }}" onChange="{{ on.internet }}" disabled="{{ ro }}" style="width:16px;height:16px;accent-color:#006B68;margin:0">Internet included</label></div><sc-if value="{{ f.meter }}"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Electricity meter number<input type="text" value="{{ f.meterNo }}" onChange="{{ on.meterNo }}" disabled="{{ ro }}" placeholder="e.g. FPL-4471-2091" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Initial meter reading<input type="number" value="{{ f.reading }}" onChange="{{ on.reading }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Electricity rate per kWh<input type="number" value="{{ f.kwh }}" onChange="{{ on.kwh }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label></div></sc-if>
+            </section>
+            <section id="pf-amenities" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">6</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Amenities</h3></div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ amenities }}" as="ch" hint-placeholder-count="6"><button onClick="{{ ch.toggle }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid {{ ch.border }};border-radius:999px;background:{{ ch.bg }};color:{{ ch.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ch.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ ch.label }}</button></sc-for></div>
+            </section>
+            <section id="pf-units" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">7</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Unit Creation Defaults</h3></div>
+              <label style="display:flex;align-items:center;gap:10px;min-height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;cursor:pointer"><input type="checkbox" checked="{{ f.autoUnits }}" onChange="{{ on.autoUnits }}" disabled="{{ ro }}" style="width:16px;height:16px;accent-color:#006B68;margin:0">Create units automatically</label><sc-if value="{{ f.autoUnits }}"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Numbering sequence<select value="{{ f.numbering }}" onChange="{{ on.numbering }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="numeric">Numeric (101, 102…)</option><option value="alphanumeric">Alphanumeric</option><option value="by_floor">By floor</option></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Initial unit label<input type="text" value="{{ f.initialUnit }}" onChange="{{ on.initialUnit }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Default floor<input type="number" value="{{ f.floor }}" onChange="{{ on.floor }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Default max occupancy<input type="number" value="{{ f.maxOcc }}" onChange="{{ on.maxOcc }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label></div><span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ unitPreview }}</span></sc-if>
+            </section>
+            <section id="pf-maintenance" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">8</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Maintenance &amp; Suppliers</h3></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Supplier — plumbing<select value="{{ f.vPlumb }}" onChange="{{ on.vPlumb }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="">— None —</option><sc-for list="{{ vPlumbing }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Supplier — electrical<select value="{{ f.vElec }}" onChange="{{ on.vElec }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="">— None —</option><sc-for list="{{ vElectrical }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Supplier — cleaning<select value="{{ f.vClean }}" onChange="{{ on.vClean }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="">— None —</option><sc-for list="{{ vCleaning }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Supplier — landscaping<select value="{{ f.vLand }}" onChange="{{ on.vLand }}" disabled="{{ ro }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%"><option value="">— None —</option><sc-for list="{{ vLandscaping }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Owner approval required over (amount)<input type="number" value="{{ f.threshold }}" onChange="{{ on.threshold }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Emergency auto-approval limit<input type="number" value="{{ f.emergency }}" onChange="{{ on.emergency }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">Maintenance contact phone<input type="text" value="{{ f.mphone }}" onChange="{{ on.mphone }}" disabled="{{ ro }}" placeholder="" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label></div>
+            </section>
+            <section id="pf-comms" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">9</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Automated Communications</h3></div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ comms }}" as="ch" hint-placeholder-count="6"><button onClick="{{ ch.toggle }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid {{ ch.border }};border-radius:999px;background:{{ ch.bg }};color:{{ ch.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ch.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ ch.label }}</button></sc-for></div>
+            </section>
+            <section id="pf-images" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">10</span><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Images</h3></div>
+              <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:120px;border:1.5px dashed #CBD5E1;border-radius:12px;background:#F8FAFC;color:#475569;cursor:pointer;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;text-align:center;padding:16px" style-hover="border-color:#006B68;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="image-plus" size="{{ 24 }}"  hint-size="24px,24px"></x-import>Gallery (one or more)<span style="font-weight:400;font-size:12px;color:#94A3B8">JPG or PNG • select images to see a preview here</span><input type="file" accept="image/*" multiple onChange="{{ onImages }}" disabled="{{ ro }}" style="display:none"></label>
+              <sc-if value="{{ hasImages }}"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+                <sc-for list="{{ images }}" as="im" hint-placeholder-count="0">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <div style="position:relative;height:100px;border-radius:8px;overflow:hidden;background:#E2E8F0;box-shadow:{{ im.ring }}"><div role="img" aria-label="{{ im.name }}" style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ im.bg }}"></div>
+                      <sc-if value="{{ im.primary }}"><span style="position:absolute;left:6px;top:6px;padding:3px 6px;border-radius:4px;background:#006B68;color:#fff;font:600 10px/1 'Plus Jakarta Sans',sans-serif">PRIMARY</span></sc-if>
+                      <button onClick="{{ im.remove }}" title="Remove" style="position:absolute;right:6px;top:6px;width:22px;height:22px;border:0;border-radius:11px;background:rgba(15,23,42,0.65);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 12 }}"  hint-size="12px,12px"></x-import></button>
+                    </div>
+                    <button onClick="{{ im.makePrimary }}" style="border:0;background:transparent;padding:0;text-align:left;cursor:pointer;font:600 11px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ im.linkColor }}">{{ im.linkLabel }}</button>
+                  </div>
+                </sc-for>
+              </div></sc-if>
+            </section>
+          </div>
+          <div style="grid-column:{{ railSpan2 }};display:flex;flex-direction:column;gap:24px;min-width:0;position:sticky;top:0">
+            <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px">
+              <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Preview</span>
+              <div style="height:140px;border-radius:8px;overflow:hidden;background:#F1F5F9;position:relative;display:flex;align-items:center;justify-content:center;color:#94A3B8">
+                <sc-if value="{{ hasPrimary }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ primaryBg }}"></div></sc-if>
+                <sc-if value="{{ noPrimary }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="building-2" size="{{ 32 }}"  hint-size="32px,32px"></x-import></sc-if>
+              </div>
+              <span style="font:700 17px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ pvTitle }}</span>
+              <div style="display:flex;flex-direction:column">
+                <sc-for list="{{ pv }}" as="pv" hint-placeholder-count="7"><div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #F1F5F9;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#64748B">{{ pv.label }}</span><span style="color:#172033;font-weight:600;text-align:right">{{ pv.value }}</span></div></sc-for>
+              </div>
+              <span style="display:flex;align-items:center;gap:6px;font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="info" size="{{ 13 }}"  hint-size="13px,13px"></x-import>Preview updates as you edit the form.</span>
+              <span style="font:500 12px/1.4 'Plus Jakarta Sans',sans-serif;color:{{ errColor }}">{{ err }}</span>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:12px;display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ toc }}" as="tc" hint-placeholder-count="10"><button onClick="{{ tc.go }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;cursor:pointer;text-align:left;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#475569" style-hover="background:#F8FAFC;color:#006B68"><span style="width:20px;color:#94A3B8;font-weight:700">{{ tc.n }}</span>{{ tc.label }}</button></sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const fmtUSD = (n, d = 2) => Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: d, maximumFractionDigits: d });
+const QP = new URLSearchParams(window.location.search);
+const SKEY = 'mghpm.properties.v1';
+const TYPES = { residential: 'Residential', commercial: 'Commercial', industrial: 'Industrial', mixed: 'Mixed', land: 'Land', apartment_condo: 'Apartment / condo' };
+const SEED_LIST = { 1: ['Brickell Bay Residences', 'MGH-BBR-001', 'apartment_condo', '1200 Brickell Bay Dr', 'Miami', 48, 'active', 'occupied', 3850], 2: ['Ocean View Villa', 'MGH-OVV-002', 'residential', '2501 Collins Ave', 'Miami Beach', 12, 'active', 'occupied', 4200], 3: ['Coral Gables Terrace', 'MGH-CGT-003', 'apartment_condo', '300 Alhambra Cir', 'Coral Gables', 36, 'active', 'occupied', 3450], 4: ['Las Olas Lofts', 'MGH-LOL-004', 'mixed', '401 E Las Olas Blvd', 'Fort Lauderdale', 24, 'active', 'occupied', 2980], 6: ['Sunset Beach House', 'MGH-SBH-006', 'residential', '7800 Atlantic Way', 'Miami Beach', 1, 'active', 'vacant', 9500] };
+const AMEN = [['pool', 'Pool', 'waves'], ['parking', 'Parking', 'car'], ['bbq_area', 'BBQ area', 'flame'], ['garden', 'Garden', 'trees'], ['gym', 'Gym', 'dumbbell'], ['elevator', 'Elevator', 'arrow-up-down'], ['security_24', '24/7 security', 'shield-check'], ['rooftop', 'Rooftop', 'building'], ['playground', 'Playground', 'baby'], ['storage', 'Storage', 'package'], ['pet_friendly', 'Pet friendly', 'paw-print']];
+const COMMS = [['reservation_confirmation', 'Reservation confirmation', 'mail-check'], ['check_in_instructions', 'Check-in instructions', 'key-round'], ['expense_notifications', 'Expense notifications', 'receipt'], ['owner_financial_statements', 'Owner financial statements', 'file-text'], ['maintenance_approval_requests', 'Maintenance approval requests', 'wrench']];
+const OWNERS = ['Alvarez Family Trust', 'Plata Investments Group', 'Las Olas Partners LP', 'Turnberry Capital Trust', 'Southland Land Co.'];
+const TENANTS = ['Daniela Ortiz', 'Michael Chen', 'Priya Nair', 'Sofia Martinez', 'Andre Williams'];
+const V = { vPlumbing: ['Aqua Pro Plumbing'], vElectrical: ['Bright Spark Electric'], vCleaning: ['Spotless Turnover Co.'], vLandscaping: ['Evergreen Landscaping'] };
+const TOC = [['info', 'Property Information'], ['address', 'Property Address'], ['location', 'Location'], ['financial', 'Rental & Financial'], ['utilities', 'Utilities'], ['amenities', 'Amenities'], ['units', 'Unit Defaults'], ['maintenance', 'Maintenance'], ['comms', 'Communications'], ['images', 'Images']];
+const loadProps = () => { try { return (JSON.parse(sessionStorage.getItem(SKEY)) || {}).props || null; } catch (e) { return null; } };
+const blank = () => ({ title: '', code: '', status: 'vacant', type: 'residential', start: '2026-10-04', record: 'active', category: 'long_term', units: '1', owner: '', tenant: '', desc: '', address: '', city: '', state: 'Florida', zip: '', country: 'United States', mapq: '', lat: '', lng: '', currency: 'USD', rent: '', deposit: '', cleaning: '', elec: false, meter: false, water: true, internet: false, reading: '', kwh: '0.14', meterNo: '', amen: {}, autoUnits: false, numbering: 'numeric', initialUnit: '101', floor: '1', maxOcc: '4', vPlumb: '', vElec: '', vClean: '', vLand: '', threshold: '2500', emergency: '750', mphone: '(305) 555-0142', comms: { expense_notifications: true, owner_financial_statements: true, maintenance_approval_requests: true } });
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const id = QP.get('id');
+    let f = blank();
+    if (id) {
+      const list = loadProps(); const sp = list && list.find(x => String(x.id) === id);
+      const sd = SEED_LIST[id];
+      const src = sp ? [sp.title, sp.code, sp.type, sp.address, sp.city, sp.units, sp.record, sp.occ, sp.rent] : sd || ['Property #' + id, 'MGH-' + id, 'residential', '', 'Miami', 1, 'active', 'vacant', 2500];
+      f = { ...f, title: src[0], code: src[1], type: src[2], address: src[3], city: src[4], units: String(src[5]), record: src[6], status: src[7], rent: String(src[8]), deposit: String(src[8]), cleaning: '185', zip: '33140', lat: '25.7899', lng: '-80.1301', owner: Number(id) <= 2 || id === '6' ? 'Alvarez Family Trust' : '', elec: id === '6', meter: true, meterNo: 'FPL-' + (4400 + Number(id)) + '-' + String(2000 + Number(id) * 11), reading: String(18000 + Number(id) * 120), water: true, internet: true, amen: { pool: 1, parking: 1, security_24: 1 }, vPlumb: 'Aqua Pro Plumbing', vElec: 'Bright Spark Electric', vClean: 'Spotless Turnover Co.', vLand: 'Evergreen Landscaping', category: id === '6' ? 'short_term' : 'long_term', start: '2023-03-01', desc: '' };
+    }
+    this._id = id;
+    this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, f, images: [], primary: 0, mode: id ? (QP.get('mode') === 'view' ? 'view' : 'edit') : 'add' };
+  }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+
+  save(asDraft) {
+    const f = this.state.f, list = loadProps();
+    const rec = { title: f.title.trim(), code: f.code.trim() || 'MGH-NEW', type: f.type, address: f.address, city: f.city, state: 'FL', units: Number(f.units) || 0, record: asDraft ? 'draft' : f.record, occ: f.status, rent: Number(f.rent) || 0 };
+    let id = this._id ? Number(this._id) : null;
+    try {
+      if (list) {
+        if (id) { const i = list.findIndex(x => x.id === id); if (i >= 0) list[i] = { ...list[i], ...rec }; else list.push({ id, occupied: 0, archived: false, ...rec }); }
+        else { id = Math.max(...list.map(x => x.id)) + 1; list.push({ id, occupied: f.status === 'occupied' ? rec.units : 0, archived: false, ...rec }); }
+        const raw = JSON.parse(sessionStorage.getItem(SKEY)) || {}; sessionStorage.setItem(SKEY, JSON.stringify({ ...raw, props: list }));
+      } else if (!id) id = 19;
+    } catch (e) {}
+    this.notify(asDraft ? 'Saved as draft' : this._id ? 'Property updated' : 'Property created');
+    setTimeout(() => go(DETAIL + '?id=' + id), 500);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const { v, bp } = this.chrome('properties');
+    const f = s.f, ro = s.mode === 'view';
+    const on = {}; Object.keys(blank()).forEach(k => { on[k] = e => { const val = e.target.type === 'checkbox' ? e.target.checked : e.target.value; this.setState(st => ({ f: { ...st.f, [k]: val } })); }; });
+    const toggleMap = (key, k) => () => !ro && this.setState(st => ({ f: { ...st.f, [key]: { ...st.f[key], [k]: !st.f[key][k] } } }));
+    const chipList = (defs, key) => defs.map(([k, label, icon]) => { const o = !!f[key][k]; return { label, icon, border: o ? '#006B68' : '#E2E8F0', bg: o ? '#DDF3F1' : '#FFFFFF', color: o ? '#004F4D' : '#475569', toggle: toggleMap(key, k) }; });
+    const err = !f.title.trim() ? 'Title is required.' : !f.address.trim() ? 'Address is required.' : !(Number(f.units) >= 0) ? 'Total units must be 0 or more.' : '';
+    const id = this._id;
+    const back = id ? DETAIL + '?id=' + id : PAGES.properties;
+    const amenOn = AMEN.filter(([k]) => f.amen[k]).map(a => a[1]);
+    const n = Number(f.units) || 0, startL = Number(f.initialUnit) || 101;
+    const labels = f.numbering === 'alphanumeric' ? Array.from({ length: Math.min(n, 4) }, (_, i) => String.fromCharCode(65 + i)) : f.numbering === 'by_floor' ? Array.from({ length: Math.min(n, 4) }, (_, i) => (Number(f.floor) || 1) * 100 + i + 1) : Array.from({ length: Math.min(n, 4) }, (_, i) => startL + i);
+    const img = s.images[s.primary];
+    const wide = bp === 'desktop';
+    return { ...v,
+      crumbItems: mkCrumbs(id ? [['Home', PAGES.dashboard], ['Properties', PAGES.properties], [f.title || 'Property', DETAIL + '?id=' + id], [ro ? 'View' : 'Edit', null]] : [['Home', PAGES.dashboard], ['Properties', PAGES.properties], ['Add new', null]]),
+      goBack: () => go(back), backLabel: id ? 'Back to ' + (f.title || 'property') : 'Properties',
+      heading: s.mode === 'add' ? 'Add property' : ro ? 'View property' : 'Edit property',
+      sub: s.mode === 'add' ? 'Fill in the details to register a new property in your portfolio.' : ro ? 'Review the record without changing data.' : 'Modify the information for the selected property.',
+      ro, editable: !ro, toEdit: () => this.setState({ mode: 'edit' }),
+      saveLabel: s.mode === 'add' ? 'Create property' : 'Save changes', cantSave: !!err,
+      saveDraft: () => this.save(true), saveMain: () => this.save(false),
+      formSpan: wide ? 'span 8' : 'span 12', railSpan2: wide ? 'span 4' : 'span 12',
+      f, on, owners: OWNERS, tenants: TENANTS, ...V,
+      gps: () => { this.setState(st => ({ f: { ...st.f, address: st.f.address || '2501 Collins Ave', city: st.f.city || 'Miami Beach', zip: '33140', lat: '25.7993', lng: '-80.1270' } })); this.notify('✓ Address applied from GPS'); },
+      coords: f.lat && f.lng ? Number(f.lat).toFixed(4) + ', ' + Number(f.lng).toFixed(4) : 'No coordinates yet',
+      amenities: chipList(AMEN, 'amen'), comms: chipList(COMMS, 'comms'),
+      unitPreview: n ? 'Will create ' + n + ' units: ' + labels.join(', ') + (n > 4 ? ', …' : '') : 'Set total units to create units automatically.',
+      onImages: e => { Array.from(e.target.files || []).forEach(fl => { const rd = new FileReader(); rd.onload = () => this.setState(st => ({ images: [...st.images, { name: fl.name, src: rd.result }] })); rd.readAsDataURL(fl); }); e.target.value = ''; },
+      hasImages: s.images.length > 0,
+      images: s.images.map((im, i) => ({ name: im.name, bg: 'url("' + im.src + '")', primary: i === s.primary, ring: i === s.primary ? '0 0 0 2px #006B68' : 'none', linkLabel: i === s.primary ? 'Primary (from gallery)' : 'Set as primary', linkColor: i === s.primary ? '#006B68' : '#64748B', makePrimary: () => this.setState({ primary: i }), remove: () => this.setState(st => ({ images: st.images.filter((_, j) => j !== i), primary: 0 })) })),
+      hasPrimary: !!img, noPrimary: !img, primaryBg: img ? 'url("' + img.src + '")' : 'none',
+      pvTitle: f.title || 'Title',
+      pv: [['Property type', TYPES[f.type]], ['Status', { vacant: 'Vacant', occupied: 'Occupied', maintenance: 'Maintenance' }[f.status]], ['Total units', f.units || '0'], ['Rental category', { short_term: 'Short-term', long_term: 'Long-term', both: 'Both' }[f.category]], ['Starting monthly rent', f.rent ? fmtUSD(f.rent) + ' ' + f.currency : '—'], ['Amenities (' + amenOn.length + ')', amenOn.slice(0, 3).join(', ') + (amenOn.length > 3 ? '…' : '') || '—'], ['Utilities', [f.elec && 'Electricity' + (f.meter ? ' (metered' + (f.meterNo ? ' • ' + f.meterNo : '') + ')' : ''), !f.elec && f.meter && 'Metered electricity' + (f.meterNo ? ' • ' + f.meterNo : ''), f.water && 'Water', f.internet && 'Internet'].filter(Boolean).join(' • ') || 'Not included']].map(([label, value]) => ({ label, value })),
+      err: err || 'Ready to save', errColor: err ? '#B45309' : '#15803D',
+      toc: TOC.map(([key, label], i) => ({ n: String(i + 1), label, go: () => { const el = document.getElementById('pf-' + key); const main = el && el.closest('main'); if (el && main) main.scrollTo({ top: main.scrollTop + el.getBoundingClientRect().top - main.getBoundingClientRect().top - 16, behavior: 'smooth' }); } }))
+    };
+  }
+}
+</script>
+</body>
+</html>

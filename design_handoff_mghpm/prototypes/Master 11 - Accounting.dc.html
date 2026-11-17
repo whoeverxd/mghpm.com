@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+  <script src="ops-data.js"></script>
+  <script src="finance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 11 — Accounting" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <sc-if value="{{ ctxBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ goCtxBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ ctxBackLabel }}</button></sc-if><h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Accounting</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">Cash, trust accounts, receivables, payables and reconciliation • {{ periodLine }}</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+            <div role="tablist" aria-label="Period" style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px">
+              <sc-for list="{{ periods }}" as="pr" hint-placeholder-count="3">
+                <button onClick="{{ pr.select }}" style="height:32px;padding:0 14px;border:0;border-radius:6px;cursor:pointer;background:{{ pr.bg }};color:{{ pr.color }};box-shadow:{{ pr.shadow }};font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ pr.label }}</button>
+              </sc-for>
+            </div>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="receipt" on-click="{{ addExpense }}" hint-size="140px,40px">Record Expense</x-import>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" on-click="{{ addPayment }}" hint-size="150px,40px">Record Payment</x-import>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" delta="{{ k.delta }}" delta-tone="{{ k.deltaTone }}" footer="{{ k.footer }}" hint-size="100%,140px"></x-import>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Financial Position</h3><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Live from the ledger, receivables, payables, deposits, distributions and payroll • prototype data</span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <sc-for list="{{ finMods }}" as="md" hint-placeholder-count="8">
+              <button onClick="{{ md.go }}" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;text-align:left;cursor:pointer;font-family:inherit;transition:border-color 140ms ease" style-hover="border-color:#99D5D0;background:#FCFEFE">
+                <span style="width:32px;height:32px;border-radius:8px;flex-shrink:0;background:{{ md.bg }};color:{{ md.fg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ md.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                <span style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1">
+                  <span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B;text-transform:uppercase;letter-spacing:0.06em">{{ md.label }}</span>
+                  <span style="font:700 18px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;font-variant-numeric:tabular-nums">{{ md.value }}</span>
+                  <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:{{ md.subColor }};text-wrap:pretty">{{ md.sub }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ finLinks }}" as="fl" hint-placeholder-count="8">
+              <button onClick="{{ fl.go }}" style="height:32px;padding:0 12px;border:1px solid #E2E8F0;border-radius:999px;background:#FFFFFF;color:#475569;cursor:pointer;display:flex;align-items:center;gap:6px;font:500 12px/1 'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ fl.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ fl.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:stretch">
+          <div style="grid-column:{{ mainSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:20px;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Income vs. Expenses</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ chartSub }}</p></div>
+              <div style="display:flex;flex-wrap:wrap;gap:16px;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:2px;background:#132A52"></i>Gross Income</span>
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:2px;background:#E5484D"></i>Operating Expenses</span>
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:2px;background:#D4A637"></i>Net Income</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;flex:1;min-height:240px">
+              <div style="display:flex;flex-direction:column;justify-content:space-between;padding-bottom:28px;font:500 11px/1 'Plus Jakarta Sans',sans-serif;color:#94A3B8;text-align:right;width:44px">
+                <sc-for list="{{ yTicks }}" as="yt" hint-placeholder-count="4"><span>{{ yt }}</span></sc-for>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+                <div style="flex:1;position:relative;background:#F8FAFC;border-radius:8px;display:flex;align-items:flex-end;justify-content:space-around;padding:0 8px">
+                  <div style="position:absolute;left:0;right:0;top:33.3%;border-top:1px dashed #E2E8F0"></div>
+                  <div style="position:absolute;left:0;right:0;top:66.6%;border-top:1px dashed #E2E8F0"></div>
+                  <sc-for list="{{ bars }}" as="m" hint-placeholder-count="6">
+                    <div title="{{ m.tip }}" style="display:flex;align-items:flex-end;gap:4px;height:100%;padding-top:8px">
+                      <div style="width:{{ barW }};height:{{ m.g }};background:#132A52;border-radius:3px 3px 0 0"></div>
+                      <div style="width:{{ barW }};height:{{ m.o }};background:#E5484D;border-radius:3px 3px 0 0"></div>
+                      <div style="width:{{ barW }};height:{{ m.n }};background:#D4A637;border-radius:3px 3px 0 0"></div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;justify-content:space-around;padding:10px 8px 0;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">
+                  <sc-for list="{{ bars }}" as="m" hint-placeholder-count="6"><span style="min-width:40px;text-align:center">{{ m.label }}</span></sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="grid-column:{{ railSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Receivables Aging</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ arTotal }} outstanding • 23 tenants</p></div>
+            <sc-for list="{{ aging }}" as="ag" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;font:500 13px/1 'Plus Jakarta Sans',sans-serif"><span style="color:#475569">{{ ag.label }}</span><span style="color:#172033;font-weight:700">{{ ag.value }}</span></div>
+                <div style="height:8px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;width:{{ ag.w }};background:{{ ag.color }};border-radius:4px"></div></div>
+              </div>
+            </sc-for>
+            <div style="margin-top:auto;display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon-right="arrow-right" full-width="{{ true }}" on-click="{{ goPayments }}" hint-size="100%,40px">Open Payments</x-import></div>
+          </div>
+
+          <div style="grid-column:{{ mainSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Recent Transactions</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">General ledger • all properties</p></div>
+              <div style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px">
+                <sc-for list="{{ txTypes }}" as="tt" hint-placeholder-count="3">
+                  <button onClick="{{ tt.select }}" style="height:28px;padding:0 12px;border:0;border-radius:6px;cursor:pointer;background:{{ tt.bg }};color:{{ tt.color }};box-shadow:{{ tt.shadow }};font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ tt.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:760px;border-collapse:collapse">
+                <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Date</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Reference</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Description</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Account</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Amount</th></tr></thead>
+                <tbody>
+                  <sc-for list="{{ tx }}" as="t" hint-placeholder-count="7">
+                    <tr style-hover="background:#F8FAFC">
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px">{{ t.date }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;color:#172033;font-weight:600">{{ t.ref }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;white-space:normal;min-width:220px"><div style="display:flex;flex-direction:column;gap:2px"><span style="color:#172033">{{ t.desc }}</span><span style="font-size:12px;color:#64748B">{{ t.prop }}</span></div></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ t.account }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px;font-weight:700;color:{{ t.color }}">{{ t.amount }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="grid-column:{{ railSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Bank Reconciliation</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Statements through Sep 30, 2026</p></div>
+            <sc-for list="{{ banks }}" as="bk" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:10px;padding:14px 0;border-top:1px solid #F1F5F9">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+                  <span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ bk.name }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ bk.meta }}</span></span>
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ bk.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ bk.status }}</x-import>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                  <span style="font:700 15px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ bk.balance }}</span>
+                  <sc-if value="{{ bk.canRec }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" on-click="{{ bk.reconcile }}" hint-size="90px,32px">Reconcile</x-import></sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="grid-column:1 / -1;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-direction:column;gap:16px;padding:20px 24px;border-bottom:1px solid #E2E8F0">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Financial &amp; Operational Reports</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Generate and download financial and operational reports</p></div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px">
+                <label style="flex:1 1 260px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;color:#64748B;cursor:text">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}"  hint-size="16px,16px"></x-import><input type="search" value="{{ rq }}" onChange="{{ onRq }}" placeholder="Search reports…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+                </label>
+                <select value="{{ rcat }}" onChange="{{ onRcat }}" aria-label="Category" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;flex:0 1 200px"><option value="all">All categories</option><option value="financial">Financial</option><option value="operations">Operations</option><option value="portfolio">Portfolio</option><option value="owner">Owner</option></select>
+                <select value="{{ rfreq }}" onChange="{{ onRfreq }}" aria-label="Frequency" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;flex:0 1 200px"><option value="all">All frequencies</option><option value="monthly">Monthly</option><option value="weekly">Weekly</option><option value="quarterly">Quarterly</option></select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr))">
+              <div style="grid-column:{{ mainSpan }};overflow-x:auto;min-width:0">
+                <table style="width:100%;min-width:720px;border-collapse:collapse">
+                  <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Name</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Category</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Frequency</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Description</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Actions</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ reports }}" as="rp" hint-placeholder-count="6">
+                      <tr style-hover="background:#F8FAFC">
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px;color:#172033;font-weight:600">{{ rp.title }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ rp.catTone }}" hint-size="80px,22px">{{ rp.cat }}</x-import></td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ rp.freq }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;white-space:normal;min-width:240px">{{ rp.desc }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px">
+                          <div style="display:inline-flex;gap:6px">
+                            <sc-if value="{{ rp.hasDash }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="chart-column" on-click="{{ rp.dash }}" hint-size="100px,32px">Dashboard</x-import></sc-if>
+                            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" on-click="{{ rp.pdf }}" hint-size="56px,32px">PDF</x-import>
+                            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" on-click="{{ rp.xlsx }}" hint-size="60px,32px">XLSX</x-import>
+                          </div>
+                        </td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+                <sc-if value="{{ noReports }}"><p style="margin:0;padding:40px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No reports available.</p></sc-if>
+              </div>
+              <div style="grid-column:{{ railSpan }};padding:20px 24px;display:flex;flex-direction:column;gap:8px;box-shadow:{{ recentDivider }};min-width:0">
+                <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;padding-bottom:6px">Recently Generated Reports</span>
+                <sc-for list="{{ recent }}" as="rc" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #F1F5F9">
+                    <span style="width:32px;height:32px;border-radius:8px;flex-shrink:0;background:{{ rc.tileBg }};color:{{ rc.tileFg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ rc.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ rc.title }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ rc.meta }}</span></span>
+                    <button onClick="{{ rc.download }}" title="Download" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#F1F5F9;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="download" size="{{ 16 }}"  hint-size="16px,16px"></x-import></button>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs0 = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+const mkCrumbs = l => mkCrumbs0(withCtx(l));
+const CTX = (() => { const q = new URLSearchParams(window.location.search); return { back: q.get('back'), label: q.get('backLabel') || '' }; })();
+const CTXV = { ctxBack: !!CTX.back, goCtxBack: () => CTX.back && go(CTX.back), ctxBackLabel: CTX.label };
+const withCtx = l => CTX.back && CTX.label ? [l[0], [CTX.label.replace(/^Back to /, ''), CTX.back], l[l.length - 1]] : l;
+
+const fmtUSD = (n, d = 2) => Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtK = n => '$' + Math.round(n) + 'K';
+const PERIODS = {
+  month: { label: 'This Month', line: 'October 2026 (MTD)', sub: 'Last 6 months • all properties', bars: [['May', 402, 148], ['Jun', 415, 152], ['Jul', 421, 161], ['Aug', 418, 149], ['Sep', 430, 155], ['Oct', 438, 170]], max: 450,
+    k: { cash: [612480.22, '↑ 4.2%', 'success'], trust: [486250, '214 deposits', 'info'], ar: [25640, '↓ 8.1%', 'success'], ap: [38912.4, '14 bills due', 'warning'], noi: [268140, '↑ 4.1%', 'success'] } },
+  last: { label: 'Last Month', line: 'September 2026', sub: 'Apr – Sep 2026 • all properties', bars: [['Apr', 396, 151], ['May', 402, 148], ['Jun', 415, 152], ['Jul', 421, 161], ['Aug', 418, 149], ['Sep', 430, 155]], max: 450,
+    k: { cash: [587760.9, '↑ 2.6%', 'success'], trust: [482400, '212 deposits', 'info'], ar: [27910, '↑ 3.4%', 'danger'], ap: [33480.15, '11 bills paid', 'success'], noi: [275000, '↑ 2.9%', 'success'] } },
+  ytd: { label: 'Year to Date', line: 'Jan 1 – Oct 4, 2026', sub: 'Quarterly • 2026', bars: [['Q1', 1182, 451], ['Q2', 1231, 452], ['Q3', 1269, 465], ['Q4 MTD', 438, 170]], max: 1400,
+    k: { cash: [612480.22, '↑ 11.8% YTD', 'success'], trust: [486250, '214 deposits', 'info'], ar: [25640, '1.8% of billed', 'success'], ap: [38912.4, '14 bills due', 'warning'], noi: [2582000, '↑ 6.3% YoY', 'success'] } }
+};
+const TX = [
+  ['Oct 4, 2026', 'PMT-50421', 'Rent — Daniela Ortiz', 'Brickell Bay Residences • Unit 1204', '1100 · Operating Cash', 3850, 'income'],
+  ['Oct 4, 2026', 'EXP-8845', 'Aqua Pro Plumbing — Invoice #INV-20481', 'Brickell Bay Residences • Unit 1507', '5200 · Repairs & Maintenance', -1240, 'expense'],
+  ['Oct 3, 2026', 'DEP-3312', 'Security deposit — Marco Bellini', 'Brickell Bay Residences • Unit 1507', '2100 · Tenant Deposits (Trust)', 3950, 'trust'],
+  ['Oct 3, 2026', 'PMT-50417', 'Reservation 20260929-DR-0001 — Laura Méndez', 'Ocean View Villa • Apt 101', '4100 · Short-Term Rental Income', 2940, 'income'],
+  ['Oct 2, 2026', 'EXP-8841', 'Management fee (8%) — Alvarez Family Trust', 'All properties', '4500 · Management Fee Income', -3412, 'expense'],
+  ['Oct 1, 2026', 'PAY-50412', 'Owner distribution — Alvarez Family Trust', 'September statement', '2300 · Owner Payables', -18742.36, 'expense'],
+  ['Oct 1, 2026', 'EXP-8836', 'HOA dues Q4', 'Brickell Bay Residences', '5400 · HOA Dues', -2340, 'expense'],
+  ['Oct 1, 2026', 'PMT-50398', 'Rent — Sofia Martinez', 'Ocean View Villa • Unit 102', '1100 · Operating Cash', 4200, 'income']
+];
+const BANKS = [
+  ['Operating Account', 'Chase ••••4471 • last reconciled Sep 30', 612480.22, 'Reconciled', 'success', false],
+  ['Trust Account — Security Deposits', 'BankUnited ••••9012 • FL § 83.49 escrow', 486250, 'Reconciled', 'success', false],
+  ['Owner Distribution Account', 'Chase ••••5528 • 3 unmatched items', 74318.9, 'Needs Review', 'warning', true],
+  ['Short-Term Rental Clearing', 'Stripe payouts • last synced 9:12 AM', 18452.6, 'In Progress', 'info', true]
+];
+const REPORTS = [
+  ['rent_roll', 'Rent roll report', 'financial', 'monthly', 'Complete listing of units, tenant and rent information (from active leases).', null],
+  ['occupancy', 'Occupancy report', 'portfolio', 'monthly', 'Vacancy and occupancy snapshot across properties and units.', '/admin/reports/occupancy'],
+  ['owners', 'Owner statements', 'owner', 'monthly', 'Income, deductions and net distributions per owner with PDF/XLSX letterhead.', '/admin/reports/owners'],
+  ['maintenance', 'Maintenance report', 'operations', 'weekly', 'Work orders by status, priority, vendor and resolution time.', '/admin/reports/maintenance'],
+  ['reservations', 'Reservations report', 'operations', 'weekly', 'Bookings, nights, ADR and channel mix for short-term rentals.', '/admin/reports/reservations'],
+  ['tenants', 'Tenants report', 'portfolio', 'monthly', 'Tenant roster, balances, lease end dates and renewal status.', '/admin/reports/tenants'],
+  ['income_statement', 'Income statement', 'financial', 'quarterly', 'Revenue, operating expenses and net operating income by property.', null]
+];
+const CAT_TONE = { financial: 'navy', operations: 'info', portfolio: 'brand', owner: 'premium' };
+const CAP = s => s.charAt(0).toUpperCase() + s.slice(1);
+const RKEY = 'mghpm.accounting.v2';
+const loadR = () => { try { return JSON.parse(sessionStorage.getItem(RKEY)) || {}; } catch (e) { return {}; } };
+
+class Component extends DCLogic {
+  state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, period: 'month', txType: 'all', rq: '', rcat: 'all', rfreq: 'all', banks: {},
+    recent: loadR().recent || [['Owner statements — September 2026', 'PDF', 'Oct 1, 2026 • 2.1 MB'], ['Rent roll report — September 2026', 'XLSX', 'Oct 1, 2026 • 412 KB'], ['Maintenance report — Week 39', 'PDF', 'Sep 28, 2026 • 860 KB']] };
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+
+  componentDidUpdate() { try { sessionStorage.setItem(RKEY, JSON.stringify({ recent: this.state.recent })); } catch (e) {} }
+
+  renderVals() {
+    const s = this.state;
+    const { v, bp } = this.chrome('accounting');
+    const P = PERIODS[s.period], K = P.k;
+    const self = PAGES.accounting;
+    const pending = o => go(pendingUrl({ ...o, parent: 'Accounting', parentHref: self, back: self, backLabel: 'Back to Accounting' }));
+    const gen = (title, fmt) => { this.setState(st => ({ recent: [[title + ' — ' + P.line, fmt, 'Oct 4, 2026 • just now'], ...st.recent].slice(0, 6) })); this.notify(title + ' generated as ' + fmt); };
+    const AR = [['Current', 9840, '#16A34A'], ['1–30 days', 7210, '#0094CC'], ['31–60 days', 4630, '#D97706'], ['61–90 days', 2385, '#EA580C'], ['90+ days', 1575, '#DC2626']];
+    const arMax = Math.max(...AR.map(a => a[1]));
+    const q = s.rq.trim().toLowerCase();
+    const reps = REPORTS.filter(r => (s.rcat === 'all' || r[2] === s.rcat) && (s.rfreq === 'all' || r[3] === s.rfreq) && (!q || (r[1] + ' ' + r[4]).toLowerCase().includes(q)));
+    const pct = n => (n / P.max * 100).toFixed(1) + '%';
+    const FX = window.MGH_FIN, fk = FX ? FX.kpis() : null, bk = FX ? FX.rec(1010) : null;
+    const AB = u => u + (u.indexOf('?') >= 0 ? '&' : '?') + 'back=' + encodeURIComponent('Master 11 - Accounting.dc.html') + '&backLabel=' + encodeURIComponent('Back to Accounting');
+    const MD = (label, icon, value, sub, href, bg, fg, warn) => ({ label, icon, value, sub, subColor: warn ? '#B45309' : '#64748B', bg, fg, go: () => go(AB(href)) });
+    const finMods = fk ? [
+      MD('Cash Balance', 'landmark', FX.money(fk.cash), 'Operating + Trust • diff ' + FX.money(bk.diff), PAGES['bank-reconciliation'], '#DDF3F1', '#006B68', bk.diff !== 0),
+      MD('Accounts Receivable', 'hand-coins', FX.money(fk.ar), FX.db.ar.filter(x => x.amount > x.paid && FX.bucket(x) !== 'Current').length + ' overdue receivables', PAGES.receivables, '#E6F6FC', '#00739F', true),
+      MD('Accounts Payable', 'receipt', FX.money(fk.ap), FX.db.ap.filter(b => b.pay !== 'Paid' && FX.days(b.due) >= -7).length + ' bills due ≤ 7 days', PAGES.payables, '#FBF3DE', '#7A5A12', false),
+      MD('Security Deposits Held', 'piggy-bank', FX.money(fk.sdHeld), 'Trust / Escrow • FL § 83.49', PAGES.deposits + '?tab=security', '#EEF2FF', '#132A52', false),
+      MD('Owner Payables', 'hand-coins', FX.money(fk.ownerPay), 'Distributions pending', PAGES['owner-distributions'], '#DDF3F1', '#006B68', false),
+      MD('Vendor Payables', 'hard-hat', FX.money(fk.vendorAP), 'Vendor payments open', PAGES['vendor-payments'], '#F1F5F9', '#475569', false),
+      MD('Payroll Due', 'wallet', FX.money(fk.payroll), 'Net pay + payroll taxes', PAGES.payables + '?tab=payroll', '#FEF2F2', '#B91C1C', false),
+      MD('Net Operating Income', 'scale', FX.money(fk.noi), 'September 2026 • all properties', PAGES['property-ledger'], '#DDF3F1', '#006B68', false)
+    ] : [];
+    const finLinks = [['General Ledger', 'book-open', 'general-ledger'], ['Property Ledger', 'building-2', 'property-ledger'], ['Receivables', 'hand-coins', 'receivables'], ['Payables', 'receipt', 'payables'], ['Vendor Payments', 'banknote', 'vendor-payments'], ['Bank Reconciliation', 'git-compare', 'bank-reconciliation'], ['Deposits', 'piggy-bank', 'deposits'], ['Owner Distributions', 'hand-coins', 'owner-distributions'], ['Payroll', 'wallet', 'payroll'], ['Financial Close • Budgets • Taxes', 'lock', 'financial-close'], ['Reports', 'chart-column', 'reports']].map(([label, icon, k]) => ({ label, icon, go: () => go(AB(PAGES[k])) }));
+    return { ...v, ...CTXV, finMods, finLinks,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Finance', null], ['Accounting', null]]),
+      periodLine: P.line,
+      periods: Object.keys(PERIODS).map(id => { const on = id === s.period || NAV_ALIAS[s.period] === id; return { label: PERIODS[id].label, bg: on ? '#FFFFFF' : 'transparent', color: on ? '#172033' : '#64748B', shadow: on ? '0 1px 2px rgba(15,23,42,0.08)' : 'none', select: () => this.setState({ period: id }) }; }),
+      addPayment: () => go(PAGES.payments + '?add=1'),
+      addExpense: () => go(PAGES.payments + '?expense=add'),
+      kpis: [
+        { label: 'Operating Cash', value: fmtUSD(K.cash[0]), icon: 'landmark', tone: 'navy', delta: K.cash[1], deltaTone: K.cash[2], footer: 'Chase ••••4471' },
+        { label: 'Trust Account — Deposits', value: fmtUSD(K.trust[0]), icon: 'shield-check', tone: 'brand', delta: K.trust[1], deltaTone: K.trust[2], footer: 'Held in escrow (FL § 83.49)' },
+        { label: 'Accounts Receivable', value: fmtUSD(K.ar[0]), icon: 'file-clock', tone: 'premium', delta: K.ar[1], deltaTone: K.ar[2], footer: 'Past-due tenant balances' },
+        { label: 'Accounts Payable', value: fmtUSD(K.ap[0]), icon: 'receipt', tone: 'navy', delta: K.ap[1], deltaTone: K.ap[2], footer: 'Vendor bills & owner payables' },
+        { label: 'Net Operating Income', value: fmtUSD(K.noi[0]), icon: 'trending-up', tone: 'success', delta: K.noi[1], deltaTone: K.noi[2], footer: P.line }
+      ],
+      chartSub: P.sub,
+      yTicks: [fmtK(P.max), fmtK(P.max * 2 / 3), fmtK(P.max / 3), '$0'],
+      barW: P.bars.length > 4 ? '14px' : '22px',
+      bars: P.bars.map(([label, g, o]) => ({ label, g: pct(g), o: pct(o), n: pct(g - o), tip: label + ' • Gross ' + fmtK(g) + ' • Opex ' + fmtK(o) + ' • Net ' + fmtK(g - o) })),
+      arTotal: fmtUSD(AR.reduce((a, x) => a + x[1], 0)),
+      aging: AR.map(([label, n, color]) => ({ label, value: fmtUSD(n), w: (n / arMax * 100).toFixed(0) + '%', color })),
+      goPayments: () => go(PAGES.payments),
+      txTypes: [['all', 'All'], ['income', 'Income'], ['expense', 'Expenses'], ['trust', 'Trust']].map(([id, label]) => { const on = s.txType === id; return { label, bg: on ? '#FFFFFF' : 'transparent', color: on ? '#172033' : '#64748B', shadow: on ? '0 1px 2px rgba(15,23,42,0.08)' : 'none', select: () => this.setState({ txType: id }) }; }),
+      tx: TX.filter(t => s.txType === 'all' || t[6] === s.txType).map(([date, ref, desc, prop, account, amt]) => ({ date, ref, desc, prop, account, amount: (amt < 0 ? '− ' : '+ ') + fmtUSD(Math.abs(amt)), color: amt < 0 ? '#172033' : '#15803D' })),
+      banks: BANKS.map(([name, meta, bal, status, tone, canRec]) => { const done = s.banks[name]; return { name, meta: done ? 'Reconciled just now • Marcus Vance' : meta, balance: fmtUSD(bal), status: done ? 'Reconciled' : status, tone: done ? 'success' : tone, canRec: canRec && !done, reconcile: () => { this.setState(st => ({ banks: { ...st.banks, [name]: true } })); this.notify(name + ' reconciled through Sep 30, 2026'); } }; }),
+      rq: s.rq, onRq: e => this.setState({ rq: e.target.value }), rcat: s.rcat, onRcat: e => this.setState({ rcat: e.target.value }), rfreq: s.rfreq, onRfreq: e => this.setState({ rfreq: e.target.value }),
+      reports: reps.map(([id, title, cat, freq, desc, route]) => ({ title, cat: CAP(cat), catTone: CAT_TONE[cat], freq: CAP(freq), desc, hasDash: !!route,
+        dash: () => route && pending({ page: 'report-' + id, nav: 'reports', title: title.charAt(0).toUpperCase() + title.slice(1), desc: 'Interactive KPIs and charts • same criteria as the PDF/XLSX export.', route }),
+        pdf: () => gen(title.charAt(0).toUpperCase() + title.slice(1), 'PDF'), xlsx: () => gen(title.charAt(0).toUpperCase() + title.slice(1), 'XLSX') })),
+      noReports: reps.length === 0,
+      recentDivider: bp === 'desktop' ? 'inset 1px 0 0 #E2E8F0' : 'inset 0 1px 0 #E2E8F0',
+      recent: s.recent.map(([title, fmt, meta]) => ({ title, meta: fmt + ' • ' + meta, icon: fmt === 'PDF' ? 'file-text' : 'file-spreadsheet', tileBg: fmt === 'PDF' ? '#FEF2F2' : '#ECFDF3', tileFg: fmt === 'PDF' ? '#DC2626' : '#15803D', download: () => this.notify('Downloading ' + title + ' (' + fmt + ')') }))
+    };
+  }
+}
+</script>
+</body>
+</html>

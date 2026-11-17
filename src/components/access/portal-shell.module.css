@@ -1,0 +1,116 @@
+.shell {
+  min-height: 100vh;
+  background: var(--color-canvas);
+}
+
+.header {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.headerInner,
+.main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.headerInner {
+  display: flex;
+  min-height: 64px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-title);
+}
+
+.brand span {
+  display: grid;
+  line-height: 1.2;
+}
+
+.brand small {
+  color: var(--color-muted);
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+}
+
+.nav a {
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--color-title);
+  font-weight: 600;
+}
+
+.nav a:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.account {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.switch {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.user {
+  color: var(--color-muted);
+}
+
+.main {
+  padding-top: 24px;
+  padding-bottom: 48px;
+}
+
+.card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.card h1,
+.card h2 {
+  margin: 0;
+  color: var(--color-title);
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.details dt {
+  color: var(--color-muted);
+}
+
+.details dd {
+  margin: 0;
+  color: var(--color-title);
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+  <style>input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}</style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="insurance-data.js"></script>
+  <script src="pay-data.js"></script>
+  <script src="readiness-data.js"></script>
+  <script src="templates-data.js"></script>
+  <script src="lease-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 43 — Insurance Policy 360" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" icon="arrow-left" on-click="{{ goList }}" size="sm" hint-size="auto,40px">Back to Insurance</x-import></div>
+        <sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Insurance Policy 360 • {{ pid }}</span>
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ ptitle }}</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ psub }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ stT }}" dot="{{ true }}" hint-size="90px,22px">{{ stL }}</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ vT }}" dot="{{ true }}" hint-size="90px,22px">{{ vL }}</x-import><span style="padding:4px 9px;border-radius:999px;background:#E8ECF4;color:#132A52;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif">{{ entL }}</span><span style="padding:4px 9px;border-radius:999px;background:#F1F5F9;color:#475569;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif">{{ curL }}</span></div>
+          </div>
+          <div style="position:relative;display:flex;flex-wrap:wrap;gap:12px">
+            <sc-if value="{{ notEditing }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="pencil" on-click="{{ startEdit }}" hint-size="auto,40px">Edit Policy</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="upload" on-click="{{ goUpload }}" hint-size="auto,40px">Upload Document</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="badge-check" on-click="{{ goVerify }}" disabled="{{ isVerified }}" hint-size="auto,40px">Verify Policy</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="ellipsis" on-click="{{ toggleMore }}" hint-size="auto,40px">More</x-import></sc-if>
+            <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ cancelEdit }}" hint-size="auto,40px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ saveEdit }}" hint-size="auto,40px">Save Changes</x-import></sc-if>
+            <sc-if value="{{ moreOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:240px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 16px 40px rgba(15,23,42,0.16);padding:6px;display:flex;flex-direction:column"><sc-for list="{{ moreItems }}" as="mi"><button onClick="{{ mi.on }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:{{ mi.color }};font:500 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;text-align:left" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ mi.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>{{ mi.label }}</button></sc-for></div></sc-if>
+          </div>
+        </div>
+        <sc-if value="{{ flash.show }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:8px;border:1px solid {{ flash.bd }};background:{{ flash.bg }}"><span style="display:flex;color:{{ flash.fg }};flex-shrink:0;padding-top:1px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ flash.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:{{ flash.fg }}">{{ flash.title }}</span><span style="font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ flash.text }}</span></div></div></sc-if>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px"><sc-for list="{{ tiles }}" as="t" hint-placeholder-count="6"><div style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:3px solid {{ t.accent }};border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ t.l }}</span><span style="font:700 18px/1.25 'Plus Jakarta Sans',sans-serif;color:{{ t.color }};overflow-wrap:anywhere">{{ t.v }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ t.sub }}</span></div></sc-for></div>
+        <sc-if value="{{ notEditing }}" hint-placeholder-val="{{ true }}"><div role="tablist" style="display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #E2E8F0"><sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="8"><button role="tab" onClick="{{ tb.select }}" style="display:flex;align-items:center;gap:6px;height:44px;padding:0 12px;border:0;border-bottom:2px solid {{ tb.border }};background:transparent;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0">{{ tb.label }}<sc-if value="{{ tb.dot }}"><span style="width:6px;height:6px;border-radius:3px;background:#D4A637"></span></sc-if></button></sc-for></div></sc-if>
+        <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;align-items:start"><sc-for list="{{ cards }}" as="c" hint-placeholder-count="2"><section style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:{{ c.accent }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:16px;min-width:0;grid-column:{{ c.span }}">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 260px"><h2 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ c.title }}</h2><sc-if value="{{ c.hasSub }}"><p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ c.sub }}</p></sc-if></div><sc-if value="{{ c.hasActions }}"><div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ c.actions }}" as="a"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="{{ a.variant }}" size="sm" icon="{{ a.icon }}" disabled="{{ a.disabled }}" on-click="{{ a.on }}" hint-size="auto,32px">{{ a.label }}</x-import></sc-for></div></sc-if></div>
+<sc-if value="{{ c.hasKv }}"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px 18px"><sc-for list="{{ c.kv }}" as="k"><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ k.l }}</span><span style="font:600 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#172033;overflow-wrap:anywhere">{{ k.v }}</span></div></sc-for></div></sc-if>
+<sc-if value="{{ c.hasFields }}"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px"><sc-for list="{{ c.fields }}" as="f"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ f.label }}<sc-if value="{{ f.isInput }}"><input type="{{ f.type }}" value="{{ f.value }}" onChange="{{ f.on }}" placeholder="{{ f.ph }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></sc-if><sc-if value="{{ f.isSelect }}"><select value="{{ f.value }}" onChange="{{ f.on }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0;font-weight:500;font-size:13px"><sc-for list="{{ f.options }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></sc-if></label></sc-for></div></sc-if>
+<sc-if value="{{ c.hasTable }}"><div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto"><table style="width:100%;min-width:{{ c.minW }};border-collapse:collapse"><thead><tr><sc-for list="{{ c.cols }}" as="h"><th style="padding:10px 14px;text-align:{{ h.align }};font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">{{ h.label }}</th></sc-for></tr></thead><tbody><sc-for list="{{ c.rows }}" as="r"><tr style="background:{{ r.bg }}"><sc-for list="{{ r.cells }}" as="x"><td style="padding:12px 14px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;text-align:{{ x.align }}"><sc-if value="{{ x.isText }}"><div style="display:flex;flex-direction:column;gap:2px"><span style="color:{{ x.color }};font-weight:{{ x.weight }}">{{ x.text }}</span><sc-if value="{{ x.hasSub }}"><span style="font-size:12px;color:#64748B">{{ x.sub }}</span></sc-if></div></sc-if><sc-if value="{{ x.isBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ x.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ x.text }}</x-import></sc-if><sc-if value="{{ x.isBtn }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="{{ x.variant }}" size="sm" icon="{{ x.icon }}" disabled="{{ x.disabled }}" on-click="{{ x.on }}" hint-size="auto,32px">{{ x.text }}</x-import></sc-if></td></sc-for></tr></sc-for></tbody></table><sc-if value="{{ c.hasEmpty }}"><p style="margin:0;padding:24px;text-align:center;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#94A3B8">{{ c.empty }}</p></sc-if></div></sc-if>
+<sc-if value="{{ c.hasList }}"><div style="display:flex;flex-direction:column"><sc-for list="{{ c.list }}" as="li"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 10px;border-top:1px solid #F1F5F9;border-radius:8px;background:{{ li.hl }}"><span style="width:28px;height:28px;border-radius:14px;background:{{ li.bg }};color:{{ li.fg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ li.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span><span style="display:flex;flex-direction:column;gap:2px;flex:1 1 220px;min-width:0"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ li.title }}<sc-if value="{{ li.hasBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ li.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ li.badge }}</x-import></sc-if></span><span style="font:400 12px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ li.detail }}</span></span><sc-if value="{{ li.hasActions }}"><div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ li.actions }}" as="a"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="{{ a.variant }}" size="sm" icon="{{ a.icon }}" disabled="{{ a.disabled }}" on-click="{{ a.on }}" hint-size="auto,32px">{{ a.label }}</x-import></sc-for></div></sc-if></div></sc-for></div></sc-if>
+<sc-if value="{{ c.hasNote }}"><p style="margin:0;font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ c.note }}</p></sc-if>
+</section></sc-for></div>
+        </sc-if>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const LIST = 'Master 27 - Insurance and Compliance.dc.html', NEWP = 'Master 42 - New Insurance Policy.dc.html';
+const QP = new URLSearchParams(window.location.search);
+const TABS = [['overview', 'Overview'], ['coverage', 'Coverage'], ['insured', 'Insured & Relationships'], ['payments', 'Payments'], ['documents', 'Documents'], ['verification', 'Verification'], ['comms', 'Communications'], ['activity', 'Activity']];
+const ST_TONE = { Active: 'success', 'Expiring Soon': 'warning', Expired: 'danger', 'Pending Verification': 'info', Draft: 'neutral' };
+const fmtD = iso => iso ? new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+const addDays = (s, n) => { if (!s) return ''; const d = new Date(s + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+const TONE = { ok: { bg: '#F0FDF4', bd: '#BBF7D0', fg: '#15803D', icon: 'circle-check' }, warn: { bg: '#FFFBEB', bd: '#FDE68A', fg: '#B45309', icon: 'triangle-alert' }, info: { bg: '#EFF6FF', bd: '#BFDBFE', fg: '#1D4ED8', icon: 'info' } };
+const banner = (t, title, text, list) => t ? { show: true, ...TONE[t], title, text: text || '', list: list || [] } : { show: false, bg: '', bd: '', fg: '', icon: 'info', title: '', text: '', list: [] };
+const ST = { done: ['check', '#DCFCE7', '#15803D', 'Complete'], progress: ['clock', '#FEF3C7', '#B45309', 'In Progress'], todo: ['circle', '#F1F5F9', '#94A3B8', 'Not Started'], na: ['minus', '#F1F5F9', '#CBD5E1', 'Not Applicable'] };
+const btn = a => ({ label: a[0], icon: a[1] || 'chevron-right', variant: a[2] || 'outline', on: a[3] || (() => {}), disabled: !!a[4] });
+const cell = x => { const o = (typeof x === 'string' || typeof x === 'number') ? { text: String(x) } : x; return { text: o.text || '', sub: o.sub || '', hasSub: !!o.sub, isText: !o.badge && !o.btn, isBadge: !!o.badge, isBtn: !!o.btn, tone: o.tone || 'neutral', variant: o.variant || 'outline', icon: o.icon || 'chevron-right', on: o.on || (() => {}), disabled: !!o.disabled, align: o.align || 'left', color: o.bold ? '#172033' : '#475569', weight: o.bold ? '600' : '400' }; };
+const card = o => ({ title: o.title, sub: o.sub || '', hasSub: !!o.sub, actions: (o.actions || []).map(btn), hasActions: !!(o.actions && o.actions.length), hasKv: !!o.kv, kv: (o.kv || []).map(([l, v]) => ({ l, v: v == null || v === '' ? '—' : String(v) })), hasFields: !!o.fields, fields: (o.fields || []).map(f => ({ ph: '', type: 'text', ...f, isInput: !f.options, isSelect: !!f.options, options: f.options || [] })), hasTable: !!o.table, minW: (o.table && o.table.minW) || '560px', cols: o.table ? o.table.cols.map(c => Array.isArray(c) ? { label: c[0], align: c[1] } : { label: c, align: 'left' }) : [], rows: o.table ? o.table.rows.map(r => ({ bg: r.hl ? '#F0FAF9' : 'transparent', cells: (r.cells || r).map(cell) })) : [], hasEmpty: !!(o.table && !o.table.rows.length), empty: (o.table && o.table.empty) || 'Nothing to display.', hasList: !!o.list, list: (o.list || []).map(li => ({ icon: li.icon || 'circle', bg: li.bg || '#F1F5F9', fg: li.fg || '#64748B', title: li.title, detail: li.detail || '', hasBadge: !!li.badge, badge: li.badge || '', tone: li.tone || 'neutral', actions: (li.actions || []).map(btn), hasActions: !!(li.actions && li.actions.length), hl: li.hl ? '#F0FAF9' : 'transparent' })), hasNote: !!o.note, note: o.note || '', accent: o.accent ? '3px solid #D4A637' : '1px solid #E2E8F0', span: o.span || 'span 12' });
+
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, tab: QP.get('tab') || 'overview', edit: null, more: false, upType: 'Certificate of Insurance', rev: 0, flash: QP.get('flash') || '' }; }
+  componentDidMount() { this._chromeMount(); this._wait(); }
+  componentWillUnmount() { this._chromeUnmount(); clearTimeout(this._it); }
+  _chromeMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  _chromeUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+  _wait() { if (!window.MGH_INS) { this._it = setTimeout(() => this._wait(), 80); return; } if (QP.get('edit') && !this.state.edit) { const p = window.MGH_INS.get(QP.get('id')); if (p) this.setState({ edit: JSON.parse(JSON.stringify(p)) }); } this.forceUpdate(); }
+  bump(msg) { if (msg) this.notify(msg); this.setState(st => ({ rev: st.rev + 1 })); }
+
+  renderVals() {
+    const s = this.state, { v } = this.chrome('insurance'), ins = window.MGH_INS, A = window.MGH_AUDIT;
+    const base = { ...v, crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Compliance', null], ['Insurance', LIST], [QP.get('id') || 'Policy', null]]), goList: () => go(LIST), ready: false };
+    if (!ins) return base;
+    const p = ins.get(QP.get('id')) || ins.load().policies[0]; if (!p) return base;
+    const cur = p.currency || 'USD', fm = n => isNaN(+n) ? String(n) : ins.fmt(n, cur), days = ins.daysTo(p.exp), vc = ins.vcode(p), VS = ins.VSTATUS[vc], st = ins.status(p);
+    const fresh = () => ins.get(p.id);
+    const save = (patch, action, detail, extra, msg) => { ins.put({ ...fresh(), ...patch }, action, detail, extra); this.bump(msg); };
+    const today = new Date().toISOString().slice(0, 10);
+    const lim = ins.primaryLimit(p);
+    const E = s.edit;
+    const cards = [];
+    const open = r => r.kind === 'Property' ? () => go(DETAIL + '?id=' + (r.pid || 1)) : r.kind === 'Owner' ? () => go(PAGES['owner-profile'] + '?owner=' + encodeURIComponent(r.name) + '&tab=insurance') : r.kind === 'Tenant' ? () => go(PAGES['tenant-profile'] + '?tenant=' + encodeURIComponent(r.name) + '&tab=insurance') : r.kind === 'Lease' ? () => go(PAGES['lease-360'] + '?id=' + encodeURIComponent(r.name) + '&tab=insurance') : () => go(PAGES.vendors);
+    if (E) {
+      const setE = k => e => { const val = e.target.value; this.setState(st2 => ({ edit: { ...st2.edit, [k]: val } })); };
+      const setL = (i, k) => e => { const val = e.target.value; this.setState(st2 => ({ edit: { ...st2.edit, coverages: st2.edit.coverages.map((l, j) => j === i ? { ...l, [k]: val } : l) } })); };
+      const f = (label, k, o = {}) => ({ label, value: E[k] == null ? '' : String(E[k]), on: setE(k), type: o.type || 'text', options: o.options, ph: o.ph || '' });
+      cards.push(card({ title: 'Policy Information', sub: 'Editing ' + p.id + ' • every change is written to the Audit Log with before/after values.', accent: true, fields: [f('Policy Type', 'type', { options: ins.TYPES[p.entity] }), f('Policy Number', 'number'), f('Insurance Company', 'carrier'), f('Currency', 'currency', { options: ['USD', 'DOP'] }), f('Deductible', 'deductible'), f('Annual Premium', 'premium', { type: 'number' }), f('Payment Status', 'pay', { options: ['Paid', 'Unpaid', 'Renewal Invoiced', 'Financed'] })] }));
+      cards.push(card({ title: 'Carrier / Agent', span: 'span 6', fields: [f('Agent / Broker', 'agent'), f('Agent Phone', 'agent_phone'), f('Agent Email', 'agent_email'), f('Website', 'website'), f('Claims / Emergency Number', 'claims')] }));
+      cards.push(card({ title: 'Important Dates', span: 'span 6', fields: [f('Effective', 'eff', { type: 'date' }), f('Expiration', 'exp', { type: 'date' }), f('Next Review', 'nextReview', { type: 'date' })] }));
+      cards.push(card({ title: 'Coverage Lines', actions: [['Add Coverage Line', 'plus', 'outline', () => this.setState(st2 => ({ edit: { ...st2.edit, coverages: [...st2.edit.coverages, { name: '', limit: '', deductible: '', status: 'Active' }] } }))], ['Remove Last Line', 'minus', 'ghost', () => this.setState(st2 => ({ edit: { ...st2.edit, coverages: st2.edit.coverages.slice(0, -1) } })), E.coverages.length <= 1]], fields: E.coverages.flatMap((l, i) => [{ label: 'Line ' + (i + 1) + ' — Coverage', value: l.name, on: setL(i, 'name') }, { label: 'Line ' + (i + 1) + ' — Limit (' + E.currency + ')', value: String(l.limit), on: setL(i, 'limit') }, { label: 'Line ' + (i + 1) + ' — Deductible', value: l.deductible, on: setL(i, 'deductible') }]) }));
+      cards.push(card({ title: 'Endorsements & Conditions', fields: [f('Endorsements', 'endorsements'), f('Additional Insured', 'additionalInsured'), f('Loss Payee', 'lossPayee'), f('Special Conditions', 'conditions'), f('Exclusions / Notes', 'exclusions')] }));
+      cards.push(card({ title: 'Premium & Payment', fields: [f('Payment Frequency', 'freq', { options: ['Annual', 'Semi-Annual', 'Quarterly', 'Monthly'] }), f('Amount Due', 'amountDue', { type: 'number' }), f('Due Date', 'due', { type: 'date' }), f('Responsible', 'responsible', { options: ins.RESP }), f('Payment Method', 'method', { options: ['Bank Transfer', 'Credit/Debit Card', 'Financed', 'Other', ''] })] }));
+    } else {
+      const tab = s.tab;
+      if (tab === 'overview') {
+        cards.push(card({ title: 'Policy Information', kv: [['Policy ID', p.id], ['Policy Type', p.type], ['Policy Number', p.number], ['Insurance Company', p.carrier], ['Status', st], ['Effective Date', fmtD(p.eff)], ['Expiration Date', fmtD(p.exp)], ['Currency', cur === 'DOP' ? 'DOP — RD$' : 'USD — US$'], ['Annual Premium', fm(p.premium)], ['Payment Status', p.pay], ['Deductible', p.deductible]] }));
+        cards.push(card({ title: 'Carrier / Agent', span: 'span 6', kv: [['Insurance Company', p.carrier], ['Agent / Broker', p.agent], ['Phone', p.agent_phone], ['Email', p.agent_email], ['Website', p.website], ['Claims / Emergency', p.claims]] }));
+        cards.push(card({ title: 'Important Dates', span: 'span 6', kv: [['Effective', fmtD(p.eff)], ['Expiration', fmtD(p.exp)], ['Renewal Due', fmtD(addDays(p.exp, -30))], ['Verification Date', fmtD(p.verified_at)], ['Next Review', fmtD(p.nextReview || addDays(p.exp, -60))]] }));
+        cards.push(card({ title: 'Expiration & Renewal Alerts', sub: 'Configured in Insurance settings • alerts are created in Action Center for the responsible party and the MGHPM administrator.', actions: [['Open Action Center', 'inbox', 'ghost', () => go(PAGES['action-center'] + '?q=' + encodeURIComponent(p.id))]], list: ins.alerts().map(([d, label, tone]) => { const hit = days !== null && days <= d; return { icon: hit ? 'bell-ring' : 'calendar', bg: hit ? (tone === 'danger' ? '#FEE2E2' : '#FEF3C7') : '#F1F5F9', fg: hit ? (tone === 'danger' ? '#B91C1C' : '#B45309') : '#94A3B8', title: (d ? d + ' days' : 'Expiration day') + ' — ' + label, detail: fmtD(addDays(p.exp, -d)) + (hit ? ' • triggered' : ' • scheduled'), badge: hit ? 'Triggered' : 'Scheduled', tone: hit ? tone : 'neutral' }; }) }));
+      }
+      if (tab === 'coverage') {
+        cards.push(card({ title: 'Coverage Lines', sub: 'Limits and deductibles per coverage • ' + (cur === 'DOP' ? 'DOP — RD$' : 'USD — US$'), table: { cols: ['Coverage', ['Limit', 'right'], 'Deductible', 'Status'], rows: (p.coverages || []).map(l => [{ text: l.name, bold: true }, { text: fm(l.limit), align: 'right', bold: true }, l.deductible || '—', { badge: true, text: l.status || 'Active', tone: 'success' }]) }, actions: [['Edit Coverage', 'pencil', 'outline', () => this.setState({ edit: JSON.parse(JSON.stringify(fresh())) })]] }));
+        cards.push(card({ title: 'Endorsements & Conditions', span: 'span 6', kv: [['Endorsements', p.endorsements], ['Additional Insured', p.additionalInsured], ['Loss Payee', p.lossPayee], ['Special Conditions', p.conditions], ['Exclusions / Notes', p.exclusions]] }));
+        const rq = ins.reqsFor(p);
+        cards.push(card({ title: 'Requirements', span: 'span 6', sub: 'Requirements this policy satisfies for ' + p.ref, list: rq.length ? rq.map(r => ({ icon: r.ok ? 'check' : 'triangle-alert', bg: r.ok ? '#DCFCE7' : '#FEF3C7', fg: r.ok ? '#15803D' : '#B45309', title: r.type + ' — ' + r.source, detail: (r.min ? 'Minimum ' + fm(r.min) + ' • ' : '') + (r.ok ? 'Requirement met' : r.match ? 'Primary limit ' + fm(lim) + ' is below minimum' : 'Different policy type'), badge: r.ok ? 'Met' : 'Not Met', tone: r.ok ? 'success' : 'warning' })) : [{ icon: 'minus', title: 'No configured requirement for this record', detail: 'Add requirements in the Insurance register.' }] }));
+      }
+      if (tab === 'insured') {
+        cards.push(card({ title: 'Named Insured', span: 'span 6', kv: [['Named Insured', p.insured], ['Applies To', p.entity], ['Insured Record', p.ref], ['Covered', p.covered], ['Lease', p.lease || '—'], ['Owner', ins.ownerOf(p) || '—']] }));
+        cards.push(card({ title: 'Related Records', span: 'span 6', sub: 'Links to existing records — nothing is duplicated inside Insurance.', list: ins.relations(p).map(r => ({ icon: r.kind === 'Property' ? 'building-2' : r.kind === 'Lease' ? 'file-signature' : r.kind === 'Vendor' ? 'truck' : 'user', bg: '#E8ECF4', fg: '#132A52', title: r.name, detail: r.role + ' • ' + r.kind, actions: [['Open ' + (r.kind === 'Property' ? 'Property 360' : r.kind + ' 360'), 'external-link', 'outline', open(r)]] })) }));
+      }
+      if (tab === 'payments') {
+        cards.push(card({ title: 'Premium & Payment', sub: 'References the shared Payments record — Insurance does not create a duplicate financial record.', kv: [['Annual Premium', fm(p.premium)], ['Payment Frequency', p.freq], ['Amount Due', fm(p.amountDue || 0)], ['Due Date', fmtD(p.due)], ['Payment Status', p.pay], ['Paid Date', fmtD(p.paidDate)], ['Payment Method', p.method || '—'], ['Related Payment', p.paymentId || 'None linked'], ['Responsible', p.responsible]], actions: [p.paymentId ? ['View Payment', 'arrow-right', 'outline', () => go(PAGES.payments + '?q=' + encodeURIComponent(p.paymentId))] : ['Record in Payments', 'credit-card', 'primary', () => go(PAGES.payments + '?policy=' + encodeURIComponent(p.id) + '&amount=' + (p.amountDue || p.premium) + '&currency=' + cur)]] }));
+      }
+      if (tab === 'documents') {
+        cards.push(card({ title: 'Policy Documents', sub: 'Stored in the shared Document Center and linked to this policy and ' + p.ref + '.', actions: [['Generate Document', 'file-plus', 'outline', () => { const x = fresh(); ins.addDoc(x, 'Renewal', 'Insurance Expiration Notice — ' + p.number + '.pdf'); ins.put(x, 'GENERATE', 'Generated Insurance Expiration Notice from TPL-108'); this.bump('Expiration notice generated to Document Center'); }], ['View Document Center', 'folder-open', 'ghost', () => go(PAGES.documents + '?q=' + encodeURIComponent(p.id))]], table: { cols: ['Type', 'Document', 'Uploaded', 'By'], rows: (p.docs || []).map(d => [{ badge: true, text: d.type, tone: 'info' }, { text: d.name, bold: true }, fmtD(d.at), d.by]), empty: 'No documents on file.' } }));
+        cards.push(card({ title: 'Upload Document', span: v.railSpan, accent: true, fields: [{ label: 'Document Type', value: s.upType, options: ins.DOC_TYPES, on: e => this.setState({ upType: e.target.value }) }, { label: 'File', type: 'file', value: '', on: e => { const fl = e.target.files && e.target.files[0]; if (!fl) return; const x = fresh(); ins.addDoc(x, s.upType, fl.name); if (/Certificate|Proof/.test(s.upType) && ins.vcode(x) === 'NOT_VERIFIED') x.verif = 'Pending Verification'; ins.put(x, 'UPLOAD', s.upType + ' uploaded — ' + fl.name); this.bump(s.upType + ' uploaded'); } }] }));
+        cards[cards.length - 1].span = 'span 12';
+      }
+      if (tab === 'verification') {
+        const checks = p.checks || {}, allOk = ins.CHECKS.every(c => checks[c[0]]), hasProof = (p.docs || []).some(d => /Certificate|Proof|Declaration/.test(d.type));
+        const tgl = k => () => save({ checks: { ...checks, [k]: !checks[k] } }, 'UPDATE', 'Verification checklist — ' + ins.CHECKS.find(c => c[0] === k)[1] + (checks[k] ? ' unchecked' : ' confirmed'));
+        cards.push(card({ title: 'Verification', accent: vc !== 'VERIFIED', kv: [['Verification Status', VS[0]], ['Verified By', p.verified_by || '—'], ['Verified', fmtD(p.verified_at)], ['Source', p.verify_source || '—']], actions: [['Start Review', 'scan-search', 'outline', () => save({ verif: 'Pending Verification' }, 'UPDATE', 'Verification review started', { changes: [['Verification', VS[0], 'Under Review']] }, 'Review started'), vc === 'UNDER_REVIEW' || vc === 'VERIFIED'], ['Verify', 'badge-check', 'primary', () => save({ verif: 'Verified', verified_by: 'Marcus Vance', verified_at: today, verify_source: ((p.docs || []).find(d => /Certificate|Proof/.test(d.type)) || { type: 'Policy Declaration' }).type }, 'VERIFY', 'Policy verified against ' + (p.proof_file || 'policy declaration'), { changes: [['Verification', VS[0], 'Verified']] }, p.id + ' verified'), !allOk || !hasProof || vc === 'VERIFIED' || vc === 'EXPIRED'], ['Reject', 'x-circle', 'outline', () => A && A.askReason('Reject ' + p.id, why => save({ verif: 'Rejected' }, 'REJECT', 'Policy rejected', { reason: why, severity: 'Medium', changes: [['Verification', VS[0], 'Rejected']] }, 'Policy rejected')), vc === 'REJECTED'], ['Request Replacement', 'refresh-cw', 'outline', () => A && A.askReason('Request replacement for ' + p.id, why => { const x = fresh(); x.verif = 'Replacement Required'; x.comms = [{ at: Date.now(), subject: 'Replacement certificate requested — ' + why, channel: 'Email', party: p.insured }].concat(x.comms || []); ins.put(x, 'UPDATE', 'Replacement requested from ' + p.insured, { reason: why, changes: [['Verification', VS[0], 'Replacement Required']] }); this.bump('Replacement requested'); })]], note: !hasProof ? 'Upload a Certificate of Insurance or Policy Declaration before verifying.' : !allOk ? 'Confirm every checklist item to enable Verify.' : '' }));
+        cards.push(card({ title: 'Verification Checklist', list: ins.CHECKS.map(([k, label]) => ({ icon: checks[k] ? 'check' : 'circle', bg: checks[k] ? '#DCFCE7' : '#F1F5F9', fg: checks[k] ? '#15803D' : '#94A3B8', title: label, detail: '', actions: [[checks[k] ? 'Undo' : 'Confirm', checks[k] ? 'undo-2' : 'check', checks[k] ? 'ghost' : 'outline', tgl(k), vc === 'VERIFIED']] })) }));
+      }
+      if (tab === 'comms') {
+        cards.push(card({ title: 'Communications', sub: 'Policy-related messages from the central Inbox.', actions: [['Open Conversation', 'messages-square', 'outline', () => go(PAGES.messages + '?q=' + encodeURIComponent(p.id))], ['Send Renewal Reminder', 'send', 'primary', () => { const x = fresh(); x.comms = [{ at: Date.now(), subject: 'Renewal reminder sent to ' + (x.responsible || 'Owner'), channel: 'Email', party: x.insured }].concat(x.comms || []); ins.put(x, 'EMAIL', 'Renewal reminder sent to ' + x.insured); this.bump('Renewal reminder sent'); }]], table: { cols: ['Date', 'Subject', 'Channel', 'Party'], rows: (p.comms || []).map(c => [new Date(c.at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), { text: c.subject, bold: true }, c.channel, c.party]), empty: 'No communications for this policy.' } }));
+      }
+      if (tab === 'activity') {
+        const ev = A ? A.forRecord([p.id]) : [];
+        cards.push(card({ title: 'Activity', sub: 'Filtered view of the central immutable Audit Log • before / after values', actions: [['Open Audit Log', 'scroll-text', 'ghost', () => go(PAGES.audit + '?q=' + encodeURIComponent(p.id))]], table: { minW: '820px', cols: ['When', 'Actor', 'Action', 'Detail', 'Before → After'], rows: ev.slice(0, 50).map(e => [new Date(e.at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }), { text: e.actor, bold: true, sub: e.role }, { badge: true, text: e.action, tone: /VERIFY|CREATE/.test(e.action) ? 'success' : /REJECT/.test(e.action) ? 'danger' : 'neutral' }, { text: e.detail || '—', sub: e.reason ? 'Reason: ' + e.reason : '' }, (e.changes || []).map(c => c[0] + ': ' + c[1] + ' → ' + c[2]).join(' • ') || '—']), empty: 'No events recorded yet.' } }));
+      }
+    }
+    const FL = { created: ['ok', 'Policy created', 'Upload the certificate and complete Verification to activate compliance tracking.'], draft: ['info', 'Draft saved', 'Edit Policy to complete the draft.'], saved: ['ok', 'Policy updated', 'Changes recorded in the Audit Log.'] };
+    const fl = FL[s.flash];
+    const diffKeys = [['type', 'Policy Type'], ['number', 'Policy Number'], ['carrier', 'Insurance Company'], ['currency', 'Currency'], ['deductible', 'Deductible'], ['premium', 'Annual Premium'], ['pay', 'Payment Status'], ['eff', 'Effective'], ['exp', 'Expiration'], ['agent', 'Agent'], ['responsible', 'Responsible'], ['amountDue', 'Amount Due']];
+    return { ...base, ready: true, crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Compliance', null], ['Insurance', LIST], [p.id, null]]),
+      pid: p.id, ptitle: p.type + ' Insurance', psub: p.ref + ' • Named Insured: ' + p.insured + ' • ' + p.carrier + ' ' + p.number, stL: st, stT: ST_TONE[st] || 'neutral', vL: 'Verification: ' + VS[0], vT: VS[1], entL: p.entity, curL: cur,
+      flash: fl ? banner(fl[0], fl[1], fl[2]) : E ? banner('info', 'Editing ' + p.id, 'Full-page edit mode. Save Changes writes before/after values to the Audit Log.') : banner(null),
+      tiles: [['Coverage', fm(lim), (p.coverages || []).length + ' coverage lines', '#006B68', '#172033'], ['Premium', fm(p.premium), (p.freq || 'Annual') + ' • ' + p.pay, '#132A52', '#172033'], ['Effective', fmtD(p.eff), 'Policy start', '#E2E8F0', '#172033'], ['Expiration', fmtD(p.exp), 'Renewal due ' + fmtD(addDays(p.exp, -30)), '#E2E8F0', '#172033'], ['Days Until Expiration', days === null ? '—' : days < 0 ? 'Expired' : days + ' days', days !== null && days < 0 ? Math.abs(days) + ' days ago' : days <= 30 ? 'Renewal attention required' : 'Within term', days !== null && days < 0 ? '#DC2626' : days <= 30 ? '#D4A637' : '#16A34A', days !== null && days < 0 ? '#B91C1C' : days <= 30 ? '#B45309' : '#172033'], ['Verification', VS[0], p.verified_by ? 'by ' + p.verified_by : 'Not yet verified', vc === 'VERIFIED' ? '#16A34A' : '#D4A637', '#172033']].map(([l, val, sub, accent, color]) => ({ l, v: val, sub, accent, color })),
+      tabs: TABS.map(([id, label]) => { const on = s.tab === id; return { label, border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', dot: id === 'verification' && vc !== 'VERIFIED', select: () => this.setState({ tab: id, more: false, flash: '' }) }; }),
+      editing: !!E, notEditing: !E, isVerified: vc === 'VERIFIED' || vc === 'EXPIRED',
+      startEdit: () => this.setState({ edit: JSON.parse(JSON.stringify(fresh())), more: false, flash: '' }), cancelEdit: () => this.setState({ edit: null }),
+      saveEdit: () => { const o = fresh(), n = { ...o, ...E }; if (!n.number || !n.carrier) { this.notify('Policy number and insurance company are required', true); return; } if (n.exp <= n.eff) { this.notify('Expiration must be after the effective date', true); return; } n.coverage = String(ins.primaryLimit(n)); n.draft = false; const ch = diffKeys.filter(([k]) => String(o[k] ?? '') !== String(n[k] ?? '')).map(([k, label]) => [label, String(o[k] ?? '—'), String(n[k] ?? '—')]); (n.coverages || []).forEach((l, i) => { const ol = (o.coverages || [])[i]; if (!ol || ol.limit !== l.limit || ol.name !== l.name || ol.deductible !== l.deductible) ch.push(['Coverage — ' + (l.name || 'Line ' + (i + 1)), ol ? ins.fmt(ol.limit, o.currency) + ' / ' + ol.deductible : '—', ins.fmt(l.limit, n.currency) + ' / ' + l.deductible]); }); if ((o.coverages || []).length > (n.coverages || []).length) ch.push(['Coverage Lines', String(o.coverages.length), String(n.coverages.length)]); ins.put(n, 'UPDATE', ch.length ? 'Policy updated — ' + ch.map(c => c[0]).join(', ') : 'Policy saved — no field changes', { changes: ch }); this.setState({ edit: null, flash: 'saved' }); this.bump(p.id + ' updated'); },
+      goUpload: () => this.setState({ tab: 'documents', more: false }), goVerify: () => this.setState({ tab: 'verification', more: false }),
+      toggleMore: () => this.setState({ more: !s.more }), moreOpen: !!s.more,
+      moreItems: [['send', 'Send Renewal Reminder', () => this.setState({ tab: 'comms', more: false })], ['refresh-cw', 'Renew Policy', () => go(NEWP + '?renew=' + encodeURIComponent(p.id))], ['inbox', 'Open Action Center', () => go(PAGES['action-center'] + '?q=' + encodeURIComponent(p.id))], ['list', 'Insurance Register', () => go(LIST)], ['trash-2', 'Delete Policy', () => A && A.askReason('Delete ' + p.id, why => { const d = ins.load(); d.policies = d.policies.filter(x => x.id !== p.id); ins.save(d); ins.audit(p, 'DELETE', 'Policy removed from register', { reason: why, severity: 'High' }); go(LIST); })]].map(([icon, label, on]) => ({ icon, label, on, color: icon === 'trash-2' ? '#DC2626' : '#172033' })),
+      cards };
+  }
+}
+</script>
+</body>
+</html>

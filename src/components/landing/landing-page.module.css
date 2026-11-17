@@ -1,0 +1,995 @@
+.page {
+  overflow: hidden;
+  background: #f8fafc;
+  color: #334155;
+  font-family: "Plus Jakarta Sans Variable", "Segoe UI", Arial, sans-serif;
+}
+
+.page h1,
+.page h2,
+.page h3 {
+  margin: 0;
+  color: #132a52;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.header {
+  position: absolute;
+  z-index: 30;
+  inset: 0 0 auto;
+  border-bottom: 1px solid rgb(226 232 240 / 75%);
+  background: rgb(248 250 252 / 88%);
+  backdrop-filter: blur(14px);
+}
+
+.headerInner,
+.footerInner {
+  display: flex;
+  width: min(100% - 48px, 1280px);
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  color: #132a52;
+}
+
+.brand img {
+  border-radius: 50%;
+}
+
+.brand span {
+  display: grid;
+  gap: 2px;
+}
+
+.brand strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.brand small {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.navigation,
+.headerActions {
+  display: flex;
+  align-items: center;
+}
+
+.navigation {
+  gap: 30px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.navigation a,
+.loginLink {
+  transition: color 180ms ease;
+}
+
+.navigation a:hover,
+.loginLink:hover {
+  color: #006b68;
+}
+
+.headerActions {
+  gap: 22px;
+}
+
+.loginLink {
+  color: #006b68;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.primaryButton,
+.goldButton,
+.outlineButton {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 23px;
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.primaryButton {
+  background: #006b68;
+  color: white;
+}
+
+.primaryButton:hover {
+  background: #004f4d;
+}
+
+.goldButton {
+  background: #d4a637;
+  color: #132a52;
+  box-shadow: 0 12px 30px -12px rgb(212 166 55 / 60%);
+}
+
+.goldButton:hover,
+.outlineButton:hover {
+  transform: translateY(-2px);
+}
+
+.outlineButton {
+  border: 1px solid rgb(255 255 255 / 55%);
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.outlineButton:hover {
+  background: rgb(255 255 255 / 12%);
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  min-height: 760px;
+  min-height: 100svh;
+  align-items: center;
+  overflow: hidden;
+  background: #132a52;
+  color: white;
+}
+
+.heroPhotos,
+.heroVeil {
+  position: absolute;
+  inset: 0;
+}
+
+.heroPhoto {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1000ms ease;
+}
+
+.heroPhotoActive {
+  opacity: 1;
+}
+
+.heroVeil {
+  background:
+    linear-gradient(90deg, rgb(19 42 82 / 64%) 0%, rgb(19 42 82 / 44%) 45%, rgb(19 42 82 / 12%) 100%),
+    linear-gradient(0deg, rgb(19 42 82 / 45%) 0%, transparent 48%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 48px, 1280px);
+  margin: 0 auto;
+  padding: 130px 0 170px;
+}
+
+.heroText {
+  max-width: 760px;
+  padding: 30px;
+  text-shadow: 0 2px 18px rgb(0 79 77 / 60%);
+  transform-style: preserve-3d;
+  will-change: transform;
+  animation: rise 850ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.eyebrow,
+.eyebrowLight {
+  margin: 0;
+  color: #006b68;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.eyebrowLight {
+  color: #e4c66e;
+}
+
+.hero h1 {
+  margin-top: 24px;
+  color: white;
+  font-size: clamp(52px, 7vw, 92px);
+  line-height: 0.98;
+}
+
+.hero h1 em {
+  color: #e4c66e;
+  font-weight: 600;
+}
+
+.heroDescription {
+  max-width: 550px;
+  margin: 24px 0 0;
+  color: rgb(255 255 255 / 88%);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.carouselControls {
+  position: absolute;
+  z-index: 2;
+  bottom: 76px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+}
+
+.carouselArrow,
+.carouselDot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  color: white;
+  cursor: pointer;
+}
+
+.carouselArrow {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 50%;
+  background: rgb(19 42 82 / 48%);
+}
+
+.carouselArrow:hover {
+  background: rgb(19 42 82 / 78%);
+}
+
+.carouselArrow svg {
+  width: 19px;
+  height: 19px;
+}
+
+.carouselDot {
+  width: 24px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+}
+
+.carouselDot span {
+  width: 20px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 66%);
+}
+
+.carouselDot .carouselDotActive {
+  background: #d4a637;
+}
+
+.scrollLabel {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  color: rgb(255 255 255 / 68%);
+  font-size: 10px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+
+.statsSection {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 48px, 1152px);
+  margin: -54px auto 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #e2e8f0;
+  box-shadow: 0 20px 50px -24px rgb(19 42 82 / 28%);
+}
+
+.stat {
+  display: grid;
+  min-height: 116px;
+  align-content: center;
+  justify-items: center;
+  gap: 7px;
+  background: white;
+  text-align: center;
+}
+
+.stat strong {
+  color: #006b68;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.stat span {
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.section {
+  width: min(100% - 48px, 1280px);
+  margin: 0 auto;
+  padding: 112px 0;
+}
+
+.section h2,
+.propertiesSection h2,
+.technologySection h2,
+.contactContent h2 {
+  max-width: 680px;
+  margin-top: 17px;
+  color: #132a52;
+  font-size: clamp(36px, 4vw, 54px);
+  line-height: 1.08;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.goldRule {
+  flex: 0 0 160px;
+  height: 2px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #b68b2a, #e4c66e, #b68b2a);
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 58px;
+}
+
+.serviceCard {
+  min-height: 222px;
+  padding: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 17px;
+  background: white;
+  transition:
+    transform 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.serviceCard:hover {
+  transform: translateY(-4px);
+  border-color: #d4a637;
+  box-shadow: 0 20px 50px -24px rgb(19 42 82 / 28%);
+}
+
+.serviceNumber {
+  color: #d4a637;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+}
+
+.serviceCard h3,
+.step h3 {
+  margin-top: 14px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.serviceCard p,
+.step p {
+  margin: 10px 0 0;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.serviceRule {
+  display: block;
+  width: 40px;
+  height: 2px;
+  margin-top: 20px;
+  background: #006b68;
+  transition: width 250ms ease;
+}
+
+.serviceCard:hover .serviceRule {
+  width: 90px;
+}
+
+.propertiesSection {
+  background: white;
+}
+
+.propertiesSection .section {
+  padding-top: 108px;
+  padding-bottom: 108px;
+}
+
+.propertiesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 48px;
+}
+
+.propertyCard {
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 17px;
+  background: #f8fafc;
+}
+
+.propertyImage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.propertyImage img {
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+.propertyCard:hover .propertyImage img {
+  transform: scale(1.05);
+}
+
+.propertyStatus {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.statusAvailable {
+  background: #ddf3f1;
+  color: #004f4d;
+}
+
+.statusPending {
+  background: #fbf5e6;
+  color: #132a52;
+}
+
+.propertyDetails {
+  padding: 21px;
+}
+
+.propertyPlace {
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.propertyDetails h3 {
+  margin-top: 8px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.propertyMeta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.propertyMeta > span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.propertyMeta strong {
+  flex: 0 0 auto;
+  color: #006b68;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+}
+
+.propertyMeta small {
+  color: #64748b;
+  font-family: "Plus Jakarta Sans Variable", "Segoe UI", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.technologySection {
+  padding: 108px 24px;
+  background: linear-gradient(135deg, #006b68, #004f4d);
+  color: white;
+}
+
+.technologyGrid {
+  display: grid;
+  width: min(100%, 1280px);
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 76px;
+  margin: 0 auto;
+}
+
+.technologySection h2 {
+  color: white;
+}
+
+.technologyDescription {
+  max-width: 500px;
+  margin: 22px 0 0;
+  color: rgb(255 255 255 / 78%);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.technologyList {
+  display: grid;
+  gap: 17px;
+  margin: 32px 0 0;
+  padding: 0;
+  color: rgb(255 255 255 / 92%);
+  font-size: 14px;
+  list-style: none;
+}
+
+.technologyList li::before {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 14px;
+  border-radius: 50%;
+  background: #e4c66e;
+  content: "";
+}
+
+.dashboardFrame {
+  padding: 11px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 25px;
+  background: rgb(255 255 255 / 10%);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 40%);
+  backdrop-filter: blur(12px);
+}
+
+.dashboardCard {
+  padding: 27px;
+  border-radius: 17px;
+  background: white;
+  color: #334155;
+}
+
+.dashboardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboardHeader > div {
+  display: grid;
+  gap: 5px;
+}
+
+.dashboardLabel {
+  color: #64748b;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dashboardBalance {
+  color: #132a52;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 31px;
+}
+
+.dashboardCaption {
+  color: #006b68;
+  font-size: 11px;
+}
+
+.propertyCount {
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: #fbf5e6;
+  color: #132a52;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.chart {
+  display: flex;
+  height: 118px;
+  align-items: flex-end;
+  gap: 9px;
+  margin-top: 26px;
+}
+
+.chart span {
+  flex: 1;
+  border-radius: 5px 5px 0 0;
+  background: rgb(0 107 104 / 78%);
+}
+
+.chart .chartHighlight {
+  background: #d4a637;
+}
+
+.activityList {
+  margin-top: 24px;
+}
+
+.activityRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #e2e8f0;
+  font-size: 11px;
+}
+
+.activityRow > span {
+  color: #64748b;
+}
+
+.activityRow strong {
+  flex: 0 0 auto;
+  color: #172033;
+}
+
+.centered {
+  text-align: center;
+}
+
+.centeredHeading {
+  max-width: 700px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: center;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 30px;
+  margin-top: 56px;
+}
+
+.step {
+  padding-top: 20px;
+  border-top: 2px solid #d4a637;
+}
+
+.step > span {
+  color: rgb(0 107 104 / 42%);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 47px;
+  font-weight: 300;
+}
+
+.contactSection {
+  padding: 0 24px 108px;
+}
+
+.contactCard {
+  position: relative;
+  display: grid;
+  min-height: 390px;
+  place-items: center;
+  overflow: hidden;
+  width: min(100%, 1152px);
+  margin: 0 auto;
+  border-radius: 25px;
+  box-shadow: 0 20px 50px -24px rgb(19 42 82 / 35%);
+}
+
+.contactCard > img {
+  object-fit: cover;
+}
+
+.contactOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(19 42 82 / 75%);
+}
+
+.contactContent {
+  position: relative;
+  z-index: 1;
+  padding: 54px 24px;
+  text-align: center;
+}
+
+.contactContent h2 {
+  max-width: 700px;
+  margin: 0 auto;
+  color: white;
+  font-size: clamp(38px, 5vw, 62px);
+}
+
+.contactContent p {
+  max-width: 510px;
+  margin: 17px auto 0;
+  color: rgb(255 255 255 / 84%);
+  line-height: 1.7;
+}
+
+.contactContent .goldButton {
+  margin-top: 28px;
+}
+
+.footer {
+  border-top: 1px solid #e2e8f0;
+  background: white;
+}
+
+.footerInner {
+  min-height: 98px;
+  gap: 24px;
+}
+
+.footerInner p {
+  margin: 0;
+  color: #64748b;
+  font-size: 12px;
+  text-align: right;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .navigation {
+    gap: 15px;
+  }
+
+  .headerActions {
+    gap: 12px;
+  }
+
+  .servicesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .technologyGrid {
+    gap: 40px;
+  }
+
+  .stepsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .headerInner,
+  .footerInner {
+    width: min(100% - 32px, 1280px);
+  }
+
+  .headerInner {
+    min-height: 68px;
+  }
+
+  .navigation {
+    display: none;
+  }
+
+  .brand img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand strong {
+    font-size: 12px;
+  }
+
+  .brand small {
+    font-size: 10px;
+  }
+
+  .headerActions {
+    gap: 10px;
+  }
+
+  .loginLink {
+    font-size: 12px;
+  }
+
+  .primaryButton {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .hero {
+    min-height: 720px;
+    min-height: 100svh;
+  }
+
+  .heroContent {
+    width: min(100% - 32px, 1280px);
+    padding: 115px 0 160px;
+  }
+
+  .heroText {
+    padding: 10px 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(46px, 12vw, 68px);
+  }
+
+  .heroDescription {
+    max-width: 470px;
+    font-size: 15px;
+  }
+
+  .heroVeil {
+    background:
+      linear-gradient(90deg, rgb(19 42 82 / 70%) 0%, rgb(19 42 82 / 38%) 100%),
+      linear-gradient(0deg, rgb(19 42 82 / 48%) 0%, transparent 55%);
+  }
+
+  .statsSection,
+  .section {
+    width: min(100% - 32px, 1280px);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat {
+    min-height: 100px;
+  }
+
+  .stat strong {
+    font-size: 29px;
+  }
+
+  .stat span {
+    font-size: 9px;
+  }
+
+  .section,
+  .propertiesSection .section {
+    padding-top: 82px;
+    padding-bottom: 82px;
+  }
+
+  .sectionHeading {
+    align-items: flex-start;
+  }
+
+  .goldRule {
+    display: none;
+  }
+
+  .servicesGrid,
+  .propertiesGrid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+    margin-top: 35px;
+  }
+
+  .serviceCard {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .technologySection {
+    padding: 80px 16px;
+  }
+
+  .technologyGrid {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .dashboardCard {
+    padding: 21px;
+  }
+
+  .stepsGrid {
+    gap: 24px 18px;
+    margin-top: 38px;
+  }
+
+  .step h3 {
+    font-size: 21px;
+  }
+
+  .step p {
+    font-size: 13px;
+  }
+
+  .contactSection {
+    padding: 0 16px 80px;
+  }
+
+  .contactCard {
+    min-height: 360px;
+  }
+
+  .footerInner {
+    min-height: 120px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 0;
+  }
+
+  .footerInner p {
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroPhoto,
+  .serviceCard,
+  .serviceRule,
+  .propertyImage img,
+  .primaryButton,
+  .goldButton,
+  .outlineButton,
+  .navigation a,
+  .loginLink {
+    transition: none;
+  }
+
+  .heroText {
+    animation: none;
+  }
+}
+
+.technologySingle {
+  grid-template-columns: minmax(0, 760px);
+}

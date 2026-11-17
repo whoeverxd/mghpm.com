@@ -1,0 +1,35 @@
+.count {
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.note {
+  margin: 0;
+  padding: 14px 22px;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.results {
+  display: grid;
+  margin: 0;
+  padding: 6px 12px 12px;
+  list-style: none;
+}
+
+.results a {
+  display: block;
+  overflow: hidden;
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--color-title);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.results a:hover,
+.results a:focus-visible {
+  background: var(--color-primary-soft);
+}

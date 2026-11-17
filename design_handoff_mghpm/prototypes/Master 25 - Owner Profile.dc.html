@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+    input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}
+  </style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 25 — Owner Profile" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+        <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+      </button>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+
+        <sc-if value="{{ creating }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>Back to Owners</button>
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+                <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">New Owner</h1>
+                <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">Complete the owner file in one pass. Fields marked * are required to create the owner; everything else can be left blank and finished later from Owner 360. Title documents and ownership verification are completed per property after creation.</p>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ goBack }}" hint-size="90px,40px">Cancel</x-import>
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ createOwner }}" hint-size="140px,40px">Create Owner</x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notCreating }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>Back to Owners
+          </button>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px">
+            <div style="display:flex;align-items:center;gap:16px;min-width:0;flex:1 1 420px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ initials }}" tone="navy" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                  <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ ownerName }}</h1>
+                  <sc-for list="{{ headBadges }}" as="hb" hint-placeholder-count="3"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ hb.tone }}" dot="{{ hb.dot }}" hint-size="110px,22px">{{ hb.label }}</x-import></sc-for>
+                </div>
+                <span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569">Primary Contact: <span style="color:#172033;font-weight:600">{{ primaryContact }}</span></span>
+                <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ownerMeta }}</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="sparkles" on-click="{{ aiReview }}" hint-size="120px,40px">AI Review</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="pencil" on-click="{{ editPersonal }}" hint-size="130px,40px">Edit Profile</x-import>
+              <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;cursor:pointer;color:#172033;font:600 14px/1 'Plus Jakarta Sans',sans-serif;box-shadow:0 1px 2px rgba(15,23,42,0.05)" style-hover="background:#F8FAFC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="upload" size="{{ 16 }}" hint-size="16px,16px"></x-import>Upload Document<input type="file" multiple="{{ true }}" onChange="{{ uploadTop }}" style="display:none"></label>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="building-2" on-click="{{ addProperty }}" hint-size="130px,40px">Add Property</x-import>
+              <div style="position:relative;display:flex">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="ellipsis" on-click="{{ toggleMore }}" hint-size="90px,40px">More</x-import>
+                <sc-if value="{{ moreOpen }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ toggleMore }}" style="position:fixed;inset:0;z-index:60"></div>
+                  <div role="menu" style="position:absolute;top:46px;right:0;z-index:61;min-width:230px;padding:6px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:8px;box-shadow:0 12px 32px rgba(15,23,42,0.14);display:flex;flex-direction:column">
+                    <sc-for list="{{ moreItems }}" as="mi">
+                      <button role="menuitem" onClick="{{ mi.go }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border:0;border-radius:6px;background:transparent;cursor:pointer;text-align:left;color:{{ mi.color }};font:500 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ mi.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ mi.label }}</button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ showKpis }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import></sc-for>
+          </div>
+        </sc-if>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:3px solid {{ readyBar }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px">
+          <div style="display:flex;flex-direction:column;gap:10px;flex:0 1 260px;min-width:220px">
+            <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Owner Readiness</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 28px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ readyPct }}</span><span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">Owner file complete</span></div>
+            <div style="height:8px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;width:{{ readyPct }};background:{{ readyFill }};border-radius:4px;transition:width 180ms ease"></div></div>
+          </div>
+          <div style="flex:1 1 520px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 24px">
+            <sc-for list="{{ readyItems }}" as="ri" hint-placeholder-count="6">
+              <button onClick="{{ ri.go }}" style="display:flex;align-items:center;gap:10px;padding:8px 0;border:0;border-bottom:1px solid #F1F5F9;background:transparent;cursor:pointer;text-align:left;font-family:inherit">
+                <span style="width:24px;height:24px;border-radius:6px;background:{{ ri.bg }};color:{{ ri.fg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ri.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                <span style="flex:1;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ri.label }}</span>
+                <span style="font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:{{ ri.fg }};white-space:nowrap">{{ ri.value }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+          <div role="tablist" style="display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;box-shadow:inset 0 -1px 0 #E2E8F0;padding:0 16px;scrollbar-width:none">
+            <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="11">
+              <button role="tab" onClick="{{ tb.select }}" style="flex-shrink:0;height:48px;padding:0 12px;border:0;box-shadow:inset 0 -2px 0 {{ tb.border }};background:transparent;cursor:pointer;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:8px">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ tb.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>{{ tb.label }}
+                <sc-if value="{{ tb.hasCount }}"><span style="padding:3px 7px;border-radius:999px;background:{{ tb.countBg }};color:{{ tb.countFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        
+
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ showChips }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+            <sc-for list="{{ chips }}" as="ch">
+              <button onClick="{{ ch.select }}" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid {{ ch.border }};border-radius:999px;cursor:pointer;background:{{ ch.bg }};color:{{ ch.color }};font:600 12px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="folder" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ ch.label }}<span style="opacity:0.7">{{ ch.count }}</span></button>
+            </sc-for>
+            <span style="flex:1"></span>
+            <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:6px;background:#006B68;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="upload" size="{{ 16 }}" hint-size="16px,16px"></x-import>Upload to {{ uploadFolder }}
+              <input type="file" multiple="{{ true }}" onChange="{{ uploadDocs }}" style="display:none">
+            </label>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasSecs }}">
+          <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px">
+            <sc-for list="{{ secs }}" as="sec" hint-placeholder-count="4">
+              <section style="grid-column:{{ sec.span }};background:#FFFFFF;border:1px solid {{ sec.border }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);display:flex;flex-direction:column;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:20px 24px 16px">
+                  <span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+                      <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sec.title }}</h3>
+                      <sc-for list="{{ sec.badges }}" as="bd"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ bd.tone }}" dot="{{ bd.dot }}" hint-size="90px,22px">{{ bd.label }}</x-import></sc-for>
+                    </div>
+                    <sc-if value="{{ sec.hasDesc }}"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ sec.desc }}</p></sc-if>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-shrink:0">
+                    <sc-for list="{{ sec.actions }}" as="sa"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="{{ sa.icon }}" on-click="{{ sa.go }}" hint-size="120px,32px">{{ sa.label }}</x-import></sc-for>
+                    <sc-if value="{{ sec.canEdit }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="pencil" on-click="{{ sec.edit }}" hint-size="70px,32px">Edit</x-import></sc-if>
+                    <sc-if value="{{ sec.editing }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" on-click="{{ sec.cancel }}" hint-size="70px,32px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="check" on-click="{{ sec.save }}" hint-size="80px,32px">Save</x-import></sc-if>
+                  </div>
+                </div>
+                <sc-if value="{{ sec.hasWarn }}">
+                  <div style="margin:0 24px 12px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A;font:500 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#92400E">
+                    <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="triangle-alert" size="{{ 15 }}" hint-size="15px,15px"></x-import><span>{{ sec.warn }}</span>
+                  </div>
+                </sc-if>
+                <div style="padding:0 24px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax({{ sec.colMin }},1fr));gap:0 24px">
+                  <sc-for list="{{ sec.fields }}" as="fd" hint-placeholder-count="6">
+                    <div style="grid-column:{{ fd.span }};min-width:0;padding:{{ fd.pad }};border-top:{{ fd.rule }}">
+                      <sc-if value="{{ fd.isView }}">
+                        <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                          <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.label }}</span>
+                          <span style="font:600 14px/1.45 'Plus Jakarta Sans',sans-serif;color:{{ fd.vColor }};overflow-wrap:anywhere;text-wrap:pretty">{{ fd.display }}</span>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isInput }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<input type="{{ fd.type }}" value="{{ fd.value }}" onChange="{{ fd.onChange }}" placeholder="{{ fd.ph }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isSelect }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<select value="{{ fd.value }}" onChange="{{ fd.onChange }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;min-width:0"><sc-for list="{{ fd.options }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isArea }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<textarea value="{{ fd.value }}" onChange="{{ fd.onChange }}" rows="3" placeholder="{{ fd.ph }}" style="padding:10px 12px;border:1px solid #CBD5E1;border-radius:6px;outline:none;resize:vertical;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isToggle }}">
+                        <label style="display:flex;align-items:center;gap:10px;min-height:40px;cursor:pointer;font:500 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033"><input type="checkbox" checked="{{ fd.checked }}" onChange="{{ fd.onChange }}" style="width:18px;height:18px;accent-color:#006B68;margin:0;flex-shrink:0">{{ fd.label }}</label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isFile }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}
+                          <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px dashed #CBD5E1;border-radius:6px;cursor:pointer;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;min-width:0" style-hover="border-color:#006B68;background:#F8FAFC">
+                            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="paperclip" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fd.fileLabel }}</span>
+                            <input type="file" onChange="{{ fd.onFile }}" style="display:none">
+                          </label>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ tables }}" as="tbl" hint-placeholder-count="0">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ tbl.title }}</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.sub }}</p></div>
+              <sc-if value="{{ tbl.hasAction }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" on-click="{{ tbl.action }}" hint-size="120px,32px">{{ tbl.actionLabel }}</x-import></sc-if>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:{{ tbl.minW }};border-collapse:collapse">
+                <thead><tr><sc-for list="{{ tbl.cols }}" as="c"><th style="padding:12px 16px;padding-left:{{ c.pl }};padding-right:{{ c.pr }};text-align:{{ c.align }};font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">{{ c.label }}</th></sc-for></tr></thead>
+                <tbody>
+                  <sc-for list="{{ tbl.rows }}" as="r">
+                    <tr onClick="{{ r.open }}" style="cursor:{{ r.cursor }}" style-hover="background:#F8FAFC">
+                      <sc-for list="{{ r.cells }}" as="cl">
+                        <td style="padding:14px 16px;padding-left:{{ cl.pl }};padding-right:{{ cl.pr }};border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;text-align:{{ cl.align }};white-space:nowrap">
+                          <sc-if value="{{ cl.isText }}"><div style="display:flex;flex-direction:column;gap:2px"><span style="color:#172033;font-weight:{{ cl.weight }}">{{ cl.text }}</span><sc-if value="{{ cl.hasSub }}"><span style="font-size:12px;color:#64748B">{{ cl.sub }}</span></sc-if></div></sc-if>
+                          <sc-if value="{{ cl.isBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ cl.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ cl.text }}</x-import></sc-if>
+                          <sc-if value="{{ cl.isLinks }}"><div style="display:inline-flex;gap:2px"><sc-for list="{{ cl.links }}" as="lk"><button onClick="{{ lk.go }}" title="{{ lk.title }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:{{ lk.color }};cursor:pointer" style-hover="background:#F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ lk.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></button></sc-for></div></sc-if>
+                        </td>
+                      </sc-for>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <sc-if value="{{ tbl.empty }}"><p style="margin:0;padding:40px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.emptyText }}</p></sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ creating }}" hint-placeholder-val="{{ false }}">
+          <div style="position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 24px;margin-bottom:76px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 -8px 24px rgba(15,23,42,0.08)">
+            <span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ createHint }}</span>
+            <div style="display:flex;gap:8px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ goBack }}" hint-size="90px,40px">Cancel</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ createOwner }}" hint-size="140px,40px">Create Owner</x-import>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showTimeline }}"><x-import component-from-global-scope="mgh-compliance-summary" from="./compliance-data.js" scope="owner" hint-size="100%,220px"></x-import></sc-if>
+<sc-if value="{{ showTimeline }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Activity Timeline</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Every change to this owner file is recorded with date, time and user.</p></div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ timeline }}" as="ev" hint-placeholder-count="5">
+                <div style="display:flex;gap:16px">
+                  <div style="display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0">
+                    <span style="width:28px;height:28px;border-radius:14px;background:{{ ev.bg }};color:{{ ev.fg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ev.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                    <span style="flex:1;width:1px;background:#E2E8F0;min-height:16px"></span>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px 0 20px">
+                    <span style="font:600 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ev.text }}</span>
+                    <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ev.when }} • {{ ev.by }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+
+    <sc-if value="{{ delOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:90;background:rgba(15,23,42,0.45);display:flex;align-items:center;justify-content:center;padding:16px">
+        <div role="alertdialog" style="width:100%;max-width:480px;background:#FFFFFF;border-radius:12px;box-shadow:0 24px 48px rgba(15,23,42,0.24);display:flex;flex-direction:column">
+          <div style="padding:24px;display:flex;gap:16px;align-items:flex-start">
+            <span style="width:40px;height:40px;border-radius:8px;background:#FEF2F2;color:#DC2626;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <h3 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ delTitle }}</h3>
+              <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ delBody }}</p>
+              <sc-if value="{{ delBlocked }}">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A">
+                  <span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#92400E">Linked records prevent deletion</span>
+                  <sc-for list="{{ delBlockers }}" as="b"><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#78350F">• {{ b }}</span></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;padding:16px 24px;border-top:1px solid #E2E8F0;background:#F8FAFC;border-radius:0 0 12px 12px">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ cancelDelete }}" hint-size="90px,40px">Cancel</x-import>
+            <sc-if value="{{ delBlocked }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="user-x" on-click="{{ deactivate }}" hint-size="150px,40px">Deactivate Instead</x-import></sc-if>
+            <sc-if value="{{ delAllowed }}"><button onClick="{{ confirmDelete }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:0;border-radius:6px;background:#DC2626;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#B91C1C"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import>Delete Permanently</button></sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:95;display:flex;align-items:center;gap:10px;max-width:440px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toastIcon }}" size="{{ 16 }}" color="{{ toastColor }}" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+const fmtUSD = n => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtD = iso => { if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso || '—'; const [y, m, d] = iso.slice(0, 10).split('-').map(Number); return MON[m - 1] + ' ' + d + ', ' + y; };
+const fmtTS = iso => { const d = new Date(iso); return isNaN(d) ? iso : MON[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' • ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); };
+const QP = new URLSearchParams(window.location.search);
+const SELF = PAGES['owner-profile'];
+const ME = 'Marcus Vance';
+const KEY = 'mghpm.owner360.v1', PKEY = 'mghpm.people.v1';
+const load = k => { try { return JSON.parse(sessionStorage.getItem(k)) || null; } catch (e) { return null; } };
+
+const PROPS = {
+  1: { title: 'Brickell Bay Residences', city: 'Miami, FL', units: 48, occ: 46, rent: 178400, balance: 7200, status: 'Rented', tone: 'success', insp: ['Completed', '2026-09-28'] },
+  2: { title: 'Ocean View Villa', city: 'Miami Beach, FL', units: 12, occ: 11, rent: 48900, balance: 2875, status: 'Rented', tone: 'success', insp: ['Completed', '2026-09-12'] },
+  6: { title: 'Sunset Beach House', city: 'Miami Beach, FL', units: 1, occ: 0, rent: 0, balance: 0, status: 'Preparation', tone: 'warning', insp: ['Scheduled', '2026-10-09'] },
+  7: { title: 'Mar de Plata I', city: 'Miami Beach, FL', units: 24, occ: 22, rent: 86400, balance: 1250, status: 'Rented', tone: 'success', insp: ['Completed', '2026-08-30'] },
+  8: { title: 'Mar de Plata II', city: 'Miami Beach, FL', units: 18, occ: 17, rent: 64300, balance: 0, status: 'Rented', tone: 'success', insp: ['Not Scheduled', ''] },
+  4: { title: 'Las Olas Lofts', city: 'Fort Lauderdale, FL', units: 20, occ: 19, rent: 61800, balance: 0, status: 'Rented', tone: 'success', insp: ['Completed', '2026-09-03'] },
+  13: { title: 'Aventura Park Tower', city: 'Aventura, FL', units: 30, occ: 27, rent: 102600, balance: 4860, status: 'Rented', tone: 'success', insp: ['Completed', '2026-07-21'] },
+  16: { title: 'Homestead Land Parcel', city: 'Homestead, FL', units: 0, occ: 0, rent: 0, balance: 0, status: 'Preparation', tone: 'warning', insp: ['Not Scheduled', ''] }
+};
+const WOS = [
+  ['WO-2026-1042', 'Water leak under kitchen sink', 1, 'Unit 1507', '2026-10-04', 'Dispatched', 'info', 380],
+  ['WO-2026-1041', 'A/C compressor replacement', 2, 'Unit 204', '2026-10-03', 'Awaiting Owner Approval', 'warning', 4860],
+  ['WO-2026-1030', 'Balcony railing inspection', 1, 'Unit 2201', '2026-10-01', 'Completed', 'success', 150],
+  ['WO-2026-1018', 'Pool heater not igniting', 6, 'Main', '2026-09-26', 'Awaiting Parts', 'warning', 920]
+];
+const DISTS = [['PMT-50412', '2026-10-01', 'September owner distribution', 18742.36], ['PMT-50187', '2026-09-01', 'August owner distribution', 17905.12], ['PMT-49966', '2026-08-01', 'July owner distribution', 18210.44]];
+const OWN_ST = ['Not Started', 'Documents Pending', 'In Review', 'Additional Info Required', 'Verified', 'Rejected'];
+const OWN_TONE = { 'Not Started': 'neutral', 'Documents Pending': 'warning', 'In Review': 'info', 'Additional Info Required': 'warning', Verified: 'success', Rejected: 'danger' };
+const ID_ST = ['Pending', 'Received', 'In Review', 'Verified', 'Rejected'];
+const ID_TONE = { Pending: 'neutral', Received: 'info', 'In Review': 'info', Verified: 'success', Rejected: 'danger', 'Pending Re-verification': 'warning' };
+const MA_ST = ['Draft', 'Sent', 'Signed', 'Active', 'Expired', 'Terminated'];
+const MA_TONE = { Draft: 'neutral', Sent: 'info', Signed: 'brand', Active: 'success', Expired: 'warning', Terminated: 'danger' };
+const FOLDERS = ['Identity', 'Entity / Corporate', 'Ownership / Titles', 'Management Agreements', 'Insurance', 'Banking', 'Authorizations / POA', 'Statements', 'Communications', 'Other'];
+const FOLDER_MIG = { Identification: 'Identity', 'Corporate Documents': 'Entity / Corporate', Ownership: 'Ownership / Titles', 'Powers of Attorney': 'Authorizations / POA' };
+const CHARGES = { 'Alvarez Family Trust': [['CH-1182', '2026-10-15', 'A/C compressor replacement — Ocean View Villa', 4860, 'Unpaid'], ['CH-1179', '2026-10-20', 'HOA dues Q4 — Brickell Bay Residences', 2340, 'Unpaid'], ['CH-1175', '2026-10-31', 'Property insurance installment', 1125, 'Scheduled']] };
+const INSP = { 1: [['Initial Inspection', '2026-01-08', 'Completed'], ['Quarterly Inspection', '2026-09-28', 'Completed'], ['Move-In Inspection', '2026-09-30', 'Completed'], ['Special Inspection', '2026-10-01', 'Completed']], 2: [['Initial Inspection', '2026-01-10', 'Completed'], ['Semiannual Inspection', '2026-09-12', 'Completed'], ['Move-Out Inspection', '2026-10-04', 'Scheduled']], 6: [['Initial Inspection', '2026-10-09', 'Scheduled']] };
+
+const own = (o) => ({ title_no: '', matricula: '', catastral: '', reg_address: '', title_owner: '', pct: '100', acq_applies: false, poa_applies: false, coowners: '', d_title: false, d_acq: false, d_poa: false, d_coauth: false, status: 'Not Started', reviewer: '', ...o });
+const SEED = {
+  'Alvarez Family Trust': {
+    id: 'OWN-0001', status: 'Active', created: '2026-09-20', pids: [1, 2, 6],
+    personal: { full_name: 'Ricardo Alvarez', doc_type: 'Passport', doc_number: 'P48213907', nationality: 'United States', dob: '1968-04-12', marital: 'Married', phone: '(305) 555-0110', whatsapp: '(305) 555-0110', email: 'trustee@alvareztrust.com', address: '1200 Brickell Bay Dr, Apt 3801', city: 'Miami', province: 'Florida', country: 'United States', language: 'Spanish', contact_method: 'Email' },
+    entity: { owner_type: 'Trust / Partnership', verif: 'Verified', country: 'United States', legal_name: 'Alvarez Family Trust', trade_name: '', tax_id: '84-2219031', registry: 'FL Trust Reg. T-2011-0447', rep_name: 'Ricardo Alvarez', rep_title: 'Trustee', rep_doc: 'Passport P48213907' },
+    identity: { doc_type: 'Passport', number: 'P48213907', file: 'Passport — R. Alvarez.pdf', expires: '2031-06-30', status: 'Verified', reviewed_by: 'Sofia Ramos', reviewed_at: '2026-09-22', notes: 'Matched against trust certificate and trustee resolution.' },
+    bank: { bank: 'Banco Popular', acct_type: 'Checking', last4: '9012', holder: 'Alvarez Family Trust', currency: 'USD', swift: 'BPOPUS3M', method: 'ACH', frequency: 'Monthly', day: '1', reserve_min: '2500', maint_fund: '5000', status: 'Verified' },
+    agreement: { ma_id: 'MA-2026-0012', start: '2026-01-01', end: '2027-12-31', auto_renew: true, commission: '8', leasing_fee: '50% of first month', renewal_fee: '250', markup: '10', other: 'Inspection visit $150', file: 'Management Agreement — Alvarez.pdf', status: 'Active' },
+    limits: { auto_up_to: '500', notify_up_to: '1500', emergency: '2500', all_repairs: false, vendor_policy: 'MGHPM preferred vendors', reserve: '5000' },
+    policies: { pets: true, smoking: false, min_rent: '3500', min_term: '12 months', renewal: 'Offer renewal 90 days before expiry', increase: 'Up to 5% per renewal', furnished: 'Unfurnished', utilities: 'Excluded' },
+    comms: { email: 'trustee@alvareztrust.com', email2: 'ricardo.alvarez@gmail.com', whatsapp: '(305) 555-0110', phone: '(305) 555-0110', sms: true, n_pay: true, n_maint: true, n_lease: true, n_insp: true, n_stmt: true, freq: 'Immediate' },
+    rep: { name: 'Isabel Alvarez', relation: 'Daughter / Co-trustee', phone: '(786) 555-0192', email: 'isabel@alvareztrust.com', level: 'Limited', poa_file: 'Power of Attorney — I. Alvarez.pdf', can_repairs: true, can_sign: false, can_funds: false, can_docs: true },
+    compliance: { legal_review: false, risk: '', hold: false, reviewer: 'Sofia Ramos' },
+    own: {
+      1: own({ title_no: 'CT-2011-004417', matricula: 'MAT-0193884', catastral: 'Folio 01-4139-071-0010', reg_address: '1200 Brickell Bay Dr, Miami, FL 33131', title_owner: 'Alvarez Family Trust', d_title: true, acq_applies: true, d_acq: true, status: 'Verified', reviewer: 'Sofia Ramos' }),
+      2: own({ title_no: 'CT-2015-008821', matricula: 'MAT-0221570', catastral: 'Folio 02-3234-019-0450', reg_address: '6000 Collins Ave, Miami Beach, FL 33140', title_owner: 'Alvarez Family Trust', d_title: true, status: 'Verified', reviewer: 'Sofia Ramos' }),
+      6: own({ title_no: 'CT-2019-011306', matricula: 'MAT-0270914', catastral: 'Folio 02-3226-001-1120', reg_address: '7801 Atlantic Way, Miami Beach, FL 33141', title_owner: 'Alvarez Family Trust; Isabel Alvarez', pct: '75', coowners: 'Isabel Alvarez (25%)', d_title: true, poa_applies: true, d_poa: true, d_coauth: false, status: 'In Review', reviewer: 'Sofia Ramos' })
+    },
+    docs: [
+      ['D-1001', 'Passport — R. Alvarez.pdf', 'Identity', 'Passport', 1, '2026-09-21', 'Verified', 'Ricardo Alvarez', 'Sofia Ramos'],
+      ['D-1002', 'Trust Certificate & Trustee Resolution.pdf', 'Entity / Corporate', 'Trust certificate', 1, '2026-09-21', 'Verified', 'Ricardo Alvarez', 'Sofia Ramos'],
+      ['D-1003', 'Management Agreement — Alvarez.pdf', 'Management Agreements', 'Signed agreement', 2, '2026-10-02', 'Verified', 'Marcus Vance', 'Marcus Vance'],
+      ['D-1004', 'Title Certificate — Brickell Bay.pdf', 'Ownership / Titles', 'Certificado de Título', 1, '2026-09-24', 'Verified', 'Ricardo Alvarez', 'Sofia Ramos'],
+      ['D-1005', 'Title Certificate — Ocean View Villa.pdf', 'Ownership / Titles', 'Certificado de Título', 1, '2026-09-24', 'Verified', 'Ricardo Alvarez', 'Sofia Ramos'],
+      ['D-1006', 'Title Certificate — Sunset Beach House.pdf', 'Ownership / Titles', 'Certificado de Título', 1, '2026-09-25', 'In Review', 'Ricardo Alvarez', ''],
+      ['D-1007', 'Power of Attorney — I. Alvarez.pdf', 'Authorizations / POA', 'Power of attorney', 1, '2026-09-25', 'Verified', 'Isabel Alvarez', 'Sofia Ramos'],
+      ['D-1008', 'Bank Letter — Banco Popular ••9012.pdf', 'Banking', 'Bank verification letter', 1, '2026-10-04', 'Verified', 'Ricardo Alvarez', 'Marcus Vance'],
+      ['D-1010', 'Certificate — Citizens CPI-44718203.pdf', 'Insurance', 'Proof of insurance', 1, '2026-10-02', 'Verified', 'Coastal Risk Partners', 'Sofia Ramos'],
+      ['D-1011', 'Owner Statement — September 2026.pdf', 'Statements', 'Monthly statement', 1, '2026-10-01', 'Sent', 'System', ''],
+      ['D-1009', 'Welcome Packet — Owner Onboarding.pdf', 'Communications', 'Outgoing letter', 1, '2026-09-20', 'Sent', 'Marcus Vance', '']
+    ].map(([id, name, folder, type, version, date, status, by, verifiedBy]) => ({ id, name, folder, type, version, date, status, by, verifiedBy })),
+    activity: [
+      ['2026-10-04T10:12:00', 'Bank account updated — Banco Popular ••9012 verified', 'Marcus Vance', 'landmark'],
+      ['2026-10-02T15:40:00', 'Management agreement MA-2026-0012 signed', 'Ricardo Alvarez', 'file-signature'],
+      ['2026-09-28T11:05:00', 'Property inspection completed — Brickell Bay Residences', 'Luis Herrera', 'clipboard-check'],
+      ['2026-09-25T09:30:00', 'Title document verified — Ocean View Villa', 'Sofia Ramos', 'file-check'],
+      ['2026-09-20T08:45:00', 'Owner created', 'Marcus Vance', 'user-plus']
+    ].map(([at, text, by, icon]) => ({ at, text, by, icon }))
+  }
+};
+const blank = (name, p) => ({
+  id: 'OWN-' + String(1000 + Math.abs([...name].reduce((a, c) => a * 31 + c.charCodeAt(0) | 0, 7)) % 9000).padStart(4, '0'), status: (p && p.status) || 'Onboarding', created: '2026-10-04', pids: (p && p.pids) || [],
+  personal: { full_name: (p && p.contact && p.contact !== '—') ? p.contact.split(',')[0] : '', doc_type: 'Cédula', doc_number: '', nationality: '', dob: '', marital: '', phone: (p && p.phone) || '', whatsapp: '', email: (p && p.email) || '', address: '', city: '', province: '', country: '', language: 'English', contact_method: 'Email' },
+  entity: { owner_type: /trust/i.test(name) ? 'Trust / Partnership' : /group|lp|llc|co\.|partners|investments|capital/i.test(name) ? 'Company' : 'Individual', verif: 'Pending', country: '', legal_name: name, trade_name: '', tax_id: '', registry: '', rep_name: '', rep_title: '', rep_doc: '' },
+  identity: { doc_type: 'Cédula', number: '', file: '', expires: '', status: 'Pending', reviewed_by: '', reviewed_at: '', notes: '' },
+  bank: { bank: '', acct_type: 'Checking', last4: '', holder: '', currency: 'USD', swift: '', method: 'ACH', frequency: 'Monthly', day: '1', reserve_min: '0', maint_fund: '0', status: 'Pending' },
+  agreement: { ma_id: '', start: '', end: '', auto_renew: false, commission: '8', leasing_fee: '', renewal_fee: '', markup: '', other: '', file: '', status: 'Draft' },
+  limits: { auto_up_to: '250', notify_up_to: '1000', emergency: '1500', all_repairs: true, vendor_policy: 'MGHPM preferred vendors', reserve: '0' },
+  policies: { pets: false, smoking: false, min_rent: '', min_term: '12 months', renewal: '', increase: '', furnished: 'Unfurnished', utilities: 'Excluded' },
+  comms: { email: (p && p.email) || '', email2: '', whatsapp: '', phone: (p && p.phone) || '', sms: false, n_pay: true, n_maint: true, n_lease: true, n_insp: true, n_stmt: true, freq: 'Monthly' },
+  rep: { name: '', relation: '', phone: '', email: '', level: 'None', poa_file: '', can_repairs: false, can_sign: false, can_funds: false, can_docs: false },
+  compliance: { legal_review: false, risk: '', hold: false, reviewer: '' },
+  own: Object.fromEntries(((p && p.pids) || []).map(pid => [pid, own({ title_owner: name })])), docs: [],
+  activity: [{ at: '2026-10-04T09:00:00', text: 'Owner created', by: ME, icon: 'user-plus' }]
+});
+
+const F = (k, label, o = {}) => ({ k, label, ...o });
+const SEL = (k, label, options, o = {}) => F(k, label, { type: 'select', options, ...o });
+const TG = (k, label, o = {}) => F(k, label, { type: 'toggle', ...o });
+const MONEY = (k, label, o = {}) => F(k, label, { type: 'number', money: true, ...o });
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const people = (load(PKEY) || {}).people || [];
+    const owners = people.filter(x => x.type === 'owner');
+    const store = load(KEY) || {};
+    const creating = !!QP.get('new');
+    const byId = QP.get('id') && (Object.keys(SEED).find(k => SEED[k].id === QP.get('id')) || Object.keys(store).find(k => store[k].id === QP.get('id')));
+    const name = byId || QP.get('owner') || 'Alvarez Family Trust';
+    const pe = owners.find(x => x.name === name);
+    const rec0 = creating ? (() => { const b = blank(QP.get('name') || '', null); b.personal.email = QP.get('email') || ''; b.personal.phone = QP.get('phone') || ''; b.comms.email = b.personal.email; b.comms.phone = b.personal.phone; b.entity.owner_type = 'Individual'; b.entity.legal_name = QP.get('name') || ''; b.personal.full_name = QP.get('name') || ''; b.props = {}; b.activity = []; return b; })() : (store[name] || SEED[name] || blank(name, pe));
+    const rec = { ...rec0, entity: { verif: 'Pending', country: '', ...rec0.entity }, docs: rec0.docs.map(d => ({ ...d, folder: FOLDER_MIG[d.folder] || d.folder })) };
+    const TABS = ['overview', 'properties', 'ownership', 'contracts', 'financials', 'insurance', 'maintenance', 'inspections', 'documents', 'communications', 'compliance', 'activity'];
+    this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, name, rec, tab: TABS.includes(QP.get('tab')) ? QP.get('tab') : 'overview', creating, editing: QP.get('edit') === 'profile' ? 'personal' : null, draft: QP.get('edit') === 'profile' ? { ...rec.personal } : null, folder: 'All', del: false, more: false };
+    if (QP.get('edit') === 'profile') this.state.tab = 'overview';
+  }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+    if (!window.MGH_INS) { const t3 = setInterval(() => { if (window.MGH_INS) { clearInterval(t3); this.forceUpdate(); } }, 60); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); clearInterval(this._poll); clearTimeout(this._toastT); }
+  componentDidUpdate() { if (this.state.creating) return; try { const st = load(KEY) || {}; st[this.state.name] = this.state.rec; sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+  notify(msg, warn) { clearTimeout(this._toastT); this.setState({ toast: { msg, warn } }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3400); }
+  log(rec, text, icon) { return { ...rec, activity: [{ at: new Date().toISOString(), text, by: ME, icon: icon || 'pencil' }, ...rec.activity] }; }
+  syncPeople(patch, oldName) { try { const st = load(PKEY); if (!st || !st.people) return; st.people = st.people.map(x => x.type === 'owner' && x.name === oldName ? { ...x, ...patch } : x); sessionStorage.setItem(PKEY, JSON.stringify(st)); } catch (e) {} }
+  setTab(t) { this.setState({ tab: t, editing: null, draft: null }); try { history.replaceState(null, '', '?owner=' + encodeURIComponent(this.state.name) + '&tab=' + t); } catch (e) {} }
+
+  chrome() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const collapsed = isMobile ? false : (s.collapsed ?? ((this.props.sidebarCollapsed ?? false) || bp === 'tablet'));
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => { const on = id === 'owners' || NAV_ALIAS['owners'] === id; return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center', bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500', select: () => go(PAGES[id] || pendingUrl({ page: id })) }; };
+    const sections = NAV.map(sec => { const open = !expanded || !sec.label || !s.closedSections[sec.id]; return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open, chevron: open ? 'chevron-down' : 'chevron-right', toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })), items: sec.items.map(mkItem) }; });
+    return { bp, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && s.drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !s.drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', showSearchField: bp === 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      toast: !!s.toast, toastMsg: s.toast ? s.toast.msg : '', toastIcon: s.toast && s.toast.warn ? 'triangle-alert' : 'circle-check', toastColor: s.toast && s.toast.warn ? '#FBBF24' : '#5EEAD4' } };
+  }
+
+  insurance(name, pids) {
+    const ins = window.MGH_INS; if (!ins) return { pols: [], miss: [], ok: true, label: 'Loading' };
+    const d = ins.load(); const titles = pids.map(p => (PROPS[p] || {}).title);
+    const pols = d.policies.filter(p => (p.entity === 'Owner' && p.ref === name) || (p.entity === 'Property' && titles.includes(p.ref)));
+    const miss = ins.missing(d).filter(r => (r.entity === 'Owner' && r.ref === name) || (r.entity === 'Property' && titles.includes(r.ref)));
+    const bad = pols.filter(p => ['Expired', 'Pending Verification'].includes(ins.status(p)));
+    return { pols, miss, bad, ok: miss.length === 0 && bad.length === 0, label: miss.length ? miss.length + ' missing' : bad.length ? bad.length + ' need attention' : pols.length + ' active' };
+  }
+  readiness(r, name) {
+    const pids = r.pids;
+    const ownV = pids.filter(p => r.own[p] && r.own[p].status === 'Verified').length;
+    const missing = this.missingDocs(r);
+    const isOrg = r.entity.owner_type && r.entity.owner_type !== 'Individual';
+    const basic = !!(r.personal.full_name && r.personal.email && r.personal.phone && r.personal.address);
+    const insr = this.insurance(name, pids);
+    const contact = !!(r.comms.email && r.comms.freq);
+    const items = [
+      ['Basic Information', basic, basic ? 'Complete' : 'Incomplete', 'overview'],
+      ['Identity Verification', r.identity.status === 'Verified', r.identity.status, 'overview'],
+      ...(isOrg ? [['Entity Verification', r.entity.verif === 'Verified', r.entity.verif, 'overview']] : []),
+      ['Ownership Verification', pids.length > 0 && ownV === pids.length, ownV + ' of ' + pids.length + ' verified', 'ownership'],
+      ['Management Agreement', ['Signed', 'Active'].includes(r.agreement.status), r.agreement.status, 'contracts'],
+      ['Banking', r.bank.status === 'Verified', r.bank.status, 'financials'],
+      ['Insurance', insr.ok, insr.label, 'insurance'],
+      ['Contact Preferences', contact, contact ? r.comms.freq : 'Not set', 'communications'],
+      ['Required Documents', missing.length === 0, missing.length ? missing.length + ' missing' : 'Complete', 'documents']
+    ];
+    return { items, pct: Math.round(items.filter(i => i[1]).length / items.length * 100), missing, insr };
+  }
+  missingDocs(r) {
+    const m = [];
+    if (!r.identity.file) m.push('Identity document');
+    r.pids.forEach(p => { const o = r.own[p]; if (!o) return; const t = (PROPS[p] || {}).title; if (!o.d_title) m.push('Title certificate — ' + t); if (o.acq_applies && !o.d_acq) m.push('Acquisition document — ' + t); if (o.poa_applies && !o.d_poa) m.push('Power of attorney — ' + t); if (o.coowners && !o.d_coauth) m.push('Co-owner authorization — ' + t); });
+    if (!r.agreement.file) m.push('Signed management agreement');
+    return m;
+  }
+
+  mkCreate(sd, isMobile) {
+    const r = this.state.rec; const p0 = sd.path[0];
+    const data = r[p0] || {};
+    const setD = k => e => { const t = e.target; const val = t.type === 'checkbox' ? t.checked : t.value; this.setState(st => ({ rec: { ...st.rec, [p0]: { ...(st.rec[p0] || {}), [k]: val } } })); };
+    const REQ = { 'entity.owner_type': 1, 'entity.legal_name': 1, 'personal.full_name': 1, 'personal.email': 1, 'personal.phone': 1 };
+    const LOCK = { 'identity.status': 1, 'bank.status': 1, 'agreement.status': 1, 'entity.verif': 1, 'employment.verif_status': 1, 'employment.verif_date': 1 };
+    const fields = sd.fields.filter(f => !f.ro && !LOCK[p0 + '.' + f.k] && (!f.show || f.show(data))).map(f => { const t = f.type || 'text'; const val = data[f.k]; const req = REQ[p0 + '.' + f.k] && !(f.k === 'legal_name' && data.owner_type === 'Individual');
+      return { label: f.label + (req ? ' *' : ''), display: '', vColor: '#172033', span: f.span ? '1 / -1' : 'auto', isView: false, isInput: ['text', 'number', 'date', 'email', 'tel'].includes(t), isSelect: t === 'select', isArea: t === 'area', isToggle: t === 'toggle', isFile: t === 'file', type: t, value: val == null ? '' : String(val), checked: !!val, options: f.options || [], ph: f.ph || '', onChange: setD(f.k), fileLabel: val || 'Choose file…', onFile: e => { const fl = e.target.files && e.target.files[0]; if (fl) this.setState(st => ({ rec: { ...st.rec, [p0]: { ...(st.rec[p0] || {}), [f.k]: fl.name } } })); }, pad: '8px 0', rule: '0' }; });
+    return { title: sd.title, icon: sd.icon, span: isMobile ? '1 / -1' : (sd.span || 'span 6'), desc: sd.cdesc || sd.desc || '', hasDesc: !!(sd.cdesc || sd.desc), badges: sd.cbadges || [], warn: '', hasWarn: false, border: '#E2E8F0', colMin: sd.colMin || '200px', canEdit: false, editing: false, actions: [], edit: () => {}, cancel: () => {}, save: () => {}, fields };
+  }
+  createOwner() {
+    const r = this.state.rec; const isOrg = r.entity.owner_type !== 'Individual';
+    const name = (isOrg ? r.entity.legal_name : r.personal.full_name || '').trim();
+    const err = !r.entity.owner_type ? 'Select the owner type' : !name ? (isOrg ? 'Legal entity name is required' : 'Full name is required') : !/.+@.+\..+/.test(r.personal.email || '') ? 'Enter a valid email' : !(r.personal.phone || '').trim() ? 'Phone is required' : r.bank.last4 && !/^\d{4}$/.test(r.bank.last4) ? 'Account last 4 must be four digits' : r.agreement.start && r.agreement.end && r.agreement.end < r.agreement.start ? 'Agreement expiration must be after the start date' : null;
+    if (err) { this.notify(err, true); return; }
+    for (const sd of (this._createDefs || [])) { if (!sd.validate) continue; const d = r[sd.path[0]] || {}; const v = sd.validate(d, d); if (v) { this.notify(sd.title + ': ' + v, true); return; } }
+    const people = (load(PKEY) || {}).people || [];
+    const store = load(KEY) || {};
+    if (people.some(x => x.name.toLowerCase() === name.toLowerCase()) || store[name] || SEED[name]) { this.notify('An owner named ' + name + ' already exists', true); return; }
+    if (people.some(x => x.type === 'owner' && (x.email || '').toLowerCase() === r.personal.email.toLowerCase())) { this.notify('Another owner already uses ' + r.personal.email + ' — check for a duplicate', true); return; }
+    const pids = Object.keys(r.props || {}).filter(k => r.props[k]).map(k => Number(k.slice(1)));
+    const rec = { ...r, entity: { ...r.entity, legal_name: name, verif: 'Pending' }, identity: { ...r.identity, status: r.identity.file ? 'Received' : 'Pending', reviewed_by: '', reviewed_at: '' }, bank: { ...r.bank, status: r.bank.last4 ? 'In Review' : 'Pending' }, agreement: { ...r.agreement, status: r.agreement.file ? 'Sent' : 'Draft' }, pids, own: Object.fromEntries(pids.map(p => [p, own({ title_owner: name })])), comms: { ...r.comms, email: r.comms.email || r.personal.email, phone: r.comms.phone || r.personal.phone }, status: 'Onboarding', created: new Date().toISOString().slice(0, 10), activity: [{ at: new Date().toISOString(), text: 'Owner created' + (pids.length ? ' with ' + pids.length + ' propert' + (pids.length === 1 ? 'y' : 'ies') : ''), by: ME, icon: 'user-plus' }] };
+    delete rec.props;
+    try { store[name] = rec; sessionStorage.setItem(KEY, JSON.stringify(store)); const pend = JSON.parse(sessionStorage.getItem('mghpm.people.pending') || '[]'); const entry = { type: 'owner', name, email: r.personal.email, phone: r.personal.phone, contact: r.personal.full_name ? r.personal.full_name + (r.entity.rep_title ? ', ' + r.entity.rep_title : '') : '—', props: pids.map(p => PROPS[p].title), pids, income: 0, balance: 0, status: 'Onboarding' }; const ps = load(PKEY); if (ps && ps.people) { ps.people = [entry, ...ps.people]; sessionStorage.setItem(PKEY, JSON.stringify(ps)); } else { pend.push(entry); sessionStorage.setItem('mghpm.people.pending', JSON.stringify(pend)); } } catch (e) {}
+    go(SELF + '?owner=' + encodeURIComponent(name) + '&tab=overview');
+  }
+  // section: { id, path: [obj] or ['own', pid], title, icon, fields, span, desc, badges, warn, readOnly }
+  mkSection(sd, isMobile) {
+    const s = this.state, r = s.rec;
+    const src = sd.path.length === 2 ? r[sd.path[0]][sd.path[1]] : r[sd.path[0]];
+    const editing = s.editing === sd.id;
+    const data = editing ? s.draft : src;
+    const setD = k => e => { const t = e.target; const val = t.type === 'checkbox' ? t.checked : t.value; this.setState(st => ({ draft: { ...st.draft, [k]: val } })); };
+    const fields = sd.fields.filter(f => !f.show || f.show(data)).map((f, i) => {
+      const val = data[f.k];
+      const ro = f.ro || sd.readOnly;
+      const t = f.type || 'text';
+      let display = val === true ? 'Yes' : val === false ? 'No' : (val === '' || val == null) ? '—' : f.money ? fmtUSD(val) : t === 'date' ? fmtD(val) : f.suffix ? val + f.suffix : f.mask && String(val).length > 4 ? '•••• ' + String(val).slice(-4) : String(val);
+      if (f.compute) display = f.compute(data, r);
+      const isV = !editing || ro;
+      const isToggleView = isV && t === 'toggle';
+      return { label: f.label, display, vColor: display === '—' ? '#94A3B8' : (f.colorOf ? f.colorOf(val) : '#172033'), span: f.span ? '1 / -1' : 'auto',
+        isView: isV, isInput: !isV && ['text', 'number', 'date', 'email', 'tel'].includes(t), isSelect: !isV && t === 'select', isArea: !isV && t === 'area', isToggle: !isV && t === 'toggle', isFile: !isV && t === 'file',
+        type: t, value: val == null ? '' : String(val), checked: !!val, options: f.options || [], ph: f.ph || '', onChange: setD(f.k),
+        fileLabel: val || 'Choose file…', onFile: e => { const fl = e.target.files && e.target.files[0]; if (fl) this.setState(st => ({ draft: { ...st.draft, [f.k]: fl.name } })); },
+        pad: isV ? '12px 0' : '8px 0', rule: isV && !isToggleView ? '1px solid #F1F5F9' : isV ? '1px solid #F1F5F9' : '0' };
+    });
+    const save = () => {
+      const d = s.draft;
+      if (sd.validate) { const err = sd.validate(d, src); if (err) { this.notify(err, true); return; } }
+      let next = sd.path.length === 2 ? { ...r, [sd.path[0]]: { ...r[sd.path[0]], [sd.path[1]]: { ...d } } } : { ...r, [sd.path[0]]: { ...d } };
+      if (sd.after) next = sd.after(next, d, src) || next;
+      next = this.log(next, sd.logText ? sd.logText(d, src) : sd.title + ' updated', sd.icon);
+      this.setState({ rec: next, editing: null, draft: null });
+      if (sd.path[0] === 'personal' || sd.path[0] === 'comms') this.syncPeople({ email: next.personal.email || next.comms.email, phone: next.personal.phone || next.comms.phone, contact: next.personal.full_name ? next.personal.full_name + (next.entity.rep_title ? ', ' + next.entity.rep_title : '') : undefined }, s.name);
+      if (sd.path[0] === 'entity' && d.legal_name && d.legal_name !== s.name) this.renameOwner(d.legal_name, next);
+      this.notify(sd.title + ' saved • recorded in activity log');
+    };
+    return { title: sd.title, icon: sd.icon, span: isMobile ? '1 / -1' : (sd.span || 'span 6'), desc: sd.desc || '', hasDesc: !!sd.desc,
+      badges: (sd.badges || []).map(b => ({ label: b[0], tone: b[1], dot: b[2] !== false })), warn: sd.warn || '', hasWarn: !!sd.warn,
+      border: editing ? '#006B68' : '#E2E8F0', colMin: sd.colMin || '200px',
+      canEdit: !editing && !sd.readOnly && !s.editing, editing, actions: editing ? [] : (sd.actions || []),
+      edit: () => this.setState({ editing: sd.id, draft: { ...src } }), cancel: () => this.setState({ editing: null, draft: null }), save, fields };
+  }
+  renameOwner(newName, rec) {
+    const old = this.state.name;
+    try { const st = load(KEY) || {}; delete st[old]; st[newName] = rec; sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+    this.syncPeople({ name: newName }, old);
+    this.setState({ name: newName });
+    try { history.replaceState(null, '', '?owner=' + encodeURIComponent(newName) + '&tab=' + this.state.tab); } catch (e) {}
+  }
+  table(t) {
+    const n = t.cols.length;
+    return { ...t, hasAction: !!t.action, empty: t.rows.length === 0, emptyText: t.emptyText || 'No records.', minW: t.minW || '760px',
+      cols: t.cols.map((c, i) => { const [label, align] = Array.isArray(c) ? c : [c, 'left']; return { label, align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }),
+      rows: t.rows.map(row => ({ open: row.open || (() => {}), cursor: row.open ? 'pointer' : 'default', cells: row.cells.map((c, i) => {
+        const o = typeof c === 'string' ? { text: c } : c; const align = Array.isArray(t.cols[i]) ? t.cols[i][1] : 'left';
+        return { text: o.text || '', sub: o.sub || '', hasSub: !!o.sub, weight: o.bold ? '600' : '400', tone: o.tone || 'neutral', isText: !o.badge && !o.links, isBadge: !!o.badge, isLinks: !!o.links,
+          links: (o.links || []).map(l => ({ ...l, color: l.danger ? '#DC2626' : '#64748B', go: e => { if (e && e.stopPropagation) e.stopPropagation(); l.go(); } })), align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }) })) };
+  }
+
+  renderVals() {
+    const s = this.state, r = s.rec, name = s.name;
+    const { bp, v } = this.chrome();
+    const isMobile = bp === 'mobile';
+    const ready = this.readiness(r, name); const insr = ready.insr; const ins = window.MGH_INS;
+    const pids = r.pids.filter(p => PROPS[p]);
+    const myWos = WOS.filter(w => pids.includes(w[2]));
+    const isOrg = d => d.owner_type && d.owner_type !== 'Individual';
+    const openProp = pid => () => go(DETAIL + '?id=' + pid);
+    const lim = r.limits;
+    const tierText = d => 'Up to ' + fmtUSD(d.auto_up_to) + ': MGHPM approves automatically. ' + fmtUSD(Number(d.auto_up_to) + 1) + '–' + fmtUSD(d.notify_up_to) + ': approved with owner notification. Above ' + fmtUSD(d.notify_up_to) + ': owner approval required. Emergencies up to ' + fmtUSD(d.emergency) + ' may proceed and are reported within 24 hours.';
+    const holderMismatch = d => d.holder && ![name, r.entity.legal_name, r.personal.full_name].filter(Boolean).map(x => x.toLowerCase()).includes(d.holder.trim().toLowerCase());
+
+    const DEFS = {
+      overview: [
+        { id: 'personal', path: ['personal'], title: 'Personal Information', icon: 'user-round', span: 'span 12', colMin: '220px', fields: [
+          F('full_name', 'Full Name'), SEL('doc_type', 'Document Type', ['Cédula', 'Passport']), F('doc_number', 'Cédula / Passport No.', { mask: true }), F('nationality', 'Nationality'), F('dob', 'Date of Birth', { type: 'date' }),
+          SEL('marital', 'Marital Status', ['', 'Single', 'Married', 'Divorced', 'Widowed', 'Domestic Partnership']), F('phone', 'Primary Phone', { type: 'tel' }), F('whatsapp', 'WhatsApp', { type: 'tel' }), F('email', 'Email', { type: 'email' }),
+          F('address', 'Residential Address', { span: true }), F('city', 'City'), F('province', 'State / Province'), F('country', 'Country'), SEL('language', 'Preferred Language', ['English', 'Spanish', 'Portuguese', 'French']), SEL('contact_method', 'Preferred Contact Method', ['Email', 'WhatsApp', 'Phone', 'SMS'])],
+          validate: d => !d.full_name.trim() ? 'Full name is required' : d.email && !/.+@.+\..+/.test(d.email) ? 'Enter a valid email' : null },
+        { id: 'entity', path: ['entity'], title: 'Entity Information', icon: 'building', badges: isOrg(r.entity) ? [[r.entity.verif, ID_TONE[r.entity.verif] || 'neutral']] : [], desc: 'Company and trust fields appear when the owner is not an individual.', fields: [
+          SEL('owner_type', 'Owner Type', ['Individual', 'Company', 'Trust / Partnership', 'Co-ownership', 'Authorized Representative', 'Other']), SEL('verif', 'Entity Verification', ['Pending', 'In Review', 'Verified', 'Rejected'], { show: isOrg }), F('country', 'Country of Registration', { show: isOrg }),
+          F('legal_name', 'Legal Name (Razón Social)', { show: isOrg }), F('trade_name', 'Trade Name', { show: isOrg }), F('tax_id', 'Tax ID (RNC / EIN)', { show: isOrg }), F('registry', 'Commercial Registry', { show: isOrg }),
+          F('rep_name', r.entity.owner_type === 'Trust / Partnership' ? 'Trustee / Authorized Representative' : 'Authorized Representative', { show: isOrg }), F('rep_title', 'Title / Position', { show: isOrg }), F('rep_doc', 'Representative ID Document', { show: isOrg, mask: true })] },
+        { id: 'identity', path: ['identity'], title: 'Identity Verification', icon: 'scan-face', badges: [[r.identity.status, ID_TONE[r.identity.status] || 'neutral']], fields: [
+          SEL('doc_type', 'Document Type', ['Cédula', 'Passport', 'Driver License', 'Residence Card']), F('number', 'Document Number', { mask: true }), F('file', 'Uploaded Document', { type: 'file' }), F('expires', 'Expiration Date', { type: 'date' }),
+          SEL('status', 'Status', ID_ST), F('reviewed_by', 'Reviewed By', { ro: true }), F('reviewed_at', 'Review Date', { type: 'date', ro: true }), F('notes', 'Notes', { type: 'area', span: true })],
+          warn: r.identity.expires && r.identity.expires < '2027-01-01' ? 'Identity document expires ' + fmtD(r.identity.expires) + '. Request a renewal before it lapses.' : '',
+          validate: d => d.status === 'Verified' && !d.file ? 'Upload the identity document before marking it Verified' : null,
+          after: (n, d, o) => d.status !== o.status ? { ...n, identity: { ...n.identity, reviewed_by: ME, reviewed_at: new Date().toISOString().slice(0, 10) } } : n,
+          logText: (d, o) => d.status !== o.status ? 'Identity verification set to ' + d.status : 'Identity details updated' },
+        { id: 'rep', path: ['rep'], title: 'Emergency Contact / Representative', icon: 'contact', span: 'span 12', colMin: '220px', desc: 'Essential when the owner lives abroad. Permissions limit what this person can do on the owner’s behalf.', fields: [
+          F('name', 'Name'), F('relation', 'Relationship'), F('phone', 'Phone', { type: 'tel' }), F('email', 'Email', { type: 'email' }), SEL('level', 'Authorization Level', ['None', 'Limited', 'Full']), F('poa_file', 'Power of Attorney', { type: 'file' }),
+          TG('can_repairs', 'Can approve repairs'), TG('can_sign', 'Can sign documents'), TG('can_funds', 'Can receive funds'), TG('can_docs', 'Can receive documents')],
+          validate: d => (d.can_sign || d.can_funds) && !d.poa_file ? 'Signing or receiving funds requires an uploaded power of attorney' : null }
+      ],
+      ownership: pids.map(pid => { const o = r.own[pid] || own({}); const req = [o.d_title, o.acq_applies ? o.d_acq : null, o.poa_applies ? o.d_poa : null, o.coowners ? o.d_coauth : null].filter(x => x !== null); const got = req.filter(Boolean).length;
+        return { id: 'own-' + pid, path: ['own', pid], title: PROPS[pid].title, icon: 'file-check', span: 'span 12', colMin: '220px',
+          desc: 'Receiving a document does not verify ownership — a reviewer must confirm the title against the registry.',
+          badges: [['Documents ' + got + '/' + req.length + ' received', got === req.length ? 'success' : 'warning', false], ['Title: ' + o.status, OWN_TONE[o.status] || 'neutral']],
+          warn: o.status === 'Additional Info Required' ? 'Additional information was requested from the owner.' : o.status === 'Rejected' ? 'Title verification rejected. The property cannot be leased until resolved.' : '',
+          fields: [F('title_no', 'Title Certificate No.'), F('matricula', 'Registry Number (Matrícula)'), F('catastral', 'Cadastral Designation'), F('reg_address', 'Registered Address', { span: true }), F('title_owner', 'Owner per Title'), F('pct', 'Ownership %', { type: 'number', suffix: '%' }), F('coowners', 'Co-owners'),
+            TG('d_title', 'Title certificate received'), TG('acq_applies', 'Acquisition document applies'), TG('d_acq', 'Acquisition document received', { show: d => d.acq_applies }), TG('poa_applies', 'Power of attorney applies'), TG('d_poa', 'Power of attorney received', { show: d => d.poa_applies }), TG('d_coauth', 'Co-owner authorizations received', { show: d => !!d.coowners }),
+            SEL('status', 'Verification Status', OWN_ST), F('reviewer', 'Verified By', { ro: true }), F('verified_at', 'Verification Date', { type: 'date', ro: true })],
+          actions: [{ label: 'View Documents', icon: 'folder-open', go: () => this.setState({ tab: 'documents', folder: 'Ownership / Titles', editing: null }) }, { label: 'Review Verification', icon: 'shield-check', go: () => this.setState({ editing: 'own-' + pid, draft: { ...(r.own[pid] || own({})) } }) }],
+          validate: d => { const pending = [!d.d_title && 'title certificate', d.acq_applies && !d.d_acq && 'acquisition document', d.poa_applies && !d.d_poa && 'power of attorney', d.coowners && !d.d_coauth && 'co-owner authorizations'].filter(Boolean); return d.status === 'Verified' && pending.length ? 'Cannot verify title — still missing: ' + pending.join(', ') : Number(d.pct) <= 0 || Number(d.pct) > 100 ? 'Ownership % must be between 1 and 100' : null; },
+          after: (n, d, oo) => d.status !== oo.status ? { ...n, own: { ...n.own, [pid]: { ...n.own[pid], reviewer: ME, verified_at: d.status === 'Verified' ? new Date().toISOString().slice(0, 10) : '' } } } : n,
+          logText: (d, oo) => d.status !== oo.status ? 'Title verification ' + d.status.toLowerCase() + ' — ' + PROPS[pid].title : 'Ownership record updated — ' + PROPS[pid].title }; }),
+      contracts: [
+        { id: 'agreement', path: ['agreement'], title: 'Management Agreement', icon: 'file-signature', span: 'span 12', colMin: '200px', badges: [[r.agreement.status, MA_TONE[r.agreement.status] || 'neutral']], fields: [
+          F('ma_id', 'Agreement ID'), F('start', 'Start Date', { type: 'date' }), F('end', 'Expiration Date', { type: 'date' }), TG('auto_renew', 'Automatic renewal'), F('commission', 'Management Fee', { type: 'number', suffix: '%' }), F('leasing_fee', 'Leasing Fee'),
+          MONEY('renewal_fee', 'Renewal Fee'), F('markup', 'Maintenance Markup', { type: 'number', suffix: '%' }), F('other', 'Other Charges'), F('file', 'Signed Document', { type: 'file' }), SEL('status', 'Status', MA_ST)],
+          validate: d => d.start && d.end && d.end < d.start ? 'Expiration must be after the start date' : ['Signed', 'Active'].includes(d.status) && !d.file ? 'Upload the signed agreement before setting it to ' + d.status : null,
+          logText: (d, o) => d.status !== o.status ? 'Management agreement ' + (d.ma_id || '') + ' set to ' + d.status : 'Management agreement updated' },
+        { id: 'limits', path: ['limits'], title: 'Approval Limits', icon: 'shield-check', desc: tierText(lim), fields: [
+          MONEY('auto_up_to', 'Auto-approve up to (maintenance_approval_limit)'), MONEY('notify_up_to', 'Approve with notification up to'), MONEY('emergency', 'Emergency approval limit'), TG('all_repairs', 'Require owner approval for all repairs'),
+          SEL('vendor_policy', 'Preferred Vendor Policy', ['MGHPM preferred vendors', 'Owner-designated vendors only', 'Lowest of 3 quotes', 'Any licensed vendor']), MONEY('reserve', 'Reserve Balance')],
+          warn: lim.all_repairs ? 'Every repair, regardless of amount, waits for owner approval.' : '',
+          validate: d => Number(d.notify_up_to) < Number(d.auto_up_to) ? 'Notification tier must be higher than the auto-approve limit' : null },
+        { id: 'policies', path: ['policies'], title: 'Leasing Policies', icon: 'list-checks', fields: [
+          TG('pets', 'Pets allowed'), TG('smoking', 'Smoking allowed'), MONEY('min_rent', 'Minimum Rent'), SEL('min_term', 'Minimum Term', ['1 month', '6 months', '12 months', '18 months', '24 months']),
+          F('renewal', 'Renewal Policy', { span: true }), F('increase', 'Rent Increase Policy', { span: true }), SEL('furnished', 'Furnishing', ['Furnished', 'Unfurnished', 'Either']), SEL('utilities', 'Utilities', ['Included', 'Excluded', 'Partial'])] }
+      ],
+      financials: [
+        { id: 'bank', path: ['bank'], title: 'Bank & Disbursement', icon: 'landmark', span: 'span 12', colMin: '200px', badges: [[r.bank.status, ID_TONE[r.bank.status] || 'neutral']],
+          desc: 'The account must belong to the owner or the authorized entity. Changes to bank details require re-verification before the next distribution.',
+          warn: holderMismatch(r.bank) ? 'Account holder “' + r.bank.holder + '” does not match the owner or entity name.' : r.bank.status === 'Pending Re-verification' ? 'Bank details changed. Distributions are paused until the new account is verified.' : '',
+          fields: [F('bank', 'Bank'), SEL('acct_type', 'Account Type', ['Checking', 'Savings']), F('last4', 'Account (last 4)', { ph: '9012', compute: d => d.last4 ? '•••• ' + d.last4 : '—' }), F('holder', 'Account Holder'), SEL('currency', 'Currency', ['USD', 'DOP', 'EUR']), F('swift', 'SWIFT (if applicable)'),
+            SEL('method', 'Disbursement Method', ['ACH', 'Wire', 'Check', 'Local transfer']), SEL('frequency', 'Payment Frequency', ['Monthly', 'Bi-weekly', 'Quarterly']), SEL('day', 'Preferred Distribution Day', ['1', '5', '10', '15', '20', '25']), MONEY('reserve_min', 'Minimum Reserve Retention'), MONEY('maint_fund', 'Authorized Maintenance Fund'), SEL('status', 'Verification Status', ['Pending', 'Pending Re-verification', 'In Review', 'Verified', 'Rejected'])],
+          validate: (d) => d.last4 && !/^\d{4}$/.test(d.last4) ? 'Account last 4 must be four digits' : null,
+          after: (n, d, o) => { const changed = ['bank', 'acct_type', 'last4', 'holder', 'swift'].some(k => d[k] !== o[k]); return changed && d.status === o.status ? { ...n, bank: { ...n.bank, status: 'Pending Re-verification' } } : n; },
+          logText: (d, o) => ['bank', 'acct_type', 'last4', 'holder', 'swift'].some(k => d[k] !== o[k]) ? 'Bank account updated — ' + (d.bank || 'bank') + ' ••' + (d.last4 || '') + ' • re-verification required' : 'Disbursement settings updated' }
+      ],
+      communications: [
+        { id: 'comms', path: ['comms'], title: 'Contact Channels', icon: 'phone', fields: [F('email', 'Primary Email', { type: 'email' }), F('email2', 'Secondary Email', { type: 'email' }), F('whatsapp', 'WhatsApp', { type: 'tel' }), F('phone', 'Phone', { type: 'tel' }), TG('sms', 'SMS allowed')],
+          validate: d => d.email && !/.+@.+\..+/.test(d.email) ? 'Enter a valid primary email' : null },
+        { id: 'notif', path: ['comms'], title: 'Notifications', icon: 'bell', fields: [TG('n_pay', 'Payment notifications'), TG('n_maint', 'Maintenance notifications'), TG('n_lease', 'Lease notifications'), TG('n_insp', 'Inspection notifications'), TG('n_stmt', 'Owner statements'), SEL('freq', 'Frequency', ['Immediate', 'Weekly', 'Monthly'])] }
+      ],
+      compliance: [
+        { id: 'compl-status', path: ['compliance'], title: 'Verification Status', icon: 'shield-check', readOnly: true, badges: [['Internal — not visible to owner', 'navy', false]], fields: [
+          F('x1', 'Identity verified', { compute: () => r.identity.status === 'Verified' ? 'Yes' : 'No — ' + r.identity.status }), F('x2', 'Ownership verified', { compute: () => ready.items[1][2] }), F('x3', 'Banking verified', { compute: () => r.bank.status === 'Verified' ? 'Yes' : 'No — ' + r.bank.status }),
+          F('x6', 'Entity verified', { compute: () => isOrg(r.entity) ? (r.entity.verif === 'Verified' ? 'Yes' : 'No — ' + r.entity.verif) : 'Not applicable (individual)' }), F('x7', 'Insurance', { compute: () => insr.ok ? 'Compliant — ' + insr.label : 'Attention — ' + insr.label }), F('x4', 'Management agreement signed', { compute: () => ['Signed', 'Active'].includes(r.agreement.status) ? 'Yes' : 'No — ' + r.agreement.status }), F('x5', 'Missing documents', { span: true, compute: () => ready.missing.length ? ready.missing.join(' • ') : 'None' })] },
+        { id: 'compliance', path: ['compliance'], title: 'Risk & Review', icon: 'scale', badges: [['Internal', 'navy', false]], fields: [TG('legal_review', 'Legal review required'), TG('hold', 'Account hold (pause distributions)'), SEL('reviewer', 'Compliance Reviewer', ['', 'Sofia Ramos', 'Marcus Vance', 'Elena Cruz']), F('risk', 'Risk Notes', { type: 'area', span: true, ph: 'Internal notes — never shown to the owner' })],
+          warn: r.compliance.hold ? 'Account on hold — distributions and portal payouts are paused.' : '',
+          logText: (d, o) => d.hold !== o.hold ? (d.hold ? 'Account hold placed' : 'Account hold released') : 'Compliance review updated' }
+      ]
+    };
+
+    const CREATE_ORDER = s.creating ? [...DEFS.overview.filter(d => d.id === 'entity'), ...DEFS.overview.filter(d => d.id === 'identity'), ...DEFS.overview.filter(d => d.id === 'personal'), { id: 'props', path: ['props'], title: 'Properties', icon: 'building-2', span: 'span 12', colMin: '240px', cdesc: 'Select the properties this owner holds. Ownership % and title documents are verified per property after creation.', fields: Object.keys(PROPS).map(p => TG('p' + p, PROPS[p].title + ' — ' + PROPS[p].city)) }, ...DEFS.financials, ...DEFS.contracts, ...DEFS.overview.filter(d => d.id === 'rep'), ...DEFS.communications] : null;
+    this._createDefs = CREATE_ORDER;
+    const secs = s.creating ? CREATE_ORDER.map(sd => this.mkCreate({ ...sd, span: ['entity', 'identity', 'limits', 'policies', 'comms', 'notif'].includes(sd.id) ? 'span 6' : 'span 12' }, isMobile)) : (DEFS[s.tab] || []).map(sd => this.mkSection(sd, isMobile));
+    const tables = [];
+    const propLinks = pid => [{ icon: 'building-2', title: 'Property Detail', go: openProp(pid) }, { icon: 'file-check', title: 'Ownership Verification', go: () => this.setTab('ownership') }, { icon: 'clipboard-check', title: 'Inspections', go: () => go(PAGES.inspections + '?property=' + pid) }, { icon: 'wrench', title: 'Maintenance', go: () => go(DETAIL + '?id=' + pid + '&tab=maintenance') }, { icon: 'file-signature', title: 'Leases', go: () => go(PAGES.leases + '?property=' + pid) }, { icon: 'credit-card', title: 'Payments', go: () => go(PAGES.payments + '?property=' + pid) }, { icon: 'folder-open', title: 'Documents', go: () => go(PAGES.documents + '?view=folders&property=' + pid) }];
+    if (s.tab === 'properties' || s.tab === 'overview') tables.push(this.table({ title: 'Properties', sub: pids.length + ' properties under management', minW: '1080px', action: s.tab === 'overview' ? () => this.setTab('properties') : null, actionLabel: 'All Properties',
+      cols: ['Property', 'Status', ['Monthly Rent', 'right'], 'Tenants', 'Leases', ['Balance', 'right'], 'Title', ['Open', 'right']],
+      rows: pids.map(pid => { const p = PROPS[pid], o = r.own[pid] || {}; return { open: openProp(pid), cells: [{ text: p.title, sub: p.city, bold: true }, { badge: true, text: p.status, tone: p.tone }, { text: p.rent ? fmtUSD(p.rent) : '—', bold: true }, p.units ? p.occ + ' of ' + p.units + ' units leased' : '—', p.occ ? p.occ + ' active' : '—', { text: fmtUSD(p.balance), bold: p.balance > 0 }, { badge: true, text: o.status || 'Not Started', tone: OWN_TONE[o.status] || 'neutral' }, { links: s.tab === 'properties' ? propLinks(pid) : propLinks(pid).slice(0, 1) }] }; }),
+      emptyText: 'No properties linked to this owner yet.' }));
+    if (s.tab === 'financials') tables.push(this.table({ title: 'Owner Distributions', sub: 'Last 3 disbursements', minW: '560px', action: () => go(PAGES.accounting), actionLabel: 'Accounting', cols: ['#', 'Date', 'Description', ['Amount', 'right']], rows: (name === 'Alvarez Family Trust' ? DISTS : []).map(d => ({ cells: [d[0], fmtD(d[1]), d[2], { text: fmtUSD(d[3]), bold: true }] })), emptyText: 'No distributions yet.' }));
+    const charges = CHARGES[name] || [];
+    if (s.tab === 'financials') {
+      tables.push(this.table({ title: 'Reimbursable Expenses & Owner Charges', sub: 'Deducted from the next distribution unless paid directly', minW: '640px', cols: ['#', 'Due', 'Description', ['Amount', 'right'], 'Status'], rows: charges.map(c => ({ cells: [{ text: c[0], bold: true }, fmtD(c[1]), c[2], { text: fmtUSD(c[3]), bold: true }, { badge: true, text: c[4], tone: c[4] === 'Unpaid' ? 'warning' : 'info' }] })), emptyText: 'No open charges.' }));
+      let bal = 0; const led = [...DISTS.map(x => [x[1], 'Distribution', x[2], -x[3]]), ...charges.map(c => [c[1], 'Owner Charge', c[2], c[3]])].sort((a, b) => a[0] < b[0] ? -1 : 1).map(l => { bal += l[3]; return [...l, bal]; }).reverse();
+      tables.push(this.table({ title: 'Owner Ledger', sub: 'Distributions paid and charges owed', minW: '720px', cols: ['Date', 'Type', 'Description', ['Amount', 'right'], ['Running', 'right']], rows: name === 'Alvarez Family Trust' ? led.map(l => ({ cells: [fmtD(l[0]), { badge: true, text: l[1], tone: l[1] === 'Distribution' ? 'success' : 'warning' }, l[2], { text: (l[3] < 0 ? '−' : '') + fmtUSD(Math.abs(l[3])), bold: true }, fmtUSD(l[4])] })) : [], emptyText: 'No ledger activity yet.' }));
+      tables.push(this.table({ title: 'Owner Statements', sub: 'Monthly statements sent to the owner', minW: '560px', cols: ['Period', 'Issued', ['Net Distribution', 'right'], ['PDF', 'right']], rows: (name === 'Alvarez Family Trust' ? DISTS : []).map(x => ({ cells: [{ text: x[2].replace(' owner distribution', ' 2026'), bold: true }, fmtD(x[1]), { text: fmtUSD(x[3]), bold: true }, { links: [{ icon: 'download', title: 'Download statement', go: () => this.notify('Downloading ' + x[2] + ' statement (PDF)') }] }] })), emptyText: 'No statements issued yet.' }));
+    }
+    if (s.tab === 'insurance') {
+      tables.push(this.table({ title: 'Insurance Policies', sub: 'Linked to this owner and each property — managed once in Insurance, never duplicated', minW: '1040px', action: () => go(PAGES.insurance + '?entity=Property&q=' + encodeURIComponent(name)), actionLabel: 'Insurance', cols: ['Property / Scope', 'Policy', 'Carrier', ['Coverage', 'right'], 'Expires', 'Status', ['Actions', 'right']],
+        rows: insr.pols.map(p => { const stt = ins.status(p); return { open: () => go(PAGES.insurance + '?edit=' + p.id + '&back=' + encodeURIComponent(SELF + '?owner=' + encodeURIComponent(name) + '&tab=insurance') + '&backLabel=' + encodeURIComponent('Back to ' + name)), cells: [{ text: p.entity === 'Owner' ? 'Owner-level coverage' : p.ref, sub: p.entity === 'Owner' ? p.covered : 'Property', bold: true }, { text: p.type, sub: p.number }, p.carrier, { text: fmtUSD(p.coverage), bold: true }, { text: fmtD(p.exp), sub: ins.daysTo(p.exp) < 0 ? 'Expired' : ins.daysTo(p.exp) + ' days left' }, { badge: true, text: stt, tone: { Active: 'success', 'Expiring Soon': 'warning', Expired: 'danger', 'Pending Verification': 'info' }[stt] }, { links: [{ icon: 'pencil', title: 'Edit policy', go: () => go(PAGES.insurance + '?edit=' + p.id + '&back=' + encodeURIComponent(SELF + '?owner=' + encodeURIComponent(name) + '&tab=insurance') + '&backLabel=' + encodeURIComponent('Back to ' + name)) }] }] }; }), emptyText: 'No policies on file for this owner’s properties.' }));
+      tables.push(this.table({ title: 'Missing Required Coverage', sub: 'Required by the management agreement or company policy', minW: '760px', cols: ['Property', 'Required Policy', 'Required By', ['Minimum', 'right'], ['Add', 'right']],
+        rows: insr.miss.map(m => ({ cells: [{ text: m.ref, bold: true }, m.type, m.source, m.min ? fmtUSD(m.min) : '—', { links: [{ icon: 'plus', title: 'Add policy', go: () => go(PAGES.insurance + '?new=' + m.entity + '&ref=' + encodeURIComponent(m.ref) + '&type=' + encodeURIComponent(m.type) + '&back=' + encodeURIComponent(SELF + '?owner=' + encodeURIComponent(name) + '&tab=insurance') + '&backLabel=' + encodeURIComponent('Back to ' + name)) }] }] })), emptyText: 'All required coverage is on file.' }));
+    }
+    if (s.tab === 'maintenance') tables.push(this.table({ title: 'Maintenance', sub: myWos.filter(w => w[5] !== 'Completed').length + ' open • ' + myWos.filter(w => w[5] !== 'Completed' && Number(w[7]) > Number(lim.notify_up_to)).length + ' awaiting owner approval • ' + myWos.filter(w => /Progress|Dispatched|Parts/.test(w[5])).length + ' in progress • ' + myWos.filter(w => w[5] === 'Completed').length + ' completed • owner charges ' + fmtUSD(myWos.reduce((a, w) => a + w[7], 0)), action: () => go(PAGES.maintenance), actionLabel: 'Work Orders', cols: ['#', 'Issue', 'Property', 'Opened', ['Cost', 'right'], 'Status'],
+      rows: myWos.map(w => ({ open: () => go(PAGES['work-orders-add'] + '?workOrder=' + w[0].replace('WO-2026-', '')), cells: [{ text: w[0], bold: true }, w[1], { text: PROPS[w[2]].title, sub: w[3] }, fmtD(w[4]), { text: fmtUSD(w[7]), bold: true }, { badge: true, text: Number(w[7]) > Number(lim.notify_up_to) && w[5] !== 'Completed' ? 'Owner Approval Required' : w[5], tone: Number(w[7]) > Number(lim.notify_up_to) && w[5] !== 'Completed' ? 'warning' : w[6] }] })), emptyText: 'No work orders.' }));
+    if (s.tab === 'inspections') { const rowsI = pids.flatMap(pid => (INSP[pid] || [[ 'Initial Inspection', PROPS[pid].insp[1], PROPS[pid].insp[0] ]]).map(x => ({ pid, x }))).sort((a, b) => (a.x[1] || '9') < (b.x[1] || '9') ? 1 : -1);
+      tables.push(this.table({ title: 'Inspections', sub: 'Initial, move-in, quarterly, semiannual, move-out and special inspections across the portfolio', action: () => go(PAGES.inspections), actionLabel: 'Inspections', cols: ['Property', 'Type', 'Date', 'Status', ['Open', 'right']],
+        rows: rowsI.map(({ pid, x }) => ({ open: () => go(PAGES.inspections + '?property=' + pid), cells: [{ text: PROPS[pid].title, sub: PROPS[pid].city, bold: true }, x[0], x[1] ? fmtD(x[1]) : '—', { badge: true, text: x[2], tone: x[2] === 'Completed' ? 'success' : x[2] === 'Scheduled' ? 'info' : 'warning' }, { links: [{ icon: 'arrow-right', title: 'Open inspection', go: () => go(PAGES.inspections + '?property=' + pid) }] }] })), emptyText: 'No inspections.' })); }
+    if (s.tab === 'documents') {
+      const docs = r.docs.filter(d => s.folder === 'All' || d.folder === s.folder);
+      tables.push(this.table({ title: 'Owner Documents', sub: (s.folder === 'All' ? 'All folders' : s.folder) + ' • ' + docs.length + ' files • missing: ' + (ready.missing.length || 'none'), minW: '1080px',
+        cols: ['Document', 'Folder', 'Type', ['Version', 'right'], 'Date', 'Status', 'Uploaded By', 'Verified By', ['Actions', 'right']],
+        rows: docs.map(d => ({ cells: [{ text: d.name, bold: true }, d.folder, d.type, { text: 'v' + d.version }, fmtD(d.date), { badge: true, text: d.status, tone: d.status === 'Verified' ? 'success' : d.status === 'Rejected' ? 'danger' : d.status === 'Sent' ? 'neutral' : 'info' }, d.by || '—', d.verifiedBy || '—',
+          { links: [{ icon: 'download', title: 'Download', go: () => this.notify('Downloading ' + d.name) }, ...(d.status !== 'Verified' && d.status !== 'Sent' ? [{ icon: 'badge-check', title: 'Mark Verified', go: () => this.setState(st => ({ rec: this.log({ ...st.rec, docs: st.rec.docs.map(x => x.id === d.id ? { ...x, status: 'Verified', verifiedBy: ME } : x) }, 'Document verified — ' + d.name, 'badge-check') })) }] : []), { icon: 'trash-2', title: 'Delete', danger: true, go: () => { this.setState(st => ({ rec: this.log({ ...st.rec, docs: st.rec.docs.filter(x => x.id !== d.id) }, 'Document deleted — ' + d.name, 'trash-2') })); this.notify(d.name + ' deleted'); } }] }] })),
+        emptyText: 'No documents in this folder.' }));
+    }
+    if (s.tab === 'communications') tables.push(this.table({ title: 'Messages', sub: 'Conversations between the owner and MGHPM', minW: '560px', action: () => go(PAGES.messages + '?back=' + encodeURIComponent((decodeURIComponent(location.pathname.split('/').pop()) + location.search)) + '&backLabel=' + encodeURIComponent('Back to Owner Profile')), actionLabel: 'Open Messages', cols: ['Subject', 'Last Update', 'Status'],
+      rows: name === 'Alvarez Family Trust' ? [{ cells: [{ text: 'A/C compressor replacement — approval', bold: true, sub: 'Ocean View Villa • WO-2026-1041' }, 'Oct 3, 2026', { badge: true, text: 'Awaiting Owner', tone: 'info' }] }, { cells: [{ text: 'September statement — management fee question', bold: true, sub: 'Brickell Bay Residences' }, 'Oct 3, 2026', { badge: true, text: 'Resolved', tone: 'success' }] }] : [], emptyText: 'No conversations yet.' }));
+
+    const peopleRec = ((load(PKEY) || {}).people || []).find(x => x.type === 'owner' && x.name === name);
+    const chargeTotal = charges.reduce((a, c) => a + c[3], 0);
+    if (s.creating) tables.length = 0;
+    const kpis = [
+      { label: 'Properties', value: String(pids.length), icon: 'building-2', tone: 'brand', footer: pids.reduce((a, p) => a + PROPS[p].units, 0) + ' units • ' + pids.filter(p => PROPS[p].occ > 0).length + ' occupied' },
+      { label: 'Monthly Income', value: fmtUSD(peopleRec && peopleRec.income ? peopleRec.income : (name === 'Alvarez Family Trust' ? 52180 : 0)), icon: 'banknote', tone: 'success', footer: 'Collected month to date' },
+      { label: 'Owner Balance', value: fmtUSD(chargeTotal), icon: 'file-clock', tone: 'premium', footer: charges.length + ' open owner charges' },
+      { label: 'Open Approvals', value: String(myWos.filter(w => w[5] !== 'Completed' && Number(w[7]) > Number(lim.notify_up_to)).length), icon: 'circle-alert', tone: 'premium', footer: 'Above ' + fmtUSD(lim.notify_up_to) },
+      { label: 'Documents Missing', value: String(ready.missing.length), icon: 'file-warning', tone: 'navy', footer: ready.missing.length ? 'Owner file incomplete' : 'Owner file complete' },
+      { label: 'Next Distribution', value: r.compliance.hold || r.bank.status !== 'Verified' ? 'Paused' : 'Nov ' + r.bank.day + ', 2026', icon: 'hand-coins', tone: 'success', footer: r.compliance.hold ? 'Account hold' : r.bank.status !== 'Verified' ? 'Bank not verified' : r.bank.method + ' • ' + r.bank.frequency }
+    ];
+
+    const TABS = [['overview', 'Overview', 'layout-grid'], ['properties', 'Properties', 'building-2', pids.length], ['ownership', 'Ownership', 'file-check', pids.filter(p => (r.own[p] || {}).status !== 'Verified').length || null], ['contracts', 'Contracts', 'file-signature'], ['financials', 'Financials', 'banknote'], ['insurance', 'Insurance', 'umbrella', insr.miss.length + (insr.bad || []).length || null], ['maintenance', 'Maintenance', 'wrench', myWos.filter(w => w[5] !== 'Completed').length], ['inspections', 'Inspections', 'clipboard-check'], ['documents', 'Documents', 'folder-open', r.docs.length], ['communications', 'Communications', 'message-square'], ['compliance', 'Compliance', 'shield-check'], ['activity', 'Activity', 'history']];
+    const counts = FOLDERS.map(f => [f, r.docs.filter(d => d.folder === f).length]);
+    const blockers = [...(pids.length ? [pids.length + ' propert' + (pids.length === 1 ? 'y' : 'ies') + ' under management'] : []), ...(['Signed', 'Active'].includes(r.agreement.status) ? ['Active management agreement ' + r.agreement.ma_id] : []), ...(pids.some(p => PROPS[p].balance > 0) ? ['Open balances on owned properties'] : [])];
+    const TL = { 'user-plus': ['#DDF3F1', '#006B68'], landmark: ['#EEF2FF', '#132A52'], 'file-signature': ['#EEF2FF', '#132A52'], 'clipboard-check': ['#DCFCE7', '#15803D'], 'file-check': ['#DCFCE7', '#15803D'], 'badge-check': ['#DCFCE7', '#15803D'], 'trash-2': ['#FEF2F2', '#DC2626'], upload: ['#E0F2FE', '#0369A1'] };
+
+    window.MGH_CTX = { type: 'owner', label: 'Owner 360 — ' + name, readiness: ready.items.map(i => i[0] + ': ' + i[2]), record: { owner: name, id: r.id, status: r.status, ownerType: r.entity.owner_type, identity: r.identity.status, entityVerification: r.entity.verif, bank: r.bank.status, agreement: r.agreement.status + ' ' + r.agreement.ma_id, ownership: pids.map(p => PROPS[p].title + ': ' + ((r.own[p] || {}).status || 'Not Started')), insurance: insr.label, missingDocuments: ready.missing, approvalLimit: lim.notify_up_to, openWorkOrders: myWos.map(w => w[0] + ' ' + w[1] + ' ' + w[5] + ' USD ' + w[7]), emergencyContact: r.rep.name || 'none', accountHold: !!r.compliance.hold } };
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['People', PAGES.directory], ['Owners', PAGES.owners], [s.creating ? 'New Owner' : name, null]]),
+      goBack: () => go(PAGES.owners), goPortal: () => go(PAGES['owner-portal']), goMessages: () => this.setTab('communications'),
+      editPersonal: () => this.setState({ tab: 'overview', editing: 'personal', draft: { ...r.personal } }),
+      initials: name.split(' ').filter(w => /[A-Za-z]/.test(w[0])).map(w => w[0]).join('').slice(0, 2).toUpperCase(), ownerName: name, ownerStatus: r.status, statusTone: r.status === 'Active' ? 'success' : r.status === 'Inactive' ? 'neutral' : 'info', onHold: !!r.compliance.hold,
+      ownerMeta: r.id + ' • ' + r.entity.owner_type + (r.personal.full_name ? ' • ' + r.personal.full_name + (r.entity.rep_title ? ', ' + r.entity.rep_title : '') : '') + ' • Owner since ' + fmtD(r.created),
+      readyPct: ready.pct + '%', readyFill: ready.pct === 100 ? '#16A34A' : ready.pct >= 75 ? '#006B68' : '#D4A637', readyBar: ready.pct === 100 ? '#16A34A' : '#D4A637',
+      readyItems: ready.items.map(([label, ok, value, tab]) => ({ label, value, icon: ok ? 'check' : 'triangle-alert', bg: ok ? '#DCFCE7' : '#FEF3C7', fg: ok ? '#15803D' : '#B45309', go: () => this.setTab(tab) })),
+      tabs: TABS.map(([id, label, icon, count]) => { const on = s.tab === id; return { label, icon, hasCount: count != null && count !== 0, count: String(count), border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', countBg: on ? '#DDF3F1' : '#F1F5F9', countFg: on ? '#006B68' : '#64748B', select: () => this.setTab(id) }; }),
+      aiReview: () => window.dispatchEvent(new CustomEvent('mgh-assistant', { detail: { prompt: 'AI Review this owner file', review: true } })),
+      showKpis: !s.creating, kpis, creating: !!s.creating, notCreating: !s.creating, createOwner: () => this.createOwner(), createHint: 'Required: owner type, name, email and phone. The owner is created in Onboarding status; readiness shows what remains.',
+      headBadges: [[r.status.toUpperCase(), r.status === 'Active' ? 'success' : r.status === 'Inactive' ? 'neutral' : 'info', true], [r.entity.owner_type === 'Trust / Partnership' ? 'TRUST' : r.entity.owner_type.toUpperCase(), 'navy', false], ['IDENTITY ' + r.identity.status.toUpperCase(), r.identity.status === 'Verified' ? 'success' : 'warning', false], ...(r.compliance.hold ? [['ACCOUNT HOLD', 'danger', false]] : [])].map(([label, tone, dot]) => ({ label, tone, dot })),
+      primaryContact: r.personal.full_name ? r.personal.full_name + (r.entity.rep_title ? ', ' + r.entity.rep_title : '') : 'Not set',
+      moreOpen: s.more, toggleMore: () => this.setState(st => ({ more: !st.more })),
+      moreItems: [['message-square', 'Message Owner', () => this.setTab('communications')], ['house', 'Open Owner Portal', () => go(PAGES['owner-portal'])], ['umbrella', 'Insurance', () => go(PAGES.insurance + '?q=' + encodeURIComponent(name))], ['send', 'Send Statement', () => this.notify('Statement sent to ' + (r.personal.email || r.comms.email))], ['trash-2', 'Delete Owner', () => this.setState({ del: true }), true]].map(([icon, label, fn, danger]) => ({ icon, label, color: danger ? '#DC2626' : '#172033', go: () => { this.setState({ more: false }); fn(); } })),
+      addProperty: () => go(PAGES['property-form'] + '?owner=' + encodeURIComponent(name)),
+      uploadTop: e => { const fl = [...(e.target.files || [])]; if (!fl.length) return; const today = new Date().toISOString().slice(0, 10); this.setState(st => ({ tab: 'documents', folder: 'All', rec: this.log({ ...st.rec, docs: [...fl.map((f, i) => ({ id: 'D-' + (Date.now() + i), name: f.name, folder: 'Other', type: 'Uploaded file', version: 1, date: today, status: 'Received', by: ME, verifiedBy: '' })), ...st.rec.docs] }, fl.length + ' document' + (fl.length > 1 ? 's' : '') + ' uploaded', 'upload') })); this.notify(fl.length + ' file' + (fl.length > 1 ? 's' : '') + ' uploaded to Other • move to the right folder from Documents'); e.target.value = ''; },
+      hasSecs: secs.length > 0, secs, tables,
+      showChips: s.tab === 'documents', uploadFolder: s.folder === 'All' ? 'Other' : s.folder,
+      chips: [['All', r.docs.length], ...counts].map(([f, c]) => { const on = s.folder === f; return { label: f, count: String(c), bg: on ? '#132A52' : '#FFFFFF', color: on ? '#FFFFFF' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ folder: f }) }; }),
+      uploadDocs: e => { const fl = [...(e.target.files || [])]; if (!fl.length) return; const folder = s.folder === 'All' ? 'Other' : s.folder; const today = new Date().toISOString().slice(0, 10);
+        this.setState(st => { let rec = { ...st.rec, docs: [...fl.map((f, i) => ({ id: 'D-' + (Date.now() + i), name: f.name, folder, type: 'Uploaded file', version: 1 + st.rec.docs.filter(d => d.name === f.name).length, date: today, status: 'Received', by: ME, verifiedBy: '' })), ...st.rec.docs] }; return { rec: this.log(rec, fl.length + ' document' + (fl.length > 1 ? 's' : '') + ' uploaded to ' + folder, 'upload') }; });
+        this.notify(fl.length + ' file' + (fl.length > 1 ? 's' : '') + ' uploaded to ' + folder + ' • status Received (not yet verified)'); e.target.value = ''; },
+      showTimeline: !s.creating && (s.tab === 'activity' || s.tab === 'overview'),
+      timeline: (s.tab === 'overview' ? r.activity.slice(0, 5) : r.activity).map(a => { const [bg, fg] = TL[a.icon] || ['#F1F5F9', '#475569']; return { text: a.text, when: fmtTS(a.at), by: a.by, icon: a.icon || 'pencil', bg, fg }; }),
+      askDelete: () => this.setState({ del: true }), cancelDelete: () => this.setState({ del: false }),
+      delOpen: s.del, delTitle: 'Delete Owner — ' + name + '?', delBlocked: blockers.length > 0, delAllowed: blockers.length === 0, delBlockers: blockers,
+      delBody: blockers.length ? 'This owner cannot be deleted while records are linked. Transfer the properties and terminate the agreement first, or deactivate the owner to revoke portal access and keep the full audit trail.' : 'This permanently removes ' + name + ' and every linked owner document. The deletion is recorded in the audit log.',
+      deactivate: () => { this.setState(st => ({ del: false, rec: this.log({ ...st.rec, status: 'Inactive' }, 'Owner deactivated — portal access revoked', 'user-x') })); this.syncPeople({ status: 'Inactive' }, name); this.notify(name + ' deactivated • portal access revoked'); },
+      confirmDelete: () => { try { const st = load(KEY) || {}; delete st[name]; sessionStorage.setItem(KEY, JSON.stringify(st)); const ps = load(PKEY); if (ps && ps.people) { ps.people = ps.people.filter(x => !(x.type === 'owner' && x.name === name)); sessionStorage.setItem(PKEY, JSON.stringify(ps)); } } catch (e) {} this._noSave = true; go(PAGES.owners); }
+    };
+  }
+}
+</script>
+</body>
+</html>

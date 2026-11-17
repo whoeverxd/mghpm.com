@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="str-data.js"></script>
+  <script src="amenities-data.js"></script>
+  <script src="pay-data.js"></script>
+  <script src="readiness-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 04 — Property Detail" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button onClick="{{ goList }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:4px 0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 16 }}" hint-size="16px,16px"></x-import>Properties
+          </button>
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+            <div style="display:flex;flex-direction:column;gap:10px;min-width:0;flex:1 1 420px">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+                <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ title }}</h1>
+                <span style="padding:5px 8px;border-radius:6px;background:#F1F5F9;color:#475569;font:600 12px/1 'Plus Jakarta Sans',sans-serif">{{ code }}</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+                <sc-for list="{{ badges }}" as="bd" hint-placeholder-count="3">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ bd.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ bd.label }}</x-import>
+                </sc-for>
+                <span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ metaLine }}</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px">
+              <div onClick="{{ goList }}" style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="arrow-left" hint-size="90px,40px">Back</x-import></div>
+              <div onClick="{{ goEdit }}" style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="pencil" hint-size="90px,40px">Edit</x-import></div>
+            </div>
+          </div>
+        </div>
+
+        <div role="tablist" style="display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;box-shadow:inset 0 -1px 0 #E2E8F0;scrollbar-width:none">
+          <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="14">
+            <button role="tab" onClick="{{ tb.select }}" style="flex-shrink:0;height:44px;padding:0 12px;border:0;box-shadow:inset 0 -2px 0 {{ tb.border }};background:transparent;cursor:pointer;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap" style-hover="color:#006B68">{{ tb.label }}</button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start">
+            <div style="grid-column:{{ mainSpan }};display:flex;flex-direction:column;gap:24px;min-width:0">
+              <x-import component-from-global-scope="mgh-compliance-summary" from="./compliance-data.js" scope="property" hint-size="100%,220px"></x-import>
+<sc-for list="{{ overviewSections }}" as="sec" hint-placeholder-count="4">
+                <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;gap:12px;padding-bottom:4px">
+                    <span style="width:28px;height:28px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;font:700 13px/1 'Plus Jakarta Sans',sans-serif">{{ sec.n }}</span>
+                    <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sec.title }}</h3>
+                  </div>
+                  <div style="display:flex;flex-direction:column">
+                    <sc-for list="{{ sec.fields }}" as="fd" hint-placeholder-count="4">
+                      <div style="display:flex;justify-content:space-between;gap:24px;padding:12px 0;border-top:1px solid #F1F5F9">
+                        <span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.label }}</span>
+                        <span style="font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033;text-align:right;text-wrap:pretty">{{ fd.value }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <sc-if value="{{ sec.hasTags }}">
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                      <sc-for list="{{ sec.tags }}" as="tg">
+                        <span style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:#F8FAFC;border:1px solid #E2E8F0;color:#172033;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+                          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ tg.icon }}" size="{{ 14 }}" color="#006B68" hint-size="14px,14px"></x-import>{{ tg.label }}
+                        </span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <div style="grid-column:{{ railSpan }};display:flex;flex-direction:column;gap:24px;min-width:0">
+              <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:12px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:220px;position:relative"><image-slot id="property-photo-{{ pid }}" shape="rounded" radius="8" placeholder="Drop a property photo"></image-slot></div>
+              </div>
+              <sc-for list="{{ rail }}" as="rc" hint-placeholder-count="3">
+                <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:4px">
+                  <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;padding-bottom:8px">{{ rc.title }}</span>
+                  <sc-for list="{{ rc.items }}" as="ri" hint-placeholder-count="3">
+                    <div style="display:flex;justify-content:space-between;gap:16px;padding:8px 0">
+                      <span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ri.label }}</span>
+                      <span style="font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033;text-align:right">{{ ri.value }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isUnits }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Units</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ unitsSub }}</p></div>
+              <div onClick="{{ addUnit }}" style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="plus" hint-size="130px,32px">Add Unit</x-import></div>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:860px;border-collapse:collapse">
+                <thead><tr>
+                  <th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Unit</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Floor</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Beds / Baths</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Status</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Tenant</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Lease End</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right">Rent</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Actions</th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ unitRows }}" as="u" hint-placeholder-count="10">
+                    <tr style-hover="background:#F8FAFC">
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px;color:#172033;font-weight:600">{{ u.unit }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ u.floor }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ u.beds }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ u.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ u.status }}</x-import></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;color:#172033">{{ u.tenant }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ u.leaseEnd }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;color:#172033;font-weight:600">{{ u.rent }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px"><button onClick="{{ u.edit }}" title="Edit" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer;margin-left:auto" style-hover="background:#F1F5F9;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="pencil" size="{{ 16 }}" hint-size="16px,16px"></x-import></button></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <sc-if value="{{ noUnits }}"><p style="margin:0;padding:48px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No units for this property.</p></sc-if>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 24px">
+              <span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ unitShowing }}</span>
+              <div style="display:flex;gap:4px">
+                <sc-for list="{{ unitPages }}" as="pg" hint-placeholder-count="2">
+                  <button onClick="{{ pg.go }}" style="min-width:32px;height:32px;padding:0 8px;border:1px solid {{ pg.border }};border-radius:8px;background:{{ pg.bg }};color:{{ pg.color }};cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ pg.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isFinancials }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px">
+              <sc-for list="{{ finKpis }}" as="k" hint-placeholder-count="4">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import>
+              </sc-for>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Monthly Statement</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Last 6 months • USD</p></div>
+                <div onClick="{{ goLedger }}" style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon-right="arrow-right" hint-size="130px,32px">Open Ledger</x-import></div>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:720px;border-collapse:collapse">
+                  <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Month</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right">Gross Income</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right">Operating Expenses</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right">Net Income</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Owner Distribution</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ finRows }}" as="r" hint-placeholder-count="6">
+                      <tr style-hover="background:#F8FAFC">
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px;color:#172033;font-weight:600">{{ r.month }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;color:#172033">{{ r.gross }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right">{{ r.opex }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;color:#172033;font-weight:600">{{ r.net }}</td>
+                        <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px;color:#172033">{{ r.dist }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isMaintenance }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Work Orders</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ woSub }}</p></div>
+              <div onClick="{{ newWo }}" style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="plus" hint-size="130px,32px">New Work Order</x-import></div>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:900px;border-collapse:collapse">
+                <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Work Order</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Issue</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Unit</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Priority</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Assigned To</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Status</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Opened</th></tr></thead>
+                <tbody>
+                  <sc-for list="{{ woRows }}" as="w" hint-placeholder-count="5">
+                    <tr onClick="{{ w.open }}" style="cursor:pointer" style-hover="background:#F8FAFC">
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px;color:#172033;font-weight:600">{{ w.id }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;color:#172033;white-space:normal;min-width:220px">{{ w.issue }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ w.unit }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ w.prTone }}" dot="{{ true }}" hint-size="70px,22px">{{ w.priority }}</x-import></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ w.vendor }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ w.stTone }}" dot="{{ true }}" hint-size="90px,22px">{{ w.status }}</x-import></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px">{{ w.opened }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isDocuments }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Documents</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ docSub }}</p></div>
+              <div onClick="{{ uploadDoc }}" style="display:flex"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="folder-open" hint-size="130px,32px">Open Owner Folder</x-import></div>
+            </div>
+            <div style="display:flex;flex-direction:column;padding:0 24px 12px">
+              <sc-for list="{{ docs }}" as="d" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid #E2E8F0">
+                  <span style="width:40px;height:40px;border-radius:8px;flex-shrink:0;background:#F1F5F9;color:#132A52;display:flex;align-items:center;justify-content:center">
+                    <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ d.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  </span>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                    <span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.name }}</span>
+                    <span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ d.meta }}</span>
+                  </div>
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ d.tone }}" hint-size="90px,22px">{{ d.category }}</x-import>
+                  <button onClick="{{ d.download }}" title="Download" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#F1F5F9;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="download" size="{{ 16 }}" hint-size="16px,16px"></x-import></button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isInspections }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Inspections</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ inspSub }}</p></div>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+                <select value="{{ newType }}" onChange="{{ onNewType }}" aria-label="Inspection type" style="height:32px;padding:0 10px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+                  <option value="move-in">Move-In Inspection</option><option value="quarterly">Quarterly Inspection</option><option value="move-out">Move-Out Inspection</option><option value="maintenance">Maintenance Inspection</option><option value="custom">Custom Inspection</option>
+                </select>
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="plus" on-click="{{ newInspection }}" hint-size="140px,32px">New Inspection</x-import>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;padding:0 24px 12px">
+              <sc-for list="{{ inspections }}" as="in" hint-placeholder-count="3">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 0;border-top:1px solid #E2E8F0">
+                  <span style="width:96px;flex-shrink:0;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ in.date }}</span>
+                  <span style="width:40px;height:40px;border-radius:8px;flex-shrink:0;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="clipboard-check" size="{{ 18 }}"  hint-size="18px,18px"></x-import></span>
+                  <div style="flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:4px">
+                    <span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ in.title }}</span>
+                    <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ in.meta }}</span>
+                  </div>
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ in.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ in.status }}</x-import>
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon-right="arrow-right" on-click="{{ in.open }}" hint-size="120px,32px">{{ in.action }}</x-import>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isAmenities }}" hint-placeholder-val="{{ false }}">
+          <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 360px"><h2 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Amenities &amp; Services</h2><p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ amSubtitle }}</p></div>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px"><sc-if value="{{ amDirty }}"><span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#B45309">{{ amDirtyText }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" on-click="{{ amDiscard }}" hint-size="auto,36px">Discard</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ amSave }}" hint-size="auto,36px">Save Changes</x-import></sc-if><sc-if value="{{ amClean }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="eye" on-click="{{ amPreview }}" hint-size="auto,36px">Preview in Explore Stays</x-import></sc-if></div>
+            </div>
+            <div role="tablist" style="display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid #E2E8F0"><sc-for list="{{ amSubs }}" as="tb" hint-placeholder-count="6"><button role="tab" onClick="{{ tb.select }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:0;border-bottom:2px solid {{ tb.border }};background:transparent;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ tb.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>{{ tb.label }}<span style="padding:2px 7px;border-radius:999px;background:#F1F5F9;color:#475569;font:600 11px/1.3 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></button></sc-for></div>
+            <sc-if value="{{ amIsAmen }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ amCats }}" as="c" hint-placeholder-count="10"><button onClick="{{ c.select }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:999px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ c.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ c.label }}<span style="opacity:0.75">{{ c.count }}</span></button></sc-for></div>
+              <sc-if value="{{ amIsPets }}" hint-placeholder-val="{{ false }}"><div style="background:#F8FAFC;border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><span style="display:flex;flex-direction:column;gap:3px"><span style="font:600 14px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Pet Policy</span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Explore Stays shows these restrictions — never a bare “Pet Friendly”.</span></span><span style="display:flex;align-items:center;gap:8px;font:600 13px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Pets Allowed <button onClick="{{ petAllowed.on }}" disabled="{{ petAllowed.off }}" title="{{ petAllowed.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ petAllowed.bg }};cursor:pointer;display:flex;justify-content:{{ petAllowed.jc }};opacity:{{ petAllowed.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></span></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px"><sc-for list="{{ petFields }}" as="f"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569">{{ f.label }}<input value="{{ f.value }}" onChange="{{ f.on }}" disabled="{{ f.off }}" placeholder="{{ f.ph }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label></sc-for></div></div></sc-if>
+              <div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto"><table style="width:100%;min-width:820px;border-collapse:collapse"><thead><tr><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Amenity</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Available</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Private / Shared</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Included</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Guest Visible</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Notes</th></tr></thead><tbody><sc-for list="{{ amRows }}" as="r" hint-placeholder-count="8"><tr style="background:{{ r.rowBg }}"><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;color:#172033;font-weight:600;min-width:200px">{{ r.label }}</td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.avail.on }}" disabled="{{ r.avail.off }}" title="{{ r.avail.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.avail.bg }};cursor:pointer;display:flex;justify-content:{{ r.avail.jc }};opacity:{{ r.avail.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:150px"><sc-if value="{{ r.hasScope }}"><select value="{{ r.scope }}" onChange="{{ r.onScope }}" disabled="{{ r.locked }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0;font-weight:500" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><option value="">—</option><option value="Private">Private</option><option value="Shared">Shared</option></select></sc-if><sc-if value="{{ r.noScope }}"><span style="color:#CBD5E1">—</span></sc-if></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.inc.on }}" disabled="{{ r.inc.off }}" title="{{ r.inc.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.inc.bg }};cursor:pointer;display:flex;justify-content:{{ r.inc.jc }};opacity:{{ r.inc.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:110px"><button onClick="{{ r.vis.on }}" disabled="{{ r.vis.off }}" title="{{ r.vis.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.vis.bg }};cursor:pointer;display:flex;justify-content:{{ r.vis.jc }};opacity:{{ r.vis.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;min-width:220px"><input value="{{ r.notes }}" onChange="{{ r.onNotes }}" disabled="{{ r.locked }}" placeholder="{{ r.ph }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td></tr></sc-for></tbody></table></div>
+            </sc-if>
+            <sc-if value="{{ amIsAccess }}" hint-placeholder-val="{{ false }}"><div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto"><table style="width:100%;min-width:820px;border-collapse:collapse"><thead><tr><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Amenity</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Available</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Private / Shared</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Included</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Guest Visible</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Notes</th></tr></thead><tbody><sc-for list="{{ accRows }}" as="r" hint-placeholder-count="8"><tr style="background:{{ r.rowBg }}"><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;color:#172033;font-weight:600;min-width:200px">{{ r.label }}</td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.avail.on }}" disabled="{{ r.avail.off }}" title="{{ r.avail.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.avail.bg }};cursor:pointer;display:flex;justify-content:{{ r.avail.jc }};opacity:{{ r.avail.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:150px"><sc-if value="{{ r.hasScope }}"><select value="{{ r.scope }}" onChange="{{ r.onScope }}" disabled="{{ r.locked }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0;font-weight:500" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><option value="">—</option><option value="Private">Private</option><option value="Shared">Shared</option></select></sc-if><sc-if value="{{ r.noScope }}"><span style="color:#CBD5E1">—</span></sc-if></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.inc.on }}" disabled="{{ r.inc.off }}" title="{{ r.inc.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.inc.bg }};cursor:pointer;display:flex;justify-content:{{ r.inc.jc }};opacity:{{ r.inc.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:110px"><button onClick="{{ r.vis.on }}" disabled="{{ r.vis.off }}" title="{{ r.vis.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.vis.bg }};cursor:pointer;display:flex;justify-content:{{ r.vis.jc }};opacity:{{ r.vis.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;min-width:220px"><input value="{{ r.notes }}" onChange="{{ r.onNotes }}" disabled="{{ r.locked }}" placeholder="{{ r.ph }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td></tr></sc-for></tbody></table></div></sc-if>
+            <sc-if value="{{ amIsSafety }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:10px;padding:12px 14px;border-radius:8px;border:1px solid #BFDBFE;background:#EFF6FF;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#1E3A8A"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="cctv" size="{{ 16 }}" hint-size="16px,16px"></x-import><span>Only exterior security cameras may be listed. Cameras in private guest areas are not permitted. The camera note is shown to guests before booking.</span></div><div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto"><table style="width:100%;min-width:820px;border-collapse:collapse"><thead><tr><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Amenity</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Available</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Private / Shared</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Included</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Guest Visible</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Notes</th></tr></thead><tbody><sc-for list="{{ safeRows }}" as="r" hint-placeholder-count="8"><tr style="background:{{ r.rowBg }}"><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;color:#172033;font-weight:600;min-width:200px">{{ r.label }}</td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.avail.on }}" disabled="{{ r.avail.off }}" title="{{ r.avail.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.avail.bg }};cursor:pointer;display:flex;justify-content:{{ r.avail.jc }};opacity:{{ r.avail.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:150px"><sc-if value="{{ r.hasScope }}"><select value="{{ r.scope }}" onChange="{{ r.onScope }}" disabled="{{ r.locked }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0;font-weight:500" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><option value="">—</option><option value="Private">Private</option><option value="Shared">Shared</option></select></sc-if><sc-if value="{{ r.noScope }}"><span style="color:#CBD5E1">—</span></sc-if></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.inc.on }}" disabled="{{ r.inc.off }}" title="{{ r.inc.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.inc.bg }};cursor:pointer;display:flex;justify-content:{{ r.inc.jc }};opacity:{{ r.inc.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:110px"><button onClick="{{ r.vis.on }}" disabled="{{ r.vis.off }}" title="{{ r.vis.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.vis.bg }};cursor:pointer;display:flex;justify-content:{{ r.vis.jc }};opacity:{{ r.vis.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;min-width:220px"><input value="{{ r.notes }}" onChange="{{ r.onNotes }}" disabled="{{ r.locked }}" placeholder="{{ r.ph }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td></tr></sc-for></tbody></table></div></sc-if>
+            <sc-if value="{{ amIsUtil }}" hint-placeholder-val="{{ false }}"><div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto"><table style="width:100%;min-width:640px;border-collapse:collapse"><thead><tr><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Utility</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Configuration</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Notes shown to guests</th></tr></thead><tbody><sc-for list="{{ utilRowsA }}" as="u" hint-placeholder-count="7"><tr><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;color:#172033;font-weight:600;width:200px"><span style="display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ u.icon }}" size="{{ 15 }}" color="#475569" hint-size="15px,15px"></x-import>{{ u.label }}</span></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:240px"><select value="{{ u.mode }}" onChange="{{ u.onMode }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0;font-weight:500" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><sc-for list="{{ u.opts }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle"><input value="{{ u.notes }}" onChange="{{ u.onNotes }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td></tr></sc-for></tbody></table></div><sc-if value="{{ elecMetered }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#78350F"><sc-for list="{{ meterFlow }}" as="m"><span style="display:flex;align-items:center;gap:8px"><span style="padding:4px 8px;border-radius:999px;background:#FFFFFF;border:1px solid #FDE68A">{{ m.label }}</span><sc-if value="{{ m.arrow }}"><span style="color:#B45309">→</span></sc-if></span></sc-for><span style="font-weight:500">{{ elecRateText }}</span></div></sc-if></sc-if>
+            <sc-if value="{{ amIsComm }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px"><sc-for list="{{ commRows }}" as="c" hint-placeholder-count="12"><button onClick="{{ c.toggle }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid {{ c.bd }};border-radius:8px;background:{{ c.bg }};cursor:pointer;text-align:left;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033"><span style="width:18px;height:18px;border-radius:4px;border:1.5px solid {{ c.boxBd }};background:{{ c.boxBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 12 }}" color="#FFFFFF" hint-size="12px,12px"></x-import></span>{{ c.label }}</button></sc-for></div></sc-if>
+            <sc-if value="{{ amIsSvc }}" hint-placeholder-val="{{ false }}"><div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto"><table style="width:100%;min-width:860px;border-collapse:collapse"><thead><tr><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Service</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Available</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Pricing</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Price (USD)</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Advance Notice (h)</th><th style="padding:10px 12px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Guest Can Request</th></tr></thead><tbody><sc-for list="{{ svcRows }}" as="r" hint-placeholder-count="10"><tr style="background:{{ r.rowBg }}"><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;color:#172033;font-weight:600;min-width:200px"><span style="display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ r.icon }}" size="{{ 15 }}" color="#475569" hint-size="15px,15px"></x-import>{{ r.label }}</span></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:90px"><button onClick="{{ r.avail.on }}" disabled="{{ r.avail.off }}" title="{{ r.avail.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.avail.bg }};cursor:pointer;display:flex;justify-content:{{ r.avail.jc }};opacity:{{ r.avail.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:170px"><select value="{{ r.pricing }}" onChange="{{ r.onPricing }}" disabled="{{ r.locked }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0;font-weight:500" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"><option value="Included">Included</option><option value="Paid">Paid</option><option value="Quote Required">Quote Required</option></select></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:130px"><input type="number" value="{{ r.price }}" onChange="{{ r.onPrice }}" disabled="{{ r.noPrice }}" placeholder="{{ r.pricePh }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:140px"><input type="number" value="{{ r.notice }}" onChange="{{ r.onNotice }}" disabled="{{ r.locked }}" style="height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td><td style="padding:8px 12px;border-bottom:1px solid #F1F5F9;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;width:140px"><button onClick="{{ r.req.on }}" disabled="{{ r.req.off }}" title="{{ r.req.title }}" style="width:38px;height:22px;border-radius:11px;border:0;padding:2px;background:{{ r.req.bg }};cursor:pointer;display:flex;justify-content:{{ r.req.jc }};opacity:{{ r.req.op }};flex-shrink:0"><span style="width:18px;height:18px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,23,42,0.2)"></span></button></td></tr></sc-for></tbody></table></div><p style="margin:0;font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Requests are fulfilled through Guest Services; billable services post to the reservation folio from the Guest Services catalog.</p></sc-if>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ isReadiness }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;align-items:start">
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:14px;border-top:3px solid {{ rdyAccent }}">
+              <span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Readiness Score</span>
+              <div style="display:flex;align-items:baseline;gap:12px"><span style="font:700 36px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ rdyPct }}</span><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ rdyTone }}" dot="{{ true }}" hint-size="120px,22px">{{ rdyStatus }}</x-import></div>
+              <span style="font:800 15px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ rdyAccent }}">{{ rdyVerdict }}</span>
+              <div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:8px;background:#F8FAFC"><span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Next Action</span><span style="font:600 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ rdyNext }}</span></div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="arrow-right" on-click="{{ rdyCont }}" hint-size="220px,40px">Continue Property Setup</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="list-checks" on-click="{{ rdyOpen }}" hint-size="190px,40px">Open Full Readiness</x-import></div>
+            </section>
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:12px">
+              <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Blockers</h3>
+              <sc-for list="{{ rdyBlockers }}" as="bk"><div style="display:flex;gap:10px;padding:10px 12px;border-radius:8px;background:#FEF2F2"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="octagon-x" size="{{ 16 }}" color="#DC2626" hint-size="16px,16px"></x-import><span style="display:flex;flex-direction:column;gap:2px"><span style="font:600 13px/1.35 'Plus Jakarta Sans',sans-serif;color:#991B1B">{{ bk.label }}</span><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#7F1D1D">{{ bk.detail }}</span></span></div></sc-for>
+              <sc-if value="{{ rdyNoBlock }}"><span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#15803D">No active blockers.</span></sc-if>
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px"><sc-for list="{{ rdySecs }}" as="rs"><div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #F1F5F9;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#475569">{{ rs.label }}</span><span style="color:{{ rs.color }};font-weight:700">{{ rs.val }}</span></div></sc-for></div>
+            </section>
+            <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px;display:flex;flex-direction:column;gap:10px">
+              <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">History</h3>
+              <sc-for list="{{ rdyHist }}" as="rh"><div style="display:flex;flex-direction:column;gap:2px;padding:8px 0;border-top:1px solid #F1F5F9"><span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ rh.text }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ rh.when }}</span></div></sc-for>
+            </section>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isPendingTab }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:64px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+            <span style="width:56px;height:56px;border-radius:12px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="layout-template" size="{{ 26 }}" hint-size="26px,26px"></x-import>
+            </span>
+            <h2 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">This screen will be designed next</h2>
+            <p style="margin:0;max-width:520px;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ pendingMsg }}</p>
+            <span style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#F1F5F9;color:#475569;font:500 12px/1.2 'Plus Jakarta Sans',sans-serif">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="route" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ pendingRoute }}
+            </span>
+            <div onClick="{{ goOverview }}" style="display:flex;padding-top:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="arrow-left" hint-size="150px,40px">Back to Overview</x-import></div>
+          </div>
+        </sc-if>
+
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const TYPES = { residential: 'Residential', commercial: 'Commercial', industrial: 'Industrial', mixed: 'Mixed', land: 'Land', apartment_condo: 'Apartment / Condo' };
+const SEED = [
+  [1, 'Brickell Bay Residences', 'MGH-BBR-001', 'apartment_condo', '1200 Brickell Bay Dr', 'Miami', 48, 46, 'active', 'occupied', 3850],
+  [2, 'Ocean View Villa', 'MGH-OVV-002', 'residential', '2501 Collins Ave', 'Miami Beach', 12, 11, 'active', 'occupied', 4200],
+  [3, 'Coral Gables Terrace', 'MGH-CGT-003', 'apartment_condo', '300 Alhambra Cir', 'Coral Gables', 36, 34, 'active', 'occupied', 3450],
+  [4, 'Las Olas Lofts', 'MGH-LOL-004', 'mixed', '401 E Las Olas Blvd', 'Fort Lauderdale', 24, 22, 'active', 'occupied', 2980],
+  [5, 'Wynwood Commons', 'MGH-WWC-005', 'mixed', '250 NW 23rd St', 'Miami', 18, 15, 'active', 'maintenance', 2650],
+  [6, 'Sunset Beach House', 'MGH-SBH-006', 'residential', '7800 Atlantic Way', 'Miami Beach', 1, 0, 'active', 'vacant', 9500],
+  [7, 'Mar de Plata I', 'MGH-MDP-007', 'apartment_condo', '6365 Collins Ave', 'Miami Beach', 20, 19, 'active', 'occupied', 3100],
+  [8, 'Mar de Plata II', 'MGH-MDP-008', 'apartment_condo', '6345 Collins Ave', 'Miami Beach', 20, 18, 'active', 'occupied', 3050],
+  [9, 'Key Biscayne Retreat', 'MGH-KBR-009', 'residential', '180 Harbor Dr', 'Key Biscayne', 1, 1, 'active', 'occupied', 12500],
+  [10, 'Doral Business Center', 'MGH-DBC-010', 'commercial', '8200 NW 41st St', 'Doral', 10, 8, 'active', 'occupied', 5400],
+  [11, 'Coconut Grove Cottages', 'MGH-CGC-011', 'residential', '3300 Mary St', 'Miami', 6, 6, 'active', 'occupied', 3750],
+  [12, 'Hollywood Boardwalk Suites', 'MGH-HBS-012', 'apartment_condo', '101 N Ocean Dr', 'Hollywood', 14, 12, 'active', 'occupied', 2850],
+  [13, 'Aventura Park Tower', 'MGH-APT-013', 'apartment_condo', '19355 Turnberry Way', 'Aventura', 30, 30, 'active', 'occupied', 3600],
+  [14, 'Little Havana Flats', 'MGH-LHF-014', 'residential', '1550 SW 8th St', 'Miami', 8, 5, 'active', 'maintenance', 1950],
+  [15, 'Hialeah Industrial Park', 'MGH-HIP-015', 'industrial', '7500 W 20th Ave', 'Hialeah', 4, 3, 'active', 'occupied', 6800],
+  [16, 'Homestead Land Parcel', 'MGH-HLP-016', 'land', '28000 SW 152nd Ave', 'Homestead', 0, 0, 'draft', 'vacant', 0],
+  [17, 'North Bay Village Residences', 'MGH-NBV-017', 'apartment_condo', '7900 Harbor Island Dr', 'North Bay Village', 16, 0, 'inactive', 'vacant', 2700],
+  [18, 'Pompano Beach Duplex', 'MGH-PBD-018', 'residential', '2400 NE 16th St', 'Pompano Beach', 2, 2, 'active', 'occupied', 2400]
+].map(([id, title, code, type, address, city, units, occupied, record, occ, rent]) => ({ id, title, code, type, address, city, state: 'FL', units, occupied, record, occ, rent, archived: false }));
+
+const OWNERS = ['Alvarez Family Trust', 'Alvarez Family Trust', 'Coral Ventures Trust', 'Las Olas Partners LP', 'Wynwood Urban Fund', 'Alvarez Family Trust', 'Plata Investments Group', 'Plata Investments Group', 'Harbor Key Trust', 'Doral Commercial REIT', 'Grove Heritage Trust', 'Boardwalk Equities LLC', 'Turnberry Capital Trust', 'Calle Ocho Housing LLC', 'Hialeah Logistics LLC', 'Southland Land Co.', 'Bay Village Holdings', 'Pompano Family Trust'];
+const ZIP = { 'Miami': '33131', 'Miami Beach': '33140', 'Coral Gables': '33134', 'Fort Lauderdale': '33301', 'Key Biscayne': '33149', 'Doral': '33166', 'Hollywood': '33019', 'Aventura': '33180', 'Hialeah': '33010', 'Homestead': '33033', 'North Bay Village': '33141', 'Pompano Beach': '33062' };
+const TENANTS = ['Daniela Ortiz', 'Michael Chen', 'Priya Nair', 'Sofia Martinez', 'Andre Williams', 'Laura Méndez', 'Jonathan Reyes', 'Hannah Schultz', 'Ethan Park', 'Camila Rossi', 'James Whitaker', 'Valentina Cruz'];
+const AMEN = { pool: ['Pool', 'waves'], parking: ['Parking', 'car'], gym: ['Gym', 'dumbbell'], elevator: ['Elevator', 'arrow-up-down'], security_24: ['24/7 Security', 'shield-check'], bbq_area: ['BBQ Area', 'flame'], garden: ['Garden', 'trees'], rooftop: ['Rooftop', 'building'], storage: ['Storage', 'package'], pet_friendly: ['Pet Friendly', 'paw-print'] };
+const COMM = [['Reservation Confirmation', 'mail-check'], ['Check-in Instructions', 'key-round'], ['Expense Notifications', 'receipt'], ['Owner Financial Statements', 'file-text'], ['Maintenance Approval Requests', 'wrench']];
+const TABS = [
+  ['overview', 'Overview', null], ['units', 'Units', '/admin/properties/:id/units'], ['owner', 'Owner', '/admin/people/owners'], ['tenants', 'Tenants', '/admin/people/tenants'],
+  ['leases', 'Leases', '/admin/leases'], ['reservations', 'Reservations', '/admin/reservations'], ['financials', 'Financials', '/admin/finance'], ['maintenance', 'Maintenance', '/admin/work-orders'],
+  ['inspections', 'Inspections', null], ['readiness', 'Readiness', null], ['amenities', 'Amenities & Services', null], ['expenses', 'Expenses', '/admin/payments/expenses/add'], ['documents', 'Documents', '/admin/documents'], ['hoa', 'HOA', null], ['assets', 'Assets', null], ['activity', 'Activity', '/admin/audit-users']
+];
+const DESIGNED = { amenities: 1, readiness: 1, overview: 1, units: 1, financials: 1, maintenance: 1, documents: 1, inspections: 1 };
+const INSP = 'Master 10 - Digital Inspection.dc.html';
+const readInsp = id => { try { return JSON.parse(sessionStorage.getItem('mghpm.inspection.v2.' + id)) || null; } catch (e) { return null; } };
+const fmtUSD = (n, d = 2) => Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: d, maximumFractionDigits: d });
+const QP = new URLSearchParams(window.location.search);
+function loadProps() { try { const s = JSON.parse(sessionStorage.getItem('mghpm.properties.v1')); if (s && s.props) return s.props; } catch (e) {} return SEED; }
+
+function unitsFor(p) {
+  const out = [];
+  for (let i = 0; i < p.units; i++) {
+    const perFloor = p.units > 8 ? 4 : p.units;
+    const floor = p.units > 8 ? Math.floor(i / perFloor) + 1 : 1;
+    const unit = p.units === 1 ? 'Main' : p.units > 8 ? String(floor * 100 + (i % perFloor) + 1) : String(101 + i);
+    const beds = [1, 2, 2, 3][i % 4];
+    let status = i < p.occupied ? 'occupied' : 'available';
+    if (p.occ === 'maintenance' && i === p.units - 1) status = 'maintenance';
+    if (p.record === 'inactive') status = 'vacant';
+    const occ = status === 'occupied';
+    const mo = ['Nov 30, 2026', 'Jan 31, 2027', 'Mar 31, 2027', 'May 31, 2027', 'Jul 31, 2027', 'Sep 30, 2027'][i % 6];
+    out.push({ unit, floor: String(floor), beds: beds + ' bd • ' + (beds > 1 ? 2 : 1) + ' ba', status, tenant: occ ? TENANTS[(i + p.id) % TENANTS.length] : '—', leaseEnd: occ ? mo : '—', rentN: p.rent + (beds - 2) * 350 });
+  }
+  return out;
+}
+
+class Component extends DCLogic {
+  state = { activeId: 'properties', collapsed: null, closedSections: {}, drawerOpen: false, tab: QP.get('tab') || 'overview', unitPage: 1, toast: null, newType: 'quarterly' };
+
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 2800); }
+  setTab(tab) { this.setState({ tab, unitPage: 1 }); try { history.replaceState(null, '', '?id=' + this._pid + '&tab=' + tab); } catch (e) {} }
+
+  amen(p, category) {
+    const A = window.MGH_AMEN, s = this.state, S = window.MGH_STR_DATA;
+    const empty = { isAmenities: false, amSubs: [], amCats: [], amRows: [], accRows: [], safeRows: [], utilRowsA: [], commRows: [], svcRows: [], petFields: [], meterFlow: [] };
+    if (s.tab !== 'amenities' || !A) return { ...empty, isAmenities: s.tab === 'amenities' };
+    const base = A.get(p.id), d = s.amDraft && s.amDraft.pid === p.id ? s.amDraft.cfg : base, sub = s.amSub || 'amenities', cat = s.amCat || 'comfort';
+    const edit = fn => this.setState(st => { const cfg = JSON.parse(JSON.stringify(st.amDraft && st.amDraft.pid === p.id ? st.amDraft.cfg : base)); fn(cfg); return { amDraft: { pid: p.id, cfg } }; });
+    const sw = (val, on, off, title) => ({ bg: val ? '#006B68' : '#CBD5E1', jc: val ? 'flex-end' : 'flex-start', op: off ? '0.4' : '1', off: !!off, title: title || '', on });
+    const rowsFor = cid => A.CATS.find(c => c.id === cid).items.map(i => { const o = d.amen[i.id] || { avail: false, scope: '', included: true, visible: true, notes: '' }, av = !!o.avail; const up = patch => edit(c => { c.amen[i.id] = { avail: false, scope: '', included: true, visible: true, notes: '', ...(c.amen[i.id] || {}), ...patch }; });
+      return { label: i.label, rowBg: av ? '#FFFFFF' : '#FCFCFD', avail: sw(av, () => up({ avail: !av }), false, 'Available'), hasScope: i.scope, noScope: !i.scope, scope: o.scope || '', onScope: e => up({ scope: e.target.value }), inc: sw(o.included !== false, () => up({ included: o.included === false }), !av, 'Included in stay price'), vis: sw(o.visible !== false, () => up({ visible: o.visible === false }), !av, 'Shown to guests'), notes: o.notes || '', onNotes: e => up({ notes: e.target.value }), locked: !av, ph: av ? (i.id === 'cam_ext' ? 'Where cameras are located (exterior only)' : 'e.g. Pool hours 7:00 AM–10:00 PM') : '' }; });
+    const cnt = cid => A.CATS.find(c => c.id === cid).items.filter(i => d.amen[i.id] && d.amen[i.id].avail).length;
+    const amenCount = A.AMEN_CATS.reduce((t, c) => t + cnt(c), 0), commCount = Object.keys(d.comm).filter(k => d.comm[k]).length, svcCount = Object.keys(d.svc).filter(k => d.svc[k].avail).length;
+    const usd = v => v ? ' US$' + v : '';
+    const tag = o => [o.scope, o.included === false ? 'Paid' : 'Included', o.visible === false ? 'Hidden' : 'Visible'].filter(Boolean).join(' • ');
+    const diff = () => { const ch = []; Object.keys({ ...base.amen, ...d.amen }).forEach(k => { const a = base.amen[k] || {}, b = d.amen[k] || {}; if (!!a.avail !== !!b.avail) ch.push([A.label(k), a.avail ? 'Available' : 'Not available', b.avail ? 'Available' : 'Not available']); else if (b.avail && JSON.stringify(a) !== JSON.stringify(b)) ch.push([A.label(k), tag(a), tag(b)]); }); A.UTIL.forEach(([k, l]) => { if ((base.util[k] || {}).mode !== (d.util[k] || {}).mode) ch.push([l, (base.util[k] || {}).mode || '—', d.util[k].mode]); }); A.COMMUNITY.forEach(([k, l]) => { if (!!base.comm[k] !== !!d.comm[k]) ch.push([l, base.comm[k] ? 'Yes' : 'No', d.comm[k] ? 'Yes' : 'No']); }); A.SERVICES.forEach(([k, l]) => { const a = base.svc[k] || {}, b = d.svc[k] || {}; if (JSON.stringify(a) !== JSON.stringify(b)) ch.push([l, a.avail ? a.pricing + usd(a.price) : 'Not available', b.avail ? b.pricing + usd(b.price) : 'Not available']); }); if (JSON.stringify(base.pets) !== JSON.stringify(d.pets)) ch.push(['Pet Policy', base.pets.allowed ? 'Allowed' : 'Not allowed', d.pets.allowed ? 'Allowed • ' + d.pets.types + ' • max ' + d.pets.max : 'Not allowed']); return ch; };
+    const dirty = !!(s.amDraft && s.amDraft.pid === p.id), ch = dirty ? diff() : [];
+    const ec = S && S.elecCfg ? S.elecCfg(p.id) : { rate: 0 };
+    const SUBS = [['amenities', 'Amenities', 'list-checks', amenCount], ['utilities', 'Utilities', 'zap', A.UTIL.length], ['community', 'Community', 'map-pinned', commCount], ['accessibility', 'Accessibility', 'accessibility', cnt('access')], ['services', 'Guest Services', 'concierge-bell', svcCount], ['safety', 'Safety', 'shield-check', cnt('safety')]];
+    const STR = category !== 'Long-term';
+    return { isAmenities: true,
+      amSubtitle: (STR ? 'Explore Stays and My Stay show only guest-visible entries; this page keeps the full operational configuration.' : 'Long-term property • amenities feed listings and lease addenda.') + ' Utilities and paid hospitality services are configured separately from amenities.',
+      amDirty: dirty, amClean: !dirty, amDirtyText: ch.length + ' unsaved change' + (ch.length === 1 ? '' : 's'),
+      amDiscard: () => this.setState({ amDraft: null }),
+      amSave: () => { A.set(p.id, d, 'Amenities & Services updated — ' + ch.length + ' change' + (ch.length === 1 ? '' : 's'), ch.slice(0, 40)); this.setState({ amDraft: null }); this.notify('Amenities & Services saved • ' + ch.length + ' change' + (ch.length === 1 ? '' : 's') + ' recorded in Audit Log'); },
+      amPreview: () => go(PAGES['explore-stays'] + '?view=detail&id=' + p.id),
+      amSubs: SUBS.map(([id, label, icon, count]) => { const on = sub === id; return { label, icon, count: String(count), border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', select: () => this.setState({ amSub: id }) }; }),
+      amIsAmen: sub === 'amenities', amIsUtil: sub === 'utilities', amIsComm: sub === 'community', amIsAccess: sub === 'accessibility', amIsSvc: sub === 'services', amIsSafety: sub === 'safety', amIsPets: sub === 'amenities' && cat === 'pets',
+      amCats: A.AMEN_CATS.map(cid => { const c = A.CATS.find(x => x.id === cid), on = cat === cid; return { label: c.label, icon: c.icon, count: String(cnt(cid)), bd: on ? '#006B68' : '#E2E8F0', bg: on ? '#006B68' : '#FFFFFF', fg: on ? '#FFFFFF' : '#475569', select: () => this.setState({ amCat: cid }) }; }),
+      amRows: sub === 'amenities' ? rowsFor(cat) : [], accRows: sub === 'accessibility' ? rowsFor('access') : [], safeRows: sub === 'safety' ? rowsFor('safety') : [],
+      petAllowed: sw(!!d.pets.allowed, () => edit(c => { c.pets.allowed = !c.pets.allowed; })), petFields: [['Allowed Types', 'types', 'Dogs, Cats'], ['Maximum Pets', 'max', '2'], ['Size / Weight Limit', 'weight', '25 lb each'], ['Pet Fee (USD)', 'fee', '75'], ['Notes', 'notes', '']].map(([label, k, ph]) => ({ label, value: d.pets[k] || '', ph, off: !d.pets.allowed, on: e => { const v = e.target.value; edit(c => { c.pets[k] = v; }); } })),
+      utilRowsA: A.UTIL.map(([k, label, icon, opts]) => { const u = d.util[k] || { mode: opts[0], notes: '' }; return { label, icon, opts, mode: u.mode, notes: u.notes || '', onMode: e => { const v = e.target.value; edit(c => { c.util[k] = { ...(c.util[k] || {}), mode: v }; }); }, onNotes: e => { const v = e.target.value; edit(c => { c.util[k] = { ...(c.util[k] || {}), notes: v }; }); } }; }),
+      elecMetered: (d.util.electricity || {}).mode === 'Metered Separately', meterFlow: ['Meter In', 'Meter Out', 'kWh Used', 'Rate / kWh', 'Charge'].map((label, i, a) => ({ label, arrow: i < a.length - 1 })), elecRateText: 'Rate ' + (ec.rate ? 'US$' + Number(ec.rate).toFixed(2) + '/kWh' : 'set in Electricity & Metering') + ' • posted to the stay folio at check-out',
+      commRows: A.COMMUNITY.map(([k, label]) => { const v = !!d.comm[k]; return { label, bd: v ? '#006B68' : '#E2E8F0', bg: v ? '#F0FAF9' : '#FFFFFF', boxBd: v ? '#006B68' : '#CBD5E1', boxBg: v ? '#006B68' : '#FFFFFF', toggle: () => edit(c => { c.comm[k] = !v; }) }; }),
+      svcRows: A.SERVICES.map(([k, label, icon]) => { const o = d.svc[k] || { avail: false, pricing: 'Paid', price: '', notice: '24', request: false }, av = !!o.avail; const up = patch => edit(c => { c.svc[k] = { ...o, ...(c.svc[k] || {}), ...patch }; }); return { label, icon, rowBg: av ? '#FFFFFF' : '#FCFCFD', avail: sw(av, () => up({ avail: !av, request: !av })), pricing: o.pricing, onPricing: e => up({ pricing: e.target.value }), price: o.price || '', onPrice: e => up({ price: e.target.value }), noPrice: !av || o.pricing !== 'Paid', pricePh: o.pricing === 'Quote Required' ? 'Quote' : o.pricing === 'Included' ? 'Included' : '0', notice: o.notice || '0', onNotice: e => up({ notice: e.target.value }), locked: !av, req: sw(!!o.request, () => up({ request: !o.request }), !av, 'Guest can request from My Stay') }; })
+    };
+  }
+
+  rdy(p) {
+    const RD = window.MGH_READY, b = RD && p ? RD.build(p.id) : null;
+    if (!b) return { rdyPct: '—', rdyVerdict: 'Loading readiness…', rdyStatus: '', rdyTone: 'neutral', rdyNext: '', rdyBlockers: [], rdyNoBlock: true, rdySecs: [], rdyHist: [], rdyOpen: () => {}, rdyAccent: '#006B68' };
+    const ST = RD.STATUS[b.status];
+    return { rdyPct: b.score + '%', rdyAccent: b.blocked ? '#DC2626' : b.status === 'READY_FOR_REVIEW' ? '#D4A637' : '#15803D', rdyVerdict: b.blocked ? 'NOT READY — ' + b.blocked + ' BLOCKER' + (b.blocked > 1 ? 'S' : '') : b.pending ? 'NOT READY — ' + b.pending + ' required open' : b.status === 'READY_FOR_REVIEW' ? 'READY FOR FINAL REVIEW' : 'READY • ' + ST[0].toUpperCase(), rdyStatus: ST[0], rdyTone: ST[1],
+      rdyNext: b.next ? b.next.secTitle + ' — ' + b.next.label : b.status === 'READY_FOR_REVIEW' ? 'Final Review' : 'No open actions',
+      rdyBlockers: b.blockers.map(it => ({ label: it.secTitle + ' — ' + it.label, detail: it.detail || '' })), rdyNoBlock: !b.blockers.length,
+      rdySecs: b.secs.map(x => ({ label: x.title, val: x.state === 'na' ? 'N/A' : x.done + '/' + x.total, color: x.state === 'complete' ? '#15803D' : x.state === 'blocked' ? '#DC2626' : x.state === 'na' ? '#94A3B8' : '#B45309' })),
+      rdyHist: RD.history(p.id).slice(-4).reverse().map(h => ({ text: h.text, when: new Date(h.at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' • ' + h.by })),
+      rdyOpen: () => go('Master 36 - Property Readiness.dc.html?id=' + p.id), rdyCont: () => go('Master 36 - Property Readiness.dc.html?id=' + p.id + '&focus=next') };
+  }
+  renderVals() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state;
+    const { activeId, closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || ('Master 01 - App Layout.dc.html?page=' + id)) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+
+    const all = loadProps();
+    const p = all.find(x => String(x.id) === String(QP.get('id'))) || all[1] || all[0];
+    this._pid = p.id;
+    const owner = OWNERS[(p.id - 1) % OWNERS.length];
+    const short = p.units === 1, condo = p.type === 'apartment_condo';
+    const category = short ? 'Short-term' : /Mar de Plata|Hollywood/.test(p.title) ? 'Both' : 'Long-term';
+    const deposit = p.rent, cleaning = category === 'Long-term' ? null : 185 + (p.id % 3) * 40;
+    const occPct = p.units ? Math.round(p.occupied / p.units * 100) : 0;
+    const amen = (p.type === 'land' ? [] : condo ? ['pool', 'parking', 'gym', 'elevator', 'security_24', 'rooftop'] : p.type === 'residential' ? ['pool', 'parking', 'bbq_area', 'garden', 'pet_friendly'] : ['parking', 'security_24', 'storage', 'elevator']).map(k => ({ label: AMEN[k][0], icon: AMEN[k][1] }));
+    const comm = (category === 'Long-term' ? COMM.slice(2) : COMM).map(([label, icon]) => ({ label, icon }));
+    const occLabel = { occupied: ['Occupied', 'brand'], vacant: ['Vacant', 'neutral'], maintenance: ['Maintenance', 'warning'] }[p.occ];
+    const recLabel = { active: ['Active', 'success'], inactive: ['Inactive', 'neutral'], draft: ['Draft', 'info'] }[p.record];
+    const yesNo = v => v ? 'Yes' : 'No';
+    const startYear = 2019 + (p.id % 6);
+
+    const secs = [
+      { title: 'Property Information', fields: [['Title', p.title], ['Internal ID', p.code], ['Status', occLabel[0]], ['Property Type', TYPES[p.type]], ['Rental Category', category], ['Total Units', String(p.units)], ['Record Status', recLabel[0]], ['Management Start Date', 'Mar 1, ' + startYear], ['Property Owner', owner]] },
+      { title: 'Address & Location', fields: [['Address', p.address], ['City', p.city], ['State/Province', 'Florida'], ['Country', 'United States'], ['Postal Code', ZIP[p.city] || '33131'], ['Coordinates', (25.76 + p.id * 0.013).toFixed(4) + ', ' + (-80.19 + p.id * 0.006).toFixed(4)]] },
+      { title: 'Financial', fields: [['Currency (ISO)', 'USD'], ['Starting Monthly Rent', fmtUSD(p.rent)], ['Security Deposit', fmtUSD(deposit)], ...(cleaning ? [['Cleaning Fee', fmtUSD(cleaning)]] : []), ['Electricity Included', yesNo(short)], ['Water Included', 'Yes'], ['Internet Included', yesNo(short || condo)]] },
+      ...(condo ? [{ title: 'Utilities & Metering', fields: [['Electricity Meter Required', 'Yes'], ['Initial Meter Reading', (12000 + p.id * 431).toLocaleString('en-US') + ' kWh'], ['Electricity Rate per kWh', fmtUSD(0.14)]] }] : []),
+      ...(amen.length ? [{ title: 'Amenities', fields: [], tags: amen }] : []),
+      ...(p.units ? [{ title: 'Units Configuration', fields: [['Create Units Automatically', yesNo(p.units > 4)], ['Numbering Sequence', p.units > 8 ? 'By floor' : 'Numeric (101, 102…)'], ['Initial Unit Label', p.units === 1 ? 'Main' : p.units > 8 ? '101' : '101'], ['Default Floor', '1'], ['Default Max Occupancy', short ? '8' : '4']] }] : []),
+      { title: 'Maintenance & Suppliers', fields: [['Supplier — Plumbing', 'Aqua Pro Plumbing'], ['Supplier — Electrical', 'Bright Spark Electric'], ['Supplier — Cleaning', 'Spotless Turnover Co.'], ['Supplier — Landscaping', 'Evergreen Landscaping'], ['Owner Approval Required Over', fmtUSD(2500)], ['Emergency Auto-Approval Limit', fmtUSD(750)], ['Maintenance Contact Phone', '(305) 555-0142']] },
+      { title: 'Automated Communications', fields: [], tags: comm }
+    ].map((x, i) => ({ n: String(i + 1), title: x.title, fields: x.fields.map(([label, value]) => ({ label, value })), tags: x.tags || [], hasTags: !!(x.tags && x.tags.length) }));
+
+    const monthlyIncome = p.occupied * p.rent;
+    const rail = [
+      { title: 'Summary', items: [['Property Type', TYPES[p.type]], ['Rental Category', category], ['Total Units', String(p.units)], ['Occupancy', occPct + '% • ' + p.occupied + ' / ' + p.units]] },
+      { title: 'Financial', items: [['Starting Monthly Rent', fmtUSD(p.rent)], ['Security Deposit', fmtUSD(deposit)], ...(cleaning ? [['Cleaning Fee', fmtUSD(cleaning)]] : []), ['Monthly Income', fmtUSD(monthlyIncome)], ['Currency', 'USD']] },
+      { title: 'Address', items: [['Street', p.address], ['City', p.city + ', FL ' + (ZIP[p.city] || '')], ['Country', 'United States']] }
+    ].map(r => ({ title: r.title, items: r.items.map(([label, value]) => ({ label, value })) }));
+
+    const units = unitsFor(p);
+    const UPS = 10, uPages = Math.max(1, Math.ceil(units.length / UPS)), uPage = Math.min(s.unitPage, uPages);
+    const uFrom = units.length ? (uPage - 1) * UPS + 1 : 0, uTo = Math.min(uPage * UPS, units.length);
+    const uTone = { occupied: 'brand', available: 'success', vacant: 'neutral', maintenance: 'warning' };
+    const uLbl = { occupied: 'Occupied', available: 'Available', vacant: 'Vacant', maintenance: 'Maintenance' };
+
+    const months = ['May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026', 'Oct 2026'];
+    const fin = months.map((m, i) => { const g = monthlyIncome * (0.94 + ((i * 7 + p.id) % 6) / 100); const o = g * (0.24 + ((i + p.id) % 4) / 100); const n = g - o; return { month: m, g, o, n, d: n * 0.9 }; }).reverse();
+    const cur = fin[0];
+
+    const woBase = 1040 - p.id * 3;
+    const wos = [
+      ['Water leak under kitchen sink', 'Urgent', 'danger', 'Aqua Pro Plumbing', 'Dispatched', 'info', 'Oct 4, 2026'],
+      ['A/C not cooling — master bedroom', 'High', 'warning', 'Coastal HVAC Services', 'In Progress', 'brand', 'Oct 3, 2026'],
+      ['Smart lock offline at main entry', 'High', 'warning', 'Daniel Brooks', 'In Progress', 'brand', 'Oct 2, 2026'],
+      ['Replace hallway light fixtures', 'Low', 'neutral', 'Bright Spark Electric', 'Open', 'neutral', 'Sep 29, 2026'],
+      ['Quarterly pest control service', 'Medium', 'neutral', 'Shield Pest Solutions', 'Completed', 'success', 'Sep 24, 2026']
+    ].slice(0, p.units ? 5 : 2).map((x, i) => ({ id: '#WO-2026-' + (woBase - i), issue: x[0], unit: units.length ? units[(i * 3) % units.length].unit : 'Site', priority: x[1], prTone: x[2], vendor: x[3], status: x[4], stTone: x[5], opened: x[6], open: () => go(PAGES['work-orders-add'] + '?workOrder=' + ((woBase - i)) + '&back=' + encodeURIComponent(decodeURIComponent(location.pathname.split('/').pop()) + location.search)) }));
+
+    const docs = [
+      ['Management Agreement — ' + owner + '.pdf', 'Agreement', 'brand', 'file-signature', 'Signed Mar 1, ' + startYear + ' • 1.2 MB'],
+      ['Certificate of Insurance 2026.pdf', 'Insurance', 'info', 'shield-check', 'Uploaded Jan 12, 2026 • 840 KB'],
+      ['HOA Rules & Regulations.pdf', 'HOA', 'premium', 'scroll-text', 'Uploaded Feb 3, 2026 • 2.4 MB'],
+      ['Property Tax Bill 2026 — Miami-Dade.pdf', 'Tax', 'neutral', 'landmark', 'Uploaded Aug 18, 2026 • 310 KB'],
+      ['Lead-Based Paint Disclosure (EPA Title X).pdf', 'Compliance', 'warning', 'file-check', 'Uploaded Mar 1, ' + startYear + ' • 520 KB'],
+      ['Unit Floor Plans.zip', 'Plans', 'neutral', 'folder-archive', 'Uploaded Apr 9, 2025 • 18.6 MB']
+    ].map(([name, category, tone, icon, meta]) => ({ name, category, tone, icon, meta, download: () => this.notify('Downloading ' + name) }));
+
+    const tabMeta = TABS.find(t => t[0] === s.tab) || TABS[0];
+    const back = DETAIL + '?id=' + p.id;
+    const pageBtns = Array.from({ length: uPages }, (_, i) => { const on = i + 1 === uPage; return { label: String(i + 1), go: () => this.setState({ unitPage: i + 1 }), bg: on ? '#006B68' : '#fff', color: on ? '#fff' : '#475569', border: on ? '#006B68' : '#E2E8F0' }; });
+
+    return {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'),
+      expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Property Management', null], ['Properties', PAGES.properties], [p.title, null]]),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+
+      pid: String(p.id), title: p.title, code: p.code,
+      badges: [{ label: occLabel[0], tone: occLabel[1] }, { label: TYPES[p.type], tone: 'info' }, { label: recLabel[0], tone: recLabel[1] }],
+      metaLine: p.address + ', ' + p.city + ', FL • ' + p.units + ' units • ' + occPct + '% occupied',
+      goList: () => go(PAGES.properties),
+      goEdit: () => go(PAGES['property-form'] + '?id=' + p.id),
+      tabs: TABS.map(([id, label]) => { const on = id === s.tab || NAV_ALIAS[s.tab] === id; return { label, border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', select: () => this.setTab(id) }; }),
+      isOverview: s.tab === 'overview', isUnits: s.tab === 'units', isFinancials: s.tab === 'financials', isMaintenance: s.tab === 'maintenance', isDocuments: s.tab === 'documents',
+      isPendingTab: !DESIGNED[s.tab],
+      pendingMsg: tabMeta[1] + ' for ' + p.title + ' has not been designed yet. The tab stays connected so the flow can be tested end-to-end.',
+      pendingRoute: tabMeta[2] ? 'Route: ' + tabMeta[2].replace(':id', p.id) : 'Proposed module — no route exists yet in the current codebase',
+      goOverview: () => this.setTab('overview'),
+
+      overviewSections: secs, rail,
+      unitsSub: p.units + ' units • ' + p.occupied + ' occupied • route /admin/properties/' + p.id + '/units',
+      unitRows: units.slice(uFrom - 1, uTo).map(u => ({ ...u, status: uLbl[u.status], tone: uTone[u.status], rent: fmtUSD(u.rentN), edit: () => this.notify('Edit Unit — ' + p.title + ' • ' + u.unit) })),
+      noUnits: units.length === 0, unitShowing: 'Showing ' + uFrom + ' – ' + uTo + ' of ' + units.length + ' units', unitPages: pageBtns,
+      addUnit: () => this.notify('Add Unit — ' + p.title),
+
+      finKpis: [
+        { label: 'Gross Income — Oct', value: fmtUSD(cur.g), icon: 'trending-up', tone: 'navy', footer: 'Rent & fees collected' },
+        { label: 'Operating Expenses — Oct', value: fmtUSD(cur.o), icon: 'receipt', tone: 'premium', footer: Math.round(cur.o / cur.g * 100) + '% of gross income' },
+        { label: 'Net Operating Income', value: fmtUSD(cur.n), icon: 'landmark', tone: 'success', footer: 'October 2026' },
+        { label: 'Owner Distribution', value: fmtUSD(cur.d), icon: 'hand-coins', tone: 'brand', footer: owner }
+      ],
+      finRows: fin.map(r => ({ month: r.month, gross: fmtUSD(r.g), opex: fmtUSD(r.o), net: fmtUSD(r.n), dist: fmtUSD(r.d) })),
+      goLedger: () => go('Master 62 - Property Ledger.dc.html?id=' + p.id + '&back=' + encodeURIComponent(back + '&tab=financials') + '&backLabel=' + encodeURIComponent('Back to ' + p.title)),
+
+      woSub: wos.length + ' recent work orders • ' + p.title, woRows: wos,
+      newWo: () => go(PAGES['work-orders-add'] + '?tab=' + 'submit' + '&back=' + encodeURIComponent(decodeURIComponent(location.pathname.split('/').pop()) + location.search)),
+      docSub: docs.length + ' files in the property vault', docs,
+      uploadDoc: () => go(PAGES.documents + '?view=folders&owner=' + (owner === 'Alvarez Family Trust' ? 'alvarez' : owner.startsWith('Plata') ? 'plata' : owner.startsWith('Las Olas') ? 'lasolas' : 'alvarez') + '&node=p' + p.id),
+
+      isInspections: s.tab === 'inspections', isReadiness: s.tab === 'readiness', ...this.rdy(p), ...this.amen(p, category),
+      newType: s.newType, onNewType: e => this.setState({ newType: e.target.value }),
+      newInspection: () => { const id = 'INS-2026-' + (400 + p.id); const iu = p.id === 2 ? 'Unit 204' : (units[0] ? units[0].unit : 'Main'); go(INSP + '?id=' + id + '&type=' + s.newType + '&pid=' + p.id + '&unit=' + encodeURIComponent(iu) + '&from=property'); },
+      ...(() => {
+        const iu = p.id === 2 ? 'Unit 204' : (units[0] ? units[0].unit : 'Main');
+        const cur = readInsp('INS-2026-0311'), cs = cur && cur.summary;
+        const sumLine = x => x ? x.damaged + ' damaged ' + (x.damaged === 1 ? 'item' : 'items') + ' • ' + fmtUSD(x.ded) + ' estimated deductions • ' + x.items + ' checklist items • ' + x.photos + ' photographs' : '';
+        const list = [];
+        const created = readInsp('INS-2026-' + (400 + p.id));
+        if (created && created.summary) list.push({ date: 'Oct 4, 2026', title: ({ 'move-in': 'Move-In', quarterly: 'Quarterly', 'move-out': 'Move-Out', maintenance: 'Maintenance', custom: 'Custom' })[created.summary.type] + ' Inspection • ' + iu, meta: 'INS-2026-' + (400 + p.id) + ' • ' + sumLine(created.summary), status: created.done ? 'Completed' : 'In Progress', tone: created.done ? 'success' : 'brand', action: created.done ? 'View Report' : 'Open Checklist', open: () => go(INSP + '?id=INS-2026-' + (400 + p.id) + '&type=' + created.summary.type + '&pid=' + p.id + '&unit=' + encodeURIComponent(iu) + '&from=property') });
+        if (p.id === 2) list.push({ date: 'Oct 4, 2026', title: 'Move-Out Inspection • Unit 204', meta: 'INS-2026-0311 • Luis Herrera • ' + (cs ? sumLine(cs) : 'In progress'), status: cur && cur.done ? 'Completed' : 'In Progress', tone: cur && cur.done ? 'success' : 'brand', action: cur && cur.done ? 'View Report' : 'Open Checklist', open: () => go(INSP + '?id=INS-2026-0311&type=move-out&pid=2&unit=Unit%20204&from=property') });
+        list.push({ date: 'Jul 15, 2026', title: 'Quarterly Inspection • ' + iu, meta: 'INS-2026-0247 • Luis Herrera • 0 damaged items • $0.00 estimated deductions • 48 checklist items • 22 photographs', status: 'Completed', tone: 'success', action: 'View Report', open: () => this.notify('Opening report INS-2026-0247 (PDF)…') });
+        list.push({ date: 'Jan 2, 2025', title: 'Move-In Inspection • ' + iu, meta: 'INS-2025-0102 • Daniel Brooks • baseline for move-out comparison • 48 checklist items • 31 photographs', status: 'Completed', tone: 'success', action: 'View Report', open: () => this.notify('Opening report INS-2025-0102 (PDF)…') });
+        return { inspections: list, inspSub: list.length + ' inspections • reports filed to Owner Documents › ' + owner + ' › ' + p.title + ' › Inspections' };
+      })(),
+      toast: !!s.toast, toastMsg: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+  <style>input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}</style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 13 — Work Orders" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Maintenance &amp; Tasks</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">Work orders, renewals, inspections and admin tasks across the portfolio • priorities, assignments and due dates.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="wrench" on-click="{{ newWorkOrder }}" hint-size="160px,40px">New Work Order</x-import>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" on-click="{{ newTask }}" hint-size="120px,40px">New Task</x-import>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <button onClick="{{ k.select }}" style="text-align:left;cursor:pointer;background:#FFFFFF;border:1px solid {{ k.border }};border-radius:12px;box-shadow:{{ k.shadow }};padding:18px 20px;display:flex;flex-direction:column;gap:10px;font-family:'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68">
+              <span style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                <span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ k.label }}</span>
+                <span style="width:28px;height:28px;border-radius:8px;background:{{ k.tileBg }};color:{{ k.tileFg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ k.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+              </span>
+              <span style="font:700 26px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ k.value }}</span>
+              <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ k.hint }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px 24px;border-bottom:1px solid #E2E8F0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+              <div role="tablist" style="display:flex;gap:8px">
+                <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3">
+                  <button role="tab" onClick="{{ tb.select }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid {{ tb.border }};border-radius:999px;background:{{ tb.bg }};color:{{ tb.color }};cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ tb.label }}<span style="padding:3px 7px;border-radius:999px;background:{{ tb.countBg }};color:{{ tb.countFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></button>
+                </sc-for>
+              </div>
+              <label style="flex:0 1 340px;min-width:220px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;color:#64748B;cursor:text">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}"  hint-size="16px,16px"></x-import><input type="search" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search by title, code or property…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+              </label>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;flex:0 1 200px">Status<select value="{{ fStatus }}" onChange="{{ onStatus }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="all">All statuses</option><option value="pending">Pending</option><option value="in_progress">In Progress</option><option value="completed">Completed</option><option value="overdue">Overdue</option></select></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;flex:0 1 200px">Priority<select value="{{ fPrio }}" onChange="{{ onPrio }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="all">All priorities</option><option value="urgent">Urgent</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;flex:0 1 200px">Category<select value="{{ fCat }}" onChange="{{ onCat }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="all">All categories</option><option value="maintenance">Maintenance</option><option value="renewal">Renewal</option><option value="inspection">Inspection</option><option value="leasing">Leasing</option><option value="admin">Admin</option></select></label>
+              <sc-if value="{{ hasFilters }}"><button onClick="{{ clearFilters }}" style="height:40px;padding:0 8px;border:0;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif">Clear Filters</button></sc-if>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;min-width:1180px;border-collapse:collapse">
+              <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Title</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Property</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Assigned To</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Priority</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Status</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Due Date</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Created By</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Actions</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+                  <tr style-hover="background:#F8FAFC">
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px;white-space:normal;min-width:260px">
+                      <div style="display:flex;flex-direction:column;gap:4px">
+                        <button onClick="{{ r.edit }}" style="border:0;background:transparent;padding:0;text-align:left;cursor:pointer;font:600 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033" style-hover="color:#006B68">{{ r.title }}</button>
+                        <span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ r.code }}
+                          <span style="padding:3px 8px;border-radius:999px;background:{{ r.catBg }};color:{{ r.catFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ r.catLabel }}</span>
+                          <sc-if value="{{ r.hasWo }}"><span style="display:flex;align-items:center;gap:4px;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="link-2" size="{{ 12 }}"  hint-size="12px,12px"></x-import>{{ r.wo }}</span></sc-if>
+                        </span>
+                      </div>
+                    </td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><button onClick="{{ r.openProp }}" style="border:0;background:transparent;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px;font-family:inherit"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033" style-hover="color:#006B68">{{ r.property }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ r.unit }}</span></button></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><div style="display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ r.initials }}" tone="navy" size="{{ 26 }}" hint-size="26px,26px"></x-import><span style="color:#172033">{{ r.assignee }}</span></div></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.prioT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.prioL }}</x-import></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.statusT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.statusL }}</x-import></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;color:{{ r.dueColor }};font-weight:{{ r.dueWeight }}">{{ r.dueF }}</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ r.createdBy }}</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px">
+                      <div style="display:inline-flex;align-items:center;gap:2px">
+                        <sc-if value="{{ r.hasWo }}"><button onClick="{{ r.openWo }}" title="Open maintenance" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#F1F5F9;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="wrench" size="{{ 16 }}"  hint-size="16px,16px"></x-import></button></sc-if>
+                        <sc-if value="{{ r.canStart }}"><button onClick="{{ r.start }}" title="Start progress" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#E6F6FC;color:#0094CC"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="play" size="{{ 16 }}"  hint-size="16px,16px"></x-import></button></sc-if>
+                        <sc-if value="{{ r.canComplete }}"><button onClick="{{ r.complete }}" title="Complete" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#ECFDF3;color:#16A34A"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}"  hint-size="16px,16px"></x-import></button></sc-if>
+                        <button onClick="{{ r.edit }}" title="Edit" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#F1F5F9;color:#006B68"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="pencil" size="{{ 16 }}"  hint-size="16px,16px"></x-import></button>
+                        <button onClick="{{ r.remove }}" title="Delete" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer" style-hover="background:#FEF2F2;color:#DC2626"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 16 }}"  hint-size="16px,16px"></x-import></button>
+                      </div>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <sc-if value="{{ noRows }}"><p style="margin:0;padding:48px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No tasks match these filters.</p></sc-if>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:14px 24px">
+            <span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ showing }}</span>
+            <div style="display:flex;align-items:center;gap:4px">
+              <sc-for list="{{ pages }}" as="pg" hint-placeholder-count="2"><button onClick="{{ pg.go }}" style="min-width:32px;height:32px;padding:0 8px;border:1px solid {{ pg.border }};border-radius:8px;background:{{ pg.bg }};color:{{ pg.color }};cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ pg.label }}</button></sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:80"></div>
+      <div role="dialog" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:81;width:min(640px,calc(100vw - 32px));max-height:calc(100vh - 48px);overflow:auto;background:#FFFFFF;border-radius:12px;box-shadow:0 24px 64px rgba(15,23,42,0.24);padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:6px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ mTitle }}</h3><sc-if value="{{ mHasMeta }}"><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ mMeta }}</span></sc-if></div>
+          <button onClick="{{ closeModal }}" title="Close" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#64748B;cursor:pointer"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="x" size="{{ 18 }}"  hint-size="18px,18px"></x-import></button>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Title<input value="{{ fTitle }}" onChange="{{ onFTitle }}" placeholder="e.g. Replace kitchen faucet cartridge" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Description<textarea value="{{ fDesc }}" onChange="{{ onFDesc }}" rows="3" placeholder="Details, access instructions, materials…" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;height:auto;padding:10px 12px;resize:vertical;line-height:1.5"></textarea></label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Status<select value="{{ fS }}" onChange="{{ onFS }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="pending">Pending</option><option value="in_progress">In Progress</option><option value="completed">Completed</option><option value="overdue">Overdue</option></select></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Priority<select value="{{ fP }}" onChange="{{ onFP }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="urgent">Urgent</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Category<select value="{{ fC }}" onChange="{{ onFC }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="maintenance">Maintenance</option><option value="renewal">Renewal</option><option value="inspection">Inspection</option><option value="leasing">Leasing</option><option value="admin">Admin</option></select></label>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+          <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Assigned To<select value="{{ fA }}" onChange="{{ onFA }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><sc-for list="{{ people }}" as="pp"><option value="{{ pp }}">{{ pp }}</option></sc-for></select></label>
+          <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Due Date<input type="date" value="{{ fDue }}" onChange="{{ onFDue }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:pointer" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569">Property<select value="{{ fProp }}" onChange="{{ onFProp }}" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><sc-for list="{{ propOpts }}" as="po"><option value="{{ po.value }}">{{ po.label }}</option></sc-for></select></label>
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ closeModal }}" hint-size="90px,40px">Cancel</x-import>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" disabled="{{ cantSave }}" on-click="{{ save }}" hint-size="120px,40px">{{ mSave }}</x-import>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const QP = new URLSearchParams(window.location.search);
+const SELF = 'Master 13 - Work Orders.dc.html';
+const PROPS = { 1: 'Brickell Bay Residences', 2: 'Ocean View Villa', 3: 'Coral Gables Terrace', 4: 'Las Olas Lofts', 5: 'Wynwood Commons', 6: 'Sunset Beach House', 7: 'Mar de Plata I', 12: 'Hollywood Boardwalk Suites', 13: 'Aventura Park Tower' };
+const PEOPLE = ['Aqua Pro Plumbing', 'Coastal HVAC Services', 'Daniel Brooks', 'Luis Herrera', 'Spotless Turnover Co.', 'Bright Spark Electric', 'Sofia Ramos', 'Marcus Vance', 'Unassigned'];
+const SL = { pending: ['Pending', 'neutral'], in_progress: ['In Progress', 'info'], completed: ['Completed', 'success'], overdue: ['Overdue', 'danger'] };
+const PL = { urgent: ['Urgent', 'danger'], high: ['High', 'warning'], medium: ['Medium', 'info'], low: ['Low', 'neutral'] };
+const CL = { maintenance: ['Maintenance', '#FFFAEB', '#B45309'], renewal: ['Renewal', '#FBF5E6', '#9A7420'], inspection: ['Inspection', '#DDF3F1', '#006B68'], leasing: ['Leasing', '#E8ECF4', '#132A52'], admin: ['Admin', '#F1F5F9', '#475569'] };
+const SEED = [
+  ['T-2026-0912', 'Water leak under kitchen sink', 'Leak reported by tenant; shut-off valve closed.', 'in_progress', 'urgent', 'maintenance', 'Aqua Pro Plumbing', '2026-10-04', 1, 'Unit 1507', 'Marcus Vance', 'WO-2026-1042'],
+  ['T-2026-0913', 'A/C not cooling — master bedroom', 'Compressor quote pending owner approval ($4,860.00).', 'in_progress', 'high', 'maintenance', 'Coastal HVAC Services', '2026-10-04', 2, 'Unit 204', 'Sofia Ramos', 'WO-2026-1041'],
+  ['T-2026-0917', 'Reset smart lock & issue new codes', '', 'pending', 'high', 'maintenance', 'Daniel Brooks', '2026-10-04', 4, 'Unit 9', 'Marcus Vance', 'WO-2026-1036'],
+  ['T-2026-0915', 'Move-out inspection', 'Checklist INS-2026-0311.', 'pending', 'high', 'inspection', 'Luis Herrera', '2026-10-04', 2, 'Unit 204', 'Sofia Ramos', ''],
+  ['T-2026-0918', 'Send renewal offer — 12 months +3.5%', 'Lease expires Nov 30, 2026.', 'pending', 'medium', 'renewal', 'Sofia Ramos', '2026-10-06', 3, 'Unit 305', 'Marcus Vance', ''],
+  ['T-2026-0919', 'Collect signed lease — Marco Bellini', 'From APP-2026-0171.', 'pending', 'medium', 'leasing', 'Sofia Ramos', '2026-10-07', 1, 'Unit 1507', 'Marcus Vance', ''],
+  ['T-2026-0904', 'Pool pump replacement', 'Awaiting parts — ETA Oct 8.', 'overdue', 'medium', 'maintenance', 'Luis Herrera', '2026-10-01', 3, 'Common Area', 'Marcus Vance', 'WO-2026-1039'],
+  ['T-2026-0901', 'Renew elevator inspection certificate', 'Certificate expires Nov 3, 2026.', 'overdue', 'high', 'admin', 'Marcus Vance', '2026-09-30', 1, 'Building', 'Sofia Ramos', ''],
+  ['T-2026-0898', 'Dishwasher not draining', '', 'pending', 'low', 'maintenance', 'Unassigned', '2026-10-09', 5, 'Unit 2A', 'Sofia Ramos', 'WO-2026-1033'],
+  ['T-2026-0896', 'Quarterly inspection', '', 'pending', 'medium', 'inspection', 'Luis Herrera', '2026-10-12', 13, 'Unit 1802', 'Marcus Vance', ''],
+  ['T-2026-0908', 'Turnover cleaning', '', 'completed', 'medium', 'maintenance', 'Spotless Turnover Co.', '2026-10-04', 7, 'Apt 101', 'Sofia Ramos', ''],
+  ['T-2026-0890', 'Balcony railing inspection', '', 'completed', 'medium', 'maintenance', 'Bright Spark Electric', '2026-10-01', 1, 'Unit 2201', 'Marcus Vance', 'WO-2026-1030'],
+  ['T-2026-0905', 'Upload HOA approval letter', '', 'completed', 'low', 'admin', 'Marcus Vance', '2026-10-04', 3, 'Building', 'Marcus Vance', '']
+].map(([code, title, desc, status, priority, category, assignee, due, pid, unit, createdBy, wo]) => ({ code, title, desc, status, priority, category, assignee, due, pid, unit, createdBy, wo }));
+const KEY = 'mghpm.tasks.v1';
+const load = () => { try { return JSON.parse(sessionStorage.getItem(KEY)) || null; } catch (e) { return null; } };
+const fmtD = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const TILE = { neutral: ['#F1F5F9', '#475569'], info: ['#E6F6FC', '#00739F'], success: ['#ECFDF3', '#15803D'], danger: ['#FEF2F2', '#DC2626'] };
+const ME = 'Marcus Vance';
+
+class Component extends DCLogic {
+  state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, tasks: (load() || {}).tasks || SEED, tab: 'all', query: '', fStatus: QP.get('status') || 'all', fPrio: 'all', fCat: 'all', page: 1, modal: null, form: null };
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+
+  componentDidUpdate() { try { sessionStorage.setItem(KEY, JSON.stringify({ tasks: this.state.tasks })); } catch (e) {} }
+  patch(code, p, msg) { this.setState(s => ({ tasks: s.tasks.map(t => t.code === code ? { ...t, ...p } : t) })); if (msg) this.notify(msg); }
+  openForm(t) { this.setState({ modal: t ? t.code : 'new', form: t ? { ...t } : { title: '', desc: '', status: 'pending', priority: 'medium', category: 'maintenance', assignee: 'Unassigned', due: '2026-10-07', pid: 2, unit: '' } }); }
+
+  renderVals() {
+    const s = this.state;
+    const { v } = this.chrome('maintenance');
+    const q = s.query.trim().toLowerCase();
+    const inTab = t => s.tab === 'all' || (s.tab === 'mine' && t.assignee === ME) || (s.tab === 'urgent' && t.priority === 'urgent');
+    const list = s.tasks.filter(t => inTab(t) && (s.fStatus === 'all' || t.status === s.fStatus) && (s.fPrio === 'all' || t.priority === s.fPrio) && (s.fCat === 'all' || t.category === s.fCat)
+      && (!q || (t.title + ' ' + t.code + ' ' + (PROPS[t.pid] || '') + ' ' + t.wo).toLowerCase().includes(q)));
+    const PS = 10, totalPages = Math.max(1, Math.ceil(list.length / PS)), page = Math.min(s.page, totalPages), from = list.length ? (page - 1) * PS + 1 : 0, to = Math.min(page * PS, list.length);
+    const cnt = st => s.tasks.filter(t => t.status === st).length;
+    const kpi = (label, st, icon, tone, hint) => { const on = s.fStatus === st; return { label, value: String(cnt(st)), icon, hint, tileBg: TILE[tone][0], tileFg: TILE[tone][1], border: on ? '#006B68' : '#E2E8F0', shadow: on ? '0 0 0 3px rgba(0,107,104,0.12)' : '0 1px 2px rgba(15,23,42,0.05)', select: () => this.setState({ fStatus: on ? 'all' : st, page: 1 }) }; };
+    const F = s.form || {};
+    const setF = k => e => { const val = e.target.value; this.setState(st => ({ form: { ...st.form, [k]: k === 'pid' ? Number(val) : val } })); };
+    const editing = s.modal && s.modal !== 'new' ? s.tasks.find(t => t.code === s.modal) : null;
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Operations', null], ['Maintenance', null]]),
+      newTask: () => this.openForm(null),
+      newWorkOrder: () => go(PAGES['work-orders-add'] + '?tab=' + 'submit' + '&back=' + encodeURIComponent(decodeURIComponent(location.pathname.split('/').pop()) + location.search)),
+      kpis: [kpi('Pending', 'pending', 'clock', 'neutral', 'Not started yet'), kpi('In Progress', 'in_progress', 'loader', 'info', 'Currently being worked'), kpi('Completed', 'completed', 'circle-check', 'success', 'Closed this week'), kpi('Overdue', 'overdue', 'triangle-alert', 'danger', 'Past due date')],
+      tabs: [['all', 'All'], ['mine', 'Assigned to Me'], ['urgent', 'Urgent']].map(([id, label]) => { const on = s.tab === id; return { label, count: String(s.tasks.filter(t => id === 'all' || (id === 'mine' && t.assignee === ME) || (id === 'urgent' && t.priority === 'urgent')).length), border: on ? '#006B68' : '#E2E8F0', bg: on ? '#006B68' : '#FFFFFF', color: on ? '#FFFFFF' : '#475569', countBg: on ? 'rgba(255,255,255,0.2)' : '#F1F5F9', countFg: on ? '#FFFFFF' : '#64748B', select: () => this.setState({ tab: id, page: 1 }) }; }),
+      query: s.query, onQuery: e => this.setState({ query: e.target.value, page: 1 }),
+      fStatus: s.fStatus, fPrio: s.fPrio, fCat: s.fCat,
+      onStatus: e => this.setState({ fStatus: e.target.value, page: 1 }), onPrio: e => this.setState({ fPrio: e.target.value, page: 1 }), onCat: e => this.setState({ fCat: e.target.value, page: 1 }),
+      hasFilters: s.fStatus !== 'all' || s.fPrio !== 'all' || s.fCat !== 'all' || !!s.query, clearFilters: () => this.setState({ fStatus: 'all', fPrio: 'all', fCat: 'all', query: '', page: 1 }),
+      rows: list.slice(from - 1, to).map(t => {
+        const late = t.status === 'overdue' || (t.status !== 'completed' && t.due < '2026-10-04');
+        return { ...t, property: PROPS[t.pid] || '—', catLabel: CL[t.category][0], catBg: CL[t.category][1], catFg: CL[t.category][2], hasWo: !!t.wo,
+          initials: t.assignee === 'Unassigned' ? '—' : t.assignee.split(' ').map(x => x[0]).join('').slice(0, 2),
+          prioL: PL[t.priority][0], prioT: PL[t.priority][1], statusL: SL[t.status][0], statusT: SL[t.status][1],
+          dueF: t.due === '2026-10-04' ? 'Today' : fmtD(t.due), dueColor: late ? '#DC2626' : '#475569', dueWeight: late ? '600' : '400',
+          canStart: t.status === 'pending' || t.status === 'overdue', canComplete: t.status === 'in_progress',
+          start: () => this.patch(t.code, { status: 'in_progress' }, t.code + ' started'),
+          complete: () => this.patch(t.code, { status: 'completed' }, t.code + ' completed'),
+          edit: () => this.openForm(t),
+          remove: () => { if (!window.confirm('Delete task ' + t.code + '?')) return; this.setState(st => ({ tasks: st.tasks.filter(x => x.code !== t.code) })); this.notify(t.code + ' deleted'); },
+          openProp: () => go(DETAIL + '?id=' + t.pid + '&tab=maintenance'),
+          openWo: () => go(PAGES['work-orders-add'] + '?workOrder=' + (t.wo || '').replace('WO-2026-', '') + '&back=' + encodeURIComponent(decodeURIComponent(location.pathname.split('/').pop()) + location.search)) };
+      }),
+      noRows: list.length === 0, showing: 'Showing ' + from + ' – ' + to + ' of ' + list.length + ' tasks',
+      pages: Array.from({ length: totalPages }, (_, i) => { const on = i + 1 === page; return { label: String(i + 1), go: () => this.setState({ page: i + 1 }), bg: on ? '#006B68' : '#fff', color: on ? '#fff' : '#475569', border: on ? '#006B68' : '#E2E8F0' }; }),
+      modalOpen: !!s.modal, closeModal: () => this.setState({ modal: null, form: null }),
+      mTitle: editing ? 'Edit Task — ' + editing.code : 'New Task', mHasMeta: !!(editing && editing.wo), mMeta: editing && editing.wo ? 'Linked to maintenance ' + editing.wo + ' • changes sync to the work order' : '',
+      mSave: editing ? 'Save Changes' : 'Create Task',
+      fTitle: F.title || '', fDesc: F.desc || '', fS: F.status || 'pending', fP: F.priority || 'medium', fC: F.category || 'maintenance', fA: F.assignee || 'Unassigned', fDue: F.due || '', fProp: String(F.pid || 2),
+      onFTitle: setF('title'), onFDesc: setF('desc'), onFS: setF('status'), onFP: setF('priority'), onFC: setF('category'), onFA: setF('assignee'), onFDue: setF('due'), onFProp: setF('pid'),
+      people: PEOPLE, propOpts: Object.entries(PROPS).map(([value, label]) => ({ value, label })),
+      cantSave: !(F.title || '').trim(),
+      save: () => {
+        if (editing) { this.setState(st => ({ tasks: st.tasks.map(t => t.code === editing.code ? { ...t, ...st.form } : t), modal: null, form: null })); this.notify(editing.code + ' updated'); }
+        else { const code = 'T-2026-0' + (920 + s.tasks.length); this.setState(st => ({ tasks: [{ ...st.form, code, createdBy: ME, wo: '', unit: st.form.unit || '—' }, ...st.tasks], modal: null, form: null, page: 1 })); this.notify(code + ' created'); }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

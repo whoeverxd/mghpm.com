@@ -1,0 +1,359 @@
+.content {
+  display: grid;
+  gap: 22px;
+}
+
+.header {
+  display: grid;
+  gap: 12px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.titleBlock {
+  display: grid;
+  flex: 1 1 360px;
+  min-width: 0;
+  gap: 10px;
+}
+
+.titleBlock h1 {
+  margin: 0;
+  color: var(--color-title);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  min-height: 23px;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 10px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.badgeOwner {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.badgeTenant {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.badgeEntity {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 15px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.primaryButton {
+  border: 0;
+  background: var(--color-primary);
+  color: white;
+}
+
+.primaryButton:hover {
+  background: var(--color-primary-hover);
+}
+
+.secondaryButton {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-title);
+}
+
+.secondaryButton:hover {
+  background: var(--color-canvas);
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tab {
+  padding: 10px 14px;
+  border-bottom: 2px solid transparent;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--color-title);
+}
+
+.tab[aria-current="page"] {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.card {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.card h2 {
+  margin: 0;
+  color: var(--color-title);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.fieldList {
+  display: grid;
+  margin: 0;
+}
+
+.fieldList > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 11px 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+.fieldList dt {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.fieldList dd {
+  margin: 0;
+  color: var(--color-title);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.relationCards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.relationCard {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-title);
+  text-decoration: none;
+}
+
+.relationCard:hover {
+  border-color: var(--color-primary);
+  background: var(--color-canvas);
+}
+
+.relationCard strong {
+  font-size: 14px;
+}
+
+.relationCard span {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kpi {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.kpi span {
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kpi strong {
+  color: var(--color-title);
+  font-size: 26px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.sectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tableScroller {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th {
+  padding: 8px 10px;
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: 11px 10px;
+  border-top: 1px solid #f1f5f9;
+  color: var(--color-title);
+}
+
+.activity {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 10px 0;
+  border-top: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+
+.activity small {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.empty {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 860px) {
+  .grid,
+  .relationCards,
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .titleBlock h1 {
+    font-size: 24px;
+  }
+}

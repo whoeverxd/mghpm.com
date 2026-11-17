@@ -1,0 +1,38 @@
+.content {
+  display: grid;
+  gap: 20px;
+}
+
+.heading {
+  display: grid;
+  gap: 6px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.heading h1 {
+  margin: 0;
+  color: var(--color-title);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.heading p:last-child {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .heading h1 {
+    font-size: 24px;
+  }
+}

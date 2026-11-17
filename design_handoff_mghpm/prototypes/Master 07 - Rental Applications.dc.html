@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 07 — Rental Applications" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ pageTitle }}</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">{{ pageDesc }}</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="download" on-click="{{ exportCsv }}" hint-size="120px,40px">Export CSV</x-import>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" on-click="{{ newApp }}" hint-size="160px,40px">New Application</x-import>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+            <button onClick="{{ k.select }}" style="text-align:left;cursor:pointer;background:#FFFFFF;border:1px solid {{ k.border }};border-radius:12px;box-shadow:{{ k.shadow }};padding:18px 20px;display:flex;flex-direction:column;gap:10px;font-family:'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68">
+              <span style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                <span style="font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">{{ k.label }}</span>
+                <span style="width:28px;height:28px;border-radius:8px;background:{{ k.tileBg }};color:{{ k.tileFg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ k.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+              </span>
+              <span style="font:700 26px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ k.value }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px 24px;border-bottom:1px solid #E2E8F0">
+            <div role="tablist" style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ views }}" as="vw" hint-placeholder-count="7">
+                <button role="tab" onClick="{{ vw.select }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid {{ vw.border }};border-radius:999px;background:{{ vw.bg }};color:{{ vw.color }};cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68">
+                  {{ vw.label }}<span style="padding:3px 7px;border-radius:999px;background:{{ vw.countBg }};color:{{ vw.countFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ vw.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px">
+              <label style="flex:1 1 280px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}"  hint-size="16px,16px"></x-import>
+                <input type="search" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search by applicant, application ID or email…" aria-label="Search applications" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+              </label>
+              <select value="{{ fProp }}" onChange="{{ onProp }}" aria-label="Property" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;flex:0 1 240px">
+                <option value="">All properties</option>
+                <sc-for list="{{ propOptions }}" as="po"><option value="{{ po.value }}">{{ po.label }}</option></sc-for>
+              </select>
+              <select value="{{ fDate }}" onChange="{{ onDate }}" aria-label="Application date" style="height:40px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;flex:0 1 180px">
+                <option value="">Any date</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option>
+              </select>
+              <sc-if value="{{ hasFilters }}">
+                <button onClick="{{ clearFilters }}" style="height:40px;padding:0 8px;border:0;background:transparent;color:#006B68;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif">Clear Filters</button>
+              </sc-if>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;min-width:1280px;border-collapse:collapse">
+              <thead><tr>
+                <th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Applicant</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Property</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Unit</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Applied</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Income Verification</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Identity Verification</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Screening</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Application Status</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Assigned Agent</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;text-align:right;padding-right:24px">Action</th>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+                  <tr onClick="{{ r.open }}" style="cursor:pointer" style-hover="background:#F8FAFC">
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px">
+                      <div style="display:flex;align-items:center;gap:12px">
+                        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ r.initials }}" tone="brand" size="{{ 36 }}" hint-size="36px,36px"></x-import>
+                        <div style="display:flex;flex-direction:column;gap:3px"><span style="color:#172033;font-weight:600">{{ r.name }}</span><span style="font-size:12px;color:#64748B">{{ r.id }}</span></div>
+                      </div>
+                    </td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><div style="display:flex;flex-direction:column;gap:3px"><span style="color:#172033;font-weight:600">{{ r.property }}</span><span style="font-size:12px;color:#64748B">{{ r.rentF }} / month</span></div></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;color:#172033">{{ r.unit }}</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ r.appliedF }}</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.incT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.incL }}</x-import><span style="font-size:12px;color:#64748B">{{ r.incomeF }} • {{ r.ratioLabel }}</span></div></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.idvT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.idvL }}</x-import></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.scrT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.scrL }}</x-import></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ r.label }}</x-import></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><div style="display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ r.agentInit }}" tone="navy" size="{{ 24 }}" hint-size="24px,24px"></x-import><span style="color:#172033">{{ r.agent }}</span></div></td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;text-align:right;padding-right:24px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="{{ r.actVariant }}" size="sm" on-click="{{ r.act }}" hint-size="110px,32px">{{ r.actLabel }}</x-import></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <sc-if value="{{ noRows }}"><p style="margin:0;padding:48px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">No applications match these filters.</p></sc-if>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:14px 24px">
+            <span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ showing }}</span>
+            <div style="display:flex;align-items:center;gap:4px">
+              <sc-for list="{{ pages }}" as="pg" hint-placeholder-count="2">
+                <button onClick="{{ pg.go }}" style="min-width:32px;height:32px;padding:0 8px;border:1px solid {{ pg.border }};border-radius:8px;background:{{ pg.bg }};color:{{ pg.color }};cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ pg.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const fmtUSD = (n, d = 2) => Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: d, maximumFractionDigits: d });
+const LIST = 'Master 07 - Rental Applications.dc.html', APP = 'Master 08 - Application Detail.dc.html';
+const ST = {
+  DRAFT: ['Draft', 'neutral'], SUBMITTED: ['New', 'info'], DOCUMENTS_PENDING: ['Documents Pending', 'warning'], IDENTITY_PENDING: ['Identity Pending', 'warning'],
+  IDENTITY_VERIFIED: ['Identity Verified', 'info'], SCREENING: ['Screening', 'brand'], UNDER_REVIEW: ['Under Review', 'brand'], CONDITIONALLY_APPROVED: ['Conditional Approval', 'premium'],
+  APPROVED: ['Approved', 'success'], DENIED: ['Denied', 'danger'], WITHDRAWN: ['Withdrawn', 'neutral'], LEASE_CREATED: ['Lease Created', 'success']
+};
+const ORDER = ['DRAFT', 'SUBMITTED', 'DOCUMENTS_PENDING', 'IDENTITY_PENDING', 'IDENTITY_VERIFIED', 'SCREENING', 'UNDER_REVIEW', 'CONDITIONALLY_APPROVED', 'APPROVED', 'LEASE_CREATED'];
+const APPS_SEED = [
+  ['APP-2026-0185', 'Emily Carter', 13, 'Unit 2204', 3700, '2026-10-04', 11800, 2, 'DRAFT', 'Baptist Health South Florida', 'Registered Nurse', '4 years', 734, '1 cat'],
+  ['APP-2026-0184', 'Diego Ramírez', 1, 'Unit 2003', 3850, '2026-10-04', 14200, 3, 'SUBMITTED', 'Royal Caribbean Group', 'Financial Analyst', '3 years', 758, 'None'],
+  ['APP-2026-0183', 'Olivia Grant', 2, 'Unit 305', 4250, '2026-10-03', 15600, 2, 'SUBMITTED', 'Greenberg Traurig LLP', 'Associate Attorney', '2 years', 781, 'None'],
+  ['APP-2026-0182', 'Rahul Mehta', 3, 'Unit 214', 3450, '2026-10-02', 10900, 1, 'DOCUMENTS_PENDING', 'University of Miami', 'Research Scientist', '5 years', 742, 'None'],
+  ['APP-2026-0180', 'Isabella Moreno', 4, 'Unit 12', 2980, '2026-10-01', 9400, 2, 'IDENTITY_PENDING', 'Self-employed', 'Interior Designer', '6 years', 715, '1 dog'],
+  ['APP-2026-0179', 'Fatima Haddad', 8, 'Apt 305', 3050, '2026-09-30', 9800, 3, 'DOCUMENTS_PENDING', 'Jackson Health System', 'Pharmacist', '7 years', 769, 'None'],
+  ['APP-2026-0178', 'Samuel Okafor', 5, 'Unit 3C', 2650, '2026-09-30', 8700, 1, 'SCREENING', 'Carnival Corporation', 'Software Engineer', '2 years', 726, 'None'],
+  ['APP-2026-0176', 'Grace Liu', 13, 'Unit 1802', 3600, '2026-09-29', 10100, 2, 'UNDER_REVIEW', 'Lennar Corporation', 'Project Manager', '1 year', 668, 'None'],
+  ['APP-2026-0175', 'Mateo Fernández', 7, 'Apt 402', 3100, '2026-09-27', 11200, 4, 'IDENTITY_VERIFIED', 'Bacardi USA', 'Brand Manager', '3 years', 752, '1 dog'],
+  ['APP-2026-0173', 'Chloe Dubois', 11, 'Cottage 4', 3750, '2026-09-26', 10300, 2, 'CONDITIONALLY_APPROVED', 'Air France–KLM', 'Station Manager', '8 months', 701, 'None'],
+  ['APP-2026-0171', 'Marco Bellini', 1, 'Unit 1507', 3950, '2026-09-24', 16800, 2, 'LEASE_CREATED', 'Citadel LLC', 'Quantitative Analyst', '2 years', 802, 'None'],
+  ['APP-2026-0169', 'Nathan Brooks', 12, 'Unit 7B', 2850, '2026-09-21', 9900, 1, 'APPROVED', 'Florida Power & Light', 'Electrical Engineer', '6 years', 774, 'None'],
+  ['APP-2026-0166', 'Ava Thompson', 14, 'Unit 3', 1950, '2026-09-18', 4300, 3, 'DENIED', 'Publix Super Markets', 'Store Associate', '9 months', 584, '2 cats'],
+  ['APP-2026-0162', 'Lucas Silva', 18, 'Unit B', 2400, '2026-09-12', 8100, 2, 'WITHDRAWN', 'AutoNation', 'Sales Manager', '4 years', 721, 'None'],
+  ['APP-2026-0159', 'Ben Kowalski', 3, 'Unit 118', 3450, '2026-09-08', 7200, 1, 'DENIED', 'Uber (contractor)', 'Driver', '1 year', 612, 'None'],
+  ['APP-2026-0148', 'Daniela Ortiz', 1, 'Unit 1204', 3850, '2026-09-02', 13100, 2, 'LEASE_CREATED', 'Deloitte', 'Senior Consultant', '4 years', 742, 'None']
+].map(([id, name, pid, unit, rent, applied, income, occupants, status, employer, job, tenure, credit, pets]) => ({ id, name, pid, unit, rent, applied, income, occupants, status, employer, job, tenure, credit, pets }));
+
+try { (JSON.parse(sessionStorage.getItem('mghpm.leasing.new.v1')) || []).slice().reverse().forEach(a => { if (!APPS_SEED.some(x => x.id === a.id)) APPS_SEED.unshift(a); }); } catch (e) {}
+const PROP = { 1: 'Brickell Bay Residences', 2: 'Ocean View Villa', 3: 'Coral Gables Terrace', 4: 'Las Olas Lofts', 5: 'Wynwood Commons', 7: 'Mar de Plata I', 8: 'Mar de Plata II', 11: 'Coconut Grove Cottages', 12: 'Hollywood Boardwalk Suites', 13: 'Aventura Park Tower', 14: 'Little Havana Flats', 18: 'Pompano Beach Duplex' };
+const LKEY = 'mghpm.leasing.v1';
+const loadOv = () => { try { return JSON.parse(sessionStorage.getItem(LKEY)) || {}; } catch (e) { return {}; } };
+const saveOv = o => { try { sessionStorage.setItem(LKEY, JSON.stringify(o)); } catch (e) {} };
+const withOv = (a, ov) => ({ ...a, ...(ov[a.id] || {}) });
+const rank = s => ORDER.indexOf(s);
+const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+function derive(a) {
+  const r = rank(a.status), denied = a.status === 'DENIED', wd = a.status === 'WITHDRAWN';
+  const idv = a.status === 'IDENTITY_PENDING' ? ['Pending', 'warning'] : (r >= rank('IDENTITY_VERIFIED') || denied || wd) ? ['Verified', 'success'] : ['Not Started', 'neutral'];
+  const got = a.status === 'DRAFT' ? 1 : (a.status === 'SUBMITTED' || a.status === 'DOCUMENTS_PENDING') ? 3 : 5;
+  const docs = got === 5 ? ['5 / 5 Complete', 'success'] : a.status === 'DOCUMENTS_PENDING' ? [got + ' / 5 • Requested', 'warning'] : [got + ' / 5 Received', 'neutral'];
+  const scr = denied ? ['Adverse', 'danger'] : a.status === 'SCREENING' ? ['In Progress', 'brand'] : a.status === 'UNDER_REVIEW' ? (a.credit < 680 ? ['Review Flag', 'warning'] : ['Clear', 'success']) : (r >= rank('UNDER_REVIEW') || wd) ? ['Clear', 'success'] : ['Not Started', 'neutral'];
+  const ratio = a.income / a.rent;
+  return { idv, docs, docsGot: got, scr, ratio, ratioLabel: ratio.toFixed(1) + '× rent', label: ST[a.status][0], tone: ST[a.status][1], property: PROP[a.pid] || 'Property #' + a.pid };
+}
+const QP = new URLSearchParams(window.location.search);
+const VIEWS = [
+  ['all', 'All', null], ['new', 'New', ['SUBMITTED']], ['review', 'In Review', ['IDENTITY_PENDING', 'IDENTITY_VERIFIED', 'UNDER_REVIEW']], ['documents', 'Missing Documents', ['DOCUMENTS_PENDING']],
+  ['screening', 'Screening', ['SCREENING']], ['approved', 'Approved', ['CONDITIONALLY_APPROVED', 'APPROVED']], ['denied', 'Denied', ['DENIED']], ['lease', 'Lease Pending', ['LEASE_CREATED']]
+];
+const VIEW_META = {
+  screening: ['Screening', 'Applications with credit, criminal background and eviction checks in progress (/admin/leasing/screening).', 'screening'],
+  approved: ['Approvals', 'Approved and conditionally approved applicants awaiting lease generation (/admin/leasing/approvals). Approval does not create an active tenant.', 'approved'],
+  denied: ['Denials', 'Denied applications with recorded reasons and FCRA adverse action notices (/admin/leasing/denials).', 'denied'],
+  lease: ['Lease Pending', 'Leases generated from approved applications, awaiting signatures, initial payments and move-in (/admin/leasing/leases).', 'leasing-leases']
+};
+const AGENTS = ['Sofia Ramos', 'Elena Cruz', 'Marcus Vance'];
+const SKEY = 'mghpm.leasing.list.v1';
+const loadS = () => { try { return JSON.parse(sessionStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } };
+const TILE = { brand: ['#DDF3F1', '#006B68'], info: ['#E6F6FC', '#00739F'], warning: ['#FFFAEB', '#B45309'], success: ['#ECFDF3', '#15803D'], danger: ['#FEF2F2', '#DC2626'], navy: ['#E8ECF4', '#132A52'] };
+
+class Component extends DCLogic {
+  state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, view: QP.get('view') || 'all', query: '', fProp: '', fDate: '', page: 1, ...(QP.get('view') ? {} : loadS()) };
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+  componentDidUpdate() { try { const s = this.state; sessionStorage.setItem(SKEY, JSON.stringify({ view: s.view, query: s.query, fProp: s.fProp, fDate: s.fDate, page: s.page })); } catch (e) {} }
+
+  renderVals() {
+    const s = this.state;
+    const meta = VIEW_META[s.view];
+    const { v } = this.chrome(meta ? meta[2] : 'applications');
+    const ov = loadOv();
+    const apps = APPS_SEED.map(a => withOv(a, ov)).map(a => ({ ...a, d: derive(a) }));
+    const today = new Date('2026-10-04T12:00:00');
+    const q = s.query.trim().toLowerCase();
+    const base = apps.filter(a => (!q || (a.name + ' ' + a.id + ' ' + a.name.toLowerCase().replace(/\s+/g, '.') + '@email.com').toLowerCase().includes(q))
+      && (!s.fProp || String(a.pid) === s.fProp)
+      && (!s.fDate || (today - new Date(a.applied + 'T12:00:00')) / 864e5 <= Number(s.fDate)));
+    const inView = (a, id) => { const vw = VIEWS.find(x => x[0] === id); return !vw[2] || vw[2].includes(a.status); };
+    const filtered = base.filter(a => inView(a, s.view));
+    const PS = 10, totalPages = Math.max(1, Math.ceil(filtered.length / PS)), page = Math.min(s.page, totalPages);
+    const from = filtered.length ? (page - 1) * PS + 1 : 0, to = Math.min(page * PS, filtered.length);
+    const cnt = st => apps.filter(a => st.includes(a.status)).length;
+    const setView = id => this.setState({ view: id, page: 1 });
+    const kpi = (label, value, icon, tone, view) => { const on = s.view === view; return { label, value: String(value), icon, tileBg: TILE[tone][0], tileFg: TILE[tone][1], border: on ? '#006B68' : '#E2E8F0', shadow: on ? '0 0 0 3px rgba(0,107,104,0.12)' : '0 1px 2px rgba(15,23,42,0.05)', select: () => setView(view) }; };
+    const crumbLast = meta ? meta[0] : 'Rental Applications';
+
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Leasing & Screening', PAGES.applications], [crumbLast, null]]),
+      pageTitle: meta ? meta[0] : 'Leasing & Screening',
+      pageDesc: meta ? meta[1] : 'Rental applications, income and employment verification, screening, decisions and lease generation (/admin/leasing/applications). Identity Verification is a shared service linked to each application.',
+      exportCsv: () => this.notify('Exported ' + filtered.length + ' applications to CSV'),
+      newApp: () => go('Master 23 - Rental Application Wizard.dc.html'),
+      kpis: [
+        kpi('New Applications', cnt(['SUBMITTED']), 'inbox', 'info', 'new'),
+        kpi('Under Review', cnt(['IDENTITY_PENDING', 'IDENTITY_VERIFIED', 'UNDER_REVIEW']), 'file-search', 'navy', 'review'),
+        kpi('Screening in Progress', cnt(['SCREENING']), 'scan-search', 'brand', 'screening'),
+        kpi('Approved', cnt(['CONDITIONALLY_APPROVED', 'APPROVED']), 'circle-check-big', 'success', 'approved'),
+        kpi('Denied', cnt(['DENIED']), 'circle-x', 'danger', 'denied'),
+        kpi('Awaiting Lease', cnt(['LEASE_CREATED']), 'file-signature', 'warning', 'lease')
+      ],
+      views: VIEWS.map(([id, label]) => { const on = s.view === id; return { label, count: String(base.filter(a => inView(a, id)).length), border: on ? '#006B68' : '#E2E8F0', bg: on ? '#006B68' : '#FFFFFF', color: on ? '#FFFFFF' : '#475569', countBg: on ? 'rgba(255,255,255,0.2)' : '#F1F5F9', countFg: on ? '#FFFFFF' : '#64748B', select: () => setView(id) }; }),
+      query: s.query, onQuery: e => this.setState({ query: e.target.value, page: 1 }),
+      fProp: s.fProp, onProp: e => this.setState({ fProp: e.target.value, page: 1 }),
+      fDate: s.fDate, onDate: e => this.setState({ fDate: e.target.value, page: 1 }),
+      propOptions: [...new Set(APPS_SEED.map(a => a.pid))].map(id => ({ value: String(id), label: PROP[id] })).sort((x, y) => x.label.localeCompare(y.label)),
+      hasFilters: !!(s.query || s.fProp || s.fDate), clearFilters: () => this.setState({ query: '', fProp: '', fDate: '', page: 1 }),
+      rows: filtered.slice(from - 1, to).map(a => {
+        const idx = APPS_SEED.findIndex(x => x.id === a.id), agent = AGENTS[idx % AGENTS.length];
+        const incDone = rank(a.status) >= rank('IDENTITY_VERIFIED') || a.status === 'DENIED' || a.status === 'WITHDRAWN';
+        const inc = !incDone ? ['Pending', 'neutral'] : a.d.ratio >= 3 ? ['Verified', 'success'] : a.d.ratio >= 2.5 ? ['Below Target', 'warning'] : ['Insufficient', 'danger'];
+        const stop = e => { if (e && e.stopPropagation) e.stopPropagation(); };
+        const act = a.status === 'IDENTITY_PENDING' ? ['Open Verification', 'outline', () => go(PAGES['identity-review'] + '?member=' + encodeURIComponent(a.name))]
+          : ['APPROVED', 'CONDITIONALLY_APPROVED'].includes(a.status) ? ['Generate Lease', 'primary', () => go(APP + '?id=' + a.id + '&tab=decision')]
+          : a.status === 'LEASE_CREATED' ? ['View Lease', 'outline', () => go(PAGES.leases)]
+          : ['Review', 'outline', () => go(APP + '?id=' + a.id)];
+        return { id: a.id, name: a.name, initials: a.name.split(' ').map(x => x[0]).join('').slice(0, 2), property: a.d.property, unit: a.unit,
+        rentF: fmtUSD(a.rent), appliedF: fmtDate(a.applied), incomeF: fmtUSD(a.income), ratioLabel: a.d.ratioLabel, incL: inc[0], incT: inc[1],
+        idvL: a.d.idv[0], idvT: a.d.idv[1], scrL: a.d.scr[0], scrT: a.d.scr[1], label: a.d.label, tone: a.d.tone,
+        agent, agentInit: agent.split(' ').map(x => x[0]).join(''), actLabel: act[0], actVariant: act[1], act: e => { stop(e); act[2](); },
+        open: () => go(APP + '?id=' + a.id) }; }),
+      noRows: filtered.length === 0,
+      showing: 'Showing ' + from + ' – ' + to + ' of ' + filtered.length + ' applications',
+      pages: Array.from({ length: totalPages }, (_, i) => { const on = i + 1 === page; return { label: String(i + 1), go: () => this.setState({ page: i + 1 }), bg: on ? '#006B68' : '#fff', color: on ? '#fff' : '#475569', border: on ? '#006B68' : '#E2E8F0' }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

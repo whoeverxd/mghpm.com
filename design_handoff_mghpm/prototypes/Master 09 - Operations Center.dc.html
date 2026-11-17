@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+  <script src="ops-data.js"></script>
+</helmet>
+<div data-screen-label="Master 09 — Operations Center" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+        <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </div>
+      </sc-if>
+      
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="mgh-context" from="./org-data.js" hint-size="280px,40px"></x-import>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <sc-if value="{{ showSearchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+        </button>
+        <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+          <button title="Help &amp; Support" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer" style-hover="background:#F8FAFC">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-help" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          </button>
+        </sc-if>
+      </div>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-down" size="{{ 14 }}" color="#94A3B8" hint-size="14px,14px"></x-import>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+            <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Operations Center</h1>
+            <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">{{ dateLine }} • arrivals, departures, cleaning, maintenance, inspections and property readiness.</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+            <div role="tablist" aria-label="Day" style="display:flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:8px">
+              <sc-for list="{{ days }}" as="dy" hint-placeholder-count="2">
+                <button onClick="{{ dy.select }}" style="height:32px;padding:0 14px;border:0;border-radius:6px;cursor:pointer;background:{{ dy.bg }};color:{{ dy.color }};box-shadow:{{ dy.shadow }};font:600 13px/1 'Plus Jakarta Sans',sans-serif">{{ dy.label }}</button>
+              </sc-for>
+            </div>
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="plus" on-click="{{ newAssignment }}" hint-size="160px,40px">New Assignment</x-import></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Command Modules</h3><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Property → Reservation → Cleaning → Inspection → Work Order → Staff / Vendor → Invoice → Close</span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px">
+            <sc-for list="{{ modules }}" as="md" hint-placeholder-count="8">
+              <button onClick="{{ md.go }}" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;text-align:left;cursor:pointer;font-family:inherit;transition:border-color 140ms ease" style-hover="border-color:#99D5D0;background:#FCFEFE">
+                <span style="width:32px;height:32px;border-radius:8px;flex-shrink:0;background:{{ md.bg }};color:{{ md.fg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ md.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                <span style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1">
+                  <span style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ md.label }}</span><span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ md.value }}</span></span>
+                  <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:{{ md.subColor }};text-wrap:pretty">{{ md.sub }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start">
+          <div style="grid-column:{{ mainSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Property Readiness</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ readySub }}</p></div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">
+                <sc-for list="{{ legend }}" as="lg" hint-placeholder-count="4"><span style="display:flex;align-items:center;gap:6px"><i style="width:8px;height:8px;border-radius:4px;background:{{ lg.color }}"></i>{{ lg.label }} {{ lg.count }}</span></sc-for>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:980px;border-collapse:collapse">
+                <thead><tr><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-left:24px">Unit</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Check-out</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Cleaning</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Inspection</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Maintenance</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">Next Arrival</th><th style="padding:12px 16px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap;padding-right:24px">Readiness</th></tr></thead>
+                <tbody>
+                  <sc-for list="{{ readiness }}" as="r" hint-placeholder-count="6">
+                    <tr style-hover="background:#F8FAFC">
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-left:24px"><button onClick="{{ r.openProp }}" style="border:0;background:transparent;padding:0;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:3px;font-family:inherit"><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033" style-hover="color:#006B68">{{ r.property }}</span><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ r.unit }}</span></button></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap">{{ r.checkout }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><button onClick="{{ r.openClean }}" title="Open cleaning job" style="border:0;background:transparent;padding:0;cursor:pointer;display:flex;align-items:center;gap:4px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.cleanT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.cleanL }}</x-import><sc-if value="{{ r.hasClean }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-up-right" size="{{ 14 }}" color="#006B68" hint-size="14px,14px"></x-import></sc-if></button></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap"><button onClick="{{ r.openInsp }}" title="Open inspection" style="border:0;background:transparent;padding:0;cursor:pointer;display:flex;align-items:center;gap:4px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.inspT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.inspL }}</x-import><sc-if value="{{ r.hasInsp }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-up-right" size="{{ 14 }}" color="#006B68" hint-size="14px,14px"></x-import></sc-if></button></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;white-space:normal;min-width:160px"><sc-if value="{{ r.hasWo }}"><button onClick="{{ r.openWo }}" style="border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:inherit;color:#172033" style-hover="color:#006B68;text-decoration:underline">{{ r.maint }}</button></sc-if><sc-if value="{{ r.noWo }}"><span style="color:{{ r.maintColor }}">{{ r.maint }}</span></sc-if></td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;color:#172033">{{ r.arrival }}</td>
+                      <td style="padding:14px 16px;border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;white-space:nowrap;padding-right:24px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ r.readyT }}" dot="{{ true }}" hint-size="80px,22px">{{ r.readyL }}</x-import></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="grid-column:{{ railSpan }};background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Arrivals &amp; Departures</h3>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" on-click="{{ goRes }}" hint-size="90px,32px">Calendar</x-import>
+            </div>
+            <sc-for list="{{ movements }}" as="m" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #F1F5F9">
+                <span style="width:64px;flex-shrink:0;font:700 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ m.time }}</span>
+                <span style="width:32px;height:32px;border-radius:8px;flex-shrink:0;background:{{ m.tileBg }};color:{{ m.tileFg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ m.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span>
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                  <span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.guest }}</span>
+                  <span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.place }}</span>
+                </span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noMovements }}"><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B;padding:16px 0">No arrivals or departures.</p></sc-if>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Assignments</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ assignSub }}</p></div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ cats }}" as="ct" hint-placeholder-count="7">
+                <button onClick="{{ ct.select }}" style="height:32px;padding:0 12px;border:1px solid {{ ct.border }};border-radius:999px;background:{{ ct.bg }};color:{{ ct.color }};cursor:pointer;font:600 12px/1 'Plus Jakarta Sans',sans-serif" style-hover="border-color:#006B68">{{ ct.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start">
+            <sc-for list="{{ lanes }}" as="ln" hint-placeholder-count="3">
+              <div style="background:#F1F5F9;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:160px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 4px 2px">
+                  <span style="display:flex;align-items:center;gap:8px;font:600 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><i style="width:8px;height:8px;border-radius:4px;background:{{ ln.color }}"></i>{{ ln.label }}</span>
+                  <span style="padding:3px 8px;border-radius:999px;background:#FFFFFF;color:#475569;font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ ln.count }}</span>
+                </div>
+                <sc-for list="{{ ln.cards }}" as="c" hint-placeholder-count="3">
+                  <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);border-left:3px solid {{ c.prColor }};padding:14px;display:flex;flex-direction:column;gap:10px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                      <span style="padding:4px 8px;border-radius:999px;background:{{ c.catBg }};color:{{ c.catFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ c.cat }}</span>
+                      <span style="font:500 11px/1 'Plus Jakarta Sans',sans-serif;color:{{ c.dueColor }}">{{ c.due }}</span>
+                    </div>
+                    <button onClick="{{ c.open }}" title="Open record" style="border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:600 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033;text-wrap:pretty" style-hover="color:#006B68;text-decoration:underline">{{ c.title }}</button>
+                    <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ c.code }} • {{ c.place }}</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:2px">
+                      <span style="display:flex;align-items:center;gap:8px;min-width:0">
+                        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ c.initials }}" tone="navy" size="{{ 24 }}" hint-size="24px,24px"></x-import>
+                        <span style="font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#475569;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.assignee }}</span>
+                      </span>
+                      <sc-if value="{{ c.hasAction }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="{{ c.actVariant }}" size="sm" on-click="{{ c.act }}" hint-size="80px,32px">{{ c.actLabel }}</x-import></sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </main>
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" color="#5EEAD4" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+
+const fmtUSD = (n, d = 2) => Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: d, maximumFractionDigits: d });
+const OPS = 'Master 09 - Operations Center.dc.html', INSP = 'Master 10 - Digital Inspection.dc.html';
+const TONE = { success: '#16A34A', info: '#0094CC', warning: '#D97706', danger: '#DC2626', brand: '#006B68', neutral: '#94A3B8' };
+const DAYS = {
+  today: { label: 'Today', date: 'Sunday, October 4, 2026',
+    ready: [
+      [2, 'Ocean View Villa', 'Unit 204', '11:00 AM', ['In Progress', 'brand'], ['Scheduled 1:00 PM', 'info', 'INS-2026-0311'], 'A/C repair — Coastal HVAC in progress', 'Today 4:00 PM • Laura Méndez', ['At Risk', 'warning']],
+      [7, 'Mar de Plata I', 'Apt 101', '10:00 AM', ['Completed', 'success'], ['Passed', 'success', 'INS-2026-0309'], 'None', 'Today 3:00 PM • James Whitaker', ['Ready', 'success']],
+      [4, 'Las Olas Lofts', 'Unit 9', '9:30 AM', ['Completed', 'success'], ['Passed', 'success', 'INS-2026-0308'], 'Smart lock offline — Daniel Brooks', 'Today 5:00 PM • Hannah Schultz', ['At Risk', 'warning']],
+      [6, 'Sunset Beach House', 'Main', '11:00 AM', ['Scheduled 12:00 PM', 'neutral'], ['Pending', 'neutral', 'INS-2026-0312'], 'Pool heater — awaiting parts', 'Oct 5, 3:00 PM • Camila Rossi', ['Blocked', 'danger']],
+      [8, 'Mar de Plata II', 'Apt 305', '11:00 AM', ['In Progress', 'brand'], ['Pending', 'neutral', 'INS-2026-0313'], 'None', 'Oct 6, 4:00 PM • Ethan Park', ['On Track', 'info']],
+      [12, 'Hollywood Boardwalk Suites', 'Unit 7B', '—', ['Completed', 'success'], ['Move-In Oct 6', 'info', 'INS-2026-0314'], 'None', 'Oct 6 • Nathan Brooks (lease)', ['Ready', 'success']]
+    ],
+    moves: [['9:30 AM', 'out', 'Oliver Grant', 'Las Olas Lofts • Unit 9'], ['10:00 AM', 'out', 'Mia Johnson', 'Mar de Plata I • Apt 101'], ['11:00 AM', 'out', 'Tom Becker', 'Ocean View Villa • Unit 204'], ['11:00 AM', 'out', 'The Novak Family', 'Sunset Beach House'], ['1:00 PM', 'in', 'Ana Torres (early check-in)', 'Brickell Bay Residences • Unit 2101'], ['3:00 PM', 'in', 'James Whitaker', 'Mar de Plata I • Apt 101'], ['4:00 PM', 'in', 'Laura Méndez', 'Ocean View Villa • Unit 204'], ['5:00 PM', 'in', 'Hannah Schultz', 'Las Olas Lofts • Unit 9']]
+  },
+  tomorrow: { label: 'Tomorrow', date: 'Monday, October 5, 2026',
+    ready: [
+      [6, 'Sunset Beach House', 'Main', '—', ['Completed', 'success'], ['Scheduled 9:00 AM', 'info', 'INS-2026-0312'], 'Pool heater — parts ETA 10:00 AM', 'Oct 5, 3:00 PM • Camila Rossi', ['At Risk', 'warning']],
+      [13, 'Aventura Park Tower', 'Unit 1802', '11:00 AM', ['Scheduled 12:00 PM', 'neutral'], ['Pending', 'neutral', 'INS-2026-0315'], 'None', 'Oct 7 • Grace Liu (pending approval)', ['On Track', 'info']],
+      [1, 'Brickell Bay Residences', 'Unit 2101', '10:00 AM', ['Scheduled 11:00 AM', 'neutral'], ['Not Required', 'neutral', ''], 'None', 'Oct 9 • Ethan Park', ['On Track', 'info']]
+    ],
+    moves: [['10:00 AM', 'out', 'Ana Torres', 'Brickell Bay Residences • Unit 2101'], ['11:00 AM', 'out', 'Kenji Watanabe', 'Aventura Park Tower • Unit 1802'], ['3:00 PM', 'in', 'Camila Rossi', 'Sunset Beach House']]
+  }
+};
+const CATS = { maintenance: ['Maintenance', '#FFFAEB', '#B45309'], cleaning: ['Cleaning', '#E6F6FC', '#00739F'], inspection: ['Inspection', '#DDF3F1', '#006B68'], renewal: ['Renewal', '#FBF5E6', '#9A7420'], admin: ['Admin', '#F1F5F9', '#475569'], leasing: ['Leasing', '#E8ECF4', '#132A52'] };
+const PR = { urgent: '#DC2626', high: '#D97706', medium: '#0094CC', low: '#CBD5E1' };
+const TASKS_SEED = [
+  ['T-2026-0912', 'Water leak under kitchen sink', 'maintenance', 'urgent', 'in_progress', 'Aqua Pro Plumbing', 'Brickell Bay • Unit 1507', 'Due 12:00 PM'],
+  ['T-2026-0913', 'A/C not cooling — master bedroom', 'maintenance', 'high', 'in_progress', 'Coastal HVAC Services', 'Ocean View Villa • Unit 204', 'Due 2:00 PM'],
+  ['T-2026-0914', 'Turnover cleaning — 2 bd / 2 ba', 'cleaning', 'high', 'in_progress', 'Spotless Turnover Co.', 'Ocean View Villa • Unit 204', 'Due 3:00 PM'],
+  ['T-2026-0915', 'Move-out inspection', 'inspection', 'high', 'pending', 'Luis Herrera', 'Ocean View Villa • Unit 204', '1:00 PM'],
+  ['T-2026-0916', 'Turnover cleaning + linen change', 'cleaning', 'medium', 'pending', 'Spotless Turnover Co.', 'Sunset Beach House', '12:00 PM'],
+  ['T-2026-0917', 'Reset smart lock & issue new codes', 'maintenance', 'high', 'pending', 'Daniel Brooks', 'Las Olas Lofts • Unit 9', 'Due 4:00 PM'],
+  ['T-2026-0918', 'Send renewal offer — 12 months +3.5%', 'renewal', 'medium', 'pending', 'Sofia Ramos', 'Coral Gables Terrace • Unit 305', 'Today'],
+  ['T-2026-0919', 'Collect signed lease — Marco Bellini', 'leasing', 'medium', 'pending', 'Sofia Ramos', 'Brickell Bay • Unit 1507', 'Today'],
+  ['T-2026-0908', 'Turnover cleaning', 'cleaning', 'medium', 'completed', 'Spotless Turnover Co.', 'Mar de Plata I • Apt 101', 'Done 11:40 AM'],
+  ['T-2026-0907', 'Pre-arrival inspection', 'inspection', 'medium', 'completed', 'Luis Herrera', 'Mar de Plata I • Apt 101', 'Done 12:15 PM'],
+  ['T-2026-0905', 'Upload HOA approval letter', 'admin', 'low', 'completed', 'Marcus Vance', 'Coral Gables Terrace', 'Done 9:05 AM']
+].map(([code, title, cat, pr, status, assignee, place, due]) => ({ code, title, cat, pr, status, assignee, place, due }));
+const OKEY = 'mghpm.ops.v1';
+const TASK_REC = { 'T-2026-0912': 'wo:WO-2026-1042', 'T-2026-0913': 'wo:WO-2026-1041', 'T-2026-0914': 'cl:CLN-2026-0410', 'T-2026-0915': 'in:INS-2026-0311', 'T-2026-0916': 'cl:CLN-2026-0413', 'T-2026-0917': 'wo:WO-2026-1036', 'T-2026-0918': 'pg:leases', 'T-2026-0919': 'pg:applications', 'T-2026-0908': 'cl:CLN-2026-0411', 'T-2026-0907': 'in:INS-2026-0309', 'T-2026-0905': 'pg:hoa' };
+const withBackOps = u => u + (u.indexOf('?') >= 0 ? '&' : '?') + 'back=' + encodeURIComponent(OPS) + '&backLabel=' + encodeURIComponent('Back to Operations Center');
+const openRec = key => { const X = window.MGH_OPS360; if (!key) return; const [k, id] = key.split(':'); if (k === 'pg') return go(PAGES[id]); go(withBackOps(k === 'wo' ? X.href.wo(id) : k === 'cl' ? X.href.cleaning(id) : X.href.inspection(id))); };
+const loadO = () => { try { return JSON.parse(sessionStorage.getItem(OKEY)) || {}; } catch (e) { return {}; } };
+
+class Component extends DCLogic {
+  state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, day: 'today', cat: 'all', taskStatus: loadO().taskStatus || {} };
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    if (window.MGH_OPS360) this._uo = window.MGH_OPS360.subscribe(() => this.forceUpdate());
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._mq = ['(max-width: 767px)', '(max-width: 1199px)'].map(q => { const m = window.matchMedia(q); m.addEventListener('change', this._onResize); return m; });
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); (this._mq || []).forEach(m => m.removeEventListener('change', this._onResize)); clearInterval(this._poll); clearTimeout(this._toastT); }
+  notify(msg) { clearTimeout(this._toastT); this.setState({ toast: msg }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3000); }
+  chrome(activeId) {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state, { closedSections, drawerOpen } = s;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const defaultCollapsed = (this.props.sidebarCollapsed ?? false) || bp === 'tablet';
+    const collapsed = isMobile ? false : (s.collapsed ?? defaultCollapsed);
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => {
+      const on = id === activeId || NAV_ALIAS[activeId] === id;
+      return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center',
+        bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500',
+        select: () => go(PAGES[id] || pendingUrl({ page: id })) };
+    };
+    const sections = NAV.map(sec => {
+      const open = !expanded || !sec.label || !closedSections[sec.id];
+      return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open,
+        chevron: open ? 'chevron-down' : 'chevron-right',
+        toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })),
+        items: sec.items.map(mkItem) };
+    });
+    return { bp, isMobile, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', notMobile: !isMobile, showSearchField: bp === 'desktop', showSearchIcon: bp !== 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      mainSpan: bp === 'desktop' ? 'span 8' : 'span 12', railSpan: bp === 'desktop' ? 'span 4' : 'span 12',
+      toast: !!s.toast, toastMsg: s.toast || '' } };
+  }
+
+
+  componentDidUpdate() { try { sessionStorage.setItem(OKEY, JSON.stringify({ taskStatus: this.state.taskStatus })); } catch (e) {} }
+
+  renderVals() {
+    const s = this.state;
+    const { v } = this.chrome('ops-center');
+    const D = DAYS[s.day];
+    const tasks = TASKS_SEED.map(t => ({ ...t, status: s.taskStatus[t.code] || t.status }));
+    const shown = tasks.filter(t => s.cat === 'all' || t.cat === s.cat);
+    const setStatus = (code, st, msg) => { this.setState(x => ({ taskStatus: { ...x.taskStatus, [code]: st } })); this.notify(msg); };
+    const rcount = l => D.ready.filter(r => r[8][0] === l).length;
+    const self = OPS;
+    const X = window.MGH_OPS360, C = window.MGH_COMP, oc = X ? X.counts() : {};
+    const openInc = C ? C.db.incs.filter(C.isOpenI).length : 0;
+    const MOD = (label, icon, value, sub, href, bg, fg, warn) => ({ label, icon, value: String(value), sub, subColor: warn ? '#B45309' : '#64748B', bg, fg, go: () => go(withBackOps(href)) });
+    const modules = X ? [
+      MOD('Property Readiness', 'list-checks', rcount('Ready') + '/' + D.ready.length, (rcount('At Risk') + rcount('Blocked')) + ' units at risk or blocked', PAGES.readiness, '#DDF3F1', '#006B68', rcount('Blocked') > 0),
+      MOD('Cleaning', 'spray-can', oc.cleanOpen, oc.reclean + ' need re-clean', PAGES.cleaning, '#E6F6FC', '#00739F', oc.reclean > 0),
+      MOD('Inspections', 'clipboard-check', oc.inspDue, oc.inspFailed + ' failed • findings to work orders', PAGES.inspections, '#DDF3F1', '#006B68', oc.inspFailed > 0),
+      MOD('Work Orders 360', 'wrench', oc.openWo, oc.urgent + ' urgent • ' + oc.approvals + ' awaiting owner approval', PAGES['work-order-360'], '#FFFAEB', '#B45309', oc.urgent > 0),
+      MOD('Staff', 'id-card', oc.onShift + '/' + X.STAFF.length, 'on shift today', PAGES.staff, '#EEF2FF', '#132A52', false),
+      MOD('Vendors', 'hard-hat', X.VENDORS.length, oc.vendorsBlocked + ' on compliance hold', PAGES.vendors, '#F1F5F9', '#475569', oc.vendorsBlocked > 0),
+      MOD('Incidents', 'triangle-alert', openInc, 'open incidents', PAGES.incidents, '#FEF2F2', '#B91C1C', openInc > 0),
+      MOD('Reservations', 'calendar-check', D.moves.length, 'arrivals & departures ' + DAYS[s.day].label.toLowerCase(), PAGES.reservations, '#FBF5E6', '#9A7420', false)
+    ] : [];
+    const clByPid = pid => X && X.db.cleanings.find(c => c.pid === pid);
+    const woByPid = pid => X && X.db.wos.find(w => w.pid === pid && w.stage < 11 && w.stage > 0);
+    return { ...v, modules,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Operations', null], ['Operations Center', null]]),
+      dateLine: D.date,
+      days: Object.keys(DAYS).map(id => { const on = id === s.day || NAV_ALIAS[s.day] === id; return { label: DAYS[id].label, bg: on ? '#FFFFFF' : 'transparent', color: on ? '#172033' : '#64748B', shadow: on ? '0 1px 2px rgba(15,23,42,0.08)' : 'none', select: () => this.setState({ day: id }) }; }),
+      newAssignment: () => go(PAGES['work-orders-add'] + '?tab=' + 'submit' + '&back=' + encodeURIComponent(decodeURIComponent(location.pathname.split('/').pop()) + location.search)),
+      kpis: [
+        { label: 'Arrivals', value: String(D.moves.filter(m => m[1] === 'in').length), icon: 'log-in', tone: 'brand', footer: s.day === 'today' ? '1 early check-in' : 'Scheduled' },
+        { label: 'Departures', value: String(D.moves.filter(m => m[1] === 'out').length), icon: 'log-out', tone: 'navy', footer: 'Check-out by 11:00 AM' },
+        { label: 'Cleanings', value: String(tasks.filter(t => t.cat === 'cleaning').length), icon: 'spray-can', tone: 'success', footer: tasks.filter(t => t.cat === 'cleaning' && t.status === 'in_progress').length + ' in progress' },
+        { label: 'Open Work Orders', value: '37', icon: 'wrench', tone: 'premium', footer: '6 urgent • 4 awaiting vendor' },
+        { label: 'Inspections', value: String(tasks.filter(t => t.cat === 'inspection').length), icon: 'clipboard-check', tone: 'brand', footer: tasks.filter(t => t.cat === 'inspection' && t.status !== 'completed').length + ' remaining' },
+        { label: 'Units Ready', value: rcount('Ready') + ' / ' + D.ready.length, icon: 'circle-check-big', tone: 'success', footer: (rcount('At Risk') + rcount('Blocked')) + ' need attention' }
+      ],
+      readySub: D.ready.length + ' units turning over • ' + D.date,
+      legend: [['Ready', 'success'], ['On Track', 'info'], ['At Risk', 'warning'], ['Blocked', 'danger']].map(([label, t]) => ({ label, color: TONE[t], count: String(rcount(label)) })),
+      readiness: D.ready.map(([pid, property, unit, checkout, clean, insp, maint, arrival, ready]) => ({ property, unit, checkout, cleanL: clean[0], cleanT: clean[1], inspL: insp[0], inspT: insp[1], hasInsp: !!insp[2], maint, maintColor: maint === 'None' ? '#94A3B8' : '#172033', arrival, readyL: ready[0], readyT: ready[1],
+        openProp: () => go(DETAIL + '?id=' + pid), hasClean: !!clByPid(pid), openClean: () => { const c = clByPid(pid); c ? go(withBackOps(X.href.cleaning(c.id))) : go(PAGES.cleaning); }, hasWo: maint !== 'None' && !!woByPid(pid), noWo: !(maint !== 'None' && !!woByPid(pid)), openWo: () => { const w = woByPid(pid); w && go(withBackOps(X.href.wo(w.id))); }, openInsp: () => insp[2] && go(INSP + '?id=' + insp[2] + '&type=' + (insp[0].startsWith('Move-In') ? 'move-in' : 'move-out') + '&pid=' + pid + '&unit=' + encodeURIComponent(unit)) })),
+      movements: D.moves.map(([time, dir, guest, place]) => ({ time, guest, place, icon: dir === 'in' ? 'log-in' : 'log-out', tileBg: dir === 'in' ? '#DDF3F1' : '#F1F5F9', tileFg: dir === 'in' ? '#006B68' : '#475569' })),
+      noMovements: D.moves.length === 0,
+      goRes: () => go(PAGES.calendar),
+      assignSub: tasks.filter(t => t.status !== 'completed').length + ' open • ' + tasks.filter(t => t.status === 'completed').length + ' completed today',
+      cats: [['all', 'All'], ...Object.entries(CATS).map(([k, c]) => [k, c[0]])].map(([id, label]) => { const on = s.cat === id; return { label, border: on ? '#006B68' : '#E2E8F0', bg: on ? '#006B68' : '#FFFFFF', color: on ? '#FFFFFF' : '#475569', select: () => this.setState({ cat: id }) }; }),
+      lanes: [['pending', 'Pending', '#94A3B8'], ['in_progress', 'In Progress', '#0094CC'], ['completed', 'Completed', '#16A34A']].map(([id, label, color]) => {
+        const cards = shown.filter(t => t.status === id).map(t => {
+          const isInsp = t.cat === 'inspection' && t.status !== 'completed';
+          return { ...t, open: () => openRec(TASK_REC[t.code]), cat: CATS[t.cat][0], catBg: CATS[t.cat][1], catFg: CATS[t.cat][2], prColor: PR[t.pr], initials: t.assignee.split(' ').map(x => x[0]).join('').slice(0, 2), dueColor: t.pr === 'urgent' && id !== 'completed' ? '#DC2626' : '#64748B',
+            hasAction: id !== 'completed', actLabel: isInsp ? 'Open Checklist' : id === 'pending' ? 'Start' : 'Complete', actVariant: isInsp ? 'primary' : 'outline',
+            act: isInsp ? () => go(INSP + '?id=INS-2026-0311&type=move-out&pid=2&unit=Unit%20204') : id === 'pending' ? () => setStatus(t.code, 'in_progress', t.code + ' started') : () => setStatus(t.code, 'completed', t.code + ' completed') };
+        });
+        return { label, color, count: String(cards.length), cards };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

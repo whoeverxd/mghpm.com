@@ -1,0 +1,69 @@
+:root {
+  color-scheme: light;
+  --color-primary: #006b68;
+  --color-primary-hover: #005a57;
+  --color-primary-pressed: #004f4d;
+  --color-primary-soft: #ddf3f1;
+  --color-navy: #132a52;
+  --color-title: #172033;
+  --color-text: #334155;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
+  --color-success: #166534;
+  --color-success-soft: #dcfce7;
+  --color-warning: #92400e;
+  --color-warning-soft: #fef3c7;
+  --color-danger: #991b1b;
+  --color-danger-soft: #fee2e2;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 5%);
+  font-family:
+    "Plus Jakarta Sans Variable", "Segoe UI", Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgb(0 107 104 / 18%);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-primary-soft);
+  color: var(--color-title);
+}

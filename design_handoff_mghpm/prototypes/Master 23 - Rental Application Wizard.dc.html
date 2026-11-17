@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+  </style>
+  <style>input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}</style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 23 — Rental Application Wizard" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;min-height:100vh;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;display:flex;flex-direction:column">
+  <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:14px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+    <span style="width:38px;height:38px;border-radius:8px;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:center"><img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain"></span>
+    <span style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><span style="font:700 15px/1 'Plus Jakarta Sans',sans-serif;color:#172033">My Global Hub Property Management</span><span style="font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">Solicitud de Alquiler • /apply</span></span>
+    <button onClick="{{ exit }}" style="display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;font:600 13px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="log-out" size="{{ 14 }}"  hint-size="14px,14px"></x-import>{{ exitLabel }}</button>
+  </header>
+  <main style="flex:1;padding:{{ pad }}">
+    <div style="max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+      <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <h1 style="margin:0;font:700 26px/1.25 'Plus Jakarta Sans',sans-serif;color:#172033">{{ stepTitle }}</h1>
+          <p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ stepDesc }}</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:16px;overflow-x:auto;scrollbar-width:none">
+          <div style="display:flex;min-width:760px">
+            <sc-for list="{{ steps }}" as="st" hint-placeholder-count="8">
+              <button onClick="{{ st.go }}" disabled="{{ st.locked }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;border:0;background:transparent;cursor:{{ st.cursor }};position:relative;padding:0 4px;font-family:inherit">
+                <span style="position:absolute;top:14px;left:0;right:50%;height:2px;background:{{ st.lineL }}"></span><span style="position:absolute;top:14px;left:50%;right:0;height:2px;background:{{ st.lineR }}"></span>
+                <span style="position:relative;z-index:1;width:30px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:{{ st.bg }};color:{{ st.fg }};border:2px solid {{ st.ring }};font:700 12px/1 'Plus Jakarta Sans',sans-serif"><sc-if value="{{ st.done }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 14 }}"  hint-size="14px,14px"></x-import></sc-if><sc-if value="{{ st.notDone }}">{{ st.n }}</sc-if></span>
+                <span style="font:{{ st.weight }} 11px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ st.text }};text-align:center">{{ st.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <sc-if value="{{ hasLegal }}"><div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);border-left:0;border-top:3px solid #D4A637;padding:20px 24px;display:flex;flex-direction:column;gap:10px"><span style="font:700 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:0.02em">{{ legalTitle }}</span><sc-for list="{{ legal }}" as="lg" hint-placeholder-count="2"><p style="margin:0;font:400 13px/1.6 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ lg }}</p></sc-for></div></sc-if>
+        <sc-for list="{{ cards }}" as="cd" hint-placeholder-count="2">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;gap:12px"><span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ cd.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></span><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ cd.title }}</h3><sc-if value="{{ cd.hasDesc }}"><p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ cd.desc }}</p></sc-if></div></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px 16px">
+              <sc-for list="{{ cd.fields }}" as="fd" hint-placeholder-count="4"><div style="grid-column:{{ fd.span }};display:flex;flex-direction:column;gap:6px;min-width:0">
+                    <sc-if value="{{ fd.isInput }}"><div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0"><span style="display:flex;gap:4px">{{ fd.label }}<sc-if value="{{ fd.req }}"><span style="color:#DC2626">*</span></sc-if></span><input type="{{ fd.type }}" value="{{ fd.value }}" min="{{ fd.dMin }}" max="{{ fd.dMax }}" onChange="{{ fd.onChange }}" placeholder="{{ fd.ph }}" style="height:42px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;cursor:{{ fd.cursor }}" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div></sc-if>
+                    <sc-if value="{{ fd.isSelect }}"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0"><span style="display:flex;gap:4px">{{ fd.label }}<sc-if value="{{ fd.req }}"><span style="color:#DC2626">*</span></sc-if></span><select value="{{ fd.value }}" onChange="{{ fd.onChange }}" style="height:42px;padding:0 12px;border:1px solid #E2E8F0;border-radius:8px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%"><option value="">Seleccione…</option><sc-for list="{{ fd.options }}" as="op"><option value="{{ op }}">{{ op }}</option></sc-for></select></label></sc-if>
+                    <sc-if value="{{ fd.isFile }}"><span style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0"><span style="display:flex;gap:4px">{{ fd.label }}<sc-if value="{{ fd.req }}"><span style="color:#DC2626">*</span></sc-if></span></span><label style="display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border:1.5px dashed {{ fd.border }};border-radius:8px;background:{{ fd.bg }};color:#475569;cursor:pointer;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ fd.icon }}" size="{{ 18 }}" color="{{ fd.iconColor }}" hint-size="18px,18px"></x-import><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fd.fileLabel }}</span><span style="font-weight:700;color:#006B68">{{ fd.action }}</span><input type="file" accept="application/pdf,image/*" multiple="{{ fd.multi }}" onChange="{{ fd.onChange }}" style="display:none"></label></sc-if>
+                    <sc-if value="{{ fd.isCheck }}"><label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid {{ fd.border }};border-radius:8px;background:{{ fd.bg }};cursor:pointer"><input type="checkbox" checked="{{ fd.checked }}" onChange="{{ fd.onChange }}" style="width:18px;height:18px;accent-color:#006B68;margin:1px 0 0;flex-shrink:0"><span style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ fd.label }}</span><sc-if value="{{ fd.hasHelp }}"><span style="font:400 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ fd.help }}</span></sc-if></span></label></sc-if>
+                    <sc-if value="{{ fd.hasHint }}"><span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.hint }}</span></sc-if>
+                  </div></sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-bottom:24px">
+          <span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:{{ msgColor }}">{{ msg }}</span>
+          <div style="display:flex;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="arrow-left" disabled="{{ isFirst }}" on-click="{{ back }}" hint-size="100px,40px">Atrás</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="{{ nextIcon }}" disabled="{{ cantNext }}" on-click="{{ next }}" hint-size="170px,40px">{{ nextLabel }}</x-import></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:40px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+          <span style="width:64px;height:64px;border-radius:32px;background:#DCFCE7;color:#15803D;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check-big" size="{{ 30 }}"  hint-size="30px,30px"></x-import></span>
+          <h1 style="margin:0;font:700 24px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Solicitud enviada</h1>
+          <p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty;max-width:560px">Su solicitud {{ appId }} fue recibida. Le notificaremos por correo cuando se completen las verificaciones autorizadas.</p>
+          <div style="width:100%;max-width:620px;display:flex;flex-direction:column;text-align:left;border:1px solid #E2E8F0;border-radius:8px;padding:4px 16px">
+            <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;padding:12px 0 6px">Registro de consentimientos ({{ consentVersion }})</span>
+            <sc-for list="{{ consentLog }}" as="cl" hint-placeholder-count="8"><div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #F1F5F9;font:500 12px/1.3 'Plus Jakarta Sans',sans-serif"><span style="color:#172033">{{ cl.label }}</span><span style="color:{{ cl.color }};font-weight:700;white-space:nowrap">{{ cl.value }}</span></div></sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="rotate-ccw" on-click="{{ restart }}" hint-size="160px,40px">Nueva solicitud</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="clipboard-list" on-click="{{ openAdmin }}" hint-size="230px,40px">Ver en Leasing &amp; Screening</x-import></div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}"><div style="position:fixed;right:24px;bottom:24px;z-index:70;max-width:420px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">{{ toastMsg }}</div></sc-if>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="applicant" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const QP = new URLSearchParams(window.location.search);
+const LIST = 'Master 07 - Rental Applications.dc.html', APP = 'Master 08 - Application Detail.dc.html';
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const UNITS = [['2|Unit 305', 'Ocean View Villa • Unit 305', 4250], ['1|Unit 2003', 'Brickell Bay Residences • Unit 2003', 3850], ['3|Unit 214', 'Coral Gables Terrace • Unit 214', 3450], ['13|Unit 2204', 'Aventura Park Tower • Unit 2204', 3700], ['8|Apt 305', 'Mar de Plata II • Apt 305', 3050]];
+const CONSENT_VERSION = 'MGHPM-CONSENT-2026.10-ES';
+const CONSENTS = [
+  ['identity', 'Autorizo verificación de identidad', true],
+  ['employer', 'Autorizo contacto con mi empleador', true],
+  ['income', 'Autorizo verificación de ingresos', true],
+  ['references', 'Autorizo contacto con referencias', true],
+  ['landlords', 'Autorizo contacto con propietarios/administradores anteriores', true],
+  ['credit', 'Autorizo consulta crediticia', false],
+  ['data', 'Autorizo tratamiento de mis datos personales', true],
+  ['truth', 'Declaro que la información proporcionada es verdadera', true]
+];
+const STEPS = [
+  ['Propiedad', 'Seleccione la propiedad y las condiciones del alquiler.'],
+  ['Información Personal', 'Datos del solicitante principal.'],
+  ['Historial de Residencia', 'Residencia actual del solicitante.'],
+  ['Empleo e Ingresos', 'Empleo, ingresos declarados y autorización de verificación.'],
+  ['Ocupantes / Mascotas / Vehículos', 'Personas y elementos que residirán en la propiedad.'],
+  ['Referencias y Historial de Alquiler', 'Referencias personales/profesionales y propietarios anteriores.'],
+  ['Documentos y Screening', 'Suba los documentos solicitados. Solo se usarán para evaluar esta solicitud (Ley 172-13: pertinencia y finalidad).'],
+  ['Autorizaciones, Firma y Submit', 'Revise y otorgue cada autorización por separado. La consulta crediticia es un consentimiento independiente.']
+];
+const T = (k, label, extra) => ({ k, label, kind: 'input', ...(extra || {}) });
+const SL = (k, label, options, extra) => ({ k, label, kind: 'select', options, ...(extra || {}) });
+const F = (k, label, extra) => ({ k, label, kind: 'file', ...(extra || {}) });
+const CK = (k, label, help, extra) => ({ k, label, help, kind: 'check', span: '1 / -1', ...(extra || {}) });
+const prevRes = n => ({ title: 'Residencia anterior ' + n, icon: 'house', desc: n === 2 ? 'Opcional' : 'Propietario o empresa administradora anterior', fields: [T('previous_address_' + n, 'Dirección anterior', { span: '1 / -1', req: n === 1 }), T('previous_landlord_company_' + n, 'Empresa administradora'), T('previous_landlord_name_' + n, 'Nombre del propietario / administrador', { req: n === 1 }), T('previous_landlord_phone_' + n, 'Teléfono', { type: 'tel', req: n === 1 }), T('previous_landlord_email_' + n, 'Correo', { type: 'email' }), T('previous_monthly_rent_' + n, 'Renta mensual', { type: 'number' }), T('previous_move_in_date_' + n, 'Fecha de entrada', { type: 'date' }), T('previous_move_out_date_' + n, 'Fecha de salida', { type: 'date' }), T('reason_for_leaving_' + n, 'Motivo de salida'), CK('authorize_rental_reference_' + n, 'Autorizo contactar a este propietario/administrador', 'Solo para verificar pagos, cumplimiento del contrato y condición del inmueble.', { req: n === 1 })] });
+const ref = n => [T('reference_' + n + '_name', 'Referencia ' + n + ' — Nombre', { req: true }), T('reference_' + n + '_relationship', 'Relación', { req: true }), T('reference_' + n + '_phone', 'Teléfono', { type: 'tel', req: true }), T('reference_' + n + '_email', 'Correo', { type: 'email' })];
+const CARDS = [
+  [{ title: 'Propiedad solicitada', icon: 'building-2', fields: [SL('unit', 'Propiedad / Unidad', UNITS.map(u => u[1]), { span: '1 / -1', req: true }), T('move_in', 'Fecha deseada de entrada', { type: 'date', req: true }), SL('term', 'Duración del contrato', ['12 meses', '18 meses', '24 meses'], { req: true })] }],
+  [{ title: 'Solicitante principal', icon: 'user-round', fields: [T('first_name', 'Nombres', { req: true }), T('last_name', 'Apellidos', { req: true }), SL('id_type', 'Tipo de documento', ['Cédula', 'Pasaporte'], { req: true }), T('id_number', 'Número de documento', { req: true }), T('dob', 'Fecha de nacimiento', { type: 'date', req: true }), T('nationality', 'Nacionalidad'), T('email', 'Correo electrónico', { type: 'email', req: true }), T('phone', 'Teléfono', { type: 'tel', req: true })] }],
+  [{ title: 'Residencia actual', icon: 'map-pin', fields: [T('current_address', 'Dirección actual', { span: '1 / -1', req: true }), T('current_since', 'Reside desde', { type: 'date', req: true }), SL('current_type', 'Tipo de residencia', ['Alquilada', 'Propia', 'Familiar', 'Otra']), T('current_rent', 'Renta actual', { type: 'number' }), T('moving_reason', 'Motivo de mudanza', { span: '1 / -1' })] }],
+  [{ title: 'Empleo', icon: 'briefcase', fields: [T('employer_name', 'Empleador', { req: true }), T('job_title', 'Cargo', { req: true }), T('employer_contact_name', 'Contacto en el empleador (RR.HH. / supervisor)', { req: true }), T('employer_phone', 'Teléfono del empleador', { type: 'tel', req: true }), T('employer_email', 'Correo del empleador', { type: 'email' }), T('employment_start_date', 'Fecha de inicio', { type: 'date', req: true }), T('monthly_income', 'Ingreso mensual', { type: 'number', req: true })] },
+   { title: 'Empleador adicional', icon: 'briefcase-business', desc: 'Opcional — segundo empleo o trabajo a tiempo parcial.', fields: [T('employer_2_name', 'Empleador adicional'), T('job_title_2', 'Cargo'), T('employer_2_phone', 'Teléfono del empleador', { type: 'tel' }), T('employment_2_start_date', 'Fecha de inicio', { type: 'date' }), T('monthly_income_2', 'Ingreso mensual', { type: 'number' })] },
+   { title: 'Otros ingresos', icon: 'banknote', desc: 'Opcional — pensión, manutención, inversiones, actividad independiente.', fields: [SL('other_income_type', 'Tipo de ingreso', ['Ninguno', 'Pensión', 'Manutención', 'Inversiones', 'Actividad independiente', 'Otro']), T('other_income_amount', 'Monto mensual', { type: 'number' })] },
+   { title: 'Autorización de Verificación de Empleo e Ingresos', icon: 'shield-check', fields: [CK('authorize_employment_contact', 'Autorizo la verificación de empleo e ingresos', 'Autorizo expresamente a My Global Hub Property Management y/o al propietario del inmueble a contactar a mi empleador, departamento de recursos humanos, supervisor o contacto autorizado con el único propósito de verificar mi empleo, cargo, tiempo de servicio e ingresos declarados para evaluar esta solicitud de alquiler.', { req: true })] }],
+  [{ title: 'Integrantes del hogar', icon: 'users', fields: [T('occupants', 'Total de ocupantes (incluido usted)', { type: 'number', req: true }), T('adults', 'Adultos (18+)', { type: 'number', req: true }), T('minors', 'Menores de edad', { type: 'number' }), T('additional_occupants', 'Nombres y edad de ocupantes adicionales', { span: '1 / -1' })] },
+   { title: 'Codeudor / Fiador', icon: 'user-check', desc: 'Opcional — puede ser requerido como condición de aprobación.', fields: [T('cosigner_name', 'Nombre del codeudor'), T('cosigner_relationship', 'Relación'), T('cosigner_phone', 'Teléfono', { type: 'tel' }), T('cosigner_email', 'Correo', { type: 'email' }), T('cosigner_income', 'Ingreso mensual del codeudor', { type: 'number' })] },
+   { title: 'Mascotas y vehículos', icon: 'paw-print', fields: [SL('pets', 'Mascotas', ['Ninguna', '1 perro', '1 gato', '2 o más']), T('pet_details', 'Detalle (raza / peso)'), T('vehicles', 'Vehículos (marca, modelo, placa)', { span: '1 / -1' })] }],
+  [{ title: 'Referencias personales / profesionales', icon: 'contact', fields: [...ref(1), ...ref(2), CK('authorize_reference_contact', 'Autorizo contactar las referencias proporcionadas', 'Autorizo a My Global Hub Property Management a contactar las referencias que he proporcionado con el propósito de verificar la información relacionada con esta solicitud.', { req: true })] }, prevRes(1), prevRes(2)],
+  [{ title: 'Identidad', icon: 'id-card', fields: [F('id_file', 'Cédula / Pasaporte', { req: true })] },
+   { title: 'Prueba de empleo', icon: 'briefcase', fields: [F('employment_letter_file', 'Carta de trabajo', { req: true })] },
+   { title: 'Prueba de ingresos', icon: 'banknote', desc: 'Presente una o más: nómina, estados de cuenta, certificación de ingresos, documentación de actividad independiente, pensión u otra prueba razonable.', fields: [F('pay_stub_files', 'Últimos recibos de nómina', { multi: true }), F('bank_statement_files', 'Estados de cuenta', { multi: true }), F('income_certification_file', 'Certificación de ingresos'), F('tax_or_business_income_file', 'Documentación de empresa / independiente'), F('other_income_support_files', 'Otra prueba razonable de ingresos', { multi: true })] },
+   { title: 'Historial crediticio', icon: 'credit-card', desc: 'La consulta se realizará solo con su autorización expresa, directamente o mediante una Sociedad de Información Crediticia autorizada.', fields: [{ k: 'credit_status', kind: 'status' }] },
+   { title: 'Certificación de No Antecedentes Penales', icon: 'scale', desc: 'Cuando sea requerido como parte de los criterios aplicables a esta propiedad, el solicitante podrá ser solicitado a presentar una Certificación de No Antecedentes Penales vigente emitida por la autoridad competente de la República Dominicana o documento equivalente de su país de residencia.', fields: [F('police_clearance_file', 'Certificación (si es requerida)'), T('police_clearance_issue_date', 'Fecha de emisión', { type: 'date' })] },
+   { title: 'Referencias de alquiler', icon: 'house', fields: [{ k: 'landlord_summary', kind: 'status' }] }],
+  [{ title: 'Autorizaciones individuales', icon: 'list-checks', desc: 'Cada autorización se registra por separado con fecha, hora, IP, usuario y versión del texto.', fields: CONSENTS.map(([k, label, req]) => CK('consent_' + k, label + (req ? '' : ' (consentimiento separado)'), k === 'credit' ? 'Autorizo expresamente a My Global Hub Property Management y/o al propietario del inmueble, directamente o mediante una Sociedad de Información Crediticia autorizada (p. ej. TransUnion, Equifax Dominicana, Kalifika, Acierta), a consultar mi historial y perfil crediticio exclusivamente para evaluar esta solicitud de alquiler.' : '', { req, credit: k === 'credit' })) },
+   { title: 'Divulgaciones', icon: 'file-warning', desc: 'Divulgaciones aplicables a la propiedad solicitada.', fields: [CK('disclosure_criteria', 'He recibido los criterios escritos de evaluación', 'Las decisiones son tomadas por una persona del equipo conforme a criterios escritos; no se utilizan decisiones automáticas.', { req: true }), CK('disclosure_fees', 'Entiendo los cargos de solicitud y depósitos', 'Cargo de solicitud no reembolsable; el depósito de seguridad se mantiene en una cuenta de custodia.', { req: true }), CK('disclosure_lead', 'Divulgación de pintura con plomo (propiedades anteriores a 1978)', 'Si aplica, recibiré el folleto y la divulgación correspondiente antes de firmar el contrato.', {}), CK('disclosure_fair_housing', 'Declaración de Vivienda Justa', 'MGHPM no discrimina por raza, color, religión, sexo, origen nacional, discapacidad ni situación familiar.', { req: true })] },
+   { title: 'Revisión antes de enviar', icon: 'list-checks', fields: [CK('review_confirmed', 'He revisado toda la información de esta solicitud', 'Confirmo que la información es correcta y completa. Puedo volver a cualquier paso para corregirla antes de enviar.', { req: true })] },
+   { title: 'Firma', icon: 'pen-line', fields: [T('signature_name', 'Nombre completo como firma', { req: true }), T('signature_date', 'Fecha', { type: 'date', req: true })] }]
+];
+const MASTER = ['Autorizo a My Global Hub Property Management, al propietario del inmueble y a los proveedores autorizados que actúen para dichos fines a verificar la información que he proporcionado en esta solicitud, incluyendo, cuando corresponda: mi identidad; empleo y tiempo de servicio; ingresos declarados; referencias personales y profesionales; historial de alquiler y referencias de propietarios o administradores anteriores; información crediticia cuando haya otorgado consentimiento expreso para dicha consulta; y documentos adicionales expresamente solicitados como parte del proceso de evaluación.', 'Entiendo que estas verificaciones se utilizarán exclusivamente para evaluar mi solicitud de alquiler y deberán ser manejadas conforme a las normas aplicables sobre privacidad y protección de datos (Ley 172-13).'];
+const fmtUSD = n => Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const DRAFT = 'mghpm.apply.draft.v1';
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    let d = {}; try { d = JSON.parse(sessionStorage.getItem(DRAFT)) || {}; } catch (e) {}
+    this.state = { step: d.step || 0, v: d.v || { move_in: '2026-11-01', term: '12 meses', signature_date: '2026-10-04', id_type: 'Cédula', occupants: '1' }, maxStep: d.maxStep || 0, done: null, toast: null, w: window.innerWidth };
+  }
+  componentDidMount() { this._r = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this._r); if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); } }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); clearTimeout(this._tt); }
+  componentDidUpdate() { try { if (!this.state.done) sessionStorage.setItem(DRAFT, JSON.stringify({ step: this.state.step, v: this.state.v, maxStep: this.state.maxStep })); } catch (e) {} }
+  notify(m) { clearTimeout(this._tt); this.setState({ toast: m }); this._tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+  missing(i) { const v = this.state.v; return CARDS[i].flatMap(c => c.fields).filter(f => f.req && (f.kind === 'check' ? !v[f.k] : f.kind === 'file' ? !(v[f.k] && v[f.k].length) : !String(v[f.k] || '').trim())); }
+  submit() {
+    const v = this.state.v, now = new Date(), stamp = now.toISOString();
+    const id = 'APP-2026-0' + (186 + Math.floor(Math.random() * 40));
+    const consents = CONSENTS.map(([k, label]) => ({ consent_type: k, label, accepted: !!v['consent_' + k], accepted_at: v['consent_' + k] ? stamp : null, ip_address: '186.6.48.' + (20 + (id.charCodeAt(12) % 200)), user_id: 'applicant:' + (v.email || '').toLowerCase(), application_id: id, consent_version: CONSENT_VERSION }));
+    consents.push({ consent_type: 'employment_contact', label: 'Autorización de Verificación de Empleo e Ingresos (paso 4)', accepted: !!v.authorize_employment_contact, accepted_at: stamp, ip_address: consents[0].ip_address, user_id: consents[0].user_id, application_id: id, consent_version: CONSENT_VERSION });
+    const u = UNITS.find(x => x[1] === v.unit) || UNITS[0], [pid, unit] = u[0].split('|');
+    const app = { id, name: (v.first_name + ' ' + v.last_name).trim(), pid: Number(pid), unit, rent: u[2], applied: '2026-10-04', income: Number(v.monthly_income) || 0, occupants: Number(v.occupants) || 1, status: 'SUBMITTED', employer: v.employer_name, job: v.job_title, tenure: 'Desde ' + (v.employment_start_date || '—'), credit: 731, pets: v.pets && v.pets !== 'Ninguna' ? v.pets : 'None', source: 'online', consents, wizard: v };
+    try { const list = JSON.parse(sessionStorage.getItem('mghpm.leasing.new.v1')) || []; sessionStorage.setItem('mghpm.leasing.new.v1', JSON.stringify([app, ...list])); sessionStorage.removeItem(DRAFT); } catch (e) {}
+    this.setState({ done: app });
+  }
+
+  dateBounds(k, type) {
+    if (type !== 'date') return { dMin: '', dMax: '', cursor: 'text' };
+    const iso = d => d.toISOString().slice(0, 10), now = new Date(), v = this.state.v || {};
+    const today = iso(now), adult = iso(new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()));
+    let dMin = '', dMax = '';
+    if (k === 'dob') { dMin = '1900-01-01'; dMax = adult; }
+    else if (k === 'move_in') { dMin = today; }
+    else if (k === 'signature_date') { dMin = today; dMax = today; }
+    else if (/^previous_move_out_date_/.test(k)) { dMin = v[k.replace('out', 'in')] || ''; dMax = today; }
+    else { dMax = today; }
+    return { dMin, dMax, cursor: 'pointer' };
+  }
+
+  renderVals() {
+    const s = this.state, v = s.v, step = s.step;
+    const set = (k, val) => this.setState(st => ({ v: { ...st.v, [k]: val } }));
+    const miss = this.missing(step);
+    const landlordsOk = !!(v.previous_landlord_name_1 && v.previous_landlord_phone_1 && v.authorize_rental_reference_1);
+    const field = f => {
+      const val = v[f.k];
+      if (f.kind === 'status') {
+        if (f.k === 'credit_status') { const ok = !!v.consent_credit; return { isInput: false, isSelect: false, isFile: false, isCheck: false, hasHint: true, hint: ok ? '✓ Consentimiento otorgado — la consulta se realizará mediante una SIC autorizada.' : 'Consentimiento pendiente — se otorga por separado en el paso 8.', span: '1 / -1' }; }
+        return { isInput: false, isSelect: false, isFile: false, isCheck: false, hasHint: true, hint: landlordsOk ? '✓ Propietario anterior: ' + v.previous_landlord_name_1 + (v.previous_landlord_name_2 ? ' • ' + v.previous_landlord_name_2 : '') : 'Añada al menos un propietario/administrador anterior en el paso 6.', span: '1 / -1' };
+      }
+      const files = Array.isArray(val) ? val : [];
+      return { label: f.label, req: !!f.req, ph: f.ph || '', type: f.type || 'text', span: f.span || 'auto', options: f.options || [], value: typeof val === 'string' ? val : '', checked: !!val, multi: !!f.multi,
+        isInput: f.kind === 'input', ...this.dateBounds(f.k, f.type), isSelect: f.kind === 'select', isFile: f.kind === 'file', isCheck: f.kind === 'check', help: f.help || '', hasHelp: !!f.help,
+        hasHint: f.kind === 'select' && f.k === 'unit' && !!val, hint: f.k === 'unit' && val ? 'Renta mensual ' + fmtUSD((UNITS.find(x => x[1] === val) || [])[2] || 0) : '',
+        border: f.kind === 'check' ? (val ? '#006B68' : f.credit ? '#D4A637' : '#E2E8F0') : files.length ? '#006B68' : '#CBD5E1', bg: f.kind === 'check' ? (val ? '#F0FAF9' : f.credit ? '#FFFBF0' : '#FFFFFF') : files.length ? '#F0FAF9' : '#F8FAFC',
+        icon: files.length ? 'file-check' : 'upload', iconColor: files.length ? '#006B68' : '#64748B', fileLabel: files.length ? files.join(', ') : (f.req ? 'Requerido • PDF o imagen' : 'Opcional • PDF o imagen'), action: files.length ? 'Reemplazar' : 'Subir',
+        onChange: e => f.kind === 'check' ? set(f.k, e.target.checked) : f.kind === 'file' ? set(f.k, Array.from(e.target.files || []).map(x => x.name)) : set(f.k, e.target.value) };
+    };
+    const last = step === STEPS.length - 1;
+    const D = s.done;
+    return {
+      pad: s.w < 768 ? '16px' : '32px',
+      exit: () => go(LIST), exitLabel: 'Salir',
+      notDone: !D, isDone: !!D,
+      stepTitle: (step + 1) + '. ' + STEPS[step][0], stepDesc: STEPS[step][1],
+      steps: STEPS.map(([label], i) => { const dn = i < step, cur = i === step, reach = i <= s.maxStep; return { n: String(i + 1), label, done: dn, notDone: !dn, locked: !reach, cursor: reach ? 'pointer' : 'default', bg: dn ? '#006B68' : cur ? '#fff' : '#F8FAFC', fg: dn ? '#fff' : cur ? '#0094CC' : '#94A3B8', ring: dn ? '#006B68' : cur ? '#0094CC' : '#E2E8F0', text: cur ? '#172033' : '#64748B', weight: cur ? '700' : '500', lineL: i === 0 ? 'transparent' : i <= step ? '#006B68' : '#E2E8F0', lineR: i === STEPS.length - 1 ? 'transparent' : i < step ? '#006B68' : '#E2E8F0', go: () => reach && this.setState({ step: i }) }; }),
+      hasLegal: last, legalTitle: 'AUTORIZACIÓN PARA VERIFICACIÓN DE SOLICITUD', legal: MASTER,
+      cards: CARDS[step].map(c => ({ title: c.title, icon: c.icon, desc: c.desc || '', hasDesc: !!c.desc, fields: c.fields.map(field) })),
+      msg: miss.length ? 'Faltan ' + miss.length + ' campo' + (miss.length > 1 ? 's' : '') + ' obligatorio' + (miss.length > 1 ? 's' : '') + ': ' + miss.slice(0, 3).map(f => f.label.replace(/ \(.*\)$/, '')).join(', ') + (miss.length > 3 ? '…' : '') : last && !v.consent_credit ? 'Sin consulta crediticia autorizada, la solicitud podrá evaluarse de forma condicional.' : 'Paso completo.',
+      msgColor: miss.length ? '#B45309' : last && !v.consent_credit ? '#9A7420' : '#15803D',
+      isFirst: step === 0, cantNext: miss.length > 0,
+      nextLabel: last ? 'Enviar solicitud' : 'Continuar', nextIcon: last ? 'send' : 'arrow-right',
+      back: () => this.setState({ step: Math.max(0, step - 1) }),
+      next: () => { if (last) { this.submit(); return; } const n = step + 1; this.setState(st => ({ step: n, maxStep: Math.max(st.maxStep, n) })); try { window.scrollTo(0, 0); } catch (e) {} },
+      appId: D ? D.id : '', consentVersion: CONSENT_VERSION,
+      consentLog: D ? D.consents.map(c => ({ label: c.label, value: c.accepted ? 'Aceptado • ' + new Date(c.accepted_at).toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' }) + ' • ' + c.ip_address : 'No otorgado', color: c.accepted ? '#15803D' : '#B45309' })) : [],
+      restart: () => this.setState({ done: null, step: 0, maxStep: 0, v: { move_in: '2026-11-01', term: '12 meses', signature_date: '2026-10-04', id_type: 'Cédula', occupants: '1' } }),
+      openAdmin: () => go(APP + '?id=' + (D ? D.id : '') + '&tab=consents'),
+      toast: !!s.toast, toastMsg: s.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

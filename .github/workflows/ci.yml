@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Public Firebase web config is only read in the browser; CI uses placeholders.
+  NEXT_PUBLIC_FIREBASE_API_KEY: fake-api-key
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: demo-mghpm.firebaseapp.com
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: demo-mghpm
+  NEXT_PUBLIC_FIREBASE_APP_ID: 1:000000000000:web:ci
+  APP_ORIGIN: http://localhost:3100
+
+jobs:
+  checks:
+    name: Lint, typecheck y unitarias
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx next typegen
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:unit
+
+  e2e:
+    name: E2E con emuladores
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: npm ci
+      - name: E2E (auth + firestore emulators, Next.js on :3100)
+        run: >
+          npx --yes firebase-tools@14.1.0 emulators:exec
+          --project demo-mghpm --only auth,firestore
+          "bash scripts/ci/run-e2e.sh"

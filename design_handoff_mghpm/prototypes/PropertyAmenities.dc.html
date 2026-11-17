@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="str-data.js"></script>
+  <script src="audit-data.js"></script>
+  <script src="amenities-data.js"></script>
+  <style>a{color:#006B68}a:hover{color:#004F4D}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:16px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;color:#172033;min-width:0">
+  <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 320px">
+        <h2 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Amenities &amp; Services</h2>
+        <p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">Full operational configuration. Explore Stays and My Stay show only items marked Guest Visible.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+        <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ countsLine }}</span>
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon="undo-2" disabled="{{ clean }}" on-click="{{ discard }}" hint-size="auto,32px">Discard</x-import>
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="check" disabled="{{ clean }}" on-click="{{ saveAll }}" hint-size="auto,32px">Save Changes</x-import>
+      </div>
+    </div>
+    <div role="tablist" style="display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #E2E8F0">
+      <sc-for list="{{ subtabs }}" as="t" hint-placeholder-count="6">
+        <button role="tab" onClick="{{ t.select }}" style="display:flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:0;border-bottom:2px solid {{ t.border }};background:transparent;color:{{ t.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0">{{ t.label }}<span style="padding:2px 6px;border-radius:999px;background:#F1F5F9;color:#64748B;font:600 10px/1.2 'Plus Jakarta Sans',sans-serif">{{ t.count }}</span></button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:#F0FDF4;border:1px solid #BBF7D0;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#15803D">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="circle-check" size="{{ 16 }}" hint-size="16px,16px"></x-import>{{ savedMsg }}
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showRows }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:{{ rowsCols }};gap:20px;align-items:start">
+        <sc-if value="{{ showCats }}" hint-placeholder-val="{{ true }}">
+          <nav style="display:flex;flex-direction:column;gap:2px;min-width:0">
+            <sc-for list="{{ cats }}" as="c" hint-placeholder-count="10">
+              <button onClick="{{ c.select }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border:0;border-left:3px solid {{ c.bar }};border-radius:0 6px 6px 0;background:{{ c.bg }};color:{{ c.color }};font:{{ c.weight }} 13px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer;text-align:left" style-hover="background:#F8FAFC">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ c.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>
+                <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.label }}</span>
+                <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ c.count }}</span>
+              </button>
+            </sc-for>
+          </nav>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+            <span style="display:flex;align-items:center;gap:8px;font:600 15px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ rowsIcon }}" size="{{ 16 }}" color="#006B68" hint-size="16px,16px"></x-import>{{ rowsTitle }}</span>
+            <label style="flex:0 1 260px;min-width:180px;display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border:1px solid #E2E8F0;border-radius:8px;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 14 }}" hint-size="14px,14px"></x-import><input value="{{ q }}" onChange="{{ onQ }}" placeholder="Filter items…" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"></label>
+          </div>
+          <sc-if value="{{ isSafety }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="cctv" size="{{ 16 }}" color="#B45309" hint-size="16px,16px"></x-import><span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#78350F;text-wrap:pretty">{{ cameraRule }}</span></div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:9px 0;border-top:1px solid #F1F5F9">
+                <button onClick="{{ r.toggle }}" style="display:flex;align-items:center;gap:10px;flex:0 0 230px;min-width:0;border:0;background:transparent;cursor:pointer;padding:0;text-align:left">
+                  <span style="width:18px;height:18px;border-radius:4px;border:1.5px solid {{ r.boxBd }};background:{{ r.boxBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 12 }}" color="#FFFFFF" hint-size="12px,12px"></x-import></span>
+                  <span style="font:{{ r.weight }} 13px/1.3 'Plus Jakarta Sans',sans-serif;color:{{ r.color }}">{{ r.label }}</span>
+                </button>
+                <sc-if value="{{ r.on }}">
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex:1 1 360px;min-width:0">
+                    <sc-if value="{{ r.scoped }}"><select value="{{ r.scope }}" onChange="{{ r.onScope }}" style="height:32px;padding:0 8px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="">Private / Shared…</option><option value="Private">Private</option><option value="Shared">Shared</option></select></sc-if>
+                    <select value="{{ r.inc }}" onChange="{{ r.onInc }}" style="height:32px;padding:0 8px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><option value="yes">Included</option><option value="no">Extra fee</option></select>
+                    <button onClick="{{ r.toggleVis }}" title="Shown in Explore Stays and My Stay" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:1px solid {{ r.visBd }};border-radius:999px;background:{{ r.visBg }};color:{{ r.visFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ r.visIcon }}" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ r.visL }}</button>
+                    <input value="{{ r.notes }}" onChange="{{ r.onNotes }}" placeholder="Notes (e.g. hours, location)" style="flex:1 1 180px;min-width:0;height:32px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)">
+                  </div>
+                </sc-if>
+                <sc-if value="{{ r.off }}"><span style="font:400 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#94A3B8">Not available</span></sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noRows }}"><p style="margin:0;padding:20px 0;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#94A3B8">No items match this filter.</p></sc-if>
+          </div>
+          <sc-if value="{{ isPets }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px;padding:14px 16px;border-radius:8px;background:#F8FAFC">
+              <span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Pet Policy — shown with restrictions, never just “Pet Friendly”</span>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+                <sc-for list="{{ petFields }}" as="f"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569">{{ f.label }}<input value="{{ f.value }}" onChange="{{ f.on }}" placeholder="{{ f.ph }}" style="height:36px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></label></sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isUtil }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Utilities are configured separately from amenities because they can change the reservation price.</p>
+      <div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto">
+        <table style="width:100%;min-width:720px;border-collapse:collapse">
+          <thead><tr><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Utility</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Configuration</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Guest Price Impact</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Notes</th></tr></thead>
+          <tbody>
+            <sc-for list="{{ utilRows }}" as="u" hint-placeholder-count="7">
+              <tr>
+                <td style="padding:10px 14px;border-bottom:1px solid #F1F5F9;font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033"><span style="display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ u.icon }}" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import>{{ u.label }}</span></td>
+                <td style="padding:10px 14px;border-bottom:1px solid #F1F5F9;width:240px"><select value="{{ u.mode }}" onChange="{{ u.onMode }}" style="height:34px;width:100%;padding:0 8px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><sc-for list="{{ u.modes }}" as="m"><option value="{{ m }}">{{ m }}</option></sc-for></select></td>
+                <td style="padding:10px 14px;border-bottom:1px solid #F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ u.tone }}" dot="{{ true }}" hint-size="80px,22px">{{ u.impact }}</x-import></td>
+                <td style="padding:10px 14px;border-bottom:1px solid #F1F5F9"><input value="{{ u.notes }}" onChange="{{ u.onNotes }}" placeholder="Notes" style="width:100%;height:34px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <sc-if value="{{ elecMetered }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px;padding:14px 16px;border-radius:8px;background:#F8FAFC">
+          <span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Electricity — {{ elecMode }}</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+            <sc-for list="{{ elecFields }}" as="f"><label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569">{{ f.label }}<input type="number" value="{{ f.value }}" onChange="{{ f.on }}" placeholder="0.00" style="height:36px;padding:0 10px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none"></label></sc-for>
+          </div>
+          <span style="font:500 12px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569">Meter In → Meter Out → kWh Used → Rate / kWh → Charge • recorded in Reservation 360 at check-in and check-out</span>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{ isSvc }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">Hospitality &amp; concierge services. Requests are fulfilled through Guest Services and charged to the reservation.</p>
+      <div style="border:1px solid #E2E8F0;border-radius:8px;overflow-x:auto">
+        <table style="width:100%;min-width:820px;border-collapse:collapse">
+          <thead><tr><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Service</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Pricing</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Price</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Advance Notice</th><th style="padding:10px 14px;text-align:left;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0">Guest Can Request</th></tr></thead>
+          <tbody>
+            <sc-for list="{{ svcRows }}" as="s" hint-placeholder-count="8">
+              <tr style="opacity:{{ s.op }}">
+                <td style="padding:8px 14px;border-bottom:1px solid #F1F5F9"><button onClick="{{ s.toggle }}" style="display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:0;text-align:left"><span style="width:18px;height:18px;border-radius:4px;border:1.5px solid {{ s.boxBd }};background:{{ s.boxBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 12 }}" color="#FFFFFF" hint-size="12px,12px"></x-import></span><span style="font:600 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ s.label }}</span></button></td>
+                <td style="padding:8px 14px;border-bottom:1px solid #F1F5F9;width:190px"><select value="{{ s.pricing }}" onChange="{{ s.onPricing }}" disabled="{{ s.off }}" style="height:32px;width:100%;padding:0 8px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><sc-for list="{{ pricingOpts }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></td>
+                <td style="padding:8px 14px;border-bottom:1px solid #F1F5F9;width:130px"><input type="number" value="{{ s.price }}" onChange="{{ s.onPrice }}" disabled="{{ s.noPrice }}" placeholder="{{ s.pricePh }}" style="width:100%;height:32px;padding:0 8px;border:1px solid #E2E8F0;border-radius:6px;font:400 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff"></td>
+                <td style="padding:8px 14px;border-bottom:1px solid #F1F5F9;width:140px"><select value="{{ s.notice }}" onChange="{{ s.onNotice }}" disabled="{{ s.off }}" style="height:32px;width:100%;padding:0 8px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;font:500 12px/1 'Plus Jakarta Sans',sans-serif;color:#172033"><sc-for list="{{ noticeOpts }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></td>
+                <td style="padding:8px 14px;border-bottom:1px solid #F1F5F9"><button onClick="{{ s.toggleReq }}" disabled="{{ s.off }}" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1px solid {{ s.reqBd }};border-radius:999px;background:{{ s.reqBg }};color:{{ s.reqFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif;cursor:pointer">{{ s.reqL }}</button></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+  </section>
+
+  <section style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:3px solid #D4A637;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Guest View Preview</h3><p style="margin:0;font:400 13px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B">What Explore Stays and My Stay display from the saved configuration.</p></div>
+      <span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#006B68">{{ previewCount }}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px 24px">
+      <sc-for list="{{ preview }}" as="g" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+          <span style="display:flex;align-items:center;gap:6px;font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ g.icon }}" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ g.cat }}</span>
+          <sc-for list="{{ g.items }}" as="it"><span style="display:flex;align-items:flex-start;gap:6px;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033"><span style="display:flex;padding-top:2px"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="check" size="{{ 13 }}" color="#006B68" hint-size="13px,13px"></x-import></span>{{ it }}</span></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>

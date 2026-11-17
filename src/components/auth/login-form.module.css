@@ -1,0 +1,90 @@
+.form {
+  display: grid;
+  gap: 10px;
+}
+
+.form label {
+  color: var(--color-title);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-title);
+}
+
+.form input::placeholder {
+  color: #94a3b8;
+}
+
+.passwordLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.reset {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reset:disabled {
+  cursor: wait;
+}
+
+.submit {
+  min-height: 46px;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 150ms ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.submit:active:not(:disabled) {
+  background: var(--color-primary-pressed);
+}
+
+.submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.error,
+.success {
+  margin: 6px 0 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.error {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}

@@ -1,0 +1,74 @@
+.switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.switcher select,
+.switcher button {
+  min-height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-title);
+  font-size: 12px;
+}
+
+.switcher select {
+  max-width: 180px;
+}
+
+.switcher button {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.switcher button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.singleOrg {
+  overflow: hidden;
+  max-width: 180px;
+  color: var(--color-title);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.error {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 3;
+  width: max-content;
+  max-width: 280px;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .switcher select {
+    max-width: 110px;
+  }
+
+  .singleOrg {
+    max-width: 100px;
+  }
+}

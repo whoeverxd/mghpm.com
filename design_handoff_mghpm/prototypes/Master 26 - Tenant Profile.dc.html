@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+    input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}
+  </style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 26 — Tenant Profile" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+        <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-lang" hint-size="88px,38px"></x-import>
+      <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+      </button>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+
+        <sc-if value="{{ creating }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>Back to Tenants</button>
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px">
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 420px">
+                <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">Add Existing Tenant</h1>
+                <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#64748B;max-width:760px;text-wrap:pretty">Complete the tenant file in one pass. Fields marked * are required; everything else can be finished later from Tenant 360.</p>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ goBack }}" hint-size="90px,40px">Cancel</x-import>
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ createTenant }}" hint-size="140px,40px">Create Tenant</x-import>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;background:#F0FAF9;border:1px solid #CDEBE8;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#134E4A">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="info" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+              <span style="flex:1;text-wrap:pretty">For existing, migrated or exceptional tenants only. New applicants go through Rental Applications — their tenant record is created automatically when the lease is signed. <button onClick="{{ goApplications }}" style="border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1.45 'Plus Jakarta Sans',sans-serif" style-hover="text-decoration:underline">Open Rental Applications</button></span>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notCreating }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <button onClick="{{ goBack }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 13px/1 'Plus Jakarta Sans',sans-serif" style-hover="color:#004F4D;text-decoration:underline">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="arrow-left" size="{{ 14 }}" hint-size="14px,14px"></x-import>Back to Tenants
+          </button>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px">
+            <div style="display:flex;align-items:center;gap:16px;min-width:0;flex:1 1 420px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ initials }}" tone="navy" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                  <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ ownerName }}</h1>
+                  <sc-for list="{{ headBadges }}" as="hb" hint-placeholder-count="3"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ hb.tone }}" dot="{{ hb.dot }}" hint-size="110px,22px">{{ hb.label }}</x-import></sc-for>
+                </div>
+                <span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ownerMeta }}</span>
+                <sc-if value="{{ hasSource }}"><button onClick="{{ openSource }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif" style-hover="text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="clipboard-list" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ sourceLabel }}</button></sc-if>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="danger" icon="trash-2" on-click="{{ askDelete }}" hint-size="100px,40px">Delete</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="message-square" on-click="{{ goMessages }}" hint-size="150px,40px">Message Tenant</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="house" on-click="{{ goPortal }}" hint-size="130px,40px">Tenant Portal</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="sparkles" on-click="{{ aiReview }}" hint-size="120px,40px">AI Review</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="pencil" on-click="{{ editPersonal }}" hint-size="130px,40px">Edit Profile</x-import>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:3px solid {{ readyBar }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px">
+          <div style="display:flex;flex-direction:column;gap:10px;flex:0 1 260px;min-width:220px">
+            <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">Tenant Readiness</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 28px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ readyPct }}</span><span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">Tenant file complete</span></div>
+            <div style="height:8px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;width:{{ readyPct }};background:{{ readyFill }};border-radius:4px;transition:width 180ms ease"></div></div>
+          </div>
+          <div style="flex:1 1 520px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 24px">
+            <sc-for list="{{ readyItems }}" as="ri" hint-placeholder-count="6">
+              <button onClick="{{ ri.go }}" style="display:flex;align-items:center;gap:10px;padding:8px 0;border:0;border-bottom:1px solid #F1F5F9;background:transparent;cursor:pointer;text-align:left;font-family:inherit">
+                <span style="width:24px;height:24px;border-radius:6px;background:{{ ri.bg }};color:{{ ri.fg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ri.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                <span style="flex:1;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ri.label }}</span>
+                <span style="font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:{{ ri.fg }};white-space:nowrap">{{ ri.value }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+          <div role="tablist" style="display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;box-shadow:inset 0 -1px 0 #E2E8F0;padding:0 16px;scrollbar-width:none">
+            <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="11">
+              <button role="tab" onClick="{{ tb.select }}" style="flex-shrink:0;height:48px;padding:0 12px;border:0;box-shadow:inset 0 -2px 0 {{ tb.border }};background:transparent;cursor:pointer;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:8px">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ tb.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>{{ tb.label }}
+                <sc-if value="{{ tb.hasCount }}"><span style="padding:3px 7px;border-radius:999px;background:{{ tb.countBg }};color:{{ tb.countFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ showKpis }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import></sc-for>
+          </div>
+        </sc-if>
+
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ showChips }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+            <sc-for list="{{ chips }}" as="ch">
+              <button onClick="{{ ch.select }}" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid {{ ch.border }};border-radius:999px;cursor:pointer;background:{{ ch.bg }};color:{{ ch.color }};font:600 12px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="folder" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ ch.label }}<span style="opacity:0.7">{{ ch.count }}</span></button>
+            </sc-for>
+            <span style="flex:1"></span>
+            <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:6px;background:#006B68;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="upload" size="{{ 16 }}" hint-size="16px,16px"></x-import>Upload to {{ uploadFolder }}
+              <input type="file" multiple="{{ true }}" onChange="{{ uploadDocs }}" style="display:none">
+            </label>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasSecs }}">
+          <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px">
+            <sc-for list="{{ secs }}" as="sec" hint-placeholder-count="4">
+              <section style="grid-column:{{ sec.span }};background:#FFFFFF;border:1px solid {{ sec.border }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);display:flex;flex-direction:column;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:20px 24px 16px">
+                  <span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+                      <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sec.title }}</h3>
+                      <sc-for list="{{ sec.badges }}" as="bd"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ bd.tone }}" dot="{{ bd.dot }}" hint-size="90px,22px">{{ bd.label }}</x-import></sc-for>
+                    </div>
+                    <sc-if value="{{ sec.hasDesc }}"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ sec.desc }}</p></sc-if>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-shrink:0">
+                    <sc-if value="{{ sec.canEdit }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="{{ sec.editIcon }}" on-click="{{ sec.edit }}" hint-size="70px,32px">{{ sec.editLabel }}</x-import></sc-if>
+                    <sc-if value="{{ sec.editing }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" on-click="{{ sec.cancel }}" hint-size="70px,32px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="check" on-click="{{ sec.save }}" hint-size="80px,32px">Save</x-import></sc-if>
+                  </div>
+                </div>
+                <sc-if value="{{ sec.hasWarn }}">
+                  <div style="margin:0 24px 12px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A;font:500 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#92400E">
+                    <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="triangle-alert" size="{{ 15 }}" hint-size="15px,15px"></x-import><span>{{ sec.warn }}</span>
+                  </div>
+                </sc-if>
+                <div style="padding:0 24px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax({{ sec.colMin }},1fr));gap:0 24px">
+                  <sc-for list="{{ sec.fields }}" as="fd" hint-placeholder-count="6">
+                    <div style="grid-column:{{ fd.span }};min-width:0;padding:{{ fd.pad }};border-top:{{ fd.rule }}">
+                      <sc-if value="{{ fd.isView }}">
+                        <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                          <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.label }}</span>
+                          <span style="font:600 14px/1.45 'Plus Jakarta Sans',sans-serif;color:{{ fd.vColor }};overflow-wrap:anywhere;text-wrap:pretty">{{ fd.display }}</span>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isInput }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<input type="{{ fd.type }}" value="{{ fd.value }}" onChange="{{ fd.onChange }}" placeholder="{{ fd.ph }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isSelect }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<select value="{{ fd.value }}" onChange="{{ fd.onChange }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;min-width:0"><sc-for list="{{ fd.options }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isArea }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<textarea value="{{ fd.value }}" onChange="{{ fd.onChange }}" rows="3" placeholder="{{ fd.ph }}" style="padding:10px 12px;border:1px solid #CBD5E1;border-radius:6px;outline:none;resize:vertical;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isToggle }}">
+                        <label style="display:flex;align-items:center;gap:10px;min-height:40px;cursor:pointer;font:500 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033"><input type="checkbox" checked="{{ fd.checked }}" onChange="{{ fd.onChange }}" style="width:18px;height:18px;accent-color:#006B68;margin:0;flex-shrink:0">{{ fd.label }}</label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isFile }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}
+                          <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px dashed #CBD5E1;border-radius:6px;cursor:pointer;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;min-width:0" style-hover="border-color:#006B68;background:#F8FAFC">
+                            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="paperclip" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fd.fileLabel }}</span>
+                            <input type="file" onChange="{{ fd.onFile }}" style="display:none">
+                          </label>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ tables }}" as="tbl" hint-placeholder-count="0">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ tbl.title }}</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.sub }}</p></div>
+              <sc-if value="{{ tbl.hasAction }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" on-click="{{ tbl.action }}" hint-size="120px,32px">{{ tbl.actionLabel }}</x-import></sc-if>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:{{ tbl.minW }};border-collapse:collapse">
+                <thead><tr><sc-for list="{{ tbl.cols }}" as="c"><th style="padding:12px 16px;padding-left:{{ c.pl }};padding-right:{{ c.pr }};text-align:{{ c.align }};font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">{{ c.label }}</th></sc-for></tr></thead>
+                <tbody>
+                  <sc-for list="{{ tbl.rows }}" as="r">
+                    <tr onClick="{{ r.open }}" style="cursor:{{ r.cursor }}" style-hover="background:#F8FAFC">
+                      <sc-for list="{{ r.cells }}" as="cl">
+                        <td style="padding:14px 16px;padding-left:{{ cl.pl }};padding-right:{{ cl.pr }};border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;text-align:{{ cl.align }};white-space:nowrap">
+                          <sc-if value="{{ cl.isText }}"><div style="display:flex;flex-direction:column;gap:2px"><span style="color:#172033;font-weight:{{ cl.weight }}">{{ cl.text }}</span><sc-if value="{{ cl.hasSub }}"><span style="font-size:12px;color:#64748B">{{ cl.sub }}</span></sc-if></div></sc-if>
+                          <sc-if value="{{ cl.isBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ cl.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ cl.text }}</x-import></sc-if>
+                          <sc-if value="{{ cl.isLinks }}"><div style="display:inline-flex;gap:2px"><sc-for list="{{ cl.links }}" as="lk"><button onClick="{{ lk.go }}" title="{{ lk.title }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:{{ lk.color }};cursor:pointer" style-hover="background:#F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ lk.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></button></sc-for></div></sc-if>
+                        </td>
+                      </sc-for>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <sc-if value="{{ tbl.empty }}"><p style="margin:0;padding:40px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.emptyText }}</p></sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ creating }}" hint-placeholder-val="{{ false }}">
+          <div style="position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 24px;margin-bottom:76px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 -8px 24px rgba(15,23,42,0.08)">
+            <span style="font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Required: legal name, email, phone, property, unit, lease dates and monthly rent.</span>
+            <div style="display:flex;gap:8px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ goBack }}" hint-size="90px,40px">Cancel</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="check" on-click="{{ createTenant }}" hint-size="140px,40px">Create Tenant</x-import>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showTimeline }}"><x-import component-from-global-scope="mgh-compliance-summary" from="./compliance-data.js" scope="tenant" hint-size="100%,220px"></x-import></sc-if>
+<sc-if value="{{ showTimeline }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Activity Timeline</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Every change to this tenant record is recorded with date, time and user.</p></div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ timeline }}" as="ev" hint-placeholder-count="5">
+                <div style="display:flex;gap:16px">
+                  <div style="display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0">
+                    <span style="width:28px;height:28px;border-radius:14px;background:{{ ev.bg }};color:{{ ev.fg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ev.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                    <span style="flex:1;width:1px;background:#E2E8F0;min-height:16px"></span>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px 0 20px">
+                    <span style="font:600 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ev.text }}</span>
+                    <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ev.when }} • {{ ev.by }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+
+    <sc-if value="{{ delOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:90;background:rgba(15,23,42,0.45);display:flex;align-items:center;justify-content:center;padding:16px">
+        <div role="alertdialog" style="width:100%;max-width:480px;background:#FFFFFF;border-radius:12px;box-shadow:0 24px 48px rgba(15,23,42,0.24);display:flex;flex-direction:column">
+          <div style="padding:24px;display:flex;gap:16px;align-items:flex-start">
+            <span style="width:40px;height:40px;border-radius:8px;background:#FEF2F2;color:#DC2626;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <h3 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ delTitle }}</h3>
+              <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ delBody }}</p>
+              <sc-if value="{{ delBlocked }}">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A">
+                  <span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#92400E">Linked records prevent deletion</span>
+                  <sc-for list="{{ delBlockers }}" as="b"><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#78350F">• {{ b }}</span></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;padding:16px 24px;border-top:1px solid #E2E8F0;background:#F8FAFC;border-radius:0 0 12px 12px">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ cancelDelete }}" hint-size="90px,40px">Cancel</x-import>
+            <sc-if value="{{ delBlocked }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="user-x" on-click="{{ deactivate }}" hint-size="150px,40px">Deactivate Instead</x-import></sc-if>
+            <sc-if value="{{ delAllowed }}"><button onClick="{{ confirmDelete }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:0;border-radius:6px;background:#DC2626;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#B91C1C"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import>Delete Permanently</button></sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:95;display:flex;align-items:center;gap:10px;max-width:440px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toastIcon }}" size="{{ 16 }}" color="{{ toastColor }}" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="staff" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+const fmtUSD = n => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtD = iso => { if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso || '—'; const [y, m, d] = iso.slice(0, 10).split('-').map(Number); return MON[m - 1] + ' ' + d + ', ' + y; };
+const fmtTS = iso => { const d = new Date(iso); return isNaN(d) ? iso : MON[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' • ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); };
+const QP = new URLSearchParams(window.location.search);
+const SELF = PAGES['tenant-profile'];
+const ME = 'Marcus Vance';
+
+const PROPS = {
+  1: { title: 'Brickell Bay Residences', city: 'Miami, FL', owner: 'Alvarez Family Trust' }, 2: { title: 'Ocean View Villa', city: 'Miami Beach, FL', owner: 'Alvarez Family Trust' },
+  3: { title: 'Coral Gables Terrace', city: 'Coral Gables, FL', owner: 'Las Olas Partners LP' }, 4: { title: 'Las Olas Lofts', city: 'Fort Lauderdale, FL', owner: 'Las Olas Partners LP' },
+  5: { title: 'Wynwood Commons', city: 'Miami, FL', owner: 'Plata Investments Group' }, 6: { title: 'Sunset Beach House', city: 'Miami Beach, FL', owner: 'Alvarez Family Trust' },
+  7: { title: 'Mar de Plata I', city: 'Miami Beach, FL', owner: 'Plata Investments Group' }, 13: { title: 'Aventura Park Tower', city: 'Aventura, FL', owner: 'Turnberry Capital Trust' }
+};
+const PID_OF = t => Number(Object.keys(PROPS).find(k => PROPS[k].title === t)) || null;
+const TEN_ST = ['Applicant', 'Approved', 'Lease Pending', 'Future Tenant', 'Active', 'Notice Given', 'Move-Out Pending', 'Former Tenant', 'Suspended'];
+const TEN_TONE = { Applicant: 'neutral', Approved: 'info', 'Lease Pending': 'warning', 'Future Tenant': 'info', Active: 'success', 'Notice Given': 'premium', 'Move-Out Pending': 'warning', 'Former Tenant': 'neutral', Suspended: 'danger' };
+const PEOPLE_ST = { Applicant: 'Move-In Pending', Approved: 'Move-In Pending', 'Lease Pending': 'Move-In Pending', 'Future Tenant': 'Move-In Pending', Active: 'Current', 'Notice Given': 'Renewal Due', 'Move-Out Pending': 'Renewal Due', 'Former Tenant': 'Moved Out', Suspended: 'Past Due' };
+const LEASE_ST = ['Draft', 'Pending Signature', 'Signed', 'Active', 'Notice Given', 'Expired', 'Terminated'];
+const CHK_TONE = { Verified: 'success', Completed: 'success', Approved: 'success', Received: 'info', Pending: 'warning', 'Not Started': 'neutral', Failed: 'danger' };
+const FOLDERS = ['Identification', 'Rental Application', 'Screening Authorizations', 'Income / Employment', 'Lease', 'Lease Addenda', 'Move-In Inspection', 'Move-Out Inspection', 'Notices', 'Payment Documents', 'Communications', 'Other'];
+const OCC_ROLES = ['Primary Tenant', 'Co-Tenant', 'Authorized Adult Occupant', 'Minor Occupant', 'Guarantor'];
+const KEY = 'mghpm.tenant360.v1', PKEY = 'mghpm.people.v1';
+const load = k => { try { return JSON.parse(sessionStorage.getItem(k)) || null; } catch (e) { return null; } };
+const APP_OF = { 'Daniela Ortiz': 'APP-2026-0158', 'Marco Bellini': 'APP-2026-0171' };
+const doc = (id, name, folder, type, date, status, by, verifiedBy, visibility, expires) => ({ id, name, folder, type, version: 1, date, status, by, verifiedBy, visibility, expires: expires || '' });
+const SEED = {
+  'Daniela Ortiz': {
+    id: 'TEN-0418', created: '2026-09-14', pid: 1, source: { app: 'APP-2026-0158', approved: '2026-09-12' },
+    meta: { status: 'Active', notice_date: '', reason: '', portal_invited: true, tenant_type: 'Primary Tenant' },
+    personal: { legal_name: 'Daniela Ortiz Ramírez', preferred: 'Daniela', photo: '', dob: '1991-07-23', id_type: 'Passport', id_number: 'X73049218', id_expires: '2029-03-14', nationality: 'Colombia', email: 'daniela.ortiz@email.com', email2: '', mobile: '(305) 555-1742', whatsapp: '(305) 555-1742', language: 'Spanish', prev_address: '455 NE 26th St, Apt 9, Miami, FL 33137' },
+    emergency: { ec_name: 'Carlos Ortiz', ec_phone: '(786) 555-2210', ec_relation: 'Brother' },
+    occupants: [
+      { role: 'Primary Tenant', name: 'Daniela Ortiz', relation: 'Self', age: 'Adult', email: 'daniela.ortiz@email.com', phone: '(305) 555-1742', onLease: true },
+      { role: 'Co-Tenant', name: 'Andrés Gómez', relation: 'Partner', age: 'Adult', email: 'andres.gomez@email.com', phone: '(305) 555-1788', onLease: true },
+      { role: 'Minor Occupant', name: 'Lucía Gómez', relation: 'Daughter', age: 'Minor', email: '', phone: '', onLease: false },
+      { role: 'Guarantor', name: 'Carlos Ortiz', relation: 'Brother', age: 'Adult', email: 'carlos.ortiz@email.com', phone: '(786) 555-2210', onLease: false }
+    ],
+    household: { pets: '1 dog — Beagle, 22 lb (pet deposit $500.00)', vehicles: 'Toyota RAV4 2022 • FL plate ••K21', parking: 'P2-114' },
+    lease: { property: 'Brickell Bay Residences', unit: 'Unit 1204', lease_id: 'L-2026-0418', lease_status: 'Active', currency: 'USD', move_in: '2026-10-01', start: '2026-10-01', end: '2027-09-30', rent: '3850', deposit: '7700', due_day: '1', renewal: '2027-07-02', move_out: '', keys: '2 unit keys • 2 fobs • 1 mailbox key', parking: 'P2-114', utilities: 'Tenant: electricity, internet • Owner: water, trash' },
+    leaseHistory: [{ lease_id: 'L-2025-0219', property: 'Ocean View Villa', unit: 'Unit 105', start: '2025-03-01', end: '2026-09-30', rent: '3400', status: 'Completed', note: 'Deposit refunded in full' }],
+    employment: { employer: 'Baptist Health South Florida', position: 'Registered Nurse', employer_phone: '(786) 596-1960', start: '2019-05-06', income: '12400', verif_status: 'Verified', verif_date: '2026-09-10' },
+    screening: [['Identity Verification', 'Verified', '2026-09-08', 'IDV-55102'], ['Employment Verification', 'Verified', '2026-09-10', 'Employer HR confirmation'], ['Income Verification', 'Verified', '2026-09-10', 'Income-to-rent 3.22×'], ['Credit Authorization', 'Received', '2026-09-05', 'Consent text v2026.2'], ['Credit Screening', 'Completed', '2026-09-09', 'Score band 720–759'], ['Rental History', 'Verified', '2026-09-11', '2 prior landlords'], ['References', 'Completed', '2026-09-11', '2 of 2 responded'], ['Background Document', 'Received', '2026-09-07', 'Police clearance'], ['Application Decision', 'Approved', '2026-09-12', 'APP-2026-0158']],
+    ledger: [['2026-09-12', 'Charge', 'Security deposit', 7700, ''], ['2026-09-14', 'Payment', 'Security deposit — ACH', -7700, 'RCPT-30188'], ['2026-09-14', 'Charge', 'Pet deposit', 500, ''], ['2026-09-14', 'Payment', 'Pet deposit — ACH', -500, 'RCPT-30189'], ['2026-10-01', 'Charge', 'October 2026 rent', 3850, ''], ['2026-10-01', 'Payment', 'October 2026 rent — Stripe', -3850, 'RCPT-30422'], ['2026-10-02', 'Credit', 'Parking proration credit', -120, ''], ['2026-10-03', 'Refund', 'Parking proration refund — ACH', 120, 'RF-0091']],
+    maintenance: [['MT-2026-0618', 'Bedroom blinds broken', '2026-10-03', 'In Progress', 'Tenant', 'Routine'], ['MT-2026-0611', 'Garbage disposal jammed', '2026-10-02', 'Completed', 'Owner', 'Routine'], ['MT-2026-0604', 'No hot water', '2026-10-01', 'Completed', 'Owner', 'Emergency']],
+    inspections: [['Move-In Inspection', '2026-09-30', 'Completed', 'Baseline • 214 photos • signed by tenant', 'INS-2026-0930'], ['Quarterly Inspection', '2027-01-08', 'Scheduled', '', ''], ['Semiannual Inspection', '2027-04-02', 'Not Scheduled', '', ''], ['Move-Out Inspection', '', 'Not Scheduled', 'Will be compared against the move-in baseline', '']],
+    comms: { email: true, sms: true, whatsapp: true, portal: true, formal: true, pref: 'WhatsApp' },
+    notices: [['2026-10-03', 'WhatsApp', 'Maintenance access — blinds repair Oct 6, 9:00 AM', 'Acknowledged'], ['2026-09-28', 'Email', 'Payment reminder — October rent due Oct 1', 'Read'], ['2026-09-24', 'Portal', 'Move-in inspection scheduled Sep 30', 'Acknowledged'], ['2026-09-14', 'Formal Notice', 'Lease L-2026-0418 executed copy', 'Delivered']],
+    docs: [doc('T-2001', 'Passport — D. Ortiz.pdf', 'Identification', 'Passport', '2026-09-05', 'Verified', 'Daniela Ortiz', 'Sofia Ramos', 'Restricted', '2029-03-14'), doc('T-2002', 'Rental Application APP-2026-0158.pdf', 'Rental Application', 'Application', '2026-09-05', 'Verified', 'System', 'Sofia Ramos', 'Staff only'), doc('T-2003', 'FCRA Credit Authorization.pdf', 'Screening Authorizations', 'Consent', '2026-09-05', 'Received', 'Daniela Ortiz', '', 'Restricted'), doc('T-2004', 'Employment Verification — Baptist Health.pdf', 'Income / Employment', 'Verification letter', '2026-09-10', 'Verified', 'Sofia Ramos', 'Sofia Ramos', 'Restricted'), doc('T-2005', 'Lease L-2026-0418 — Executed.pdf', 'Lease', 'Lease', '2026-09-14', 'Verified', 'Marcus Vance', 'Marcus Vance', 'Tenant & staff', '2027-09-30'), doc('T-2006', 'Pet Addendum.pdf', 'Lease Addenda', 'Addendum', '2026-09-14', 'Verified', 'Marcus Vance', 'Marcus Vance', 'Tenant & staff'), doc('T-2007', 'Move-In Inspection INS-2026-0930.pdf', 'Move-In Inspection', 'Inspection report', '2026-09-30', 'Verified', 'Luis Herrera', 'Marcus Vance', 'Tenant & staff'), doc('T-2008', 'Receipt RCPT-30422.pdf', 'Payment Documents', 'Receipt', '2026-10-01', 'Sent', 'System', '', 'Tenant & staff')],
+    activity: [['2026-10-03T14:10:00', 'Maintenance ticket MT-2026-0618 opened by tenant', 'Daniela Ortiz', 'wrench'], ['2026-10-01T09:02:00', 'October rent paid — $3,850.00 via Stripe', 'System', 'credit-card'], ['2026-09-30T16:20:00', 'Move-in inspection completed — baseline recorded', 'Luis Herrera', 'clipboard-check'], ['2026-09-30T16:45:00', 'Tenant status set to Active', 'Marcus Vance', 'badge-check'], ['2026-09-14T11:00:00', 'Lease L-2026-0418 signed • tenant record created • portal invitation sent', 'System', 'file-signature'], ['2026-09-12T15:30:00', 'Rental application APP-2026-0158 approved', 'Sofia Ramos', 'circle-check']].map(([at, text, by, icon]) => ({ at, text, by, icon }))
+  }
+};
+const blank = (name, p, extra) => { const x = extra || {}; const [pt, unit] = String((p && p.prop) || '').split(' • ');
+  return { id: 'TEN-' + String(1000 + Math.abs([...name].reduce((a, c) => a * 31 + c.charCodeAt(0) | 0, 7)) % 9000).padStart(4, '0'), created: '2026-10-04', pid: (p && p.pid) || PID_OF(pt), source: APP_OF[name] ? { app: APP_OF[name], approved: '2026-09-28' } : null,
+    meta: { status: x.status || (p && p.status === 'Moved Out' ? 'Former Tenant' : p && p.status === 'Move-In Pending' ? 'Lease Pending' : 'Active'), notice_date: '', reason: '', portal_invited: !!x.invite, tenant_type: x.tenant_type || 'Primary Tenant' },
+    personal: { legal_name: name, preferred: name.split(' ')[0], photo: '', dob: '', id_type: 'Passport', id_number: '', id_expires: '', nationality: '', email: (p && p.email) || '', email2: '', mobile: (p && p.phone) || '', whatsapp: '', language: 'English', prev_address: '' },
+    emergency: { ec_name: '', ec_phone: '', ec_relation: '' },
+    occupants: [{ role: x.tenant_type || 'Primary Tenant', name, relation: 'Self', age: 'Adult', email: (p && p.email) || '', phone: (p && p.phone) || '', onLease: true }],
+    household: { pets: '', vehicles: '', parking: '' },
+    lease: { property: x.property || pt || '', unit: x.unit || unit || '', lease_id: (p && p.lease && p.lease !== '—') ? p.lease : '', lease_status: x.lease_file ? 'Active' : (p && p.status === 'Move-In Pending') ? 'Pending Signature' : 'Active', currency: 'USD', move_in: x.start || '', start: x.start || '', end: x.end || '', rent: x.rent || '', deposit: '', due_day: '1', renewal: '', move_out: '', keys: '', parking: '', utilities: '' },
+    leaseHistory: [], employment: { employer: '', position: '', employer_phone: '', start: '', income: '', verif_status: APP_OF[name] ? 'Verified' : 'Not Started', verif_date: '' },
+    screening: APP_OF[name] ? [['Identity Verification', 'Verified', '2026-09-20', 'IDV'], ['Employment Verification', 'Verified', '2026-09-22', ''], ['Income Verification', 'Verified', '2026-09-22', ''], ['Credit Authorization', 'Received', '2026-09-19', ''], ['Credit Screening', 'Completed', '2026-09-23', ''], ['Rental History', 'Verified', '2026-09-24', ''], ['References', 'Completed', '2026-09-24', ''], ['Background Document', 'Received', '2026-09-20', ''], ['Application Decision', 'Approved', '2026-09-28', APP_OF[name]]] : [['Application Decision', 'Not Started', '', 'Migrated record — no rental application on file']],
+    ledger: [], maintenance: [], inspections: [['Move-In Inspection', '', 'Not Scheduled', 'Baseline for move-out comparison', ''], ['Quarterly Inspection', '', 'Not Scheduled', '', ''], ['Move-Out Inspection', '', 'Not Scheduled', '', '']],
+    comms: { email: true, sms: false, whatsapp: false, portal: !!x.invite, formal: true, pref: 'Email' }, notices: x.invite ? [[new Date().toISOString().slice(0, 10), 'Email', 'Tenant Portal invitation', 'Sent']] : [],
+    docs: x.lease_file ? [doc('T-' + Date.now(), x.lease_file, 'Lease', 'Existing lease', new Date().toISOString().slice(0, 10), 'Received', 'Marcus Vance', '', 'Tenant & staff')] : [],
+    activity: [{ at: new Date().toISOString(), text: x.manual ? 'Existing tenant added manually (Add Existing Tenant)' : 'Tenant record created', by: 'Marcus Vance', icon: 'user-plus' }] }; };
+
+const F = (k, label, o = {}) => ({ k, label, ...o });
+const SEL = (k, label, options, o = {}) => F(k, label, { type: 'select', options, ...o });
+const TG = (k, label, o = {}) => F(k, label, { type: 'toggle', ...o });
+const MONEY = (k, label, o = {}) => F(k, label, { type: 'number', money: true, ...o });
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const people = (load(PKEY) || {}).people || [];
+    const name = QP.get('tenant') || 'Daniela Ortiz';
+    const store = load(KEY) || {};
+    const pe = people.find(x => x.type === 'tenant' && x.name === name);
+    let extra = null; try { extra = (JSON.parse(sessionStorage.getItem('mghpm.tenant360.new') || '{}'))[name] || null; } catch (e) {}
+    const creating = !!QP.get('new');
+    const rec = creating ? (() => { const b = blank(QP.get('name') || '', null, { manual: true, status: 'Lease Pending' }); b.personal.legal_name = QP.get('name') || ''; b.personal.preferred = ''; b.personal.email = QP.get('email') || ''; b.personal.mobile = QP.get('phone') || ''; b.lease.lease_status = 'Pending Signature'; b.occupants = []; b.activity = []; b.inspections = [['Move-In Inspection', '', 'Not Scheduled', 'Baseline for move-out comparison', ''], ['Quarterly Inspection', '', 'Not Scheduled', '', ''], ['Move-Out Inspection', '', 'Not Scheduled', '', '']]; return b; })() : (store[name] || SEED[name] || blank(name, pe, extra));
+    const TABS = ['overview', 'personal', 'household', 'lease', 'employment', 'screening', 'payments', 'insurance', 'maintenance', 'inspections', 'documents', 'communications', 'activity'];
+    this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, name, rec, tab: TABS.includes(QP.get('tab')) ? QP.get('tab') : 'overview', editing: null, draft: null, folder: 'All', del: false, occIdx: null, creating };
+  }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+    if (!window.MGH_INS) { const t3 = setInterval(() => { if (window.MGH_INS) { clearInterval(t3); this.forceUpdate(); } }, 60); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); clearInterval(this._poll); clearTimeout(this._toastT); }
+  componentDidUpdate() { if (this.state.creating) return; try { const st = load(KEY) || {}; st[this.state.name] = this.state.rec; sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+  notify(msg, warn) { clearTimeout(this._toastT); this.setState({ toast: { msg, warn } }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3400); }
+  log(rec, text, icon) { return { ...rec, activity: [{ at: new Date().toISOString(), text, by: ME, icon: icon || 'pencil' }, ...rec.activity] }; }
+  syncPeople(patch, oldName) { try { const st = load(PKEY); if (!st || !st.people) return; st.people = st.people.map(x => x.type === 'tenant' && x.name === oldName ? { ...x, ...patch } : x); sessionStorage.setItem(PKEY, JSON.stringify(st)); } catch (e) {} }
+  setTab(t) { this.setState({ tab: t, editing: null, draft: null }); try { history.replaceState(null, '', '?tenant=' + encodeURIComponent(this.state.name) + '&tab=' + t); } catch (e) {} }
+
+  chrome() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const collapsed = isMobile ? false : (s.collapsed ?? ((this.props.sidebarCollapsed ?? false) || bp === 'tablet'));
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => { const on = id === 'tenants' || NAV_ALIAS['tenants'] === id; return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center', bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500', select: () => go(PAGES[id] || pendingUrl({ page: id })) }; };
+    const sections = NAV.map(sec => { const open = !expanded || !sec.label || !s.closedSections[sec.id]; return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open, chevron: open ? 'chevron-down' : 'chevron-right', toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })), items: sec.items.map(mkItem) }; });
+    return { bp, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && s.drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !s.drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', showSearchField: bp === 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      toast: !!s.toast, toastMsg: s.toast ? s.toast.msg : '', toastIcon: s.toast && s.toast.warn ? 'triangle-alert' : 'circle-check', toastColor: s.toast && s.toast.warn ? '#FBBF24' : '#5EEAD4' } };
+  }
+
+  readiness(r) {
+    const chk = n => (r.screening.find(x => x[0] === n) || [])[1];
+    const depPaid = r.ledger.some(l => l[1] === 'Payment' && /deposit/i.test(l[2]));
+    const mi = r.inspections.find(x => x[0] === 'Move-In Inspection') || [];
+    const missing = this.missingDocs(r);
+    const items = [
+      ['Application Approved', chk('Application Decision') === 'Approved', r.source ? r.source.app : 'Not on file', 'screening'],
+      ['Lease Signed', ['Signed', 'Active', 'Notice Given'].includes(r.lease.lease_status), r.lease.lease_status || '—', 'lease'],
+      ['Identity Verified', chk('Identity Verification') === 'Verified', chk('Identity Verification') || 'Not started', 'screening'],
+      ['Security Deposit', depPaid, depPaid ? 'Received' : 'Pending', 'payments'],
+      ['Portal Invitation', !!r.meta.portal_invited, r.meta.portal_invited ? 'Sent' : 'Not sent', 'overview'],
+      ['Move-In Inspection', mi[2] === 'Completed', mi[2] || 'Not scheduled', 'inspections'],
+      ['Missing Documents', missing.length === 0, missing.length ? String(missing.length) : 'None', 'documents']
+    ];
+    return { items, pct: Math.round(items.filter(i => i[1]).length / items.length * 100), missing };
+  }
+  missingDocs(r) {
+    const has = f => r.docs.some(d => d.folder === f);
+    const m = [];
+    if (!has('Identification')) m.push('Identification');
+    if (!has('Lease')) m.push('Signed lease');
+    if (r.source && !has('Screening Authorizations')) m.push('Screening authorizations');
+    if ((r.inspections.find(x => x[0] === 'Move-In Inspection') || [])[2] === 'Completed' && !has('Move-In Inspection')) m.push('Move-in inspection report');
+    return m;
+  }
+  mkCreate(sd, isMobile) {
+    const r = this.state.rec; const p0 = sd.path[0];
+    const data = r[p0] || {};
+    const setD = k => e => { const t = e.target; const val = t.type === 'checkbox' ? t.checked : t.value; this.setState(st => ({ rec: { ...st.rec, [p0]: { ...(st.rec[p0] || {}), [k]: val } } })); };
+    const REQ = { 'personal.legal_name': 1, 'personal.email': 1, 'personal.mobile': 1, 'lease.property': 1, 'lease.unit': 1, 'lease.start': 1, 'lease.end': 1, 'lease.rent': 1, 'meta.status': 1 };
+    const LOCK = { 'employment.verif_status': 1, 'employment.verif_date': 1 };
+    const fields = sd.fields.filter(f => !f.ro && !LOCK[p0 + '.' + f.k] && (!f.show || f.show(data))).map(f => { const t = f.type || 'text'; const val = data[f.k]; const req = REQ[p0 + '.' + f.k] && !(f.k === 'legal_name' && data.owner_type === 'Individual');
+      return { label: f.label + (req ? ' *' : ''), display: '', vColor: '#172033', span: f.span ? '1 / -1' : 'auto', isView: false, isInput: ['text', 'number', 'date', 'email', 'tel'].includes(t), isSelect: t === 'select', isArea: t === 'area', isToggle: t === 'toggle', isFile: t === 'file', type: t, value: val == null ? '' : String(val), checked: !!val, options: f.options || [], ph: f.ph || '', onChange: setD(f.k), fileLabel: val || 'Choose file…', onFile: e => { const fl = e.target.files && e.target.files[0]; if (fl) this.setState(st => ({ rec: { ...st.rec, [p0]: { ...(st.rec[p0] || {}), [f.k]: fl.name } } })); }, pad: '8px 0', rule: '0' }; });
+    return { title: sd.title, icon: sd.icon, span: isMobile ? '1 / -1' : (sd.span || 'span 6'), desc: sd.cdesc || sd.desc || '', hasDesc: !!(sd.cdesc || sd.desc), badges: sd.cbadges || [], warn: '', hasWarn: false, border: '#E2E8F0', colMin: sd.colMin || '200px', canEdit: false, editing: false, actions: [], edit: () => {}, cancel: () => {}, save: () => {}, fields };
+  }
+  createTenant() {
+    const r = this.state.rec, L = r.lease, P = r.personal;
+    const name = (P.legal_name || '').trim();
+    const err = !name ? 'Full legal name is required' : !/.+@.+\..+/.test(P.email || '') ? 'Enter a valid email' : !(P.mobile || '').trim() ? 'Mobile phone is required' : !L.property ? 'Select the property' : !(L.unit || '').trim() ? 'Unit is required' : !L.start || !L.end ? 'Lease start and end are required' : L.end <= L.start ? 'Lease end must be after the start date' : !(Number(L.rent) > 0) ? 'Monthly rent is required' : null;
+    if (err) { this.notify(err, true); return; }
+    for (const sd of (this._createDefs || [])) { if (!sd.validate || sd.id === 'meta') continue; const d = r[sd.path[0]] || {}; const v = sd.validate(d, d); if (v) { this.notify(sd.title + ': ' + v, true); return; } }
+    const ps = load(PKEY); const people = (ps && ps.people) || [];
+    const store = load(KEY) || {};
+    if (people.some(x => x.name.toLowerCase() === name.toLowerCase()) || store[name] || SEED[name]) { this.notify('A person named ' + name + ' already exists', true); return; }
+    if (people.some(x => (x.email || '').toLowerCase() === P.email.toLowerCase())) { this.notify(P.email + ' is already used by another person — check for a duplicate', true); return; }
+    const pid = PID_OF(L.property);
+    const rec = { ...r, pid, employment: { ...r.employment, verif_status: 'Not Started', verif_date: '' }, personal: { ...P, preferred: P.preferred || name.split(' ')[0] }, occupants: [{ role: r.meta.tenant_type || 'Primary Tenant', name, relation: 'Self', age: 'Adult', email: P.email, phone: P.mobile, onLease: true }], created: new Date().toISOString().slice(0, 10), activity: [{ at: new Date().toISOString(), text: 'Existing tenant added — ' + L.property + ' • ' + L.unit, by: ME, icon: 'user-plus' }] };
+    const entry = { type: 'tenant', name, email: P.email, phone: P.mobile, prop: L.property + ' • ' + L.unit.trim(), pid, lease: L.lease_id || '—', leaseEnd: fmtD(L.end), balance: 0, status: PEOPLE_ST[r.meta.status] || 'Current' };
+    try { store[name] = rec; sessionStorage.setItem(KEY, JSON.stringify(store)); if (ps && ps.people) { ps.people = [entry, ...ps.people]; sessionStorage.setItem(PKEY, JSON.stringify(ps)); } else { const pend = JSON.parse(sessionStorage.getItem('mghpm.people.pending') || '[]'); pend.push(entry); sessionStorage.setItem('mghpm.people.pending', JSON.stringify(pend)); } } catch (e) {}
+    go(SELF + '?tenant=' + encodeURIComponent(name) + '&tab=overview');
+  }
+  // section: { id, path: [obj] or ['own', pid], title, icon, fields, span, desc, badges, warn, readOnly }
+  mkSection(sd, isMobile) {
+    const s = this.state, r = s.rec;
+    const src = sd.src || (sd.path.length === 2 ? r[sd.path[0]][sd.path[1]] : r[sd.path[0]]);
+    const editing = s.editing === sd.id;
+    const data = editing ? s.draft : src;
+    const setD = k => e => { const t = e.target; const val = t.type === 'checkbox' ? t.checked : t.value; this.setState(st => ({ draft: { ...st.draft, [k]: val } })); };
+    const fields = (sd.idleEmpty && !editing ? [] : sd.fields).filter(f => !f.show || f.show(data)).map((f, i) => {
+      const val = data[f.k];
+      const ro = f.ro || sd.readOnly;
+      const t = f.type || 'text';
+      let display = val === true ? 'Yes' : val === false ? 'No' : (val === '' || val == null) ? '—' : f.money ? fmtUSD(val) : t === 'date' ? fmtD(val) : f.suffix ? val + f.suffix : f.mask && String(val).length > 4 ? '•••• ' + String(val).slice(-4) : String(val);
+      if (f.compute) display = f.compute(data, r);
+      const isV = !editing || ro;
+      const isToggleView = isV && t === 'toggle';
+      return { label: f.label, display, vColor: display === '—' ? '#94A3B8' : (f.colorOf ? f.colorOf(val) : '#172033'), span: f.span ? '1 / -1' : 'auto',
+        isView: isV, isInput: !isV && ['text', 'number', 'date', 'email', 'tel'].includes(t), isSelect: !isV && t === 'select', isArea: !isV && t === 'area', isToggle: !isV && t === 'toggle', isFile: !isV && t === 'file',
+        type: t, value: val == null ? '' : String(val), checked: !!val, options: f.options || [], ph: f.ph || '', onChange: setD(f.k),
+        fileLabel: val || 'Choose file…', onFile: e => { const fl = e.target.files && e.target.files[0]; if (fl) this.setState(st => ({ draft: { ...st.draft, [f.k]: fl.name } })); },
+        pad: isV ? '12px 0' : '8px 0', rule: isV && !isToggleView ? '1px solid #F1F5F9' : isV ? '1px solid #F1F5F9' : '0' };
+    });
+    const save = () => {
+      const d = s.draft;
+      if (sd.validate) { const err = sd.validate(d, src); if (err) { this.notify(err, true); return; } }
+      if (sd.onSave) { sd.onSave(d, src); return; }
+      let next = sd.path.length === 2 ? { ...r, [sd.path[0]]: { ...r[sd.path[0]], [sd.path[1]]: { ...d } } } : { ...r, [sd.path[0]]: { ...d } };
+      if (sd.after) next = sd.after(next, d, src) || next;
+      next = this.log(next, sd.logText ? sd.logText(d, src) : sd.title + ' updated', sd.icon);
+      this.setState({ rec: next, editing: null, draft: null });
+      if (sd.sync) this.syncPeople(sd.sync(next, d), s.name);
+      this.notify(sd.title + ' saved • recorded in activity log');
+    };
+    return { title: sd.title, icon: sd.icon, span: isMobile ? '1 / -1' : (sd.span || 'span 6'), desc: sd.desc || '', hasDesc: !!sd.desc,
+      badges: (sd.badges || []).map(b => ({ label: b[0], tone: b[1], dot: b[2] !== false })), warn: sd.warn || '', hasWarn: !!sd.warn,
+      border: editing ? '#006B68' : '#E2E8F0', colMin: sd.colMin || '200px',
+      canEdit: !editing && !sd.readOnly && !s.editing, editing, editLabel: sd.editLabel || 'Edit', editIcon: sd.editIcon || 'pencil',
+      edit: () => this.setState({ editing: sd.id, draft: { ...src } }), cancel: () => this.setState({ editing: null, draft: null, occIdx: null }), save, fields };
+  }
+  renameOwner(newName, rec) {
+    const old = this.state.name;
+    try { const st = load(KEY) || {}; delete st[old]; st[newName] = rec; sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+    this.syncPeople({ name: newName }, old);
+    this.setState({ name: newName });
+    try { history.replaceState(null, '', '?owner=' + encodeURIComponent(newName) + '&tab=' + this.state.tab); } catch (e) {}
+  }
+  table(t) {
+    const n = t.cols.length;
+    return { ...t, hasAction: !!t.action, empty: t.rows.length === 0, emptyText: t.emptyText || 'No records.', minW: t.minW || '760px',
+      cols: t.cols.map((c, i) => { const [label, align] = Array.isArray(c) ? c : [c, 'left']; return { label, align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }),
+      rows: t.rows.map(row => ({ open: row.open || (() => {}), cursor: row.open ? 'pointer' : 'default', cells: row.cells.map((c, i) => {
+        const o = typeof c === 'string' ? { text: c } : c; const align = Array.isArray(t.cols[i]) ? t.cols[i][1] : 'left';
+        return { text: o.text || '', sub: o.sub || '', hasSub: !!o.sub, weight: o.bold ? '600' : '400', tone: o.tone || 'neutral', isText: !o.badge && !o.links, isBadge: !!o.badge, isLinks: !!o.links,
+          links: (o.links || []).map(l => ({ ...l, color: l.danger ? '#DC2626' : '#64748B', go: e => { if (e && e.stopPropagation) e.stopPropagation(); l.go(); } })), align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }) })) };
+  }
+
+  renderVals() {
+    const s = this.state, r = s.rec, name = s.name;
+    const { bp, v } = this.chrome();
+    const isMobile = bp === 'mobile';
+    const ready = this.readiness(r);
+    const L = r.lease, cur = L.currency || 'USD';
+    const fmtC = n => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const pid = r.pid || PID_OF(L.property);
+    const st = r.meta.status;
+    const chk = n => (r.screening.find(x => x[0] === n) || [])[1];
+    let run = 0; const ledger = [...r.ledger].sort((a, b) => a[0] < b[0] ? -1 : 1).map(l => { run += l[3]; return [...l, run]; });
+    const balance = run;
+    const pastDue = balance > 0 && new Date().getDate() > 5 ? balance : 0;
+    const lastPay = [...ledger].reverse().find(l => l[1] === 'Payment');
+    const depHeld = r.ledger.filter(l => l[1] === 'Payment' && /deposit/i.test(l[2])).reduce((a, l) => a - l[3], 0);
+    const now = new Date(); const nextDue = new Date(now.getFullYear(), now.getMonth() + (now.getDate() > Number(L.due_day || 1) ? 1 : 0), Number(L.due_day || 1));
+    const nextDueF = MON[nextDue.getMonth()] + ' ' + nextDue.getDate() + ', ' + nextDue.getFullYear();
+    const openT = r.maintenance.filter(m => m[3] !== 'Completed');
+    const occ = r.occupants || [];
+    const curOcc = s.occIdx != null ? occ[s.occIdx] : null;
+
+    const DEFS = {
+      overview: [
+        { id: 'meta', path: ['meta'], title: 'Tenant Status', icon: 'badge-check', span: 'span 12', colMin: '220px', badges: [[st, TEN_TONE[st] || 'neutral']],
+          desc: 'New tenants enter through Rental Application → Screening → Approval → Lease Pending → Lease Signed → Portal Invitation → Move-In Inspection → Active.',
+          fields: [SEL('status', 'Status', TEN_ST), SEL('tenant_type', 'Tenant Type', ['Primary Tenant', 'Co-Tenant']), F('notice_date', 'Notice Date', { type: 'date', show: d => ['Notice Given', 'Move-Out Pending'].includes(d.status) }), F('reason', 'Suspension Reason', { show: d => d.status === 'Suspended' }), TG('portal_invited', 'Tenant Portal invitation sent')],
+          validate: d => { const mi = (r.inspections.find(x => x[0] === 'Move-In Inspection') || [])[2]; if (d.status === 'Active' && !['Signed', 'Active', 'Notice Given'].includes(L.lease_status)) return 'Cannot activate — the lease is not signed yet'; if (d.status === 'Active' && mi !== 'Completed') return 'Cannot activate — complete the move-in inspection first'; if (['Notice Given', 'Move-Out Pending'].includes(d.status) && !d.notice_date) return 'Enter the notice date'; return null; },
+          sync: n => ({ status: PEOPLE_ST[n.meta.status] || 'Current' }),
+          logText: (d, o) => d.status !== o.status ? 'Tenant status set to ' + d.status : 'Tenant status details updated' }
+      ],
+      personal: [
+        { id: 'personal', path: ['personal'], title: 'Personal Information', icon: 'user-round', span: 'span 12', colMin: '220px', badges: [['Sensitive fields masked', 'navy', false]], fields: [
+          F('legal_name', 'Full Legal Name'), F('preferred', 'Preferred Name'), F('photo', 'Photo (optional)', { type: 'file' }), F('dob', 'Date of Birth', { type: 'date', mask: true, compute: d => d.dob ? '•• / •• / ' + d.dob.slice(0, 4) : '—' }), SEL('id_type', 'ID Type', ['Cédula', 'Passport', 'Driver License', 'Residence Card']), F('id_number', 'Cédula / Passport No.', { mask: true }), F('id_expires', 'ID Expiration', { type: 'date' }), F('nationality', 'Nationality'),
+          F('email', 'Primary Email', { type: 'email' }), F('email2', 'Secondary Email', { type: 'email' }), F('mobile', 'Mobile Phone', { type: 'tel' }), F('whatsapp', 'WhatsApp', { type: 'tel' }), SEL('language', 'Preferred Language', ['English', 'Spanish', 'Portuguese', 'French']), F('prev_address', 'Previous Address', { span: true })],
+          warn: r.personal.id_expires && r.personal.id_expires < '2027-04-01' ? 'ID expires ' + fmtD(r.personal.id_expires) + '. Request an updated document.' : '',
+          validate: d => !d.legal_name.trim() ? 'Full legal name is required' : d.email && !/.+@.+\..+/.test(d.email) ? 'Enter a valid email' : null,
+          sync: n => ({ email: n.personal.email, phone: n.personal.mobile }) },
+        { id: 'emergency', path: ['emergency'], title: 'Emergency Contact', icon: 'siren', fields: [F('ec_name', 'Name'), F('ec_phone', 'Phone', { type: 'tel' }), F('ec_relation', 'Relationship')] }
+      ],
+      household: [
+        { id: 'occ', path: ['occupants'], src: curOcc || { role: 'Co-Tenant', name: '', relation: '', age: 'Adult', email: '', phone: '', onLease: true }, idleEmpty: true, span: 'span 12', colMin: '200px',
+          title: s.editing === 'occ' ? (curOcc ? 'Edit ' + curOcc.role + ' — ' + curOcc.name : 'Add Person to Household') : 'Add Person to Household', icon: 'user-plus', editLabel: 'Add Person', editIcon: 'plus',
+          desc: 'Every contractually responsible adult gets their own person record and lease relationship — never a shared text field.',
+          fields: [SEL('role', 'Role', OCC_ROLES), F('name', 'Full Name'), F('relation', 'Relationship'), SEL('age', 'Age Group', ['Adult', 'Minor']), F('email', 'Email', { type: 'email', show: d => d.age === 'Adult' }), F('phone', 'Phone', { type: 'tel', show: d => d.age === 'Adult' }), TG('onLease', 'Signs the lease (financially responsible)', { show: d => d.age === 'Adult' })],
+          validate: d => !d.name.trim() ? 'Name is required' : d.age === 'Minor' && d.role !== 'Minor Occupant' ? 'Minors can only be Minor Occupants' : (d.role === 'Co-Tenant' || d.role === 'Guarantor') && !/.+@.+\..+/.test(d.email || '') ? d.role + ' requires an email for signatures' : d.role === 'Primary Tenant' && occ.some((o, i) => o.role === 'Primary Tenant' && i !== s.occIdx) ? 'This household already has a Primary Tenant' : null,
+          onSave: d => { const rec = { ...d, onLease: d.age === 'Adult' && !!d.onLease }; const idx = s.occIdx; const list = idx != null ? occ.map((o, i) => i === idx ? rec : o) : [...occ, rec];
+            this.setState({ rec: this.log({ ...r, occupants: list }, (idx != null ? 'Household member updated — ' : 'Household member added — ') + rec.name + ' (' + rec.role + ')', 'users'), editing: null, draft: null, occIdx: null }); this.notify(rec.name + ' saved to household'); } },
+        { id: 'household', path: ['household'], title: 'Pets, Vehicles & Parking', icon: 'paw-print', span: 'span 12', colMin: '260px', fields: [F('pets', 'Pets', { ph: 'Species, breed, weight' }), F('vehicles', 'Vehicles', { ph: 'Make, model, plate' }), F('parking', 'Parking Spaces')] }
+      ],
+      lease: [
+        { id: 'lease', path: ['lease'], title: 'Current Property & Lease', icon: 'file-signature', span: 'span 12', colMin: '200px', badges: [[L.lease_status || 'No lease', L.lease_status === 'Active' ? 'success' : 'warning'], ['Currency ' + cur, 'neutral', false]],
+          desc: 'Changing the property, unit or lease ID moves the current lease into Lease History — previous tenancies are never overwritten.',
+          fields: [SEL('property', 'Current Property', ['', ...Object.values(PROPS).map(p => p.title)]), F('unit', 'Unit'), F('lease_id', 'Lease ID'), SEL('lease_status', 'Lease Status', LEASE_ST), SEL('currency', 'Currency', ['USD', 'DOP', 'EUR']), F('move_in', 'Move-In Date', { type: 'date' }), F('start', 'Lease Start', { type: 'date' }), F('end', 'Lease End', { type: 'date' }),
+            F('rent', 'Monthly Rent', { type: 'number', compute: d => d.rent ? fmtC(d.rent) : '—' }), F('deposit', 'Security Deposit', { type: 'number', compute: d => d.deposit ? fmtC(d.deposit) : '—' }), SEL('due_day', 'Payment Due Day', ['1', '5', '10', '15']), F('renewal', 'Renewal Date', { type: 'date' }), F('move_out', 'Move-Out Date', { type: 'date' }), F('keys', 'Keys Issued'), F('parking', 'Parking'), F('utilities', 'Utilities Responsibility', { span: true })],
+          validate: d => d.start && d.end && d.end <= d.start ? 'Lease end must be after the start date' : !d.property ? 'Select a property' : null,
+          after: (n, d, o) => { const moved = o.lease_id && (d.property !== o.property || d.unit !== o.unit || d.lease_id !== o.lease_id); return { ...n, pid: PID_OF(d.property) || n.pid, leaseHistory: moved ? [{ lease_id: o.lease_id, property: o.property, unit: o.unit, start: o.start, end: o.end, rent: o.rent, status: 'Superseded', note: 'Moved to ' + d.property + ' • ' + d.unit }, ...n.leaseHistory] : n.leaseHistory }; },
+          sync: n => ({ prop: n.lease.property + ' • ' + n.lease.unit, pid: PID_OF(n.lease.property), lease: n.lease.lease_id || '—', leaseEnd: fmtD(n.lease.end) }),
+          logText: (d, o) => o.lease_id && (d.property !== o.property || d.unit !== o.unit || d.lease_id !== o.lease_id) ? 'Moved to ' + d.property + ' • ' + d.unit + ' — previous lease ' + o.lease_id + ' kept in history' : 'Lease details updated' }
+      ],
+      employment: [
+        { id: 'employment', path: ['employment'], title: 'Employment & Income', icon: 'briefcase', span: 'span 12', colMin: '220px', badges: [['Restricted', 'navy', false], [r.employment.verif_status, CHK_TONE[r.employment.verif_status] || 'neutral']],
+          desc: 'Only verified facts are kept here. Pay stubs, bank statements and credit reports stay in the restricted Screening vault and are not shown on ordinary tenant views.',
+          fields: [F('employer', 'Employer'), F('position', 'Position'), F('employer_phone', 'Employer Phone', { type: 'tel' }), F('start', 'Employment Start', { type: 'date' }), F('income', 'Declared Monthly Income', { type: 'number', compute: d => d.income ? fmtC(d.income) : '—' }), SEL('verif_status', 'Verification Status', ['Not Started', 'Pending', 'Verified', 'Failed']), F('verif_date', 'Verification Date', { type: 'date' })],
+          after: (n, d, o) => d.verif_status !== o.verif_status && d.verif_status === 'Verified' && !d.verif_date ? { ...n, employment: { ...n.employment, verif_date: new Date().toISOString().slice(0, 10) } } : n }
+      ],
+      insurance: (() => { const ins = window.MGH_INS; if (!ins) return []; const d = ins.load(); const req = d.reqs.find(x => x.entity === 'Tenant' && x.ref === name && !x.waived);
+        return [{ id: 'insreq', path: ['meta'], src: { required: !!req, min: req ? req.min : '100000' }, title: 'Insurance Requirement', icon: 'umbrella', span: 'span 12', colMin: '240px', badges: [[req ? 'Required by this Lease' : 'Not required', req ? 'info' : 'neutral']],
+          desc: 'Renter’s insurance is only required when the lease or property policy says so — it is not mandatory by default.',
+          fields: [TG('required', 'Required by this Lease'), F('min', 'Minimum Liability Coverage (USD)', { type: 'number', show: dd => dd.required, compute: dd => dd.required && dd.min ? fmtC(dd.min) : '—' })],
+          onSave: dd => { const cur2 = ins.load(); let reqs = cur2.reqs.filter(x => !(x.entity === 'Tenant' && x.ref === name)); if (dd.required) reqs = [...reqs, { id: 'REQ-' + String(Date.now()).slice(-5), entity: 'Tenant', ref: name, type: "Renter's Liability", source: 'Lease ' + (L.lease_id || ''), min: String(dd.min || ''), waived: false }]; ins.save({ ...cur2, reqs });
+            this.setState({ rec: this.log(r, dd.required ? 'Renter’s insurance set as required by lease' : 'Renter’s insurance requirement removed', 'umbrella'), editing: null, draft: null }); this.notify('Insurance requirement saved'); } }]; })(),
+      communications: [
+        { id: 'comms', path: ['comms'], title: 'Channels & Consent', icon: 'message-square', span: 'span 12', colMin: '220px', fields: [TG('email', 'Email'), TG('sms', 'SMS'), TG('whatsapp', 'WhatsApp'), TG('portal', 'Portal notifications'), TG('formal', 'Formal notices (written)'), SEL('pref', 'Preferred Channel', ['Email', 'SMS', 'WhatsApp', 'Portal'])],
+          validate: d => !d[d.pref.toLowerCase()] ? 'The preferred channel must be enabled' : null }
+      ]
+    };
+    const CO = s.creating ? [DEFS.overview[0], DEFS.personal[0], DEFS.lease[0], DEFS.personal[1], DEFS.household.find(d => d.id === 'household'), DEFS.employment[0], DEFS.communications[0]] : null;
+    this._createDefs = CO;
+    const secs = s.creating ? CO.map(sd => this.mkCreate({ ...sd, cbadges: [], cdesc: sd.id === 'meta' ? 'Choose Lease Pending if the lease is not signed yet; Active requires a signed lease and a completed move-in inspection before activation in Tenant 360.' : sd.id === 'lease' ? 'Upload the existing signed lease from Documents after creation.' : sd.desc, span: ['emergency', 'household'].includes(sd.id) ? 'span 6' : 'span 12', fields: sd.id === 'meta' ? sd.fields.filter(f => ['status', 'tenant_type', 'portal_invited'].includes(f.k)) : sd.fields }, isMobile)) : (DEFS[s.tab] || []).map(sd => this.mkSection(sd, isMobile));
+    const tables = [];
+    const LT = { Charge: 'neutral', Payment: 'success', Credit: 'info', 'Late Charge': 'danger', Adjustment: 'premium', Refund: 'warning' };
+    if (s.creating) { /* no tables while creating */ } else if (s.tab === 'household') tables.unshift(this.table({ title: 'Household & Occupants', sub: occ.length + ' people • ' + occ.filter(o => o.onLease).length + ' sign the lease', minW: '860px', cols: ['Name', 'Role', 'Relationship', 'Contact', 'On Lease', ['Actions', 'right']],
+      rows: occ.map((o, i) => ({ cells: [{ text: o.name, bold: true, sub: o.age }, { badge: true, text: o.role, tone: o.role === 'Primary Tenant' ? 'brand' : o.role === 'Guarantor' ? 'premium' : o.role === 'Co-Tenant' ? 'info' : 'neutral' }, o.relation || '—', { text: o.email || '—', sub: o.phone }, o.onLease ? 'Yes' : 'No',
+        { links: [{ icon: 'pencil', title: 'Edit', go: () => this.setState({ editing: 'occ', occIdx: i, draft: { ...o } }) }, ...(o.role === 'Primary Tenant' ? [] : [{ icon: 'trash-2', title: 'Remove', danger: true, go: () => { this.setState({ rec: this.log({ ...r, occupants: occ.filter((x, j) => j !== i) }, 'Household member removed — ' + o.name, 'trash-2') }); this.notify(o.name + ' removed from household'); } }])] }] })) }));
+    if (s.tab === 'lease') tables.push(this.table({ title: 'Lease History', sub: 'Previous and superseded leases — preserved for deposits, references and audit', minW: '860px', action: () => go(PAGES.leases + (L.lease_id ? '?id=' + L.lease_id : '')), actionLabel: 'Open in Leases', cols: ['Lease', 'Property', 'Term', ['Rent', 'right'], 'Status', 'Note'],
+      rows: r.leaseHistory.map(h => ({ open: () => go(PAGES.leases + '?id=' + h.lease_id), cells: [{ text: h.lease_id, bold: true }, { text: h.property, sub: h.unit }, fmtD(h.start) + ' – ' + fmtD(h.end), { text: fmtC(h.rent), bold: true }, { badge: true, text: h.status, tone: 'neutral' }, h.note || '—'] })), emptyText: 'No previous leases.' }));
+    if (s.tab === 'screening') tables.push(this.table({ title: 'Screening & Verification', sub: 'References the screening record — sensitive reports are not copied into the tenant profile', minW: '760px', action: r.source ? () => go('Master 08 - Application Detail.dc.html?id=' + r.source.app) : null, actionLabel: 'Open Application', cols: ['Check', 'Status', 'Date', 'Reference', ['Open', 'right']],
+      rows: r.screening.map(c => ({ cells: [{ text: c[0], bold: true }, { badge: true, text: c[1], tone: CHK_TONE[c[1]] || 'neutral' }, c[2] ? fmtD(c[2]) : '—', c[3] || '—', { links: [{ icon: 'arrow-right', title: 'Open record', go: () => go(c[0] === 'Identity Verification' ? PAGES['identity-review'] : r.source ? 'Master 08 - Application Detail.dc.html?id=' + r.source.app + '&tab=' + (/Credit|Background/.test(c[0]) ? 'screening' : /Employment|Income/.test(c[0]) ? 'employment' : 'summary') : PAGES.applications) }] }] })) }));
+    if (s.tab === 'payments') tables.push(this.table({ title: 'Tenant Ledger', sub: 'Owner/property ledger: ' + ((PROPS[pid] || {}).owner || '—') + ' • ' + (L.property || '—') + ' • amounts in ' + cur, minW: '900px', action: () => go(PAGES.payments + (L.lease_id ? '?lease=' + L.lease_id : '')), actionLabel: 'Record Payment', cols: ['Date', 'Type', 'Description', ['Amount', 'right'], ['Balance', 'right'], 'Receipt'],
+      rows: [...ledger].reverse().map(l => ({ cells: [fmtD(l[0]), { badge: true, text: l[1], tone: LT[l[1]] || 'neutral' }, l[2], { text: (l[3] < 0 ? '−' : '') + fmtC(Math.abs(l[3])), bold: true }, fmtC(l[5]), l[4] ? { links: [{ icon: 'receipt', title: 'Receipt ' + l[4], go: () => this.notify('Opening ' + l[4] + ' (PDF)') }] } : '—'] })), emptyText: 'No ledger entries yet.' }));
+    if (s.tab === 'insurance' && window.MGH_INS) { const ins = window.MGH_INS; const d = ins.load(); const pols = d.policies.filter(p => p.entity === 'Tenant' && p.ref === name); const backQ = '&back=' + encodeURIComponent(SELF + '?tenant=' + encodeURIComponent(name) + '&tab=insurance') + '&backLabel=' + encodeURIComponent('Back to ' + name);
+      tables.push(this.table({ title: 'Tenant Policies', sub: 'Renter’s / tenant liability coverage', minW: '900px', action: () => go(PAGES.insurance + '?new=Tenant&ref=' + encodeURIComponent(name) + '&lease=' + encodeURIComponent(L.lease_id || '') + backQ), actionLabel: 'Add Policy', cols: ['Policy', 'Carrier', 'Named Insured', ['Coverage', 'right'], 'Term', 'Proof', 'Status', ['Actions', 'right']],
+        rows: pols.map(p => { const stt = ins.status(p); return { open: () => go(PAGES.insurance + '?edit=' + p.id + backQ), cells: [{ text: p.type, sub: p.number, bold: true }, p.carrier, p.insured, { text: fmtC(p.coverage), bold: true }, fmtD(p.eff) + ' – ' + fmtD(p.exp), p.proof_file ? 'On file' : 'Missing', { badge: true, text: stt, tone: { Active: 'success', 'Expiring Soon': 'warning', Expired: 'danger', 'Pending Verification': 'info' }[stt] }, { links: [{ icon: 'pencil', title: 'Edit', go: () => go(PAGES.insurance + '?edit=' + p.id + backQ) }] }] }; }), emptyText: 'No tenant insurance on file.' })); }
+    if (s.tab === 'maintenance') tables.push(this.table({ title: 'Maintenance Tickets', sub: openT.length + ' open • ' + r.maintenance.filter(m => m[5] === 'Emergency').length + ' emergency • ' + r.maintenance.filter(m => m[4] === 'Tenant').length + ' tenant responsibility • ' + r.maintenance.filter(m => m[4] === 'Owner').length + ' owner responsibility', action: () => go(PAGES['work-orders-add']), actionLabel: 'Maintenance Requests', cols: ['#', 'Issue', 'Opened', 'Priority', 'Responsibility', 'Status'],
+      rows: r.maintenance.map(m => ({ open: () => go(PAGES['work-orders-add'] + '?workOrder=' + m[0].replace('MT-2026-', '')), cells: [{ text: m[0], bold: true }, m[1], fmtD(m[2]), { badge: true, text: m[5], tone: m[5] === 'Emergency' ? 'danger' : 'neutral' }, { badge: true, text: m[4] + ' Responsibility', tone: m[4] === 'Tenant' ? 'warning' : 'info' }, { badge: true, text: m[3], tone: m[3] === 'Completed' ? 'success' : 'brand' }] })), emptyText: 'No tickets for this tenancy.' }));
+    if (s.tab === 'inspections') tables.push(this.table({ title: 'Inspections', sub: 'The move-in inspection is the baseline for the move-out comparison and security-deposit decisions', action: () => go(PAGES.inspections + (pid ? '?property=' + pid : '')), actionLabel: 'Inspections', cols: ['Inspection', 'Date', 'Status', 'Notes', ['Open', 'right']],
+      rows: r.inspections.map(x => ({ open: () => go(PAGES.inspections + (pid ? '?property=' + pid : '')), cells: [{ text: x[0], bold: true, sub: x[0] === 'Move-In Inspection' ? 'Baseline' : x[4] }, x[1] ? fmtD(x[1]) : '—', { badge: true, text: x[2], tone: x[2] === 'Completed' ? 'success' : x[2] === 'Scheduled' ? 'info' : 'neutral' }, x[3] || '—', { links: [{ icon: 'arrow-right', title: 'Open', go: () => go(PAGES.inspections + (pid ? '?property=' + pid : '')) }] }] })) }));
+    if (s.tab === 'documents') { const docs = r.docs.filter(d => s.folder === 'All' || d.folder === s.folder);
+      tables.push(this.table({ title: 'Tenant Document Vault', sub: (s.folder === 'All' ? 'All folders' : s.folder) + ' • ' + docs.length + ' files • missing: ' + (ready.missing.length ? ready.missing.join(', ') : 'none'), minW: '1180px',
+        cols: ['Document', 'Folder', 'Type', 'Uploaded', 'Status', 'Verified By', 'Expires', 'Visibility', ['Actions', 'right']],
+        rows: docs.map(d => ({ cells: [{ text: d.name, bold: true, sub: 'v' + d.version + ' • ' + (d.by || '—') }, d.folder, d.type, fmtD(d.date), { badge: true, text: d.status, tone: d.status === 'Verified' ? 'success' : d.status === 'Rejected' ? 'danger' : d.status === 'Sent' ? 'neutral' : 'info' }, d.verifiedBy || '—', d.expires ? fmtD(d.expires) : '—', { badge: true, text: d.visibility, tone: d.visibility === 'Restricted' ? 'danger' : d.visibility === 'Staff only' ? 'navy' : 'neutral' },
+          { links: [{ icon: 'download', title: 'Download', go: () => this.notify(d.visibility === 'Restricted' ? 'Restricted document — access logged • ' + d.name : 'Downloading ' + d.name) }, ...(d.status !== 'Verified' && d.status !== 'Sent' ? [{ icon: 'badge-check', title: 'Mark Verified', go: () => this.setState(st => ({ rec: this.log({ ...st.rec, docs: st.rec.docs.map(x => x.id === d.id ? { ...x, status: 'Verified', verifiedBy: ME } : x) }, 'Document verified — ' + d.name, 'badge-check') })) }] : []), { icon: 'trash-2', title: 'Delete', danger: true, go: () => { this.setState(st => ({ rec: this.log({ ...st.rec, docs: st.rec.docs.filter(x => x.id !== d.id) }, 'Document deleted — ' + d.name, 'trash-2') })); this.notify(d.name + ' deleted'); } }] }] })), emptyText: 'No documents in this folder.' })); }
+    if (s.tab === 'communications') tables.push(this.table({ title: 'Notices & Messages', sub: 'Delivery tracking: Sent → Delivered → Read → Acknowledged (when the provider supports it)', minW: '760px', action: () => go(PAGES.messages + '?back=' + encodeURIComponent((decodeURIComponent(location.pathname.split('/').pop()) + location.search)) + '&backLabel=' + encodeURIComponent('Back to Tenant Profile')), actionLabel: 'Open Messages', cols: ['Date', 'Channel', 'Subject', 'Delivery'],
+      rows: r.notices.map(n => ({ cells: [fmtD(n[0]), { badge: true, text: n[1], tone: n[1] === 'Formal Notice' ? 'premium' : 'neutral' }, { text: n[2], bold: true }, { badge: true, text: n[3], tone: n[3] === 'Acknowledged' ? 'success' : n[3] === 'Read' ? 'brand' : n[3] === 'Delivered' ? 'info' : 'neutral' }] })), emptyText: 'No notices sent yet.' }));
+    if (s.tab === 'overview') tables.push(this.table({ title: 'Current Tenancy', sub: (L.property || 'No property') + (L.unit ? ' • ' + L.unit : ''), minW: '760px', action: () => this.setTab('lease'), actionLabel: 'Property & Lease', cols: ['Property', 'Lease', 'Term', ['Rent', 'right'], 'Status', ['Open', 'right']],
+      rows: L.property ? [{ open: () => pid && go(DETAIL + '?id=' + pid), cells: [{ text: L.property, sub: L.unit, bold: true }, L.lease_id || '—', (L.start ? fmtD(L.start) : '—') + ' – ' + (L.end ? fmtD(L.end) : '—'), { text: L.rent ? fmtC(L.rent) : '—', bold: true }, { badge: true, text: L.lease_status || '—', tone: L.lease_status === 'Active' ? 'success' : 'warning' }, { links: [{ icon: 'building-2', title: 'Property Detail', go: () => pid && go(DETAIL + '?id=' + pid) }, { icon: 'file-signature', title: 'Lease', go: () => go(PAGES.leases + (L.lease_id ? '?id=' + L.lease_id : '')) }, { icon: 'user-check', title: 'Owner 360', go: () => go(PAGES['owner-profile'] + '?owner=' + encodeURIComponent((PROPS[pid] || {}).owner || '')) }] }] }] : [], emptyText: 'No property assigned.' }));
+
+    if (s.creating) tables.length = 0;
+    const kpiOv = [
+      { label: 'Monthly Rent', value: L.rent ? fmtC(L.rent) : '—', icon: 'banknote', tone: 'navy', footer: 'Due day ' + (L.due_day || '1') + ' • ' + cur },
+      { label: 'Balance', value: fmtC(balance), icon: 'file-clock', tone: balance > 0 ? 'premium' : 'success', footer: balance > 0 ? 'Outstanding' : 'Paid in full' },
+      { label: 'Security Deposit', value: fmtC(L.deposit || depHeld), icon: 'piggy-bank', tone: 'brand', footer: depHeld ? 'Held ' + fmtC(depHeld) : 'Not received' },
+      { label: 'Lease Ends', value: L.end ? fmtD(L.end) : '—', icon: 'calendar-clock', tone: 'premium', footer: L.renewal ? 'Renewal ' + fmtD(L.renewal) : 'No renewal date' },
+      { label: 'Next Payment', value: nextDueF, icon: 'calendar-check', tone: 'success', footer: L.rent ? fmtC(L.rent) : '—' },
+      { label: 'Open Tickets', value: String(openT.length), icon: 'wrench', tone: 'brand', footer: r.maintenance.length + ' total' }
+    ];
+    const kpiPay = [kpiOv[1], kpiOv[0], kpiOv[4], { label: 'Past Due', value: fmtC(pastDue), icon: 'circle-alert', tone: pastDue ? 'premium' : 'success', footer: pastDue ? 'Late charges may apply' : 'Nothing past due' }, kpiOv[2], { label: 'Last Payment', value: lastPay ? fmtC(-lastPay[3]) : '—', icon: 'receipt', tone: 'navy', footer: lastPay ? fmtD(lastPay[0]) : 'No payments yet' }];
+    const TABS = [['overview', 'Overview', 'layout-grid'], ['personal', 'Personal Information', 'user-round'], ['household', 'Household & Occupants', 'users', occ.length], ['lease', 'Property & Lease', 'file-signature'], ['employment', 'Employment & Income', 'briefcase'], ['screening', 'Screening & Verification', 'scan-search'], ['payments', 'Payments', 'credit-card'], ['insurance', 'Insurance', 'umbrella'], ['maintenance', 'Maintenance', 'wrench', openT.length], ['inspections', 'Inspections', 'clipboard-check'], ['documents', 'Documents', 'folder-open', r.docs.length], ['communications', 'Communications', 'message-square'], ['activity', 'Activity', 'history']];
+    const counts = FOLDERS.map(f => [f, r.docs.filter(d => d.folder === f).length]);
+    const blockers = [...(['Signed', 'Active', 'Notice Given'].includes(L.lease_status) && st !== 'Former Tenant' ? ['Active lease ' + (L.lease_id || '')] : []), ...(balance > 0 ? ['Outstanding balance of ' + fmtC(balance)] : []), ...(depHeld > 0 && st !== 'Former Tenant' ? ['Security deposit held (' + fmtC(depHeld) + ') — settle after move-out inspection'] : [])];
+    const TL = { 'user-plus': ['#DDF3F1', '#006B68'], 'file-signature': ['#EEF2FF', '#132A52'], 'clipboard-check': ['#DCFCE7', '#15803D'], 'badge-check': ['#DCFCE7', '#15803D'], 'circle-check': ['#DCFCE7', '#15803D'], 'credit-card': ['#DCFCE7', '#15803D'], 'trash-2': ['#FEF2F2', '#DC2626'], upload: ['#E0F2FE', '#0369A1'], wrench: ['#FEF3C7', '#B45309'], users: ['#DDF3F1', '#006B68'] };
+    const idv = chk('Identity Verification');
+
+    window.MGH_CTX = { type: 'tenant', label: 'Tenant 360 — ' + name, readiness: ready.items.map(i => i[0] + ': ' + i[2]), record: { tenant: name, id: r.id, status: st, lease: L.lease_id + ' ' + L.lease_status + ' ' + L.start + ' to ' + L.end, rent: L.rent, balance, depositHeld: depHeld, emergencyContact: r.emergency.ec_name || 'missing', household: occ.map(o => o.name + ' (' + o.role + ')'), screening: r.screening.map(c => c[0] + ': ' + c[1]), openMaintenance: openT.map(m => m[0] + ' ' + m[1] + ' since ' + m[2]), inspections: r.inspections.map(x => x[0] + ': ' + x[2]), missingDocuments: ready.missing, moveInAcknowledged: !!(r.portal && r.portal.miAck) } };
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['People', PAGES.directory], ['Tenants', PAGES.tenants], [s.creating ? 'Add Existing Tenant' : name, null]]),
+      goBack: () => go(PAGES.tenants), goPortal: () => go(PAGES['tenant-portal']), goMessages: () => this.setTab('communications'),
+      editPersonal: () => this.setState({ tab: 'personal', editing: 'personal', draft: { ...r.personal } }),
+      aiReview: () => window.dispatchEvent(new CustomEvent('mgh-assistant', { detail: { prompt: 'AI Review this tenant record', review: true } })),
+      initials: name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase(), ownerName: name,
+      headBadges: [[st.toUpperCase() + (['Active', 'Former Tenant', 'Future Tenant'].includes(st) ? '' : '') + (st === 'Active' ? ' TENANT' : ''), TEN_TONE[st] || 'neutral', true], ['LEASE ' + String(L.lease_status || 'none').toUpperCase(), L.lease_status === 'Active' ? 'success' : 'warning', false], ['IDENTITY ' + String(idv || 'not started').toUpperCase(), idv === 'Verified' ? 'success' : 'warning', false]].map(([label, tone, dot]) => ({ label, tone, dot })),
+      ownerMeta: r.id + ' • ' + r.meta.tenant_type + (L.property ? ' • ' + L.property + (L.unit ? ' • ' + L.unit : '') : '') + ' • Record created ' + fmtD(r.created),
+      hasSource: true, sourceLabel: r.source ? 'Created from Rental Application ' + r.source.app + ' • approved ' + fmtD(r.source.approved) : 'Added manually as an existing tenant — no rental application on file',
+      openSource: () => go(r.source ? 'Master 08 - Application Detail.dc.html?id=' + r.source.app : PAGES.applications),
+      readyPct: ready.pct + '%', readyFill: ready.pct === 100 ? '#16A34A' : ready.pct >= 70 ? '#006B68' : '#D4A637', readyBar: ready.pct === 100 ? '#16A34A' : '#D4A637',
+      readyItems: ready.items.map(([label, ok, value, tab]) => ({ label, value, icon: ok ? 'check' : 'triangle-alert', bg: ok ? '#DCFCE7' : '#FEF3C7', fg: ok ? '#15803D' : '#B45309', go: () => this.setTab(tab) })),
+      tabs: TABS.map(([id, label, icon, count]) => { const on = s.tab === id; return { label, icon, hasCount: count != null && count !== 0, count: String(count), border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', countBg: on ? '#DDF3F1' : '#F1F5F9', countFg: on ? '#006B68' : '#64748B', select: () => this.setTab(id) }; }),
+      creating: !!s.creating, notCreating: !s.creating, createTenant: () => this.createTenant(), goApplications: () => go(PAGES.applications),
+      showKpis: !s.creating && (s.tab === 'overview' || s.tab === 'payments'), kpis: s.tab === 'payments' ? kpiPay : kpiOv,
+      hasSecs: secs.length > 0, secs, tables,
+      showChips: s.tab === 'documents', uploadFolder: s.folder === 'All' ? 'Other' : s.folder,
+      chips: [['All', r.docs.length], ...counts].map(([f, c]) => { const on = s.folder === f; return { label: f, count: String(c), bg: on ? '#132A52' : '#FFFFFF', color: on ? '#FFFFFF' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ folder: f }) }; }),
+      uploadDocs: e => { const fl = [...(e.target.files || [])]; if (!fl.length) return; const folder = s.folder === 'All' ? 'Other' : s.folder; const today = new Date().toISOString().slice(0, 10); const vis = ['Identification', 'Screening Authorizations', 'Income / Employment'].includes(folder) ? 'Restricted' : 'Staff only';
+        this.setState(st2 => ({ rec: this.log({ ...st2.rec, docs: [...fl.map((f, i) => ({ id: 'T-' + (Date.now() + i), name: f.name, folder, type: 'Uploaded file', version: 1 + st2.rec.docs.filter(d => d.name === f.name).length, date: today, status: 'Received', by: ME, verifiedBy: '', visibility: vis, expires: '' })), ...st2.rec.docs] }, fl.length + ' document' + (fl.length > 1 ? 's' : '') + ' uploaded to ' + folder, 'upload') }));
+        this.notify(fl.length + ' file' + (fl.length > 1 ? 's' : '') + ' uploaded to ' + folder + ' • ' + vis); e.target.value = ''; },
+      showTimeline: !s.creating && (s.tab === 'activity' || s.tab === 'overview'),
+      timeline: [...r.activity].sort((a, b) => a.at < b.at ? 1 : -1).slice(0, s.tab === 'overview' ? 5 : 999).map(a => { const [bg, fg] = TL[a.icon] || ['#F1F5F9', '#475569']; return { text: a.text, when: fmtTS(a.at), by: a.by, icon: a.icon || 'pencil', bg, fg }; }),
+      askDelete: () => this.setState({ del: true }), cancelDelete: () => this.setState({ del: false }),
+      delOpen: s.del, delTitle: 'Delete Tenant — ' + name + '?', delBlocked: blockers.length > 0, delAllowed: blockers.length === 0, delBlockers: blockers,
+      delBody: blockers.length ? 'This tenant cannot be deleted while the tenancy is open. Close the lease and settle the deposit first, or mark the tenant as Former Tenant to revoke portal access and keep the history.' : 'This permanently removes ' + name + ' and the tenant document vault. Lease and payment records stay in the property ledger. The deletion is recorded in the audit log.',
+      deactivate: () => { this.setState(st2 => ({ del: false, rec: this.log({ ...st2.rec, meta: { ...st2.rec.meta, status: 'Former Tenant' } }, 'Tenant marked Former Tenant — portal access revoked', 'user-x') })); this.syncPeople({ status: 'Moved Out' }, name); this.notify(name + ' marked Former Tenant • portal access revoked'); },
+      confirmDelete: () => { try { const stt = load(KEY) || {}; delete stt[name]; sessionStorage.setItem(KEY, JSON.stringify(stt)); const ps = load(PKEY); if (ps && ps.people) { ps.people = ps.people.filter(x => !(x.type === 'tenant' && x.name === name)); sessionStorage.setItem(PKEY, JSON.stringify(ps)); } } catch (e) {} go(PAGES.tenants); }
+    };
+  }
+}
+</script>
+</body>
+</html>

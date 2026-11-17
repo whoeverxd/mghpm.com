@@ -1,0 +1,85 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.wrapper h2 {
+  margin: 0;
+  color: var(--color-title);
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.wrapper p {
+  margin: 5px 0 0;
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.wrapper .error {
+  margin-top: 10px;
+  padding: 9px 11px;
+  border-radius: 7px;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.archive,
+.restore {
+  flex-shrink: 0;
+  min-height: 38px;
+  padding: 0 15px;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.archive {
+  border: 1px solid var(--color-danger);
+  background: white;
+  color: var(--color-danger);
+}
+
+.archive:hover:not(:disabled) {
+  background: var(--color-danger-soft);
+}
+
+.restore {
+  border: 0;
+  background: var(--color-primary);
+  color: white;
+}
+
+.restore:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.archive:disabled,
+.restore:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.archive:focus-visible,
+.restore:focus-visible {
+  outline: 3px solid rgb(0 107 104 / 18%);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+}

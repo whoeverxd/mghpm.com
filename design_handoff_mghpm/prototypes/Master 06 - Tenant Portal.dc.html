@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/tokens/base.css">
+  <link rel="stylesheet" href="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="_ds/mghpm-design-system-f422809c-7418-4624-b891-a1bfa5eeb3cd/_ds_bundle.js"></script>
+  <script src="insurance-data.js"></script>
+  <script src="org-data.js"></script>
+  <script src="audit-data.js"></script>
+  <style>
+    html,body{margin:0;height:100%;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#172033}
+    a{color:#006B68;text-decoration:none}a:hover{color:#004F4D;text-decoration:underline}
+    *{box-sizing:border-box}
+    input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.55}
+  </style>
+  <script>if(!window.__mghDateOpen){window.__mghDateOpen=1;document.addEventListener('click',function(e){var el=e.target;if(el&&el.tagName==='INPUT'&&/^(date|time|datetime-local|month)$/.test(el.type)&&!el.disabled&&!el.readOnly&&el.showPicker){try{el.showPicker()}catch(_){}}},true);}</script>
+
+  <script src="ops-agent.js"></script>
+  <script src="mgh-assistant.js"></script>
+  <script src="i18n.js"></script>
+  <script src="compliance-data.js"></script>
+</helmet>
+<div data-screen-label="Master 06 — Tenant Portal" style="--text-heading:#172033;--font-mono:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;display:flex;height:100vh;width:100%;overflow:hidden;background:#F8FAFC;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:40"></div>
+  </sc-if>
+
+  <aside style="width:{{ sidebarWidth }};display:{{ sidebarDisplay }};position:{{ sidebarPosition }};top:0;left:0;bottom:0;z-index:50;flex-shrink:0;background:#006B68;color:#fff;flex-direction:column;transition:width 160ms ease">
+    <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0">
+      <span onClick="{{ goHome }}" title="Dashboard" style="cursor:pointer;width:36px;height:36px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        <img src="assets/logo-mark.png" alt="MGHPM" style="width:30px;height:30px;object-fit:contain">
+      </span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+          <span style="font:700 16px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.01em">MGHPM</span>
+          <span style="font:600 10px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.1em;color:#D4A637">ENTERPRISE</span>
+        </span>
+      </sc-if>
+    </div>
+    <nav style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-if value="{{ sec.showLabel }}">
+            <button onClick="{{ sec.toggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 12px 8px;border:0;background:transparent;cursor:pointer;color:rgba(255,255,255,0.6);font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.08em;text-transform:uppercase" style-hover="color:#fff">
+              <span>{{ sec.label }}</span>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.chevron }}" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </button>
+          </sc-if>
+          <sc-if value="{{ sec.showDivider }}">
+            <div style="height:1px;margin:10px 8px;background:rgba(255,255,255,0.14)"></div>
+          </sc-if>
+          <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+                <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif;transition:background 140ms ease,color 140ms ease" style-hover="background:#005A57;color:#fff">
+                  <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+                  <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ footerItems }}" as="it" hint-placeholder-count="1">
+        <button onClick="{{ it.select }}" title="{{ it.label }}" style="display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 12px;justify-content:{{ it.justify }};border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ it.bg }};color:{{ it.color }};font:{{ it.weight }} 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57;color:#fff">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ it.icon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+          <sc-if value="{{ it.showLabel }}" hint-placeholder-val="{{ true }}">
+            <span style="flex:1">{{ it.label }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh">
+    <header style="height:64px;flex-shrink:0;display:flex;align-items:center;gap:16px;padding:0 {{ topPad }};background:#FFFFFF;border-bottom:1px solid #E2E8F0">
+      <button onClick="{{ toggleSidebar }}" title="Toggle navigation" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #E2E8F0;border-radius:8px;background:#fff;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC;color:#006B68">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toggleIcon }}" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+      </button>
+      <div style="min-width:0;flex:1 1 auto;overflow:hidden;display:flex">
+        <sc-if value="{{ showCrumbs }}" hint-placeholder-val="{{ true }}">
+          <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;min-width:0;font:500 13px/1 'Plus Jakarta Sans',sans-serif">
+            <sc-for list="{{ crumbItems }}" as="c" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:6px;min-width:{{ c.minW }};flex-shrink:{{ c.shrink }}">
+                <sc-if value="{{ c.sep }}"><span style="display:flex;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="chevron-right" size="{{ 14 }}" color="#CBD5E1" hint-size="14px,14px"></x-import></span></sc-if>
+                <sc-if value="{{ c.link }}"><button onClick="{{ c.go }}" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;padding:4px 2px;cursor:pointer;color:#64748B;font:inherit" style-hover="color:#006B68;text-decoration:underline">{{ c.label }}</button></sc-if>
+                <sc-if value="{{ c.plain }}"><span style="color:{{ c.color }};font-weight:{{ c.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ c.label }}</span></sc-if>
+              </span>
+            </sc-for>
+          </nav>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showSearchField }}" hint-placeholder-val="{{ true }}">
+        <label style="flex:0 1 340px;min-width:180px;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:#F1F5F9;border:1px solid transparent;border-radius:8px;color:#64748B;cursor:text" style-hover="border-color:#CBD5E1">
+          <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="search" size="{{ 16 }}" hint-size="16px,16px"></x-import>
+          <input placeholder="Search properties, tenants, leases, work orders…" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font:400 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033">
+          <span style="padding:2px 6px;border:1px solid #E2E8F0;border-radius:4px;background:#fff;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">⌘K</span>
+        </label>
+      </sc-if>
+      <x-import component-from-global-scope="mgh-page-share" from="./page-share.js" hint-size="40px,40px"></x-import>
+        <button onClick="{{ goNotif }}" title="Notifications" style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="bell" size="{{ 18 }}" hint-size="18px,18px"></x-import>
+        <span style="position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:1.5px solid #fff"></span>
+      </button>
+      <div style="width:1px;height:28px;background:#E2E8F0;flex-shrink:0"></div>
+      <button style="display:flex;align-items:center;gap:10px;padding:4px;border:0;border-radius:8px;background:transparent;cursor:pointer;flex-shrink:0" style-hover="background:#F8FAFC">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="MV" tone="brand" size="{{ 34 }}" hint-size="34px,34px"></x-import>
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+            <span style="font:600 13px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033">Marcus Vance</span>
+            <span style="font:500 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#64748B">Portfolio Lead</span>
+          </span>
+        </sc-if>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow-y:auto;padding:{{ pagePad }}">
+      <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <span style="display:flex;align-items:center;gap:8px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="door-open" size="{{ 14 }}" color="#006B68" hint-size="14px,14px"></x-import>Tenant Portal • {{ viewingAs }}</span>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px">
+            <div style="display:flex;align-items:center;gap:16px;min-width:0;flex:1 1 420px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Avatar" initials="{{ initials }}" tone="navy" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                  <h1 style="margin:0;font:700 28px/1.2 'Plus Jakarta Sans',sans-serif;color:#172033;letter-spacing:-0.01em">{{ ownerName }}</h1>
+                  <sc-for list="{{ headBadges }}" as="hb" hint-placeholder-count="3"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ hb.tone }}" dot="{{ hb.dot }}" hint-size="110px,22px">{{ hb.label }}</x-import></sc-for>
+                </div>
+                <span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ownerMeta }}</span>
+                <sc-if value="{{ hasSource }}"><button onClick="{{ openSource }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:#006B68;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif" style-hover="text-decoration:underline"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="clipboard-list" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ sourceLabel }}</button></sc-if>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="wrench" on-click="{{ reportProblem }}" hint-size="150px,40px">Report a Problem</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" icon="message-square" on-click="{{ goMessages }}" hint-size="160px,40px">Message Manager</x-import>
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="credit-card" on-click="{{ payNow }}" hint-size="110px,40px">Pay Rent</x-import>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-top:3px solid {{ readyBar }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px">
+          <div style="display:flex;flex-direction:column;gap:10px;flex:0 1 260px;min-width:220px">
+            <span style="font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B">My Tenancy</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 28px/1 'Plus Jakarta Sans',sans-serif;color:#172033">{{ readyPct }}</span><span style="font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#64748B">complete</span></div>
+            <div style="height:8px;border-radius:4px;background:#F1F5F9;overflow:hidden"><div style="height:100%;width:{{ readyPct }};background:{{ readyFill }};border-radius:4px;transition:width 180ms ease"></div></div>
+          </div>
+          <div style="flex:1 1 520px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 24px">
+            <sc-for list="{{ readyItems }}" as="ri" hint-placeholder-count="6">
+              <button onClick="{{ ri.go }}" style="display:flex;align-items:center;gap:10px;padding:8px 0;border:0;border-bottom:1px solid #F1F5F9;background:transparent;cursor:pointer;text-align:left;font-family:inherit">
+                <span style="width:24px;height:24px;border-radius:6px;background:{{ ri.bg }};color:{{ ri.fg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ri.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                <span style="flex:1;font:500 13px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ri.label }}</span>
+                <span style="font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:{{ ri.fg }};white-space:nowrap">{{ ri.value }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden">
+          <div role="tablist" style="display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;box-shadow:inset 0 -1px 0 #E2E8F0;padding:0 16px;scrollbar-width:none">
+            <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="11">
+              <button role="tab" onClick="{{ tb.select }}" style="flex-shrink:0;height:48px;padding:0 12px;border:0;box-shadow:inset 0 -2px 0 {{ tb.border }};background:transparent;cursor:pointer;color:{{ tb.color }};font:600 13px/1 'Plus Jakarta Sans',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:8px">
+                <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ tb.icon }}" size="{{ 15 }}" hint-size="15px,15px"></x-import>{{ tb.label }}
+                <sc-if value="{{ tb.hasCount }}"><span style="padding:3px 7px;border-radius:999px;background:{{ tb.countBg }};color:{{ tb.countFg }};font:600 11px/1 'Plus Jakarta Sans',sans-serif">{{ tb.count }}</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ showKpis }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.StatCard" label="{{ k.label }}" value="{{ k.value }}" icon="{{ k.icon }}" icon-tone="{{ k.tone }}" footer="{{ k.footer }}" hint-size="100%,124px"></x-import></sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showChips }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+            <sc-for list="{{ chips }}" as="ch">
+              <button onClick="{{ ch.select }}" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid {{ ch.border }};border-radius:999px;cursor:pointer;background:{{ ch.bg }};color:{{ ch.color }};font:600 12px/1 'Plus Jakarta Sans',sans-serif"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="folder" size="{{ 13 }}" hint-size="13px,13px"></x-import>{{ ch.label }}<span style="opacity:0.7">{{ ch.count }}</span></button>
+            </sc-for>
+            <span style="flex:1"></span>
+            <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:6px;background:#006B68;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#005A57">
+              <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="upload" size="{{ 16 }}" hint-size="16px,16px"></x-import>Upload to {{ uploadFolder }}
+              <input type="file" multiple="{{ true }}" onChange="{{ uploadDocs }}" style="display:none">
+            </label>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasSecs }}">
+          <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px">
+            <sc-for list="{{ secs }}" as="sec" hint-placeholder-count="4">
+              <section style="grid-column:{{ sec.span }};background:#FFFFFF;border:1px solid {{ sec.border }};border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);display:flex;flex-direction:column;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:20px 24px 16px">
+                  <span style="width:32px;height:32px;border-radius:8px;background:#DDF3F1;color:#006B68;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ sec.icon }}" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                  <div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+                      <h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ sec.title }}</h3>
+                      <sc-for list="{{ sec.badges }}" as="bd"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ bd.tone }}" dot="{{ bd.dot }}" hint-size="90px,22px">{{ bd.label }}</x-import></sc-for>
+                    </div>
+                    <sc-if value="{{ sec.hasDesc }}"><p style="margin:0;font:400 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#64748B;text-wrap:pretty">{{ sec.desc }}</p></sc-if>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-shrink:0">
+                    <sc-if value="{{ sec.canEdit }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" size="sm" icon="{{ sec.editIcon }}" on-click="{{ sec.edit }}" hint-size="70px,32px">{{ sec.editLabel }}</x-import></sc-if>
+                    <sc-if value="{{ sec.editing }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" on-click="{{ sec.cancel }}" hint-size="70px,32px">Cancel</x-import><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" size="sm" icon="check" on-click="{{ sec.save }}" hint-size="80px,32px">Save</x-import></sc-if>
+                  </div>
+                </div>
+                <sc-if value="{{ sec.hasWarn }}">
+                  <div style="margin:0 24px 12px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A;font:500 13px/1.45 'Plus Jakarta Sans',sans-serif;color:#92400E">
+                    <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="triangle-alert" size="{{ 15 }}" hint-size="15px,15px"></x-import><span>{{ sec.warn }}</span>
+                  </div>
+                </sc-if>
+                <div style="padding:0 24px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax({{ sec.colMin }},1fr));gap:0 24px">
+                  <sc-for list="{{ sec.fields }}" as="fd" hint-placeholder-count="6">
+                    <div style="grid-column:{{ fd.span }};min-width:0;padding:{{ fd.pad }};border-top:{{ fd.rule }}">
+                      <sc-if value="{{ fd.isView }}">
+                        <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                          <span style="font:500 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ fd.label }}</span>
+                          <span style="font:600 14px/1.45 'Plus Jakarta Sans',sans-serif;color:{{ fd.vColor }};overflow-wrap:anywhere;text-wrap:pretty">{{ fd.display }}</span>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isInput }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<input type="{{ fd.type }}" value="{{ fd.value }}" onChange="{{ fd.onChange }}" placeholder="{{ fd.ph }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;font:400 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;outline:none;background:#fff;width:100%;min-width:0" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></div>
+                      </sc-if>
+                      <sc-if value="{{ fd.isSelect }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<select value="{{ fd.value }}" onChange="{{ fd.onChange }}" style="height:40px;padding:0 12px;border:1px solid #CBD5E1;border-radius:6px;background:#fff;font:500 14px/1 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%;min-width:0"><sc-for list="{{ fd.options }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isArea }}">
+                        <label style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}<textarea value="{{ fd.value }}" onChange="{{ fd.onChange }}" rows="3" placeholder="{{ fd.ph }}" style="padding:10px 12px;border:1px solid #CBD5E1;border-radius:6px;outline:none;resize:vertical;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#172033;width:100%" style-focus="border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,0.18)"></textarea></label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isToggle }}">
+                        <label style="display:flex;align-items:center;gap:10px;min-height:40px;cursor:pointer;font:500 14px/1.35 'Plus Jakarta Sans',sans-serif;color:#172033"><input type="checkbox" checked="{{ fd.checked }}" onChange="{{ fd.onChange }}" style="width:18px;height:18px;accent-color:#006B68;margin:0;flex-shrink:0">{{ fd.label }}</label>
+                      </sc-if>
+                      <sc-if value="{{ fd.isFile }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;font:600 12px/1.2 'Plus Jakarta Sans',sans-serif;color:#475569;min-width:0">{{ fd.label }}
+                          <label style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px dashed #CBD5E1;border-radius:6px;cursor:pointer;font:500 13px/1 'Plus Jakarta Sans',sans-serif;color:#172033;min-width:0" style-hover="border-color:#006B68;background:#F8FAFC">
+                            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="paperclip" size="{{ 15 }}" color="#006B68" hint-size="15px,15px"></x-import><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fd.fileLabel }}</span>
+                            <input type="file" onChange="{{ fd.onFile }}" style="display:none">
+                          </label>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ tables }}" as="tbl" hint-placeholder-count="0">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);overflow:hidden;min-width:0">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px">
+              <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ tbl.title }}</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.sub }}</p></div>
+              <sc-if value="{{ tbl.hasAction }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="ghost" size="sm" icon-right="arrow-right" on-click="{{ tbl.action }}" hint-size="120px,32px">{{ tbl.actionLabel }}</x-import></sc-if>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;min-width:{{ tbl.minW }};border-collapse:collapse">
+                <thead><tr><sc-for list="{{ tbl.cols }}" as="c"><th style="padding:12px 16px;padding-left:{{ c.pl }};padding-right:{{ c.pr }};text-align:{{ c.align }};font:600 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#64748B;background:#F8FAFC;border-bottom:1px solid #E2E8F0;white-space:nowrap">{{ c.label }}</th></sc-for></tr></thead>
+                <tbody>
+                  <sc-for list="{{ tbl.rows }}" as="r">
+                    <tr onClick="{{ r.open }}" style="cursor:{{ r.cursor }}" style-hover="background:#F8FAFC">
+                      <sc-for list="{{ r.cells }}" as="cl">
+                        <td style="padding:14px 16px;padding-left:{{ cl.pl }};padding-right:{{ cl.pr }};border-bottom:1px solid #E2E8F0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#475569;vertical-align:middle;text-align:{{ cl.align }};white-space:nowrap">
+                          <sc-if value="{{ cl.isText }}"><div style="display:flex;flex-direction:column;gap:2px"><span style="color:#172033;font-weight:{{ cl.weight }}">{{ cl.text }}</span><sc-if value="{{ cl.hasSub }}"><span style="font-size:12px;color:#64748B">{{ cl.sub }}</span></sc-if></div></sc-if>
+                          <sc-if value="{{ cl.isBadge }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Badge" tone="{{ cl.tone }}" dot="{{ true }}" hint-size="90px,22px">{{ cl.text }}</x-import></sc-if>
+                          <sc-if value="{{ cl.isLinks }}"><div style="display:inline-flex;gap:2px"><sc-for list="{{ cl.links }}" as="lk"><button onClick="{{ lk.go }}" title="{{ lk.title }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:{{ lk.color }};cursor:pointer" style-hover="background:#F1F5F9"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ lk.icon }}" size="{{ 16 }}" hint-size="16px,16px"></x-import></button></sc-for></div></sc-if>
+                        </td>
+                      </sc-for>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <sc-if value="{{ tbl.empty }}"><p style="margin:0;padding:40px 24px;text-align:center;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ tbl.emptyText }}</p></sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ showTimeline }}">
+          <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,0.05);padding:20px 24px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:4px"><h3 style="margin:0;font:600 16px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">Recent Activity</h3><p style="margin:0;font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">Payments, maintenance updates, documents, notices and inspections on your tenancy.</p></div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ timeline }}" as="ev" hint-placeholder-count="5">
+                <div style="display:flex;gap:16px">
+                  <div style="display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0">
+                    <span style="width:28px;height:28px;border-radius:14px;background:{{ ev.bg }};color:{{ ev.fg }};display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ ev.icon }}" size="{{ 14 }}" hint-size="14px,14px"></x-import></span>
+                    <span style="flex:1;width:1px;background:#E2E8F0;min-height:16px"></span>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding:4px 0 20px">
+                    <span style="font:600 14px/1.4 'Plus Jakarta Sans',sans-serif;color:#172033">{{ ev.text }}</span>
+                    <span style="font:400 12px/1.4 'Plus Jakarta Sans',sans-serif;color:#64748B">{{ ev.when }} • {{ ev.by }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+
+    <sc-if value="{{ delOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:90;background:rgba(15,23,42,0.45);display:flex;align-items:center;justify-content:center;padding:16px">
+        <div role="alertdialog" style="width:100%;max-width:480px;background:#FFFFFF;border-radius:12px;box-shadow:0 24px 48px rgba(15,23,42,0.24);display:flex;flex-direction:column">
+          <div style="padding:24px;display:flex;gap:16px;align-items:flex-start">
+            <span style="width:40px;height:40px;border-radius:8px;background:#FEF2F2;color:#DC2626;display:flex;align-items:center;justify-content:center;flex-shrink:0"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <h3 style="margin:0;font:600 18px/1.3 'Plus Jakarta Sans',sans-serif;color:#172033">{{ delTitle }}</h3>
+              <p style="margin:0;font:400 14px/1.5 'Plus Jakarta Sans',sans-serif;color:#475569;text-wrap:pretty">{{ delBody }}</p>
+              <sc-if value="{{ delBlocked }}">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A">
+                  <span style="font:600 12px/1.3 'Plus Jakarta Sans',sans-serif;color:#92400E">Linked records prevent deletion</span>
+                  <sc-for list="{{ delBlockers }}" as="b"><span style="font:400 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#78350F">• {{ b }}</span></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;padding:16px 24px;border-top:1px solid #E2E8F0;background:#F8FAFC;border-radius:0 0 12px 12px">
+            <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="outline" on-click="{{ cancelDelete }}" hint-size="90px,40px">Cancel</x-import>
+            <sc-if value="{{ delBlocked }}"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Button" variant="primary" icon="user-x" on-click="{{ deactivate }}" hint-size="150px,40px">Deactivate Instead</x-import></sc-if>
+            <sc-if value="{{ delAllowed }}"><button onClick="{{ confirmDelete }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:0;border-radius:6px;background:#DC2626;color:#fff;cursor:pointer;font:600 14px/1 'Plus Jakarta Sans',sans-serif" style-hover="background:#B91C1C"><x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="trash-2" size="{{ 16 }}" hint-size="16px,16px"></x-import>Delete Permanently</button></sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;right:24px;bottom:24px;z-index:95;display:flex;align-items:center;gap:10px;max-width:440px;padding:12px 16px;border-radius:8px;background:#172033;color:#fff;box-shadow:0 12px 32px rgba(15,23,42,0.24);font:500 13px/1.4 'Plus Jakarta Sans',sans-serif">
+        <x-import component-from-global-scope="MGHPMDesignSystem_f42280.Icon" name="{{ toastIcon }}" size="{{ 16 }}" color="{{ toastColor }}" hint-size="16px,16px"></x-import>
+        <span>{{ toastMsg }}</span>
+      </div>
+    </sc-if>
+  </div>
+  <x-import component-from-global-scope="mgh-assistant" from="./mgh-assistant.js" role="tenant" hint-size="0px,0px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const NAV = [
+  { id: null, items: [['dashboard', 'Dashboard', 'layout-dashboard'], ['action-center', 'Action Center', 'inbox']] },
+  { id: 'portals', label: 'Portals', items: [['owner-portal', 'Owner Portal', 'house'], ['tenant-portal', 'Tenant Portal', 'door-open']] },
+  { id: 'pm', label: 'Property Management', items: [['properties', 'Properties', 'building-2'], ['owners', 'Owners', 'user-check'], ['tenants', 'Tenants', 'users'], ['leases', 'Leases', 'file-signature']] },
+  { id: 'leasing', label: 'Leasing', items: [['applications', 'Rental Applications', 'clipboard-list'], ['screening', 'Screening & Review', 'scan-search'], ['lease-pipeline', 'Lease Pipeline', 'workflow']] },
+  { id: 'str', label: 'Short-Term Rentals', items: [['explore-stays', 'Explore / Listings', 'globe'], ['reservations', 'Reservations', 'calendar-check'], ['calendar', 'Calendar', 'calendar-days'], ['guests', 'Guests', 'concierge-bell'], ['guest-services', 'Guest Services', 'sparkles']] },
+  { id: 'ops', label: 'Operations', items: [['ops-center', 'Operations Center', 'activity'], ['readiness', 'Property Readiness', 'list-checks'], ['inspections', 'Inspections', 'clipboard-check'], ['maintenance', 'Maintenance', 'wrench'], ['cleaning', 'Cleaning', 'spray-can'], ['supplies', 'Supplies & Inventory', 'boxes'], ['staff', 'Staff', 'id-card'], ['vendors', 'Vendors', 'hard-hat']] },
+  { id: 'fin', label: 'Financials', items: [['accounting', 'Accounting', 'landmark'], ['general-ledger', 'General Ledger', 'book-open'], ['property-ledger', 'Property Ledger', 'building-2'], ['receivables', 'Receivables', 'hand-coins'], ['payables', 'Payables', 'receipt'], ['vendor-payments', 'Vendor Payments', 'banknote'], ['bank-reconciliation', 'Bank Reconciliation', 'git-compare'], ['financial-close', 'Financial Close', 'lock'], ['payments', 'Payments', 'credit-card'], ['expenses', 'Expenses', 'receipt'], ['deposits', 'Deposits', 'piggy-bank'], ['owner-distributions', 'Owner Distributions', 'hand-coins'], ['payroll', 'Payroll', 'wallet'], ['reports', 'Reports', 'chart-column']] },
+  { id: 'comp', label: 'Compliance', items: [['identity-verification', 'Identity Verification', 'scan-face'], ['ownership-verification', 'Ownership Verification', 'file-check'], ['insurance', 'Insurance', 'umbrella'], ['compliance-review', 'Compliance Review', 'shield-check'], ['hoa', 'HOA', 'scale'], ['assets', 'Assets', 'package'], ['incidents', 'Incidents', 'triangle-alert']] },
+  { id: 'docs', label: 'Documents', items: [['documents', 'Document Center', 'file-text'], ['templates', 'Templates', 'layout-template']] },
+  { id: 'comm', label: 'Communications', items: [['messages', 'Inbox', 'inbox'], ['notifications', 'Notifications', 'bell'], ['contact-messages', 'Contact Requests', 'mail']] },
+  { id: 'admin', label: 'Administration', items: [['directory', 'Directory', 'contact'], ['users', 'Users & Access', 'user-cog'], ['organizations', 'Organizations', 'building'], ['audit', 'Audit Log', 'scroll-text'], ['integrations', 'Integrations', 'plug']] }
+];
+const NAV_ALIAS = { 'insurance-new': 'insurance', 'insurance-360': 'insurance', 'lease-new': 'leases', 'lease-360': 'leases', 'reservation-new': 'reservations', 'reservation-360': 'reservations', 'guest-360': 'guests', identity: 'identity-verification', 'identity-review': 'identity-verification', 'work-order-360': 'maintenance', 'application-360': 'screening', 'inspection-checklist': 'inspections', approved: 'applications', denied: 'applications', 'leasing-leases': 'lease-pipeline', payouts: 'owner-distributions', roles: 'users', 'users-orgs': 'organizations', hub: 'integrations', 'work-orders-add': 'maintenance', 'owner-profile': 'owners', 'tenant-profile': 'tenants' };
+const FOOTER = [['settings', 'Settings', 'settings']];
+const PAGES = { messages: 'Master 24 - Messages.dc.html', 'insurance-new': 'Master 42 - New Insurance Policy.dc.html', 'insurance-360': 'Master 43 - Insurance Policy 360.dc.html', 'lease-new': 'Master 40 - Create Lease.dc.html', 'lease-360': 'Master 41 - Lease 360.dc.html', 'reservation-new': 'Master 30 - New Reservation.dc.html', 'reservation-360': 'Master 31 - Reservation 360.dc.html', 'explore-stays': 'Master 29 - Explore Stays.dc.html', guests: 'Master 32 - Guests.dc.html', 'guest-360': 'Master 33 - Guest 360.dc.html', 'my-stay': 'Master 34 - My Stay.dc.html', 'guest-services': 'Master 35 - Guest Services.dc.html', readiness: 'Master 36 - Property Readiness.dc.html', organizations: 'Master 37 - Organizations.dc.html', audit: 'Master 38 - Audit Log.dc.html', templates: 'Master 39 - Templates.dc.html', dashboard: 'Master 02 - Main Dashboard.dc.html', properties: 'Master 03 - Properties.dc.html', 'owner-portal': 'Master 05 - Owner Portal.dc.html', 'tenant-portal': 'Master 06 - Tenant Portal.dc.html', applications: 'Master 07 - Rental Applications.dc.html', screening: 'Master 67 - Application 360.dc.html', approved: 'Master 07 - Rental Applications.dc.html?view=approved', denied: 'Master 07 - Rental Applications.dc.html?view=denied', 'leasing-leases': 'Master 07 - Rental Applications.dc.html?view=lease', 'ops-center': 'Master 09 - Operations Center.dc.html', inspections: 'Master 60 - Inspections.dc.html', 'inspection-checklist': 'Master 10 - Digital Inspection.dc.html', 'work-order-360': 'Master 57 - Work Order 360.dc.html', accounting: 'Master 11 - Accounting.dc.html', 'general-ledger': 'Master 61 - General Ledger.dc.html', 'property-ledger': 'Master 62 - Property Ledger.dc.html', receivables: 'Master 63 - Accounts Receivable.dc.html', payables: 'Master 64 - Accounts Payable.dc.html', 'vendor-payments': 'Master 64 - Accounts Payable.dc.html?tab=vendor-payments', 'bank-reconciliation': 'Master 65 - Bank Reconciliation.dc.html', 'financial-close': 'Master 66 - Financial Close.dc.html', 'application-360': 'Master 67 - Application 360.dc.html', 'application-wizard': 'Master 23 - Rental Application Wizard.dc.html', documents: 'Master 12 - Documents.dc.html', maintenance: 'Master 13 - Work Orders.dc.html', 'work-orders-add': 'Master 14 - Maintenance Requests.dc.html', leases: 'Master 15 - Leases.dc.html', payments: 'Master 16 - Payments.dc.html', expenses: 'Master 64 - Accounts Payable.dc.html?tab=expenses', reservations: 'Master 17 - Reservations.dc.html', calendar: 'Master 17 - Reservations.dc.html?view=calendar', identity: 'Master 18 - Identity Verification.dc.html?view=mine', 'identity-review': 'Master 18 - Identity Verification.dc.html', directory: 'Master 19 - People.dc.html', owners: 'Master 19 - People.dc.html?type=owners', tenants: 'Master 19 - People.dc.html?type=tenants', vendors: 'Master 59 - Vendors.dc.html', staff: 'Master 58 - Staff.dc.html', 'property-form': 'Master 20 - Property Form.dc.html', settings: 'Master 21 - Settings.dc.html', users: 'Master 21 - Settings.dc.html?section=users', roles: 'Master 21 - Settings.dc.html?section=users', supplies: 'Master 22 - Supplies and Inventory.dc.html', cleaning: 'Master 56 - Cleaning.dc.html', 'owner-profile': 'Master 25 - Owner Profile.dc.html', 'tenant-profile': 'Master 26 - Tenant Profile.dc.html', insurance: 'Master 27 - Insurance and Compliance.dc.html', 'identity-verification': 'Master 18 - Identity Verification.dc.html', 'lease-pipeline': 'Master 07 - Rental Applications.dc.html?view=lease', 'action-center': 'Master 28 - Action Center.dc.html', hoa: 'Master 44 - HOA and Compliance.dc.html', assets: 'Master 45 - Assets and Equipment.dc.html', incidents: 'Master 46 - Incidents.dc.html', notifications: 'Master 47 - Notifications.dc.html', deposits: 'Master 48 - Deposits.dc.html', 'owner-distributions': 'Master 49 - Owner Distributions.dc.html', payroll: 'Master 50 - Payroll.dc.html', reports: 'Master 51 - Reports.dc.html', 'ownership-verification': 'Master 52 - Ownership Verification.dc.html', 'compliance-review': 'Master 53 - Compliance Review.dc.html', 'contact-messages': 'Master 54 - Contact Requests.dc.html', integrations: 'Master 55 - Integrations.dc.html' };
+const go = href => { window.location.href = href.replace(/ /g, '%20'); };
+const DETAIL = 'Master 04 - Property Detail.dc.html';
+const pendingUrl = o => 'Master 01 - App Layout.dc.html?' + new URLSearchParams(o).toString();
+const mkCrumbs = list => (window.innerWidth < 1200 && list.length > 3 ? list.filter((c, i) => !(i > 0 && i < list.length - 1 && !c[1])) : list).map(([label, href], i) => { const last = i === list.length - 1; return { label, sep: i > 0, link: !!href && !last, plain: !href || last, go: () => href && go(href), color: last ? '#172033' : '#64748B', weight: last ? '600' : '500', shrink: last ? '0' : '1', minW: last ? '80px' : '0' }; });
+const fmtUSD = n => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtD = iso => { if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso || '—'; const [y, m, d] = iso.slice(0, 10).split('-').map(Number); return MON[m - 1] + ' ' + d + ', ' + y; };
+const fmtTS = iso => { const d = new Date(iso); return isNaN(d) ? iso : MON[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' • ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); };
+const QP = new URLSearchParams(window.location.search);
+const SELF = PAGES['tenant-portal'];
+const ME = 'Marcus Vance';
+
+const PROPS = {
+  1: { title: 'Brickell Bay Residences', city: 'Miami, FL', owner: 'Alvarez Family Trust' }, 2: { title: 'Ocean View Villa', city: 'Miami Beach, FL', owner: 'Alvarez Family Trust' },
+  3: { title: 'Coral Gables Terrace', city: 'Coral Gables, FL', owner: 'Las Olas Partners LP' }, 4: { title: 'Las Olas Lofts', city: 'Fort Lauderdale, FL', owner: 'Las Olas Partners LP' },
+  5: { title: 'Wynwood Commons', city: 'Miami, FL', owner: 'Plata Investments Group' }, 6: { title: 'Sunset Beach House', city: 'Miami Beach, FL', owner: 'Alvarez Family Trust' },
+  7: { title: 'Mar de Plata I', city: 'Miami Beach, FL', owner: 'Plata Investments Group' }, 13: { title: 'Aventura Park Tower', city: 'Aventura, FL', owner: 'Turnberry Capital Trust' }
+};
+const PID_OF = t => Number(Object.keys(PROPS).find(k => PROPS[k].title === t)) || null;
+const TEN_ST = ['Applicant', 'Approved', 'Lease Pending', 'Future Tenant', 'Active', 'Notice Given', 'Move-Out Pending', 'Former Tenant', 'Suspended'];
+const TEN_TONE = { Applicant: 'neutral', Approved: 'info', 'Lease Pending': 'warning', 'Future Tenant': 'info', Active: 'success', 'Notice Given': 'premium', 'Move-Out Pending': 'warning', 'Former Tenant': 'neutral', Suspended: 'danger' };
+const PEOPLE_ST = { Applicant: 'Move-In Pending', Approved: 'Move-In Pending', 'Lease Pending': 'Move-In Pending', 'Future Tenant': 'Move-In Pending', Active: 'Current', 'Notice Given': 'Renewal Due', 'Move-Out Pending': 'Renewal Due', 'Former Tenant': 'Moved Out', Suspended: 'Past Due' };
+const LEASE_ST = ['Draft', 'Pending Signature', 'Signed', 'Active', 'Notice Given', 'Expired', 'Terminated'];
+const CHK_TONE = { Verified: 'success', Completed: 'success', Approved: 'success', Received: 'info', Pending: 'warning', 'Not Started': 'neutral', Failed: 'danger' };
+const FOLDERS = ['Identification', 'Rental Application', 'Screening Authorizations', 'Income / Employment', 'Lease', 'Lease Addenda', 'Move-In Inspection', 'Move-Out Inspection', 'Notices', 'Payment Documents', 'Communications', 'Other'];
+const OCC_ROLES = ['Primary Tenant', 'Co-Tenant', 'Authorized Adult Occupant', 'Minor Occupant', 'Guarantor'];
+const KEY = 'mghpm.tenant360.v1', PKEY = 'mghpm.people.v1';
+const load = k => { try { return JSON.parse(sessionStorage.getItem(k)) || null; } catch (e) { return null; } };
+const APP_OF = { 'Daniela Ortiz': 'APP-2026-0158', 'Marco Bellini': 'APP-2026-0171' };
+const doc = (id, name, folder, type, date, status, by, verifiedBy, visibility, expires) => ({ id, name, folder, type, version: 1, date, status, by, verifiedBy, visibility, expires: expires || '' });
+const SEED = {
+  'Daniela Ortiz': {
+    id: 'TEN-0418', created: '2026-09-14', pid: 1, source: { app: 'APP-2026-0158', approved: '2026-09-12' },
+    meta: { status: 'Active', notice_date: '', reason: '', portal_invited: true, tenant_type: 'Primary Tenant' },
+    personal: { legal_name: 'Daniela Ortiz Ramírez', preferred: 'Daniela', photo: '', dob: '1991-07-23', id_type: 'Passport', id_number: 'X73049218', id_expires: '2029-03-14', nationality: 'Colombia', email: 'daniela.ortiz@email.com', email2: '', mobile: '(305) 555-1742', whatsapp: '(305) 555-1742', language: 'Spanish', prev_address: '455 NE 26th St, Apt 9, Miami, FL 33137' },
+    emergency: { ec_name: 'Carlos Ortiz', ec_phone: '(786) 555-2210', ec_relation: 'Brother' },
+    occupants: [
+      { role: 'Primary Tenant', name: 'Daniela Ortiz', relation: 'Self', age: 'Adult', email: 'daniela.ortiz@email.com', phone: '(305) 555-1742', onLease: true },
+      { role: 'Co-Tenant', name: 'Andrés Gómez', relation: 'Partner', age: 'Adult', email: 'andres.gomez@email.com', phone: '(305) 555-1788', onLease: true },
+      { role: 'Minor Occupant', name: 'Lucía Gómez', relation: 'Daughter', age: 'Minor', email: '', phone: '', onLease: false },
+      { role: 'Guarantor', name: 'Carlos Ortiz', relation: 'Brother', age: 'Adult', email: 'carlos.ortiz@email.com', phone: '(786) 555-2210', onLease: false }
+    ],
+    household: { pets: '1 dog — Beagle, 22 lb (pet deposit $500.00)', vehicles: 'Toyota RAV4 2022 • FL plate ••K21', parking: 'P2-114' },
+    lease: { property: 'Brickell Bay Residences', unit: 'Unit 1204', lease_id: 'L-2026-0418', lease_status: 'Active', currency: 'USD', move_in: '2026-10-01', start: '2026-10-01', end: '2027-09-30', rent: '3850', deposit: '7700', due_day: '1', renewal: '2027-07-02', move_out: '', keys: '2 unit keys • 2 fobs • 1 mailbox key', parking: 'P2-114', utilities: 'Tenant: electricity, internet • Owner: water, trash' },
+    leaseHistory: [{ lease_id: 'L-2025-0219', property: 'Ocean View Villa', unit: 'Unit 105', start: '2025-03-01', end: '2026-09-30', rent: '3400', status: 'Completed', note: 'Deposit refunded in full' }],
+    employment: { employer: 'Baptist Health South Florida', position: 'Registered Nurse', employer_phone: '(786) 596-1960', start: '2019-05-06', income: '12400', verif_status: 'Verified', verif_date: '2026-09-10' },
+    screening: [['Identity Verification', 'Verified', '2026-09-08', 'IDV-55102'], ['Employment Verification', 'Verified', '2026-09-10', 'Employer HR confirmation'], ['Income Verification', 'Verified', '2026-09-10', 'Income-to-rent 3.22×'], ['Credit Authorization', 'Received', '2026-09-05', 'Consent text v2026.2'], ['Credit Screening', 'Completed', '2026-09-09', 'Score band 720–759'], ['Rental History', 'Verified', '2026-09-11', '2 prior landlords'], ['References', 'Completed', '2026-09-11', '2 of 2 responded'], ['Background Document', 'Received', '2026-09-07', 'Police clearance'], ['Application Decision', 'Approved', '2026-09-12', 'APP-2026-0158']],
+    ledger: [['2026-09-12', 'Charge', 'Security deposit', 7700, ''], ['2026-09-14', 'Payment', 'Security deposit — ACH', -7700, 'RCPT-30188'], ['2026-09-14', 'Charge', 'Pet deposit', 500, ''], ['2026-09-14', 'Payment', 'Pet deposit — ACH', -500, 'RCPT-30189'], ['2026-10-01', 'Charge', 'October 2026 rent', 3850, ''], ['2026-10-01', 'Payment', 'October 2026 rent — Stripe', -3850, 'RCPT-30422'], ['2026-10-02', 'Credit', 'Parking proration credit', -120, ''], ['2026-10-03', 'Refund', 'Parking proration refund — ACH', 120, 'RF-0091']],
+    maintenance: [['MT-2026-0618', 'Bedroom blinds broken', '2026-10-03', 'In Progress', 'Tenant', 'Routine'], ['MT-2026-0611', 'Garbage disposal jammed', '2026-10-02', 'Completed', 'Owner', 'Routine'], ['MT-2026-0604', 'No hot water', '2026-10-01', 'Completed', 'Owner', 'Emergency']],
+    inspections: [['Move-In Inspection', '2026-09-30', 'Completed', 'Baseline • 214 photos • signed by tenant', 'INS-2026-0930'], ['Quarterly Inspection', '2027-01-08', 'Scheduled', '', ''], ['Semiannual Inspection', '2027-04-02', 'Not Scheduled', '', ''], ['Move-Out Inspection', '', 'Not Scheduled', 'Will be compared against the move-in baseline', '']],
+    comms: { email: true, sms: true, whatsapp: true, portal: true, formal: true, pref: 'WhatsApp' },
+    notices: [['2026-10-03', 'WhatsApp', 'Maintenance access — blinds repair Oct 6, 9:00 AM', 'Acknowledged'], ['2026-09-28', 'Email', 'Payment reminder — October rent due Oct 1', 'Read'], ['2026-09-24', 'Portal', 'Move-in inspection scheduled Sep 30', 'Acknowledged'], ['2026-09-14', 'Formal Notice', 'Lease L-2026-0418 executed copy', 'Delivered']],
+    docs: [doc('T-2001', 'Passport — D. Ortiz.pdf', 'Identification', 'Passport', '2026-09-05', 'Verified', 'Daniela Ortiz', 'Sofia Ramos', 'Restricted', '2029-03-14'), doc('T-2002', 'Rental Application APP-2026-0158.pdf', 'Rental Application', 'Application', '2026-09-05', 'Verified', 'System', 'Sofia Ramos', 'Staff only'), doc('T-2003', 'FCRA Credit Authorization.pdf', 'Screening Authorizations', 'Consent', '2026-09-05', 'Received', 'Daniela Ortiz', '', 'Restricted'), doc('T-2004', 'Employment Verification — Baptist Health.pdf', 'Income / Employment', 'Verification letter', '2026-09-10', 'Verified', 'Sofia Ramos', 'Sofia Ramos', 'Restricted'), doc('T-2005', 'Lease L-2026-0418 — Executed.pdf', 'Lease', 'Lease', '2026-09-14', 'Verified', 'Marcus Vance', 'Marcus Vance', 'Tenant & staff', '2027-09-30'), doc('T-2006', 'Pet Addendum.pdf', 'Lease Addenda', 'Addendum', '2026-09-14', 'Verified', 'Marcus Vance', 'Marcus Vance', 'Tenant & staff'), doc('T-2007', 'Move-In Inspection INS-2026-0930.pdf', 'Move-In Inspection', 'Inspection report', '2026-09-30', 'Verified', 'Luis Herrera', 'Marcus Vance', 'Tenant & staff'), doc('T-2008', 'Receipt RCPT-30422.pdf', 'Payment Documents', 'Receipt', '2026-10-01', 'Sent', 'System', '', 'Tenant & staff')],
+    activity: [['2026-10-03T14:10:00', 'Maintenance ticket MT-2026-0618 opened by tenant', 'Daniela Ortiz', 'wrench'], ['2026-10-01T09:02:00', 'October rent paid — $3,850.00 via Stripe', 'System', 'credit-card'], ['2026-09-30T16:20:00', 'Move-in inspection completed — baseline recorded', 'Luis Herrera', 'clipboard-check'], ['2026-09-30T16:45:00', 'Tenant status set to Active', 'Marcus Vance', 'badge-check'], ['2026-09-14T11:00:00', 'Lease L-2026-0418 signed • tenant record created • portal invitation sent', 'System', 'file-signature'], ['2026-09-12T15:30:00', 'Rental application APP-2026-0158 approved', 'Sofia Ramos', 'circle-check']].map(([at, text, by, icon]) => ({ at, text, by, icon }))
+  }
+};
+const blank = (name, p, extra) => { const x = extra || {}; const [pt, unit] = String((p && p.prop) || '').split(' • ');
+  return { id: 'TEN-' + String(1000 + Math.abs([...name].reduce((a, c) => a * 31 + c.charCodeAt(0) | 0, 7)) % 9000).padStart(4, '0'), created: '2026-10-04', pid: (p && p.pid) || PID_OF(pt), source: APP_OF[name] ? { app: APP_OF[name], approved: '2026-09-28' } : null,
+    meta: { status: x.status || (p && p.status === 'Moved Out' ? 'Former Tenant' : p && p.status === 'Move-In Pending' ? 'Lease Pending' : 'Active'), notice_date: '', reason: '', portal_invited: !!x.invite, tenant_type: x.tenant_type || 'Primary Tenant' },
+    personal: { legal_name: name, preferred: name.split(' ')[0], photo: '', dob: '', id_type: 'Passport', id_number: '', id_expires: '', nationality: '', email: (p && p.email) || '', email2: '', mobile: (p && p.phone) || '', whatsapp: '', language: 'English', prev_address: '' },
+    emergency: { ec_name: '', ec_phone: '', ec_relation: '' },
+    occupants: [{ role: x.tenant_type || 'Primary Tenant', name, relation: 'Self', age: 'Adult', email: (p && p.email) || '', phone: (p && p.phone) || '', onLease: true }],
+    household: { pets: '', vehicles: '', parking: '' },
+    lease: { property: x.property || pt || '', unit: x.unit || unit || '', lease_id: (p && p.lease && p.lease !== '—') ? p.lease : '', lease_status: x.lease_file ? 'Active' : (p && p.status === 'Move-In Pending') ? 'Pending Signature' : 'Active', currency: 'USD', move_in: x.start || '', start: x.start || '', end: x.end || '', rent: x.rent || '', deposit: '', due_day: '1', renewal: '', move_out: '', keys: '', parking: '', utilities: '' },
+    leaseHistory: [], employment: { employer: '', position: '', employer_phone: '', start: '', income: '', verif_status: APP_OF[name] ? 'Verified' : 'Not Started', verif_date: '' },
+    screening: APP_OF[name] ? [['Identity Verification', 'Verified', '2026-09-20', 'IDV'], ['Employment Verification', 'Verified', '2026-09-22', ''], ['Income Verification', 'Verified', '2026-09-22', ''], ['Credit Authorization', 'Received', '2026-09-19', ''], ['Credit Screening', 'Completed', '2026-09-23', ''], ['Rental History', 'Verified', '2026-09-24', ''], ['References', 'Completed', '2026-09-24', ''], ['Background Document', 'Received', '2026-09-20', ''], ['Application Decision', 'Approved', '2026-09-28', APP_OF[name]]] : [['Application Decision', 'Not Started', '', 'Migrated record — no rental application on file']],
+    ledger: [], maintenance: [], inspections: [['Move-In Inspection', '', 'Not Scheduled', 'Baseline for move-out comparison', ''], ['Quarterly Inspection', '', 'Not Scheduled', '', ''], ['Move-Out Inspection', '', 'Not Scheduled', '', '']],
+    comms: { email: true, sms: false, whatsapp: false, portal: !!x.invite, formal: true, pref: 'Email' }, notices: x.invite ? [[new Date().toISOString().slice(0, 10), 'Email', 'Tenant Portal invitation', 'Sent']] : [],
+    docs: x.lease_file ? [doc('T-' + Date.now(), x.lease_file, 'Lease', 'Existing lease', new Date().toISOString().slice(0, 10), 'Received', 'Marcus Vance', '', 'Tenant & staff')] : [],
+    activity: [{ at: new Date().toISOString(), text: x.manual ? 'Existing tenant added manually (Add Existing Tenant)' : 'Tenant record created', by: 'Marcus Vance', icon: 'user-plus' }] }; };
+
+const F = (k, label, o = {}) => ({ k, label, ...o });
+const SEL = (k, label, options, o = {}) => F(k, label, { type: 'select', options, ...o });
+const TG = (k, label, o = {}) => F(k, label, { type: 'toggle', ...o });
+const MONEY = (k, label, o = {}) => F(k, label, { type: 'number', money: true, ...o });
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const people = (load(PKEY) || {}).people || [];
+    const name = QP.get('tenant') || 'Daniela Ortiz';
+    const store = load(KEY) || {};
+    const pe = people.find(x => x.type === 'tenant' && x.name === name);
+    let extra = null; try { extra = (JSON.parse(sessionStorage.getItem('mghpm.tenant360.new') || '{}'))[name] || null; } catch (e) {}
+    const rec = store[name] || SEED[name] || blank(name, pe, extra);
+    const TABS = ['dashboard', 'home', 'lease', 'payments', 'maintenance', 'inspections', 'insurance', 'documents', 'messages', 'profile'];
+    this.state = { collapsed: null, closedSections: {}, drawerOpen: false, toast: null, name, rec, tab: TABS.includes(QP.get('tab')) ? QP.get('tab') : 'dashboard', editing: null, draft: null, folder: 'All', del: false, occIdx: null };
+  }
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    this._t = [setTimeout(this._onResize, 0), setTimeout(this._onResize, 300), setTimeout(this._onResize, 1000)];
+    this._lastW = window.innerWidth;
+    this._poll = setInterval(() => { if (window.innerWidth !== this._lastW) { this._lastW = window.innerWidth; this.forceUpdate(); } }, 400);
+    window.addEventListener('resize', this._onResize);
+    if (!window.lucide) { const t = setInterval(() => { if (window.lucide) { clearInterval(t); this.forceUpdate(); } }, 100); }
+    if (!window.MGH_INS) { const t3 = setInterval(() => { if (window.MGH_INS) { clearInterval(t3); this.forceUpdate(); } }, 60); }
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); (this._t || []).forEach(clearTimeout); clearInterval(this._poll); clearTimeout(this._toastT); }
+  componentDidUpdate() { try { const st = load(KEY) || {}; st[this.state.name] = this.state.rec; sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+  notify(msg, warn) { clearTimeout(this._toastT); this.setState({ toast: { msg, warn } }); this._toastT = setTimeout(() => this.setState({ toast: null }), 3400); }
+  log(rec, text, icon) { return { ...rec, activity: [{ at: new Date().toISOString(), text, by: ME, icon: icon || 'pencil' }, ...rec.activity] }; }
+  syncPeople(patch, oldName) { try { const st = load(PKEY); if (!st || !st.people) return; st.people = st.people.map(x => x.type === 'tenant' && x.name === oldName ? { ...x, ...patch } : x); sessionStorage.setItem(PKEY, JSON.stringify(st)); } catch (e) {} }
+  setTab(t) { this.setState({ tab: t, editing: null, draft: null }); try { history.replaceState(null, '', '?tab=' + t); } catch (e) {} }
+
+  chrome() {
+    const w = window.innerWidth || document.documentElement.clientWidth;
+    const s = this.state;
+    const bp = w < 768 ? 'mobile' : w < 1200 ? 'tablet' : 'desktop';
+    const isMobile = bp === 'mobile';
+    const collapsed = isMobile ? false : (s.collapsed ?? ((this.props.sidebarCollapsed ?? false) || bp === 'tablet'));
+    const expanded = !collapsed;
+    const mkItem = ([id, label, icon]) => { const on = id === 'tenant-portal'; return { id, label, icon, showLabel: expanded, justify: expanded ? 'flex-start' : 'center', bg: on ? '#004F4D' : 'transparent', color: on ? '#FFFFFF' : 'rgba(255,255,255,0.78)', weight: on ? '600' : '500', select: () => go(PAGES[id] || pendingUrl({ page: id })) }; };
+    const sections = NAV.map(sec => { const open = !expanded || !sec.label || !s.closedSections[sec.id]; return { label: sec.label || '', showLabel: !!sec.label && expanded, showDivider: !!sec.label && !expanded, open, chevron: open ? 'chevron-down' : 'chevron-right', toggle: () => this.setState(st => ({ closedSections: { ...st.closedSections, [sec.id]: !st.closedSections[sec.id] } })), items: sec.items.map(mkItem) }; });
+    return { bp, v: {
+      goHome: () => go(PAGES.dashboard), goNotif: () => go(PAGES.notifications || 'Master 47 - Notifications.dc.html'), expanded, sections, footerItems: FOOTER.map(mkItem),
+      drawerOpen: isMobile && s.drawerOpen, closeDrawer: () => this.setState({ drawerOpen: false }),
+      sidebarWidth: expanded ? '260px' : '76px', sidebarDisplay: isMobile && !s.drawerOpen ? 'none' : 'flex', sidebarPosition: isMobile ? 'fixed' : 'relative',
+      toggleSidebar: () => isMobile ? this.setState(st => ({ drawerOpen: !st.drawerOpen })) : this.setState({ collapsed: !collapsed }),
+      toggleIcon: isMobile ? 'menu' : (collapsed ? 'panel-left-open' : 'panel-left-close'),
+      showCrumbs: !isMobile, isDesktop: bp === 'desktop', showSearchField: bp === 'desktop',
+      topPad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px', pagePad: isMobile ? '16px' : bp === 'tablet' ? '24px' : '32px',
+      toast: !!s.toast, toastMsg: s.toast ? s.toast.msg : '', toastIcon: s.toast && s.toast.warn ? 'triangle-alert' : 'circle-check', toastColor: s.toast && s.toast.warn ? '#FBBF24' : '#5EEAD4' } };
+  }
+
+  insState(name) {
+    const ins = window.MGH_INS; if (!ins) return { req: null, pol: null, code: 'NOT_REQUIRED' };
+    const d = ins.load(); const req = d.reqs.find(x => x.entity === 'Tenant' && x.ref === name && !x.waived) || null;
+    const pol = d.policies.filter(p => p.entity === 'Tenant' && p.ref === name).sort((a, b) => a.exp < b.exp ? 1 : -1)[0] || null;
+    let code = 'NOT_REQUIRED';
+    if (pol) { const days = ins.daysTo(pol.exp); code = days !== null && days < 0 ? 'EXPIRED' : pol.verif === 'Rejected' ? 'REJECTED' : pol.verif !== 'Verified' ? (pol.portal_state === 'Uploaded' ? 'UPLOADED' : 'UNDER_REVIEW') : days !== null && days <= 60 ? 'EXPIRING_SOON' : 'VERIFIED'; }
+    else if (req) code = 'MISSING';
+    return { req, pol, code, d };
+  }
+  readiness(r) {
+    const depPaid = r.ledger.some(l => l[1] === 'Payment' && /deposit/i.test(l[2]));
+    const firstRent = r.ledger.some(l => l[1] === 'Payment' && /rent/i.test(l[2]));
+    const mi = r.inspections.find(x => x[0] === 'Move-In Inspection') || [];
+    const ic = this.insState(this.state.name);
+    const insOk = ['VERIFIED', 'NOT_REQUIRED'].includes(ic.code);
+    const items = [
+      ['Lease Signed', ['Signed', 'Active', 'Notice Given'].includes(r.lease.lease_status), r.lease.lease_status || '—', 'lease'],
+      ['Initial Payment Complete', firstRent, firstRent ? 'Paid' : 'Pending', 'payments'],
+      ['Security Deposit Recorded', depPaid, depPaid ? 'Recorded' : 'Pending', 'payments'],
+      ['Move-In Inspection Complete', mi[2] === 'Completed' && !!(r.portal && r.portal.miAck), mi[2] !== 'Completed' ? (mi[2] || 'Not scheduled') : r.portal && r.portal.miAck ? 'Acknowledged' : 'Awaiting your review', 'inspections'],
+      ['Renters Insurance', insOk, ic.code.replace(/_/g, ' '), 'insurance'],
+      ['Emergency Contact', !!(r.emergency && r.emergency.ec_name && r.emergency.ec_phone), r.emergency && r.emergency.ec_name ? 'On file' : 'Missing', 'profile']
+    ];
+    return { items, pct: Math.round(items.filter(i => i[1]).length / items.length * 100), ic };
+  }
+  missingDocs(r) {
+    const has = f => r.docs.some(d => d.folder === f);
+    const m = [];
+    if (!has('Identification')) m.push('Identification');
+    if (!has('Lease')) m.push('Signed lease');
+    if (r.source && !has('Screening Authorizations')) m.push('Screening authorizations');
+    if ((r.inspections.find(x => x[0] === 'Move-In Inspection') || [])[2] === 'Completed' && !has('Move-In Inspection')) m.push('Move-in inspection report');
+    return m;
+  }
+  // section: { id, path: [obj] or ['own', pid], title, icon, fields, span, desc, badges, warn, readOnly }
+  mkSection(sd, isMobile) {
+    const s = this.state, r = s.rec;
+    const src = sd.src || (sd.path.length === 2 ? r[sd.path[0]][sd.path[1]] : r[sd.path[0]]);
+    const editing = s.editing === sd.id;
+    const data = editing ? s.draft : src;
+    const setD = k => e => { const t = e.target; const val = t.type === 'checkbox' ? t.checked : t.value; this.setState(st => ({ draft: { ...st.draft, [k]: val } })); };
+    const fields = (sd.idleEmpty && !editing ? [] : sd.fields).filter(f => !f.show || f.show(data)).map((f, i) => {
+      const val = data[f.k];
+      const ro = f.ro || sd.readOnly;
+      const t = f.type || 'text';
+      let display = val === true ? 'Yes' : val === false ? 'No' : (val === '' || val == null) ? '—' : f.money ? fmtUSD(val) : t === 'date' ? fmtD(val) : f.suffix ? val + f.suffix : f.mask && String(val).length > 4 ? '•••• ' + String(val).slice(-4) : String(val);
+      if (f.compute) display = f.compute(data, r);
+      const isV = !editing || ro;
+      const isToggleView = isV && t === 'toggle';
+      return { label: f.label, display, vColor: display === '—' ? '#94A3B8' : (f.colorOf ? f.colorOf(val) : '#172033'), span: f.span ? '1 / -1' : 'auto',
+        isView: isV, isInput: !isV && ['text', 'number', 'date', 'email', 'tel'].includes(t), isSelect: !isV && t === 'select', isArea: !isV && t === 'area', isToggle: !isV && t === 'toggle', isFile: !isV && t === 'file',
+        type: t, value: val == null ? '' : String(val), checked: !!val, options: f.options || [], ph: f.ph || '', onChange: setD(f.k),
+        fileLabel: val || 'Choose file…', onFile: e => { const fl = e.target.files && e.target.files[0]; if (fl) this.setState(st => ({ draft: { ...st.draft, [f.k]: fl.name } })); },
+        pad: isV ? '12px 0' : '8px 0', rule: isV && !isToggleView ? '1px solid #F1F5F9' : isV ? '1px solid #F1F5F9' : '0' };
+    });
+    const save = () => {
+      const d = s.draft;
+      if (sd.validate) { const err = sd.validate(d, src); if (err) { this.notify(err, true); return; } }
+      if (sd.onSave) { sd.onSave(d, src); return; }
+      let next = sd.path.length === 2 ? { ...r, [sd.path[0]]: { ...r[sd.path[0]], [sd.path[1]]: { ...d } } } : { ...r, [sd.path[0]]: { ...d } };
+      if (sd.after) next = sd.after(next, d, src) || next;
+      next = this.log(next, sd.logText ? sd.logText(d, src) : sd.title + ' updated', sd.icon);
+      this.setState({ rec: next, editing: null, draft: null });
+      if (sd.sync) this.syncPeople(sd.sync(next, d), s.name);
+      this.notify(sd.title + ' saved • recorded in activity log');
+    };
+    return { title: sd.title, icon: sd.icon, span: isMobile ? '1 / -1' : (sd.span || 'span 6'), desc: sd.desc || '', hasDesc: !!sd.desc,
+      badges: (sd.badges || []).map(b => ({ label: b[0], tone: b[1], dot: b[2] !== false })), warn: sd.warn || '', hasWarn: !!sd.warn,
+      border: editing ? '#006B68' : '#E2E8F0', colMin: sd.colMin || '200px',
+      canEdit: !editing && !sd.readOnly && !s.editing, editing, editLabel: sd.editLabel || 'Edit', editIcon: sd.editIcon || 'pencil',
+      edit: () => this.setState({ editing: sd.id, draft: { ...src } }), cancel: () => this.setState({ editing: null, draft: null, occIdx: null }), save, fields };
+  }
+  renameOwner(newName, rec) {
+    const old = this.state.name;
+    try { const st = load(KEY) || {}; delete st[old]; st[newName] = rec; sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+    this.syncPeople({ name: newName }, old);
+    this.setState({ name: newName });
+    try { history.replaceState(null, '', '?owner=' + encodeURIComponent(newName) + '&tab=' + this.state.tab); } catch (e) {}
+  }
+  table(t) {
+    const n = t.cols.length;
+    return { ...t, hasAction: !!t.action, empty: t.rows.length === 0, emptyText: t.emptyText || 'No records.', minW: t.minW || '760px',
+      cols: t.cols.map((c, i) => { const [label, align] = Array.isArray(c) ? c : [c, 'left']; return { label, align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }),
+      rows: t.rows.map(row => ({ open: row.open || (() => {}), cursor: row.open ? 'pointer' : 'default', cells: row.cells.map((c, i) => {
+        const o = typeof c === 'string' ? { text: c } : c; const align = Array.isArray(t.cols[i]) ? t.cols[i][1] : 'left';
+        return { text: o.text || '', sub: o.sub || '', hasSub: !!o.sub, weight: o.bold ? '600' : '400', tone: o.tone || 'neutral', isText: !o.badge && !o.links, isBadge: !!o.badge, isLinks: !!o.links,
+          links: (o.links || []).map(l => ({ ...l, color: l.danger ? '#DC2626' : '#64748B', go: e => { if (e && e.stopPropagation) e.stopPropagation(); l.go(); } })), align, pl: i === 0 ? '24px' : '16px', pr: i === n - 1 ? '24px' : '16px' }; }) })) };
+  }
+
+  renderVals() {
+    const s = this.state, r = s.rec, name = s.name;
+    const { bp, v } = this.chrome();
+    const isMobile = bp === 'mobile';
+    const ready = this.readiness(r); const ic = ready.ic; const ins = window.MGH_INS;
+    const L = r.lease, cur = L.currency || 'USD';
+    const fmtC = n => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const pid = r.pid || PID_OF(L.property);
+    const portal = r.portal || {};
+    let run = 0; const ledger = [...r.ledger].sort((a, b) => a[0] < b[0] ? -1 : 1).map(l => { run += l[3]; return [...l, run]; });
+    const balance = run;
+    const depHeld = r.ledger.filter(l => l[1] === 'Payment' && /deposit/i.test(l[2])).reduce((a, l) => a - l[3], 0);
+    const now = new Date(); const nextDue = new Date(now.getFullYear(), now.getMonth() + (now.getDate() > Number(L.due_day || 1) ? 1 : 0), Number(L.due_day || 1));
+    const nextDueISO = nextDue.getFullYear() + '-' + String(nextDue.getMonth() + 1).padStart(2, '0') + '-' + String(nextDue.getDate()).padStart(2, '0');
+    const TSTAT = { Submitted: 'info', 'Under Review': 'info', Assigned: 'brand', 'In Progress': 'brand', Completed: 'success', Closed: 'neutral' };
+    const tStatus = m => m[3] === 'Completed' ? 'Completed' : m[3] === 'In Progress' ? 'In Progress' : m[3] === 'Assigned' ? 'Assigned' : m[3] === 'Under Review' ? 'Under Review' : m[3] === 'Closed' ? 'Closed' : 'Submitted';
+    const openReq = r.maintenance.filter(m => !['Completed', 'Closed'].includes(tStatus(m)));
+    const IC = { NOT_REQUIRED: ['Not Required', 'neutral'], REQUIRED: ['Required', 'info'], MISSING: ['Action Required — Proof Missing', 'danger'], UPLOADED: ['Uploaded', 'info'], UNDER_REVIEW: ['Under Review', 'info'], VERIFIED: ['Active — Verified', 'success'], REJECTED: ['Rejected', 'danger'], EXPIRING_SOON: ['Expiring Soon', 'warning'], EXPIRED: ['Expired', 'danger'] };
+    const pol = ic.pol, req = ic.req;
+    const VIS = d => !['Restricted', 'Staff only'].includes(d.visibility);
+    const TF = { Lease: 'Lease & Addenda', 'Lease Addenda': 'Lease & Addenda', 'Payment Documents': 'Receipts', 'Move-In Inspection': 'Inspections', 'Move-Out Inspection': 'Inspections', Notices: 'Notices', Communications: 'Other Shared Documents', Other: 'Other Shared Documents', Insurance: 'Insurance', 'Move-In Documents': 'Move-In Documents', 'Move-Out Documents': 'Move-Out Documents' };
+    const T_FOLDERS = ['Lease & Addenda', 'Receipts', 'Inspections', 'Insurance', 'Notices', 'Move-In Documents', 'Move-Out Documents', 'Other Shared Documents'];
+    const myDocs = [...r.docs.filter(VIS).map(d => ({ ...d, tfolder: TF[d.folder] || 'Other Shared Documents' })), ...(pol && pol.proof_file ? [{ id: 'INS-DOC', name: pol.proof_file, tfolder: 'Insurance', type: 'Proof of insurance', date: pol.uploaded_at || pol.eff, status: pol.verif === 'Verified' ? 'Verified' : pol.verif === 'Rejected' ? 'Rejected' : 'Under Review', by: pol.portal_state ? name : 'MGHPM' }] : [])];
+    const HOME = { manager: 'Sofia Ramos, Property Manager', managerPhone: '(305) 555-4420', emergency: '(305) 555-0911 — 24/7 maintenance line', hoa: 'Brickell Bay Condominium Association • Front desk (305) 555-0300 • Amenity reservations in the lobby app', procedures: 'Fire: use stairwells, assemble at the Brickell Ave entrance. Water leak: close the shut-off valve under the kitchen sink and call the 24/7 line. Hurricane: follow the building notice; secure balcony items.', rules: 'Quiet hours 10 PM – 8 AM • No grills on balconies • Pets on leash in common areas • Moving only Mon–Sat 9 AM – 5 PM with elevator reservation' };
+    const UTIL = [['Electricity', 'FPL — Florida Power & Light', 'Tenant', 'Account in tenant name'], ['Water & Sewer', 'Miami-Dade Water and Sewer', 'Owner', 'Included in rent'], ['Internet / Cable', 'Xfinity or AT&T Fiber', 'Tenant', 'Wiring ready in living room'], ['Gas', 'Not applicable', '—', 'All-electric building'], ['Trash', 'Building service', 'Owner', 'Chute on every floor']];
+    const ROOMS = [['Entry & Hallway', 'Good', 18, 'Minor scuff by closet door'], ['Living Room', 'Good', 42, '—'], ['Kitchen', 'Good', 51, 'Dishwasher tested • small chip on counter edge'], ['Bedroom 1', 'Good', 33, '—'], ['Bedroom 2', 'Fair', 29, 'Carpet wear near window'], ['Bathroom', 'Good', 26, 'Grout discoloration in shower'], ['Balcony', 'Good', 15, '—']];
+    const backQ = '';
+
+    const DEFS = {
+      home: [
+        { id: 'home', path: ['lease'], src: { ...L, manager: HOME.manager, managerPhone: HOME.managerPhone, emergency: HOME.emergency }, readOnly: true, title: 'My Home', icon: 'house', span: 'span 12', colMin: '220px', fields: [F('property', 'Property'), F('unit', 'Unit'), F('manager', 'Property Manager'), F('managerPhone', 'Manager Phone'), F('emergency', 'Emergency Contact', { span: true }), F('move_in', 'Move-In Date', { type: 'date' }), F('parking', 'Parking'), F('keys', 'Keys / Access', { span: true })] },
+        { id: 'community', path: ['lease'], src: HOME, readOnly: true, title: 'Community, Emergency Procedures & Rules', icon: 'info', span: 'span 12', colMin: '300px', fields: [F('hoa', 'HOA / Community Information', { span: true }), F('procedures', 'Emergency Procedures', { span: true }), F('rules', 'Property Rules', { span: true })] }
+      ],
+      lease: [
+        { id: 'mylease', path: ['lease'], src: { ...L, occupants: (r.occupants || []).map(o => o.name + ' (' + o.role + ')').join(', '), pets: r.household.pets, renewal_status: L.renewal ? 'Renewal window opens ' + fmtD(L.renewal) : 'Not started' }, readOnly: true, title: 'My Lease', icon: 'file-signature', span: 'span 12', colMin: '200px', badges: [[L.lease_status || '—', L.lease_status === 'Active' ? 'success' : 'warning']],
+          fields: [F('lease_id', 'Lease ID'), F('lease_status', 'Lease Status'), F('start', 'Lease Start', { type: 'date' }), F('end', 'Lease End', { type: 'date' }), F('rent', 'Monthly Rent', { compute: d => fmtC(d.rent) }), F('due_day', 'Payment Due Date', { compute: d => 'Day ' + d.due_day + ' of each month' }), F('deposit', 'Security Deposit', { compute: d => fmtC(d.deposit) }), F('renewal_status', 'Renewal Status'), F('occupants', 'Occupants', { span: true }), F('pets', 'Pets'), F('parking', 'Parking')] }
+      ],
+      maintenance: [
+        { id: 'report', path: ['maintenance'], src: { category: 'Plumbing', location: 'Kitchen', description: '', priority: 'Normal', emergency: false, photos: '', enter: true, access: 'Weekdays 9 AM – 12 PM' }, idleEmpty: true, editLabel: 'Report a Problem', editIcon: 'plus', title: 'Report a Problem', icon: 'wrench', span: 'span 12', colMin: '220px',
+          desc: 'For fire, flooding or gas smell call the 24/7 line ' + HOME.emergency.split(' — ')[0] + ' first.',
+          fields: [SEL('category', 'Category', ['Plumbing', 'Electrical', 'A/C & Heating', 'Appliance', 'Doors, Locks & Keys', 'Pest', 'Windows & Blinds', 'Other']), SEL('location', 'Location', ['Kitchen', 'Living Room', 'Bedroom 1', 'Bedroom 2', 'Bathroom', 'Balcony', 'Entry & Hallway', 'Common Area']), F('description', 'Description', { type: 'area', span: true, ph: 'What happened, since when, anything already tried' }), SEL('priority', 'Priority', ['Low', 'Normal', 'High']), TG('emergency', 'This is an emergency'), F('photos', 'Photos / Videos', { type: 'file' }), TG('enter', 'Permission to enter if I am not home'), SEL('access', 'Preferred Access Time', ['Weekdays 9 AM – 12 PM', 'Weekdays 12 PM – 5 PM', 'Saturdays 9 AM – 1 PM', 'Call me to schedule'])],
+          validate: d => d.description.trim().length < 10 ? 'Describe the problem in at least a few words' : null,
+          onSave: d => { const id = 'MT-2026-0' + String(Date.now()).slice(-3); this.setState({ rec: this.log({ ...r, maintenance: [[id, d.category + ' — ' + d.location + ': ' + d.description.trim().slice(0, 60), new Date().toISOString().slice(0, 10), 'Submitted', 'Pending triage', d.emergency ? 'Emergency' : 'Routine'], ...r.maintenance] }, 'Maintenance request ' + id + ' submitted', 'wrench'), editing: null, draft: null }); this.notify('Request ' + id + ' submitted • you will be notified when it is assigned'); } }
+      ],
+      inspections: [
+        { id: 'miack', path: ['portal'], src: { comment: portal.miComment || '', ack: !!portal.miAck, signature: portal.miSignature || '' }, readOnly: !!portal.miAck, editLabel: 'Review Property Condition', editIcon: 'clipboard-check', title: 'Move-In Inspection — Review Property Condition', icon: 'clipboard-check', span: 'span 12', colMin: '260px',
+          badges: [[portal.miAck ? 'Acknowledged ' + fmtD(portal.miAckAt) : 'Awaiting your review', portal.miAck ? 'success' : 'warning']],
+          desc: 'The move-in inspection is the baseline used at move-out. Review each room below, add comments if something is missing, then acknowledge and sign.',
+          fields: [F('comment', 'Your Comments', { type: 'area', span: true, ph: 'e.g. Bedroom 2 window screen is torn — not listed' }), TG('ack', 'I have reviewed the room-by-room condition and photos'), F('signature', 'Type your full name to sign')],
+          validate: d => !d.ack ? 'Check the acknowledgment box first' : d.signature.trim().length < 3 ? 'Type your full name to sign' : null,
+          onSave: d => { this.setState({ rec: this.log({ ...r, portal: { ...portal, miAck: true, miAckAt: new Date().toISOString().slice(0, 10), miComment: d.comment, miSignature: d.signature } }, 'Move-in inspection acknowledged and signed by tenant', 'clipboard-check'), editing: null, draft: null }); this.notify('Move-in condition acknowledged • copy added to your documents'); } }
+      ],
+      insurance: [
+        { id: 'insstatus', path: ['portal'], src: { requirement: req ? 'REQUIRED' : 'NOT_REQUIRED', status: ic.code, min: req && req.min ? fmtC(req.min) : '—', source: req ? req.source : 'Your lease does not require renters insurance' }, readOnly: true, title: 'Renters Insurance', icon: 'umbrella', span: 'span 12', colMin: '220px', badges: [[IC[ic.code][0], IC[ic.code][1]]],
+          warn: ic.code === 'REJECTED' ? 'Your proof of insurance was rejected: ' + (pol.reject_reason || 'the document did not match the lease requirements') + '. Upload a corrected certificate.' : ic.code === 'MISSING' ? 'Your lease requires renters insurance and no proof is on file. Upload your policy certificate below.' : ic.code === 'EXPIRED' ? 'Your renters insurance has expired. Upload your renewed policy.' : ic.code === 'EXPIRING_SOON' ? 'Your policy expires ' + fmtD(pol.exp) + '. Upload the renewal when you receive it.' : '',
+          fields: [F('requirement', 'Insurance Requirement', { compute: d => d.requirement.replace('_', ' ') }), F('status', 'Policy Status', { compute: d => d.status.replace(/_/g, ' ') }), F('min', 'Minimum Liability Required'), F('source', 'Required By')] },
+        { id: 'inspolicy', path: ['portal'], src: pol ? { carrier: pol.carrier, number: pol.number, insured: pol.insured, coverage: pol.coverage, liability: pol.liability || pol.coverage, eff: pol.eff, exp: pol.exp, proof_file: pol.proof_file } : { carrier: '', number: '', insured: name, coverage: '', liability: '', eff: '', exp: '', proof_file: '' },
+          title: 'Policy Information & Proof of Insurance', icon: 'file-check', span: 'span 12', colMin: '220px', editLabel: pol ? 'Upload / Replace Proof' : 'Upload Proof of Insurance', editIcon: 'upload',
+          desc: 'MGHPM verifies every policy. Uploading sends it to review — you cannot mark it verified yourself. Accepted: PDF, JPG, PNG.',
+          badges: pol ? [[pol.verif === 'Verified' ? 'Verified by ' + (pol.verified_by || 'MGHPM') : pol.verif === 'Rejected' ? 'Rejected' : 'Pending Verification', pol.verif === 'Verified' ? 'success' : pol.verif === 'Rejected' ? 'danger' : 'info']] : [],
+          fields: [F('carrier', 'Insurance Company'), F('number', 'Policy Number'), F('insured', 'Named Insured'), F('type', 'Policy Type', { ro: true, compute: () => 'Renters Insurance' }), F('coverage', 'Personal Property Coverage', { type: 'number', compute: d => d.coverage ? fmtC(d.coverage) : '—' }), F('liability', 'Liability Coverage', { type: 'number', compute: d => d.liability ? fmtC(d.liability) : '—' }), F('eff', 'Effective Date', { type: 'date' }), F('exp', 'Expiration Date', { type: 'date' }), F('proof_file', 'Proof of Insurance', { type: 'file' })],
+          validate: d => !d.carrier.trim() || !d.number.trim() ? 'Insurance company and policy number are required' : !d.eff || !d.exp ? 'Enter the effective and expiration dates' : d.exp <= d.eff ? 'Expiration must be after the effective date' : !d.proof_file ? 'Attach your policy certificate' : req && req.min && Number(d.liability) < Number(req.min) ? 'Liability coverage is below the ' + fmtC(req.min) + ' required by your lease' : null,
+          onSave: d => { const store = ins.load(); const today = new Date().toISOString().slice(0, 10); const base = { entity: 'Tenant', ref: name, lease: L.lease_id, type: "Renter's Liability", carrier: d.carrier.trim(), number: d.number.trim(), insured: d.insured, covered: L.property + ' • ' + L.unit, coverage: String(d.coverage || d.liability), liability: String(d.liability), deductible: '', eff: d.eff, exp: d.exp, premium: '', agent: '', agent_phone: '', agent_email: '', policy_file: d.proof_file, proof_file: d.proof_file, pay: 'Paid', verif: 'Pending Verification', verified_by: '', notes: 'Uploaded by tenant via portal', portal_state: 'Uploaded', uploaded_at: today };
+            const policies = pol ? store.policies.map(p => p.id === pol.id ? { ...p, ...base } : p) : [{ id: 'INS-' + String(Date.now()).slice(-4), ...base }, ...store.policies];
+            ins.save({ ...store, policies }); this.setState({ rec: this.log(r, 'Proof of insurance uploaded — ' + d.proof_file + ' (pending verification)', 'upload'), editing: null, draft: null }); this.notify('Proof uploaded • status Uploaded — MGHPM will review it'); } }
+      ],
+      messages: [
+        { id: 'compose', path: ['portal'], src: { category: 'General Question', subject: '', body: '' }, idleEmpty: true, editLabel: 'New Message', editIcon: 'square-pen', title: 'Message Your Property Manager', icon: 'message-square', span: 'span 12', colMin: '240px', desc: 'Choosing a topic routes your message to the right person.',
+          fields: [SEL('category', 'Topic', ['General Question', 'Lease', 'Payment', 'Maintenance', 'Insurance', 'Inspection', 'Other']), F('subject', 'Subject'), F('body', 'Message', { type: 'area', span: true })],
+          validate: d => !d.subject.trim() || !d.body.trim() ? 'Subject and message are required' : null,
+          onSave: d => { const msgs = [{ date: new Date().toISOString().slice(0, 10), category: d.category, subject: d.subject.trim(), body: d.body.trim(), status: 'Sent' }, ...(portal.messages || [])]; this.setState({ rec: this.log({ ...r, portal: { ...portal, messages: msgs } }, 'Message sent — ' + d.subject.trim(), 'message-square'), editing: null, draft: null }); this.notify('Message sent to ' + HOME.manager.split(',')[0]); } }
+      ],
+      profile: [
+        { id: 'contact', path: ['personal'], title: 'Contact Information', icon: 'phone', span: 'span 6', fields: [F('mobile', 'Phone', { type: 'tel' }), F('email', 'Email', { type: 'email' }), F('whatsapp', 'WhatsApp', { type: 'tel' }), SEL('language', 'Preferred Language', ['English', 'Spanish', 'Portuguese', 'French'])],
+          validate: d => !/.+@.+\..+/.test(d.email || '') ? 'Enter a valid email' : null, sync: n => ({ email: n.personal.email, phone: n.personal.mobile }), logText: () => 'Contact information updated by tenant' },
+        { id: 'emergency', path: ['emergency'], title: 'Emergency Contact', icon: 'siren', span: 'span 6', fields: [F('ec_name', 'Name'), F('ec_phone', 'Phone', { type: 'tel' }), F('ec_relation', 'Relationship')], logText: () => 'Emergency contact updated by tenant' },
+        { id: 'vehicles', path: ['household'], title: 'Vehicles', icon: 'car', span: 'span 6', fields: [F('vehicles', 'Vehicles', { span: true, ph: 'Make, model, plate' })], logText: () => 'Vehicles updated by tenant' },
+        { id: 'prefs', path: ['comms'], title: 'Communication Preferences', icon: 'bell', span: 'span 6', fields: [TG('email', 'Email'), TG('sms', 'SMS'), TG('whatsapp', 'WhatsApp'), TG('portal', 'Portal notifications'), SEL('pref', 'Preferred Channel', ['Email', 'SMS', 'WhatsApp', 'Portal'])], validate: d => !d[d.pref.toLowerCase()] ? 'The preferred channel must be enabled' : null },
+        { id: 'change', path: ['portal'], src: { kind: 'Legal name change', details: '' }, idleEmpty: true, editLabel: 'Request a Change', editIcon: 'file-pen', title: 'Change Requests', icon: 'file-pen', span: 'span 12', colMin: '240px', desc: 'Legal name, leaseholders and occupants are part of your lease — changes are reviewed by MGHPM instead of edited directly.',
+          fields: [SEL('kind', 'Request Type', ['Legal name change', 'Add a leaseholder', 'Remove a leaseholder', 'Add or remove an occupant', 'Pet change', 'Other']), F('details', 'Details', { type: 'area', span: true })],
+          validate: d => !d.details.trim() ? 'Describe the change you need' : null,
+          onSave: d => { const crs = [{ date: new Date().toISOString().slice(0, 10), kind: d.kind, details: d.details.trim(), status: 'Submitted' }, ...(portal.changes || [])]; this.setState({ rec: this.log({ ...r, portal: { ...portal, changes: crs } }, 'Change request submitted — ' + d.kind, 'file-pen'), editing: null, draft: null }); this.notify('Change request submitted for review'); } }
+      ]
+    };
+    const secs = (DEFS[s.tab] || []).map(sd => this.mkSection(sd, isMobile));
+    const tables = [];
+    const LT = { Charge: 'neutral', Payment: 'success', Credit: 'info', 'Late Charge': 'danger', Adjustment: 'premium', Refund: 'warning' };
+    const upcoming = [[nextDueISO, 'Rent due — ' + fmtC(L.rent), 'payments'], ...r.inspections.filter(x => x[2] === 'Scheduled' && x[1]).map(x => [x[1], x[0], 'inspections']), ...(pol ? [[pol.exp, 'Renters insurance expires', 'insurance']] : []), ...(L.renewal ? [[L.renewal, 'Renewal window opens', 'lease']] : []), ...(L.end ? [[L.end, 'Lease expires', 'lease']] : [])].sort((a, b) => a[0] < b[0] ? -1 : 1);
+    if (s.tab === 'dashboard') {
+      tables.push(this.table({ title: 'My Home', sub: L.property + ' • ' + L.unit + ' • Lease ' + fmtD(L.start) + ' – ' + fmtD(L.end), minW: '640px', action: () => this.setTab('home'), actionLabel: 'My Home', cols: ['Property', 'Unit', 'Property Manager', 'Emergency Line'], rows: [{ open: () => this.setTab('home'), cells: [{ text: L.property, sub: (PROPS[pid] || {}).city, bold: true }, L.unit, { text: HOME.manager, sub: HOME.managerPhone }, HOME.emergency.split(' — ')[0]] }] }));
+      tables.push(this.table({ title: 'Upcoming', sub: 'Dates that need your attention', minW: '560px', cols: ['Date', 'What', ['Open', 'right']], rows: upcoming.map(u => ({ open: () => this.setTab(u[2]), cells: [{ text: fmtD(u[0]), bold: true }, u[1], { links: [{ icon: 'arrow-right', title: 'Open', go: () => this.setTab(u[2]) }] }] })) }));
+    }
+    if (s.tab === 'home') tables.push(this.table({ title: 'Utilities', sub: 'Providers and who is responsible — account credentials are never shown here', minW: '700px', cols: ['Service', 'Provider', 'Responsible', 'Notes'], rows: UTIL.map(u => ({ cells: [{ text: u[0], bold: true }, u[1], { badge: true, text: u[2], tone: u[2] === 'Tenant' ? 'warning' : u[2] === 'Owner' ? 'info' : 'neutral' }, u[3]] })) }));
+    if (s.tab === 'lease') tables.push(this.table({ title: 'Lease Documents', sub: 'Signed lease and addenda', minW: '560px', cols: ['Document', 'Date', ['Actions', 'right']], rows: myDocs.filter(d => d.tfolder === 'Lease & Addenda').map(d => ({ cells: [{ text: d.name, bold: true, sub: d.type }, fmtD(d.date), { links: [{ icon: 'eye', title: 'View', go: () => this.notify('Opening ' + d.name) }, { icon: 'download', title: 'Download', go: () => this.notify('Downloading ' + d.name) }] }] })).concat([{ cells: [{ text: 'Request Renewal', bold: true, sub: L.renewal ? 'Available from ' + fmtD(L.renewal) : 'Available 90 days before lease end' }, '—', { links: [{ icon: 'refresh-cw', title: 'Request renewal', go: () => { this.setState({ rec: this.log({ ...r, portal: { ...portal, changes: [{ date: new Date().toISOString().slice(0, 10), kind: 'Lease renewal', details: 'Tenant requested renewal of ' + L.lease_id, status: 'Submitted' }, ...(portal.changes || [])] } }, 'Lease renewal requested', 'refresh-cw') }); this.notify('Renewal request sent to your property manager'); } }] }] }]) }));
+    if (s.tab === 'payments') tables.push(this.table({ title: 'Payment History & Receipts', sub: 'Every charge, payment, credit and refund on your account • ' + cur, minW: '860px', action: () => go(PAGES.payments + '?add=1'), actionLabel: 'Pay Rent', cols: ['Date', 'Type', 'Description', ['Amount', 'right'], ['Balance', 'right'], 'Receipt'],
+      rows: [...ledger].reverse().map(l => ({ cells: [fmtD(l[0]), { badge: true, text: l[1], tone: LT[l[1]] || 'neutral' }, l[2], { text: (l[3] < 0 ? '−' : '') + fmtC(Math.abs(l[3])), bold: true }, fmtC(l[5]), l[4] ? { links: [{ icon: 'receipt', title: 'Receipt ' + l[4], go: () => this.notify('Downloading receipt ' + l[4] + ' (PDF)') }] } : '—'] })), emptyText: 'No transactions yet.' }));
+    if (s.tab === 'maintenance') tables.push(this.table({ title: 'My Requests', sub: openReq.length + ' open • ' + r.maintenance.length + ' total', minW: '760px', cols: ['#', 'Issue', 'Submitted', 'Priority', 'Status'],
+      rows: r.maintenance.map(m => ({ cells: [{ text: m[0], bold: true }, m[1], fmtD(m[2]), { badge: true, text: m[5], tone: m[5] === 'Emergency' ? 'danger' : 'neutral' }, { badge: true, text: tStatus(m), tone: TSTAT[tStatus(m)] }] })), emptyText: 'No requests yet.' }));
+    if (s.tab === 'inspections') {
+      tables.unshift(this.table({ title: 'My Inspections', sub: 'Only inspections for your tenancy', minW: '640px', cols: ['Inspection', 'Date', 'Status'], rows: r.inspections.map(x => ({ cells: [{ text: x[0], bold: true, sub: x[0] === 'Move-In Inspection' ? 'Baseline for move-out' : '' }, x[1] ? fmtD(x[1]) : 'To be scheduled', { badge: true, text: x[2], tone: x[2] === 'Completed' ? 'success' : x[2] === 'Scheduled' ? 'info' : 'neutral' }] })) }));
+      tables.push(this.table({ title: 'Move-In Condition — Room by Room', sub: ROOMS.reduce((a, x) => a + x[2], 0) + ' photos recorded on ' + fmtD((r.inspections.find(x => x[0] === 'Move-In Inspection') || [])[1]), minW: '760px', cols: ['Room', 'Condition', ['Photos', 'right'], 'Notes', ['View', 'right']], rows: ROOMS.map(x => ({ cells: [{ text: x[0], bold: true }, { badge: true, text: x[1], tone: x[1] === 'Good' ? 'success' : 'warning' }, String(x[2]), x[3], { links: [{ icon: 'images', title: 'View photos', go: () => this.notify('Opening ' + x[2] + ' photos — ' + x[0]) }] }] })) }));
+    }
+    if (s.tab === 'insurance') tables.push(this.table({ title: 'Reminder Schedule', sub: 'Set by your property manager — reminders go to you and the property manager', minW: '520px', cols: ['When', 'What happens'], rows: [['60 days before expiration', 'Reminder'], ['30 days before', 'Reminder'], ['15 days before', 'Warning'], ['7 days before', 'Urgent reminder'], ['On expiration', 'Status EXPIRED • tenant and property manager alerted']].map(x => ({ cells: [{ text: x[0], bold: true }, x[1]] })) }));
+    if (s.tab === 'documents') { const docs = myDocs.filter(d => s.folder === 'All' || d.tfolder === s.folder);
+      tables.push(this.table({ title: 'My Documents', sub: 'Documents shared with you • ' + docs.length + ' files', minW: '860px', cols: ['Document', 'Folder', 'Date', 'Status', ['Actions', 'right']], rows: docs.map(d => ({ cells: [{ text: d.name, bold: true, sub: d.type }, d.tfolder, fmtD(d.date), { badge: true, text: d.status, tone: d.status === 'Verified' ? 'success' : d.status === 'Rejected' ? 'danger' : d.status === 'Sent' ? 'neutral' : 'info' }, { links: [{ icon: 'download', title: 'Download', go: () => this.notify('Downloading ' + d.name) }] }] })), emptyText: 'No documents in this folder.' })); }
+    if (s.tab === 'messages') tables.push(this.table({ title: 'Conversations', sub: 'Messages and notices from your property manager', minW: '760px', cols: ['Date', 'Topic', 'Subject', 'Status'],
+      rows: [...(portal.messages || []).map(m => ({ cells: [fmtD(m.date), { badge: true, text: m.category, tone: 'brand' }, { text: m.subject, sub: m.body.slice(0, 80), bold: true }, { badge: true, text: m.status, tone: 'info' }] })), ...r.notices.map(n => ({ cells: [fmtD(n[0]), { badge: true, text: n[1] === 'Formal Notice' ? 'Notice' : 'From MGHPM', tone: n[1] === 'Formal Notice' ? 'premium' : 'neutral' }, { text: n[2], bold: true }, { badge: true, text: n[3], tone: n[3] === 'Acknowledged' ? 'success' : 'neutral' }] }))], emptyText: 'No messages yet.' }));
+    if (s.tab === 'profile' && (portal.changes || []).length) tables.push(this.table({ title: 'My Change Requests', sub: 'Reviewed by MGHPM', minW: '640px', cols: ['Date', 'Request', 'Details', 'Status'], rows: portal.changes.map(c => ({ cells: [fmtD(c.date), { text: c.kind, bold: true }, c.details, { badge: true, text: c.status, tone: 'info' }] })) }));
+
+    const kpis = [
+      { label: 'Current Balance', value: fmtC(balance), icon: 'wallet', tone: balance > 0 ? 'premium' : 'success', footer: balance > 0 ? 'Payment due' : 'Paid in full' },
+      { label: 'Next Rent Payment', value: fmtC(L.rent), icon: 'calendar-check', tone: 'navy', footer: 'Due ' + fmtD(nextDueISO) },
+      { label: 'Lease', value: L.lease_status || '—', icon: 'file-signature', tone: 'brand', footer: 'Ends ' + fmtD(L.end) },
+      { label: 'Maintenance', value: String(openReq.length), icon: 'wrench', tone: 'brand', footer: openReq.length === 1 ? '1 open request' : openReq.length + ' open requests' },
+      { label: 'Renters Insurance', value: IC[ic.code][0].split(' — ')[0], icon: 'umbrella', tone: ['VERIFIED', 'NOT_REQUIRED'].includes(ic.code) ? 'success' : 'premium', footer: pol ? 'Expires ' + fmtD(pol.exp) : req ? 'Required by lease' : 'Not required' }
+    ];
+    const TABS = [['dashboard', 'Dashboard', 'layout-grid'], ['home', 'My Home', 'house'], ['lease', 'My Lease', 'file-signature'], ['payments', 'Payments & Receipts', 'credit-card'], ['maintenance', 'Maintenance', 'wrench', openReq.length], ['inspections', 'Inspections', 'clipboard-check', portal.miAck ? null : 1], ['insurance', 'Renters Insurance', 'umbrella', ['VERIFIED', 'NOT_REQUIRED'].includes(ic.code) ? null : 1], ['documents', 'Documents', 'folder-open', myDocs.length], ['messages', 'Messages', 'message-square'], ['profile', 'My Profile', 'user-round']];
+    const TL = { 'credit-card': ['#DCFCE7', '#15803D'], 'clipboard-check': ['#DCFCE7', '#15803D'], wrench: ['#FEF3C7', '#B45309'], upload: ['#E0F2FE', '#0369A1'], 'message-square': ['#DDF3F1', '#006B68'], 'file-signature': ['#EEF2FF', '#132A52'] };
+    const SAFE = /payment|paid|rent|maintenance|ticket|request|inspection|document|uploaded|insurance|message|notice|lease .*signed|contact|vehicle|renewal|change request/i;
+    const HIDE = /application|screening|approved|status set|employment|internal|household member/i;
+    window.MGH_CTX = { type: 'tenant-portal', label: 'Tenant Portal — ' + name + ' • ' + L.property + ' ' + L.unit, record: { tenant: name, property: L.property + ' • ' + L.unit, lease: L.lease_id + ' (' + L.lease_status + ') ends ' + L.end, rent: L.rent, rentDue: nextDueISO, balance, depositHeld: depHeld, maintenance: r.maintenance.map(m => m[0] + ' ' + m[1] + ' — ' + tStatus(m)), inspections: r.inspections.map(x => x[0] + ': ' + x[2] + (x[1] ? ' ' + x[1] : '')), rentersInsurance: { requirement: req ? 'Required by lease (min ' + req.min + ')' : 'Not required', status: ic.code, expires: pol ? pol.exp : null }, howToReportLeak: 'Maintenance tab → Report a Problem; for active flooding call the 24/7 line (305) 555-0911 first', howToUploadInsurance: 'Renters Insurance tab → Upload Proof of Insurance' } };
+    return { ...v,
+      crumbItems: mkCrumbs([['Home', PAGES.dashboard], ['Portals', null], ['Tenant Portal', null]]),
+      viewingAs: 'Viewing as ' + name + ' — tenant permissions',
+      goBack: () => {}, reportProblem: () => this.setState({ tab: 'maintenance', editing: 'report', draft: { category: 'Plumbing', location: 'Kitchen', description: '', priority: 'Normal', emergency: false, photos: '', enter: true, access: 'Weekdays 9 AM – 12 PM' } }),
+      goMessages: () => this.setState({ tab: 'messages', editing: 'compose', draft: { category: 'General Question', subject: '', body: '' } }), payNow: () => go(PAGES.payments + '?add=1'),
+      initials: name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase(), ownerName: 'Welcome, ' + (r.personal.preferred || name.split(' ')[0]),
+      headBadges: [['LEASE ' + String(L.lease_status || '—').toUpperCase(), L.lease_status === 'Active' ? 'success' : 'warning', true], ['INSURANCE ' + ic.code.replace(/_/g, ' '), ['VERIFIED', 'NOT_REQUIRED'].includes(ic.code) ? 'success' : 'warning', false]].map(([label, tone, dot]) => ({ label, tone, dot })),
+      ownerMeta: L.property + ' • ' + L.unit + ' • Lease ' + (L.lease_id || '—') + ' • Rent ' + fmtC(L.rent) + ' due day ' + (L.due_day || '1'),
+      hasSource: false, sourceLabel: '', openSource: () => {},
+      readyPct: ready.pct + '%', readyFill: ready.pct === 100 ? '#16A34A' : ready.pct >= 70 ? '#006B68' : '#D4A637', readyBar: ready.pct === 100 ? '#16A34A' : '#D4A637',
+      readyItems: ready.items.map(([label, ok, value, tab]) => ({ label, value, icon: ok ? 'check' : 'triangle-alert', bg: ok ? '#DCFCE7' : '#FEF3C7', fg: ok ? '#15803D' : '#B45309', go: () => this.setTab(tab) })),
+      tabs: TABS.map(([id, label, icon, count]) => { const on = s.tab === id; return { label, icon, hasCount: count != null && count !== 0, count: String(count), border: on ? '#006B68' : 'transparent', color: on ? '#006B68' : '#64748B', countBg: on ? '#DDF3F1' : '#F1F5F9', countFg: on ? '#006B68' : '#64748B', select: () => this.setTab(id) }; }),
+      showKpis: s.tab === 'dashboard' || s.tab === 'payments', kpis,
+      hasSecs: secs.length > 0, secs, tables,
+      showChips: s.tab === 'documents', uploadFolder: s.folder === 'All' ? 'Other Shared Documents' : s.folder,
+      chips: [['All', myDocs.length], ...T_FOLDERS.map(f => [f, myDocs.filter(d => d.tfolder === f).length])].map(([f, c]) => { const on = s.folder === f; return { label: f, count: String(c), bg: on ? '#132A52' : '#FFFFFF', color: on ? '#FFFFFF' : '#172033', border: on ? '#132A52' : '#E2E8F0', select: () => this.setState({ folder: f }) }; }),
+      uploadDocs: e => { const fl = [...(e.target.files || [])]; if (!fl.length) return; const today = new Date().toISOString().slice(0, 10); const inv = { 'Lease & Addenda': 'Lease Addenda', Receipts: 'Payment Documents', Inspections: 'Move-In Inspection', Notices: 'Notices', Insurance: 'Other', 'Move-In Documents': 'Other', 'Move-Out Documents': 'Other', 'Other Shared Documents': 'Other' }; const folder = inv[s.folder] || 'Other';
+        this.setState(st2 => ({ rec: this.log({ ...st2.rec, docs: [...fl.map((f, i) => ({ id: 'T-' + (Date.now() + i), name: f.name, folder, type: 'Uploaded by tenant', version: 1, date: today, status: 'Received', by: name, verifiedBy: '', visibility: 'Tenant & staff', expires: '' })), ...st2.rec.docs] }, fl.length + ' document' + (fl.length > 1 ? 's' : '') + ' uploaded by tenant', 'upload') }));
+        this.notify(fl.length + ' file' + (fl.length > 1 ? 's' : '') + ' uploaded • shared with your property manager'); e.target.value = ''; },
+      showTimeline: s.tab === 'dashboard',
+      timeline: [...r.activity].filter(a => SAFE.test(a.text) && !HIDE.test(a.text)).sort((a, b) => a.at < b.at ? 1 : -1).slice(0, 6).map(a => { const [bg, fg] = TL[a.icon] || ['#F1F5F9', '#475569']; return { text: a.text.replace(' by tenant', ''), when: fmtTS(a.at), by: a.by === name ? 'You' : 'MGHPM', icon: a.icon || 'pencil', bg, fg }; }),
+      askDelete: () => {}, cancelDelete: () => {}, delOpen: false, delTitle: '', delBlocked: false, delAllowed: false, delBlockers: [], delBody: '', deactivate: () => {}, confirmDelete: () => {}
+    };
+  }
+}
+</script>
+</body>
+</html>
